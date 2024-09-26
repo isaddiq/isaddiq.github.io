@@ -220,9 +220,10 @@ section.visible {
 
 
 
+
 /* Cover Section */
 .cover {
-    background: url('assets/images/cover_2.png') no-repeat center center;
+    background: url('../images/cover_3.png') no-repeat center center;
     background-size: contain; /* Or '100% auto' */
     height: 400px; /* Adjust height as needed */
     display: flex;
@@ -232,6 +233,8 @@ section.visible {
     text-align: center;
     margin: 0; /* Remove any default margin */
     padding: 0; /* Remove any default padding */
+    margin-left: 150px;
+
 }
 
 @media (max-width: 768px) {
