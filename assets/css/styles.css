@@ -223,7 +223,7 @@ section.visible {
 
 /* Cover Section */
 .cover {
-    background: url('../images/cover_3.png') no-repeat center center;
+    background: url('../images/cover_3.jpg') no-repeat center center;
     background-size: contain; /* Or '100% auto' */
     height: 400px; /* Adjust height as needed */
     display: flex;
