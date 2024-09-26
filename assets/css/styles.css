@@ -240,6 +240,8 @@ section.visible {
 @media (max-width: 768px) {
     .cover {
         height: 200px; /* Adjust height for smaller screens */
+        margin-left: -35px;
+        height: 120px; /* Adjust height as needed */
     }
 }
 
