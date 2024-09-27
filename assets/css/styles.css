@@ -336,7 +336,13 @@ section.visible {
     object-fit: contain; /* Maintain aspect ratio */
     margin-right: 20px; /* Space between logo and text */
 }
-
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .university-logo {
+        width: 90px; /* Adjusted size for mobile */
+        height: 90px;
+    }
+}
 /* Education Heading Style */
 #education h2 {
     font-size: 28px; /* Match experience section size */
@@ -606,7 +612,22 @@ section.visible {
     right: 20px;
 }
 
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    .certificates {
+        flex-basis: 100%; /* Full width for certificates on mobile */
+        min-width: 0; /* Allow shrinking */
+    }
 
+    .certificate-slider {
+        padding-right: 0; /* Remove extra padding */
+    }
+
+    .prev, .next {
+        padding: 6px 10px; /* Smaller padding for buttons on mobile */
+        font-size: 18px; /* Slightly smaller font size */
+    }
+}
 
 /* Footer */
 footer {
@@ -623,10 +644,8 @@ footer p {
 }
 
 
-/* Responsive properties*/
-/* Add this to the end of styles.css */
 
-/* Media Queries for Responsive Design */
+/* Media Queries for Responsive Design  while in mobile device*/
 
 /* For tablets and smaller devices */
 @media (max-width: 1024px) {
@@ -781,13 +800,14 @@ footer p {
 
     .side-nav.open {
         transform: translateX(0);
+        width: 100px;
     }
 
     .nav-toggle {
         display: block;
         position: fixed;
-        top: 20px;
-        left: 20px;
+        top: 0px;
+        left: 10px;
         background-color: #333;
         color: #fff;
         border: none;
