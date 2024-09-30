@@ -570,7 +570,7 @@ section.visible {
 
 .certificate-slider {
     position: relative;
-    max-width: 100%; /* Full width of the right column */
+    max-width: 80%; /* Full width of the right column */
     overflow: hidden;
     border-radius: 8px;
     border: 2px solid #ddd;
@@ -732,7 +732,7 @@ footer p {
 
     /* Adjust certificate slider */
     .certificate-slider {
-        max-width: 100%;
+        max-width: 80%;
     }
 
     .prev, .next {
