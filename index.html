@@ -18,13 +18,8 @@
     <section class="cover">
     </section>
 
-    <!-- Navigation Toggle Button for Mobile -->
-    <button id="nav-toggle" class="nav-toggle">
-        <i class="fas fa-bars"></i>
-    </button>
-
-    <!-- Side Navigation -->
-    <nav class="side-nav" id="side-nav">
+    <!-- Top Navigation -->
+    <nav class="top-nav", id="side-nav">
         <ul>
             <li><a href="#home" class="nav-link">Home</a></li>
             <li><a href="#about-research" class="nav-link">About Me</a></li>
@@ -33,24 +28,6 @@
             <li><a href="#publications" class="nav-link">Publications</a></li>
             <li><a href="#achievements-certificates" class="nav-link">Achievements</a></li>
         </ul>
-        <!-- Icons Section at the Bottom -->
-        <div class="side-nav-icons">
-            <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" target="_blank" class="icon-link">
-                <img src="assets/images/LinkedIn.png" alt="LinkedIn Logo">
-            </a>
-            <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman" target="_blank" class="icon-link">
-                <img src="assets/images/researchgate.png" alt="Researchgate Logo">
-            </a>
-            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" target="_blank" class="icon-link">
-                <img src="assets/images/google_scholar.png" alt="Google Scholar Logo">
-            </a>
-            <a href="https://orcid.org/0000-0002-8098-0939" target="_blank" class="icon-link">
-                <img src="assets/images/ORCID_iD.svg.png" alt="ORCID_iD Logo">
-            </a>
-            <a href="https://github.com/isaddiq" target="_blank" class="icon-link">
-                <img src="assets/images/github.png" alt="GitHub Logo">
-            </a>
-        </div>
     </nav>
 
     <!-- Content Sections -->
@@ -340,36 +317,84 @@
                     <p>2) Journal of Civil Engineering and Management</p>
                     
                 </div>
-                
-                <!-- Right Column: Certificate Slider -->
-                <div class="certificates">
-                    <div class="certificate-slider">
-                        <div class="slides">
-                            <img src="assets/images/best_paper_1.jpg" alt="Certification 8">
-                            <img src="assets/images/best_paper_2.png" alt="Certification 8">
-                            <img src="assets/images/certificate_1.jpeg" alt="Certification 1">
-                            <img src="assets/images/certificate_2.png" alt="Certification 2">
-                            <img src="assets/images/certificate_3.jpg" alt="Certification 3">
-                            <img src="assets/images/certificate_4.jpg" alt="Certification 4">
-                            <img src="assets/images/certificate_5.jpg" alt="Certification 5">
-                            <img src="assets/images/certificate_6.jpg" alt="Certification 6">
-                            <img src="assets/images/certificate_7.jpg" alt="Certification 7">
-                            <img src="assets/images/certificate_8.jpg" alt="Certification 8">
-                            <img src="assets/images/certificate_9.jpg" alt="Certification 8">
-                        </div>
-                        <button class="prev">❮</button>
-                        <button class="next">❯</button>
-                    </div>
+            </div>
+        </section>
+
+        <section id="achievements-certificates">
+            <h2>Achievements & Certificates</h2>
+            <div class="certificate-cards">
+                <!-- Each card -->
+                <div class="certificate-card">
+                    <img src="assets/images/best_paper_1.jpg" alt="Certificate 1" onclick="openCertificateModal('assets/images/best_paper_1.jpg')">
                 </div>
+                <div class="certificate-card">
+                    <img src="assets/images/best_paper_2.png" alt="Certificate 2" onclick="openCertificateModal('assets/images/best_paper_2.png')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_1.jpeg" alt="Certificate 3" onclick="openCertificateModal('assets/images/certificate_1.jpeg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_2.png" alt="Certificate 4" onclick="openCertificateModal('assets/images/certificate_2.png')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_3.jpg" alt="Certificate 5" onclick="openCertificateModal('assets/images/certificate_3.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_4.jpg" alt="Certificate 6" onclick="openCertificateModal('assets/images/certificate_4.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_5.jpg" alt="Certificate 7" onclick="openCertificateModal('assets/images/certificate_5.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_6.jpg" alt="Certificate 8" onclick="openCertificateModal('assets/images/certificate_6.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_7.jpg" alt="Certificate 9" onclick="openCertificateModal('assets/images/certificate_7.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_8.jpg" alt="Certificate 10" onclick="openCertificateModal('assets/images/certificate_8.jpg')">
+                </div>
+                <div class="certificate-card">
+                    <img src="assets/images/certificate_9.jpg" alt="Certificate 11" onclick="openCertificateModal('assets/images/certificate_9.jpg')">
+                </div>
+                <!-- Add more cards as needed -->
+            </div>
+        
+            <!-- Modal for displaying full-size images -->
+            <div id="certificate-modal" class="certificate-modal" onclick="closeCertificateModal(event)">
+                <span class="close" onclick="closeCertificateModal(event)">&times;</span>
+                <img class="modal-content" id="modal-image" alt="Full-size Certificate">
             </div>
         </section>
         
         
+        
+        
 
         <!-- Footer -->
-        <footer>
+    <footer>
+        <div class="footer-content">
             <p>© 2024 Saddiq Ur Rehman. All rights reserved.</p>
-        </footer>
+            <div class="footer-icons">
+                <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" target="_blank">
+                    <img src="assets/images/LinkedIn.png" alt="LinkedIn Logo">
+                </a>
+                <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman" target="_blank">
+                    <img src="assets/images/researchgate.png" alt="Researchgate Logo">
+                </a>
+                <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" target="_blank">
+                    <img src="assets/images/google_scholar.png" alt="Google Scholar Logo">
+                </a>
+                <a href="https://orcid.org/0000-0002-8098-0939" target="_blank">
+                    <img src="assets/images/ORCID_iD.svg.png" alt="ORCID_iD Logo">
+                </a>
+                <a href="https://github.com/isaddiq" target="_blank">
+                    <img src="assets/images/github.png" alt="GitHub Logo">
+                </a>
+            </div>
+            
+        </div>
+    </footer>
     </div>
 </body>
 </html>
