@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function highlightNavOnScroll() {
         const sections = document.querySelectorAll('section');
-        let scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+        const scrollPos = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
 
         sections.forEach(section => {
             const navLinks = document.querySelectorAll('.side-nav a');
@@ -49,46 +49,44 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial Reveal of Sections
     revealSections();
 
-    // Image Slider Functionality
-    let currentIndex = 0;
-    const slides = document.querySelectorAll('.slides img');
-    const totalSlides = slides.length;
+    // Certificate Modal Functionality
+    const modal = document.getElementById('certificate-modal');
+    const modalImage = document.getElementById('modal-image');
+    const closeModal = document.querySelector('.certificate-modal .close');
 
-    document.querySelector('.next').addEventListener('click', () => changeSlide(1));
-    document.querySelector('.prev').addEventListener('click', () => changeSlide(-1));
-
-    function changeSlide(direction) {
-        currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
-        updateSlider();
-    }
-
-    function updateSlider() {
-        const slideWidth = slides[0].clientWidth;
-        document.querySelector('.slides').style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-    }
-
-    // Toggle Side Navigation for Mobile
-    const sideNav = document.getElementById('side-nav');
-    const navToggle = document.getElementById('nav-toggle');
-
-    navToggle.addEventListener('click', toggleSideNav);
-    document.addEventListener('click', closeSideNavOnClickOutside);
-
-    function toggleSideNav(event) {
-        event.stopPropagation();
-        sideNav.classList.toggle('open');
-    }
-
-    function closeSideNavOnClickOutside(event) {
-        if (!sideNav.contains(event.target) && !navToggle.contains(event.target)) {
-            sideNav.classList.remove('open');
-        }
-    }
-
-    // Close Side Navigation When a Link Inside is Clicked
-    document.querySelectorAll('.side-nav a').forEach(link => {
-        link.addEventListener('click', () => {
-            sideNav.classList.remove('open');
+    // Open Modal on Certificate Click
+    document.querySelectorAll('.certificate-card img').forEach(image => {
+        image.addEventListener('click', function () {
+            const imageSrc = this.src; // Get the image source
+            modalImage.src = imageSrc; // Set the modal image source
+            modal.style.display = 'flex'; // Display the modal
         });
     });
+
+    // Close Modal
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none'; // Hide the modal
+    });
+
+    // Close Modal on Outside Click
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const nav = document.querySelector(".top-nav");
+        
+        window.addEventListener("scroll", function () {
+            if (window.scrollY > 50) {
+                nav.classList.add("scrolled"); // Add the "scrolled" class when scrolling down
+            } else {
+                nav.classList.remove("scrolled"); // Remove the "scrolled" class when at the top
+            }
+        });
+    });
+    
+    
+    
 });
