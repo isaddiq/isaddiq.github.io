@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Prevent horizontal overflow */
+    padding-bottom: 3rem; /* Adjust to match footer height */
 }
 * {
     margin: 0;
