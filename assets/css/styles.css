@@ -98,7 +98,7 @@ footer {
     background: #727070;
     color: #fff;
     padding: 1rem;
-    position: static;
+    position: relative;
     bottom: 0;
     left: 0;
     width: 100%;
