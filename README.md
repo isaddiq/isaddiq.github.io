@@ -2,7 +2,8 @@
 
 
 Welcome to my portfolio website! This is where you can learn more about my academic journey, research work, and professional experience. Dive in and feel free to connect! 🚀
-![image](https://github.com/user-attachments/assets/5abff2fa-f0e2-478b-8d74-bc072344455a)
+![image](https://github.com/user-attachments/assets/24ed8163-a6c9-4fce-b4a6-cd3893ee3a7e)
+
 
 
 
