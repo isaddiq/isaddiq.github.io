@@ -21,7 +21,7 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px;
+    height: 50px;
     padding: 0 1rem;
     z-index: 1000;
     display: flex;
@@ -184,7 +184,7 @@ section.visible {
 }
 
 #home p {
-    font-size: 24px;
+    font-size: 20px;
     font-style: normal;
 }
 
@@ -301,7 +301,7 @@ section.visible {
 /* Paragraphs and List Items */
 #about-research p,
 #about-research li {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.5;
     margin: 0.5rem 0;
     color: #000000;
@@ -311,7 +311,7 @@ section.visible {
 #about-research p strong,
 #about-research li strong {
     font-weight: bold;
-    font-size: 20px;
+    font-size: 18px;
     font-style: normal;
 }
 
@@ -419,7 +419,7 @@ section.visible {
 }
 
 .education-text p {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.5;
     margin: 0.3rem 0;
     color: #333;
@@ -496,7 +496,7 @@ section.visible {
 }
 
 .experience-item ul li {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.5;
     margin: 0.5rem 0;
 }
@@ -671,7 +671,7 @@ section.visible {
 
 /* Paragraph text */
 .achievements-content p {
-    font-size: 17px;
+    font-size: 18px;
     color: #333;
     line-height: 1.6;
     margin-bottom: 1rem;
