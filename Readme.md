@@ -1,6 +1,7 @@
 # 🎓 Academic Portfolio Website
 
 A modern, responsive, and interactive academic portfolio website by **Saddiq Ur Rehman**, PhD Student at Kyung Hee University. This portfolio showcases research work, publications, projects, and professional experience in an elegant and user-friendly design.
+![thumbnail](https://github.com/user-attachments/assets/f137f97c-be19-4713-828e-e05a04ebc91a)
 
 ## 🌟 Features
 
