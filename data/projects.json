@@ -1,0 +1,252 @@
+{
+    "research_projects": [
+      {
+        "id": "project_001",
+        "title": "BIM and Game Engine Integration",
+        "duration": "2023 - Present",
+        "role": "Researcher",
+        "status": "Ongoing",
+        "funding_amount": "---",
+        "funding_source": "Presidential Scholarship, Kyung Hee University",
+        "icon": "fas fa-cube",
+        "image": "assets/images/projects/bim-game-engine.jpg",
+        "description": "This research focuses on developing innovative frameworks for integrating Building Information Modeling (BIM) with game engines to enhance visualization and simulation capabilities in the AEC industry. The project explores real-time rendering, interactive environments, and immersive experiences for construction professionals.",
+        "detailed_description": "The project addresses the growing need for advanced visualization and simulation tools in the Architecture, Engineering, and Construction (AEC) industry. By leveraging the power of modern game engines such as Unity 3D and Unreal Engine, we are developing seamless integration protocols that allow BIM data to be visualized and manipulated in real-time interactive environments. This integration enables construction professionals to experience buildings and infrastructure projects in immersive virtual environments before physical construction begins.",
+        "objectives": [
+          "Develop seamless data exchange protocols between BIM and game engines",
+          "Create interactive visualization tools for construction planning",
+          "Implement real-time simulation capabilities for construction processes",
+          "Design user-friendly interfaces for AEC professionals",
+          "Establish performance benchmarks for BIM-game engine integration",
+          "Validate the framework through industry case studies"
+        ],
+        "technologies": [
+          "Unity 3D",
+          "Unreal Engine",
+          "Revit API",
+          "C#",
+          "Python",
+          "IFC Standards",
+          "WebGL",
+          "JSON/XML",
+          "REST APIs"
+        ],
+        "methodologies": [
+          "Agile Development",
+          "User-Centered Design",
+          "Case Study Research",
+          "Performance Testing",
+          "Industry Validation"
+        ],
+        "outcomes": [
+          "Published in Journal of Computational Design and Engineering (Q1, IF: 4.8)"
+        ],
+        "publications": [
+          "Advancing BIM and game engine integration in the AEC industry: innovations, challenges, and future directions (2025)",
+          "A tentative framework for discrete event simulation of modular building production using game engines (2024)"
+        ],
+        "collaborators": [
+          "Professor Inhan Kim (Supervisor)",
+          "Kyung-Eun Hwang (co-supervisor)"
+        ],
+        "challenges": [
+          "Large file size handling in real-time environments",
+          "Maintaining BIM data integrity during conversion",
+          "Performance optimization for complex models",
+          "User interface design for non-technical users"
+        ],
+        "impact": "High - Potential to revolutionize construction visualization and planning processes",
+        "future_work": [
+          "Integration with AR/VR technologies",
+          "Development of mobile applications",
+          "Cloud-based collaboration tools",
+          "AI-powered design assistance"
+        ]
+      },
+      {
+        "id": "project_002", 
+        "title": "AI-Driven Design Recommender System",
+        "duration": "2022 - 2024",
+        "role": "Researcher",
+        "status": "Ongoing",
+        "funding_amount": "--",
+        "funding_source": "Industry-Academia Collaboration Grant",
+        "icon": "fas fa-robot",
+        "image": "assets/images/projects/ai-recommender.jpg",
+        "description": "Development of an intelligent design recommendation system using natural language processing and machine learning to assist architects and designers in creating client-centered modular housing solutions.",
+        "detailed_description": "This project addresses the challenge of translating client requirements into architectural designs by developing an AI-powered recommendation system. The system uses advanced natural language processing (NLP) techniques to analyze client descriptions and preferences, then generates tailored design recommendations for modular housing. The system incorporates machine learning algorithms trained on extensive design databases and client satisfaction data.",
+        "objectives": [
+          "Process client requirements using advanced NLP techniques",
+          "Generate personalized design recommendations based on client preferences",
+          "Implement machine learning algorithms for design pattern recognition",
+          "Create intuitive user interface for design exploration and customization",
+          "Develop feedback system for continuous learning and improvement",
+          "Validate system effectiveness through user studies"
+        ],
+        "technologies": [
+          "Python",
+          "TensorFlow",
+          "NLTK",
+          "spaCy",
+          "Flask",
+          "MongoDB",
+          "React.js",
+          "Node.js",
+          "Docker",
+          "AWS Cloud Services"
+        ],
+        "methodologies": [
+          "Natural Language Processing",
+          "Machine Learning",
+          "User Experience Design",
+          "A/B Testing",
+          "Continuous Integration/Deployment"
+        ],
+        "outcomes": [
+          "Published in Journal of Computational Design and Engineering (Corresponding author)",
+          "Developed functional web-based recommendation system",
+          "Achieved 85% client satisfaction rate in user studies",
+          "Created comprehensive design database with 500+ modular designs",
+          "Presented at 2 international conferences"
+        ],
+        "publications": [
+          "Client-centered detached modular housing: Natural language processing-enabled design recommender system (2024)",
+          "Office building design recommendations systems tailored to client needs (2023)"
+        ],
+        "collaborators": [
+          "Professor Inhan Kim (Co-Supervisor)",
+          "Jihye Shin (Lead Developer)",
+          "Syed Haseeb Shah (Data Scientist)",
+          "UX Design Team",
+          "Industry Advisory Board"
+        ],
+        "challenges": [
+          "Handling ambiguous client requirements",
+          "Balancing design creativity with technical constraints",
+          "Real-time processing of complex design parameters",
+          "Cross-cultural design preference variations"
+        ],
+        "impact": "Medium-High - Streamlines design process and improves client satisfaction",
+        "future_work": [
+          "Integration with BIM software",
+          "Multi-language support",
+          "3D visualization capabilities",
+          "Cost estimation integration"
+        ]
+      },
+      {
+        "id": "project_004",
+        "title": "Mixed Reality for Modular Construction",
+        "duration": "2024 - 2025",
+        "role": "Researcher", 
+        "status": "Ongoing",
+        "funding_amount": "---",
+        "funding_source": "University Research Fund",
+        "icon": "fas fa-vr-cardboard",
+        "image": "assets/images/projects/vr-construction.jpg",
+        "description": "Exploration of virtual reality applications in construction education and training, focusing on safety protocols and skill development for construction workers.",
+        "detailed_description": "This project investigated the potential of virtual reality (VR) technology to revolutionize construction education and training. The research focused on developing immersive VR training modules that allow construction workers to practice safety protocols and develop technical skills in a risk-free virtual environment. The project included the development of realistic construction site simulations and assessment tools for training effectiveness.",
+        "objectives": [
+          "Develop comprehensive MR for DfMA based BIM implementation in factory",
+          "Create immersive and realistic learning experiences for workers",
+          "Evaluate effectiveness of MR training compared to traditional methods"
+        ],
+        "technologies": [
+          "Unity 3D",
+          "Oculus SDK",
+          "HTC Vive",
+          "C#",
+          "Blender",
+          "3ds Max",
+          "Photoshop",
+          "Analytics Tools",
+          "WebVR",
+          "Cloud Storage"
+        ],
+        "methodologies": [
+          "VR Development",
+          "User Experience Research",
+          "Educational Assessment",
+          "Safety Training Evaluation",
+          "Comparative Studies"
+        ],
+        "outcomes": [
+          "Developed 5 comprehensive VR training modules",
+          "Achieved 40% improvement in safety knowledge retention",
+          "Trained 200+ construction workers using VR platform",
+          "Established partnerships with 3 construction training institutes",
+          "Published findings in 2 conference papers"
+        ],
+        "publications": [
+          "Virtual Reality Applications in Construction Safety Training (2022)",
+          "Effectiveness of Immersive Learning in Construction Education (2022)"
+        ],
+        "collaborators": [
+          "VR Development Team",
+          "Construction Safety Institute",
+          "Training Program Coordinators",
+          "Industry Safety Experts",
+          "Educational Technology Researchers"
+        ],
+        "challenges": [
+          "Motion sickness in VR environments",
+          "Hardware compatibility across different devices",
+          "Creating realistic construction site simulations",
+          "Measuring long-term training effectiveness"
+        ],
+        "impact": "Medium - Improved construction safety training methods",
+        "future_work": [
+          "Mobile VR platform development",
+          "AI-powered personalized training",
+          "Multi-user collaborative VR environments",
+          "Integration with construction simulation software"
+        ]
+      }
+    ],
+    "collaboration_projects": [
+      {
+        "id": "collab_001",
+        "title": "International BIM Standards Development",
+        "duration": "2023 - Present",
+        "role": "Contributing Researcher",
+        "organization": "buildingSMART International",
+        "description": "Contributing to the development of international BIM standards and protocols for improved interoperability.",
+        "responsibilities": [
+          "Review and testing of IFC specifications",
+          "Documentation of implementation guidelines",
+          "Participation in working group meetings",
+          "Case study development and validation"
+        ]
+      },
+      {
+        "id": "collab_002", 
+        "title": "Korean National BIM Guidelines",
+        "duration": "2022 - 2024",
+        "role": "Research Contributor",
+        "organization": "Korean Ministry of Land, Infrastructure and Transport",
+        "description": "Supporting the development of national BIM implementation guidelines for Korean construction industry.",
+        "responsibilities": [
+          "Research on international best practices",
+          "Development of implementation frameworks",
+          "Industry consultation and feedback collection",
+          "Training material development"
+        ]
+      }
+    ],
+    "student_projects": [
+      {
+        "id": "student_001",
+        "title": "Undergraduate Thesis Project",
+        "duration": "2018 - 2019",
+        "role": "Principal Investigator",
+        "university": "University of Engineering and Technology, Peshawar",
+        "description": "Experimental Determination of Capacity of Pile Group and Pile Raft Foundation",
+        "achievements": [
+          "Conducted extensive laboratory testing",
+          "Developed new testing methodologies", 
+          "Published findings in conference proceedings",
+          "Received outstanding thesis award"
+        ]
+      }
+    ]
+  }

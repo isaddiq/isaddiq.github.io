@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saddiq Ur Rehman - Academic Portfolio</title>
+  <!-- In your header section -->
+  <link rel="icon" type="image/png" href="assets/images/profile_pic.png" />
+
+
+  <!-- External Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Saddiq Ur Rehman | Academic Portfolio" />
+  <meta property="og:description"
+    content="Explore my research, publications, projects, and academic journey in Architecture and BIM." />
+    <meta property="og:image" content="https://isaddiq.github.io/assets/images/thumbnail"/>
+  <meta property="og:url" content="https://isaddiq.github.io/" />
+  <meta property="og:type" content="website" />
+
+</head>
+
+<body>
+  <!-- Full Width Header Navigation -->
+  <div class="header-wrapper">
+    <div class="header">
+      <nav class="nav-menu">
+        <button class="nav-btn active" onclick="showTab('home')">Home</button>
+        <button class="nav-btn" onclick="showTab('education')">Education</button>
+        <button class="nav-btn" onclick="showTab('experience')">Experience</button>
+        <button class="nav-btn" onclick="showTab('publications')">Publications</button>
+        <button class="nav-btn" onclick="showTab('projects')">Projects</button>
+        <button class="nav-btn" onclick="showTab('skills')">Skills</button>
+        <button class="nav-btn" onclick="showTab('certifications')">Certifications & Awards</button>
+        <button class="nav-btn" onclick="showTab('activities')">Activities</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="container">
+    <!-- Content Area -->
+    <div class="content">
+      <!-- Home Tab -->
+      <div id="home" class="tab-content active">
+        <div class="tab-cover">
+          <div class="cover-overlay">
+            <h1 class="cover-title">Home</h1>
+            <p class="cover-subtitle">Welcome to My Academic Portfolio</p>
+          </div>
+        </div>
+
+        <div class="home-content">
+          <div class="profile-section">
+            <div class="profile-image-container">
+              <img src="assets/images/profile_pic.png" alt="Saddiq Ur Rehman" class="profile-image main"
+                id="profileMain">
+              <img src="assets/images/profile_pic_2.jpg" alt="Saddiq Ur Rehman Alt" class="profile-image hover"
+                id="profileHover">
+            </div>
+            <div class="contact-info">
+              <p><i class="fas fa-envelope"></i> <a href="mailto:saddiqurrehman@khu.ac.kr">saddiqurrehman@khu.ac.kr</a>
+              </p>
+              <p><i class="fas fa-envelope"></i> <a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></p>
+              <p><i class="fas fa-map-marker-alt"></i> Kyung Hee University, Korea</p>
+              <p><i class="fas fa-phone"></i> +82-10-9917-2639</p>
+            </div>
+          </div>
+          <div class="about-section">
+            <h1>Saddiq Ur Rehman</h1>
+            <p class="title">PhD Student | Department of Architecture | Kyung Hee University</p>
+            <p class="bio-text">
+              I am a PhD Candidate in the <a href="http://italab.khu.ac.kr/">ITA Lab</a> under the supervision of
+              Professor Inhan Kim at the
+              Department of Architecture at Kyung Hee University, South Korea. I earned his Bachelor degree in Civil
+              Engineering from the University of Engineering and Technology Peshawar. However, driven by a keen interest
+              in the application of Building Information Modeling (BIM) in architecture and design, I transitioned to
+              the field of architecture.
+            </p>
+
+            <p class="bio-text">
+              My research focuses on leveraging BIM, Design for Manufacturing and Assembly (DfMA), AI, Extended reality,
+              and Game Engines
+              to optimize construction automation, decision support systems, and digital workflows. By integrating
+              machine learning,
+              NLP, and real-time simulations, I aim to bridge the gap between research and industry applications in
+              modular
+              construction and smart building technologies.
+            </p>
+
+            <h3 class="section-title">Research Interests</h3>
+            <ul class="research-interests">
+              <li><i class="fas fa-check-circle"></i>Building Information Modeling (BIM)</li>
+              <li><i class="fas fa-check-circle"></i>Design for Manufacturing and Assembly (DfMA)</li>
+              <li><i class="fas fa-check-circle"></i>Virtual Design and Construction (VDC)</li>
+              <li><i class="fas fa-check-circle"></i>BIM and Game Engine Integration</li>
+              <li><i class="fas fa-check-circle"></i>Human Computer Interaction for AEC</li>
+              <li><i class="fas fa-check-circle"></i>Extended Reality</li>
+              <li><i class="fas fa-check-circle"></i>MultiModal AI</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Recent News Section -->
+        <div class="news-section">
+          <h3 class="section-title news-title">Recent News & Updates</h3>
+          <div class="news-container">
+            <div class="news-item">
+              <div class="news-date">2025/05</div>
+              <div class="news-content">
+                <i class="fas fa-journal-whills news-icon"></i>
+                <strong>New Publication:</strong> "Integration of 4D BIM and VR for interactive modular building
+                manufacturing simulations in a factory-controlled environment"
+                Accepted in Creative Construction Conference 2025
+              </div>
+            </div>
+            <div class="news-item">
+              <div class="news-date">2025/03</div>
+              <div class="news-content">
+                <i class="fas fa-journal-whills news-icon"></i>
+                <strong>New Publication:</strong> "Advancing BIM and game engine integration in the AEC industry"
+                published in Journal of Computational Design and Engineering
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Education Tab -->
+    <div id="education" class="tab-content">
+      <div class="tab-cover education-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Education</h1>
+          <p class="cover-subtitle">Academic Journey & Qualifications</p>
+        </div>
+      </div>
+
+      <div class="education-container">
+        <div class="experience-item">
+          <div class="exp-header">
+            <div class="company-logo">
+              <img src="../assets/icons/kyunghee.png" alt="Kyung Hee University Logo" />
+            </div>
+            <div class="exp-details">
+              <h3>PhD in Architecture</h3>
+              <a href="https://www.khu.ac.kr" class="company-name" target="_blank">Kyung Hee University, Global
+                Campus, Korea</a>
+              <p class="exp-duration">March 2021 - Present | GPA: 4.15/4.3</p>
+              <p><strong>Thesis:</strong> Under development</p>
+              <p><strong>Supervisor:</strong> Professor Inhan Kim</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="experience-item">
+          <div class="exp-header">
+            <div class="company-logo">
+              <img src="../assets/icons/uetp.png" alt="Kyung Hee University Logo" />
+            </div>
+            <div class="exp-details">
+              <h3>B.Sc. in Civil Engineering</h3>
+              <a href="https://www.uetpeshawar.edu.pk" class="company-name" target="_blank">University of Engineering
+                and Technology, Peshawar</a>
+              <p class="exp-duration">September 2015 - September 2019 | GPA: 3.39/4.0</p>
+              <p><strong>Thesis:</strong> Experimental Determination of Capacity of Pile Group and Pile Raft
+                Foundation</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Experience Tab -->
+    <div id="experience" class="tab-content">
+      <div class="tab-cover experience-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Experience</h1>
+          <p class="cover-subtitle">Professional & Academic Journey</p>
+        </div>
+      </div>
+
+      <div id="experience-container">
+        <!-- Experience items will be dynamically loaded here -->
+      </div>
+    </div>
+
+    <!-- Skills Tab -->
+    <div id="skills" class="tab-content">
+      <div class="tab-cover skills-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Skills</h1>
+          <p class="cover-subtitle">Technical Expertise & Competencies</p>
+        </div>
+      </div>
+
+      <div class="skills-container">
+        <div id="skills-content">
+          <!-- Skills will be dynamically loaded here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Publications Tab -->
+    <div id="publications" class="tab-content">
+      <div class="tab-cover publications-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Publications</h1>
+          <p class="cover-subtitle">Research Contributions & Academic Works</p>
+        </div>
+      </div>
+
+      <!-- Publication Statistics Section -->
+      <div id="publication-stats" class="publication-stats">
+        <!-- Publication stats will be dynamically loaded here -->
+      </div>
+
+      <div class="publications-nav">
+        <button class="pub-btn active" onclick="showPublications('journals')">International Journals <span
+            id="journals-count" class="count-badge">0</span></button>
+        <button class="pub-btn" onclick="showPublications('conferences')">International Conferences <span
+            id="conferences-count" class="count-badge">0</span></button>
+        <button class="pub-btn" onclick="showPublications('korean')">Korean Conferences <span id="korean-count"
+            class="count-badge">0</span></button>
+        <button class="pub-btn" onclick="showPublications('reports')">Technical Reports <span id="reports-count"
+            class="count-badge">0</span></button>
+      </div>
+
+      <div id="journals" class="pub-content active">
+        <!-- International Journals will be loaded here -->
+      </div>
+
+      <div id="conferences" class="pub-content">
+        <!-- International Conferences will be loaded here -->
+      </div>
+
+      <div id="korean" class="pub-content">
+        <!-- Korean Conferences will be loaded here -->
+      </div>
+
+      <div id="reports" class="pub-content">
+        <!-- Technical Reports will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Projects Tab -->
+    <div id="projects" class="tab-content">
+      <div class="tab-cover projects-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Projects</h1>
+          <p class="cover-subtitle">Research Projects & Innovations</p>
+        </div>
+      </div>
+
+      <div class="projects-grid" id="projects-container">
+        <!-- Projects will be dynamically loaded here -->
+      </div>
+    </div>
+
+    <!-- Certifications & Awards Tab -->
+    <div id="certifications" class="tab-content">
+      <div class="tab-cover certifications-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Certifications & Awards</h1>
+          <p class="cover-subtitle">Achievements & Professional Recognition</p>
+        </div>
+      </div>
+
+      <div class="awards-section">
+        <h3 class="section-title">Awards & Scholarships</h3>
+
+        <div class="awards-container">
+          <div class="award-item">
+            <div class="award-icon">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="award-content">
+              <strong>Presidential Scholarship</strong>
+              <p>Kyung Hee University, Korea (2021–2024)</p>
+            </div>
+          </div>
+
+          <div class="award-item clickable-award" onclick="openAwardCertificate('best-paper-award')">
+            <div class="award-icon">
+              <i class="fas fa-medal"></i>
+            </div>
+            <div class="award-content">
+              <strong>Best Paper Award</strong>
+              <p>Korea CDE Society Winter Conference (2023, 2022)</p>
+              <div class="award-actions">
+                <span class="view-certificate-link">
+                  <i class="fas fa-certificate"></i> View Certificate
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="award-item">
+            <div class="award-icon">
+              <i class="fas fa-star"></i>
+            </div>
+            <div class="award-content">
+              <strong>Editor's Choice</strong>
+              <p>Journal of Computational Design and Engineering (2023)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="section-title certificates-title">Professional Certifications</h3>
+      <div class="certificates-grid" id="certificates-container">
+        <!-- Certificates will be dynamically loaded here -->
+      </div>
+    </div>
+
+    <!-- Activities Tab -->
+    <div id="activities" class="tab-content">
+      <div class="tab-cover activities-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Activities</h1>
+          <p class="cover-subtitle">Professional Activities & Community Engagement</p>
+        </div>
+      </div>
+
+      <div class="activities-container">
+        <div class="activity-category">
+          <h3>Professional Memberships</h3>
+          <div class="activity-item">
+            <i class="fas fa-users activity-icon"></i>
+            <div class="activity-content">
+              <strong>Korean Society for Computational Design and Engineering</strong> - Student Member (2021 - Present)
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-category">
+          <h3>Editorial & Review Activities</h3>
+          <div class="activity-item">
+            <i class="fas fa-edit activity-icon"></i>
+            <div class="activity-content">
+              <strong>Journal of Asian Architecture and Building Engineering</strong> - Reviewer
+            </div>
+          </div>
+          <div class="activity-item">
+            <i class="fas fa-edit activity-icon"></i>
+            <div class="activity-content">
+              <strong>Journal of Civil Engineering and Management</strong> - Reviewer
+            </div>
+          </div>
+        </div>
+        <div class="activity-category">
+          <h3>Academic Collaborations</h3>
+          <div class="activity-item">
+            <i class="fas fa-handshake activity-icon"></i>
+            <div class="activity-content">
+              <strong>ITA Lab, Kyung Hee University</strong> - Research Team Member (2021 - Present)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <!-- Social Media Floating Icons -->
+  <div class="social-floating">
+    <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="social-icon linkedin" target="_blank"
+      title="LinkedIn">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+    <a href="https://github.com/isaddiq" class="social-icon github" target="_blank" title="GitHub">
+      <i class="fab fa-github"></i>
+    </a>
+    <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="social-icon scholar" target="_blank"
+      title="Google Scholar">
+      <i class="fas fa-graduation-cap"></i>
+    </a>
+    <a href="https://orcid.org/0000-0002-8098-0939" class="social-icon orcid" target="_blank" title="ORCID">
+      <i class="fab fa-orcid"></i>
+    </a>
+    <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="social-icon researchgate"
+      target="_blank" title="ResearchGate">
+      <i class="fab fa-researchgate"></i>
+    </a>
+    <a href="https://www.instagram.com/callmesaddiq/" class="social-icon instagram" target="_blank" title="instagram">
+      <i class="fab fa-instagram"></i>
+    </a>
+    <a href="#" class="social-icon flagcounter-icon" title="Show country flags">
+      <i class="fas fa-flag"></i>
+    </a>
+  </div>
+
+  <!-- Project Modal -->
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('projectModal')">&times;</span>
+      <div id="projectModalContent">
+        <!-- Project details will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Modal -->
+  <div id="certificateModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('certificateModal')">&times;</span>
+      <div id="certificateModalContent">
+        <!-- Certificate details will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Image Zoom Overlay -->
+  <div id="imageZoomOverlay" class="image-zoom-overlay">
+    <div class="image-zoom-container">
+      <img id="zoomedImage" src="" alt="" class="zoomed-image">
+      <span class="close-zoom" onclick="closeImageZoom()">&times;</span>
+    </div>
+  </div>
+
+  <!-- Award Certificate Modal -->
+  <div id="awardCertificateModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('awardCertificateModal')">&times;</span>
+      <div id="awardCertificateModalContent">
+        <!-- Award certificate details will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Spinner -->
+  <div id="loading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Custom JavaScript -->
+  <script src="assets/js/script.js"></script>
+
+  <!-- ─── Hidden popup for Flag Counter ─── -->
+  <div id="flagcounter-popup" class="flagcounter-popup">
+    <div class="counter-container">
+      <!-- Paste your Flag Counter embed here (unchanged) -->
+      <a href="https://info.flagcounter.com/ETDD" target="_blank" rel="noopener">
+        <img
+          src="https://s01.flagcounter.com/count2/ETDD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_20/viewers_0/labels_1/pageviews_0/flags_0/percent_0/"
+          alt="Flag Counter" border="0" />
+      </a>
+    </div>
+    <button type="button" class="close-popup" title="Close">✕</button>
+  </div>
+
+</body>
+
+</html>

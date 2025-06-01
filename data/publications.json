@@ -1,0 +1,351 @@
+{
+    "journals": [
+      {
+        "id": "journal_2025_01",
+        "title": "Advancing BIM and game engine integration in the AEC industry: innovations, challenges, and future directions",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
+        "year": 2025,
+        "journal": "Journal of Computational Design and Engineering",
+        "volume": "12(3)",
+        "pages": "26-54",
+        "impactFactor": 4.8,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1093/jcde/qwaf030",
+        "abstract": "This paper presents a comprehensive framework for integrating Building Information Modeling (BIM) with game engines to revolutionize visualization and simulation in the Architecture, Engineering, and Construction (AEC) industry.",
+        "keywords": ["BIM", "Game Engine", "AEC Industry", "Visualization", "Integration"]
+      },
+      {
+        "id": "journal_2024_01",
+        "title": "Client-centered detached modular housing: Natural language processing-enabled design recommender system",
+        "authors": ["Inhan Kim", "Jihye Shin", "Syed Haseeb Shah", "Saddiq Ur Rehman"],
+        "year": 2024,
+        "journal": "Journal of Computational Design and Engineering",
+        "volume": "11(3)",
+        "pages": "137-157",
+        "impactFactor": 4.8,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1093/jcde/qwae041",
+        "badges": ["Corresponding author"],
+        "abstract": "This study introduces an AI-driven design recommendation system that leverages natural language processing to understand client requirements and generate tailored modular housing designs.",
+        "keywords": ["NLP", "Design Recommendation", "Modular Housing", "AI", "Client-Centered Design"]
+      },
+      {
+        "id": "journal_2023_01",
+        "title": "Data-driven integration framework for four-dimensional building information modeling simulation in modular construction: a case study approach",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Jungsik Choi"],
+        "year": 2023,
+        "journal": "Journal of Computational Design and Engineering",
+        "volume": "10(6)",
+        "pages": "2288-2311",
+        "impactFactor": 4.8,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1093/jcde/qwad100",
+        "badges": ["Editor's Choice"],
+        "abstract": "This research develops a comprehensive data-driven framework for integrating 4D BIM simulation in modular construction projects, validated through multiple case studies.",
+        "keywords": ["4D BIM", "Modular Construction", "Data Integration", "Simulation", "Case Study"]
+      },
+      {
+        "id": "journal_2020_01",
+        "title": "Mechanical properties of polyethylene-sand blocks produced from recycled plastic bags",
+        "authors": ["Murad Ali", "Naveed Iqbal", "Saddiq Ur Rehman","Muhammad Adil","Muhammad Anwar"],
+        "year": 2020,
+        "journal": "International Journal of Scientific and Engineering Research",
+        "volume": "11",
+        "pages": "1278-1283",
+        "impactFactor": 1.1,
+        "doi": "https://www.researchgate.net/publication/339297221_Mechanical_Properties_of_Polyethylene-Sand_Blocks_Produced_from_Recycled_Plastic_Bags",
+        "badges": [],
+        "abstract": "Investigation of mechanical properties of sustainable construction blocks made from recycled polyethylene and sand composite materials.",
+        "keywords": ["Recycled Materials", "Sustainable Construction", "Composite Materials", "Mechanical Properties"]
+      }
+    ],
+    "conferences": [
+      {
+        "id": "conf_2024_01",
+        "title": "Shape Grammar-Driven BIM Model Database for a Modular Building Design Recommender System",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
+        "year": 2024,
+        "conference": "The 10th International Conference on Construction Engineering and Project Management",
+        "location": "Sapporo, Japan",
+        "date": "Jul. 29-Aug.1, 2024",
+        "doi": "https://doi.org/10.6106/ICCEPM.2024.0070",
+        "type": "Oral Presentation",
+        "pages": "445-452",
+        "abstract": "This paper presents a novel approach to modular building design using shape grammar principles integrated with BIM databases."
+      },
+      {
+        "id": "conf_2022_01",
+        "title": "An Analysis and Consolidation of DfMA Based Construction Guidelines and Its Validation Through a Korean Case Study",
+        "authors": ["Saddiq Ur Rehman", "Soyeong Ryu", "Inhan Kim"],
+        "year": 2022,
+        "conference": "International Conference on Geometry and Graphics",
+        "location": "Cham, Switzerland",
+        "date": "August 2022",
+        "doi": "https://doi.org/10.1007/978-3-031-13588-0_65",
+        "type": "Conference Proceedings",
+        "pages": "749-759",
+        "abstract": "This paper consolidates various DfMA construction guidelines and validates them through a Korean case study."
+      },
+      {
+        "id": "conf_2021_01",
+        "title": "Analysis of development of open BIM-based automated rule checking system in KBIM project",
+        "authors": ["Saddiq Ur Rehman", "Sejin Lee", "Jungsik Choi", "Inhan Kim"],
+        "year": 2021,
+        "conference": "13th Asian Forum on Graphic Science",
+        "location": "Online",
+        "date": "2021",
+        "doi": "",
+        "type": "Conference Paper",
+        "pages": "122-132",
+        "abstract": "This study discusses the progress of automated rule checking in Korea’s national BIM project."
+      },
+      {
+        "id": "conf_2019_01",
+        "title": "EXPERIMENTAL DETERMINATION OF ROTATIONAL STIFFNESS OF PARTIAL FIXITY JOINTS IN POST TENSIONED PRE-CAST STRUCTURE",
+        "authors": ["Murad Ali", "Naveed Iqbal", "Saddiq Ur Rehman", "Muhammad Anwar", "Mohammad Adil"],
+        "year": 2019,
+        "conference": "5th International Multidisciplinary Research Conference",
+        "location": "Pakistan",
+        "date": "October 29-31, 2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "An experimental investigation into the rotational stiffness of partial fixity joints in post-tensioned precast systems."
+      },
+      {
+        "id": "conf_2019_02",
+        "title": "4D BIM modeling of Insulated Concrete Sandwich Panel Building",
+        "authors": ["Saddiq Ur Rehman", "Zeeshan Altaf", "Muhammad Adil", "Noorul Hadi"],
+        "year": 2019,
+        "conference": "1st Conference on Sustainability in Civil Engineering",
+        "location": "Islamabad, Pakistan",
+        "date": "August 01, 2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "This work demonstrates the application of 4D BIM to the planning and visualization of insulated concrete panel construction."
+      },
+      {
+        "id": "conf_2019_03",
+        "title": "Experimental Determination of Capacity of Pile Group and Pile Raft Foundation",
+        "authors": ["Irfan Jamil", "Muhammad Mahmood Ul Hassan", "Saddiq Ur Rehman", "Muhammad Shoaib Khan", "Shahid Ali Khan", "Zeeshan Altaf"],
+        "year": 2019,
+        "conference": "1st Conference on Sustainability in Civil Engineering",
+        "location": "Islamabad, Pakistan",
+        "date": "August 01, 2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "Study focuses on pile group behavior and raft foundation capacity via field experiments."
+      },
+      {
+        "id": "conf_2019_04",
+        "title": "Experimental Study of Comparison of Settlement Behavior of Pile Raft Foundation with Batter and Vertical Piles",
+        "authors": ["Irfan Jamil", "Zeeshan Altaf", "Saddiq Ur Rehman", "Muhammad Hamza Arshad", "Muhammad Shoaib Khan", "Shahid Ali Khan", "Noorul Hadi"],
+        "year": 2019,
+        "conference": "1st Conference on Sustainability in Civil Engineering",
+        "location": "Islamabad, Pakistan",
+        "date": "August 01, 2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "This paper compares settlement behavior in pile raft foundations with different pile orientations."
+      },
+      {
+        "id": "conf_2019_05",
+        "title": "BIM Implementation of Reinforced Concrete Sandwich Panels",
+        "authors": ["Shahid Ali Khan", "Saddiq Ur Rehman", "Muhammad Shoaib Khan", "Muhammad Adil"],
+        "year": 2019,
+        "conference": "2nd Pak-Turk International Conference on Emerging Technologies in the Field of Sciences and Engineering",
+        "location": "Pakistan",
+        "date": "2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "Implementation strategy of BIM for modeling and construction planning of reinforced concrete sandwich panels."
+      },
+      {
+        "id": "conf_2019_06",
+        "title": "Finite Element Analysis of Brick Masonry",
+        "authors": ["Faisal Rehman", "Shahid Ali Khan", "Saddiq Ur Rehman", "Muhammad Asim Aman"],
+        "year": 2019,
+        "conference": "2nd Pak-Turk International Conference on Emerging Technologies in the Field of Sciences and Engineering",
+        "location": "Pakistan",
+        "date": "2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "Presents finite element simulations to analyze behavior of traditional brick masonry under various loads."
+      },
+      {
+        "id": "conf_2019_07",
+        "title": "Geotechnical Sub soil Profiling Using Geographic Information System",
+        "authors": ["Hizbullah Khan", "Muhammad Shoaib Khan", "Mohammad Adil", "Bazid Khan", "Saddiq Ur Rehman", "Shahid Ali Khan"],
+        "year": 2019,
+        "conference": "International Disaster Management Conference (IDMC-2019)",
+        "location": "Pakistan",
+        "date": "2019",
+        "doi": "",
+        "type": "Conference Presentation",
+        "pages": "",
+        "abstract": "Geotechnical profiling integrated with GIS tools to support disaster resilience and site planning."
+      }
+      
+    ],
+
+    "korean_conferences": [
+      {
+        "id": "korean_2024_01",
+        "title": "A tentative framework for discrete event simulation of modular building production using game engines",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
+        "year": 2024,
+        "conference": "Korean CDE Society 2024 Winter Conference",
+        "volume": "Vol. 19 (S19-1)",
+        "pages": "201-203",
+        "language": "Korean",
+        "type": "Short Paper"
+      },
+      {
+        "id": "korean_2023_01",
+        "title": "Digital Twins in Manufacturing Sector and Their Promising Applications in the Modular Construction Industry",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
+        "year": 2023,
+        "conference": "Summer Conference of Society for Computational Design and Engineering 2023",
+        "volume": "Vol. 11 (S1-52)",
+        "pages": "83-85",
+        "language": "Korean",
+        "type": "Short Paper"
+      },
+      {
+        "id": "korean_2023_02",
+        "title": "Office building design recommendations systems tailored to client needs",
+        "authors": ["Syed Haseeb Shah", "Saddiq Ur Rehman", "Inhan Kim"],
+        "year": 2023,
+        "conference": "Korean Institute of Information and Communication Facilities Academic Conference",
+        "volume": "",
+        "pages": "230-232",
+        "language": "Korean",
+        "type": "Conference Presentation"
+      },
+      {
+        "id": "korean_2023_03",
+        "title": "LDA-based topic modelling of client’s needs for residential building design",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
+        "year": 2023,
+        "conference": "Korea CDE Society 2023 Winter Conference",
+        "volume": "Vol. 2 (S2-2)",
+        "pages": "13-15",
+        "language": "Korean",
+        "type": "Short Paper (Best Paper Award)"
+      },
+      {
+        "id": "korean_2022_01",
+        "title": "Proposition Of Tentative Framework For The Development Of DfMA-Oriented Construction Policies",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Hyung soo Kim"],
+        "year": 2022,
+        "conference": "Regular/National University Student Academic Presentation Contest",
+        "volume": "4(O-33)",
+        "pages": "",
+        "language": "Korean",
+        "type": "Student Conference Presentation"
+      },
+      {
+        "id": "korean_2022_02",
+        "title": "BIM-based visualization of downstream activities in DfMA-oriented modern methods of construction",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Junghyun Kim", "Sangsu Lee"],
+        "year": 2022,
+        "conference": "Korean Institute of Information and Communication Facilities Academic Conference",
+        "volume": "",
+        "pages": "4-7",
+        "language": "Korean",
+        "type": "Conference Presentation"
+      },
+      {
+        "id": "korean_2022_03",
+        "title": "Proposal of 3D printing production manual for DfMA-based building prototypes",
+        "authors": ["Jina Park", "Saddiq Ur Rehman", "Eugene Jeong", "Inhan Kim"],
+        "year": 2022,
+        "conference": "Korean CDE Society 2022 Summer Conference",
+        "volume": "Vol. 3 (S3-4)",
+        "pages": "45-47",
+        "language": "Korean",
+        "type": "Short Paper (Best Paper Award)"
+      },
+      {
+        "id": "korean_2022_04",
+        "title": "General Overview of DfMA implementation in Korean Construction Industry",
+        "authors": ["Saddiq Ur Rehman", "Soyeong Ryu", "Sangsu Lee", "Inhan Kim"],
+        "year": 2022,
+        "conference": "Korean CDE Society 2022 Winter Conference",
+        "volume": "Vol. 15 (S15-1)",
+        "pages": "147-148",
+        "language": "Korean",
+        "type": "Short Paper (Best Paper Award)"
+      },
+      {
+        "id": "korean_2021_01",
+        "title": "Machine Learning Based Checking of attributes of exterior exposure in external walls",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Jungsik Choi"],
+        "year": 2021,
+        "conference": "Korea CDE Society 2021 Summer Conference",
+        "volume": "",
+        "pages": "",
+        "language": "Korean",
+        "type": "Short Paper"
+      }
+    ],
+
+
+
+    "technical_reports": [
+      {
+        "id": "report_2024_01",
+        "title": "Synergy of AI and BIM in addressing client needs for building design",
+        "authors": ["Kyung Eun Hwang", "Saddiq Ur Rehman"],
+        "year": 2024,
+        "journal": "The BIM 29 (buildingSMART Korea)",
+        "volume": "Vol 29",
+        "pages": "24-27",
+        "type": "Technical Article",
+        "language": "Korean"
+      },
+      {
+        "id": "report_2023_01",
+        "title": "Client-Enabled Office Modular Design: Embracing Data-Driven Recommendations",
+        "authors": ["Inhan Kim", "Saddiq Ur Rehman"],
+        "year": 2023,
+        "journal": "The BIM 27 (buildingSMART Korea)",
+        "volume": "Vol 27",
+        "pages": "51-56",
+        "type": "Technical Article",
+        "language": "Korean"
+      }
+
+
+
+    ],
+    "under_review": [
+      {
+        "id": "review_2025_01",
+        "title": "Machine Learning Applications in Sustainable Modular Construction: A Comprehensive Review",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Research Collaborator"],
+        "journal": "Automation in Construction",
+        "status": "Under Review",
+        "submitted_date": "2024-12-15",
+        "expected_decision": "2025-03-01"
+      }
+    ],
+    "in_preparation": [
+      {
+        "id": "prep_2025_01",
+        "title": "Virtual Twin Technologies for Real-time Construction Monitoring: A BIM-Game Engine Integration Approach",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
+        "target_journal": "Journal of Construction Engineering and Management",
+        "expected_submission": "2025-06-01",
+        "completion_percentage": 75
+      }
+    ]
+  }

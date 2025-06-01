@@ -1,0 +1,285 @@
+{
+  "awards": [
+    {
+      "id": "award_001",
+      "title": "Presidential Scholarship",
+      "issuer": "Kyung Hee University, Korea",
+      "date": "2021–2024",
+      "type": "Scholarship",
+      "description": "Merit-based full scholarship covering tuition and research expenses for PhD studies",
+      "icon": "fas fa-trophy"
+    },
+    {
+      "id": "award_002",
+      "title": "Best Paper Award",
+      "issuer": "Korea CDE Society Winter Conference",
+      "date": "2023, 2022",
+      "type": "Recognition",
+      "description": "Outstanding research contribution in computational design and engineering",
+      "icon": "fas fa-medal"
+    },
+    {
+      "id": "award_003",
+      "title": "Editor's Choice",
+      "issuer": "Journal of Computational Design and Engineering",
+      "date": "2023",
+      "type": "Publication Award",
+      "description": "Selected as Editor's Choice for exceptional research quality and impact",
+      "icon": "fas fa-star"
+    }
+  ],
+  "certifications": [
+    {
+      "id": "cert_009",
+      "title": "Mechanical Properties of Polyethylene-Sand Blocks",
+      "issuer": "IJSER",
+      "date": "2020-01",
+      "category": "Publication",
+      "description": "Publication on mechanical properties of polyethylene-sand blocks produced from recycled plastic bags.",
+      "image": "../assets/images/certificate_7.jpg",
+      "skills": [
+        "Materials Engineering",
+        "Recycling",
+        "Sustainable Construction",
+        "Mechanical Testing",
+        "Research Publication"
+      ],
+      "verification_url": "https://www.ijser.org",
+      "credential_id": "IJSER-2020-001"
+    },
+    {
+      "id": "cert_010",
+      "title": "BIM Application for Engineers",
+      "issuer": "National Taiwan University (via Coursera)",
+      "date": "2019-04-22",
+      "category": "BIM",
+      "description": "Completed a non-credit course on BIM applications for engineers, authorized by National Taiwan University.",
+      "image": "assets/images/certificate_1.jpeg",
+      "skills": [
+        "BIM Fundamentals",
+        "3D Modelling",
+        "Engineering Design",
+        "Construction Technology",
+        "Digital Project Coordination"
+      ],
+      "verification_url": "https://coursera.org/verify/LFNEGNCVEUK2",
+      "credential_id": "LFNEGNCVEUK2"
+    },
+    {
+      "id": "cert_011",
+      "title": "Microsoft Office Specialist - Word 2013",
+      "issuer": "Microsoft",
+      "date": "2017-12-28",
+      "category": "Software",
+      "description": "Recognized as a Microsoft Office Specialist for demonstrating proficiency in Microsoft Word 2013.",
+      "image": "assets/images/certificate_2.png",
+      "skills": [
+        "Word Processing",
+        "Document Formatting",
+        "Technical Writing",
+        "Productivity Tools",
+        "MS Office Suite"
+      ],
+      "verification_url": "https://verify.certiport.com",
+      "credential_id": "wdEKT-HaXp"
+    },
+    {
+      "id": "cert_012",
+      "title": "Python Data Structures",
+      "issuer": "University of Michigan (via Coursera)",
+      "date": "2021-05-03",
+      "category": "Programming",
+      "description": "Completed a course on Python data structures, focusing on lists, dictionaries, tuples, and practical data manipulation.",
+      "image": "assets/images/certificate_3.jpg",
+      "skills": [
+        "Python Programming",
+        "Data Structures",
+        "Problem Solving",
+        "Logic Building",
+        "Software Development"
+      ],
+      "verification_url": "https://coursera.org/verify/54A9MT7RGAH4",
+      "credential_id": "54A9MT7RGAH4"
+    },
+    {
+      "id": "cert_013",
+      "title": "Using Python to Access Web Data",
+      "issuer": "University of Michigan (via Coursera)",
+      "date": "2021-05-24",
+      "category": "Programming",
+      "description": "Completed a course covering the use of Python for retrieving and processing web data via APIs and scraping.",
+      "image": "assets/images/certificate_4.jpg",
+      "skills": [
+        "Python",
+        "Web Scraping",
+        "APIs",
+        "JSON Handling",
+        "Data Processing"
+      ],
+      "verification_url": "https://coursera.org/verify/Q84XR3EEYFVB",
+      "credential_id": "Q84XR3EEYFVB"
+    },
+    {
+      "id": "cert_014",
+      "title": "Programming for Everybody (Getting Started with Python)",
+      "issuer": "University of Michigan (via Coursera)",
+      "date": "2021-04-13",
+      "category": "Programming",
+      "description": "Introduction to Python programming for beginners, including basic syntax, loops, and functions.",
+      "image": "assets/images/certificate_5.jpg",
+      "skills": [
+        "Python Basics",
+        "Control Flow",
+        "Function Definitions",
+        "Basic Programming Concepts",
+        "Software Fundamentals"
+      ],
+      "verification_url": "https://coursera.org/verify/ZVBF4P6XELXC",
+      "credential_id": "ZVBF4P6XELXC"
+    },
+    {
+      "id": "cert_016",
+      "title": "Unity VR Development",
+      "issuer": "Unity Technologies",
+      "date": "2025-05-16",
+      "category": "VR/AR Development",
+      "description": "Certification in Unity VR Development covering XR interaction, immersive environments, and real-time 3D simulation.",
+      "image": "assets/images/certificate_13.jpg",
+      "skills": [
+        "VR Development",
+        "XR Interaction",
+        "Real-time Rendering",
+        "Immersive Environments",
+        "Unity Engine"
+      ],
+      "verification_url": "https://www.credly.com/go/6oAHif40",
+      "credential_id": "UNITY-VR-2025-001"
+    },
+    {
+      "id": "cert_017",
+      "title": "Survey Camp Certificate",
+      "issuer": "University of Engineering and Technology, Peshawar",
+      "date": "2018-08-21",
+      "category": "Civil Engineering",
+      "description": "Completed a field surveying course with 85% marks during a Survey Camp at Abbottabad organized by the Department of Civil Engineering.",
+      "image": "assets/images/certificate_8.jpg",
+      "skills": [
+        "Surveying",
+        "Field Measurement",
+        "Topography",
+        "Data Recording",
+        "Civil Engineering"
+      ],
+      "verification_url": "",
+      "credential_id": "UET-SURVEY-2018"
+    },
+    {
+      "id": "cert_018",
+      "title": "ICCEPM 2024 Participation",
+      "issuer": "ICCEPM",
+      "date": "2024-08-07",
+      "category": "Conference",
+      "description": "Participation in the 10th International Conference on Construction Engineering and Project Management held in Sapporo, Japan.",
+      "image": "assets/images/certificate_9.jpg",
+      "skills": [
+        "Construction Engineering",
+        "Project Management",
+        "Research Networking",
+        "Conference Participation",
+        "Technical Communication"
+      ],
+      "verification_url": "",
+      "credential_id": "ICCEPM-2024-001"
+    },
+    {
+      "id": "cert_019",
+      "title": "Unity Essentials Pathway",
+      "issuer": "Unity Technologies",
+      "date": "2024-07-08",
+      "category": "Game Development",
+      "description": "Completed foundational training on Unity Essentials covering editor basics, components, and simple project creation.",
+      "image": "assets/images/certificate_10.jpg",
+      "skills": [
+        "Unity Basics",
+        "Game Objects",
+        "Editor Interface",
+        "Scene Creation",
+        "Asset Management"
+      ],
+      "verification_url": "https://www.credly.com/go/e76t33q0",
+      "credential_id": "UNITY-ESS-2024-001"
+    },
+    {
+      "id": "cert_020",
+      "title": "Unity Creative Core",
+      "issuer": "Unity Technologies",
+      "date": "2024-09-12",
+      "category": "Game Development",
+      "description": "Completed Unity Creative Core covering lighting, animation, audio, UI, and cinematics for creative project workflows.",
+      "image": "assets/images/certificate_11.jpg",
+      "skills": [
+        "Lighting",
+        "Animation",
+        "UI Design",
+        "Audio Integration",
+        "Unity Creative Tools"
+      ],
+      "verification_url": "https://www.credly.com/go/oayJ8M5n",
+      "credential_id": "UNITY-CC-2024-001"
+    },
+    {
+      "id": "cert_021",
+      "title": "Unity Junior Programmer",
+      "issuer": "Unity Technologies",
+      "date": "2024-10-25",
+      "category": "Programming",
+      "description": "Completed Unity Junior Programmer course covering fundamentals of C#, scripting, game mechanics, and basic development workflow.",
+      "image": "assets/images/certificate_12.jpg",
+      "skills": [
+        "C# Programming",
+        "Game Logic",
+        "Unity Scripting",
+        "Debugging",
+        "Object-Oriented Programming"
+      ],
+      "verification_url": "https://www.credly.com/go/hw9k4M8co",
+      "credential_id": "UNITY-JP-2024-001"
+    },
+    {
+      "id": "cert_022",
+      "title": "Best Paper Award (2022)",
+      "issuer": "Society for Computational Design and Engineering (CDE Korea)",
+      "date": "2022-08-25",
+      "category": "Award",
+      "description": "Received Best Paper Award for a student paper on DfMA-based 3D printing of modular starters at the 2022 Summer Conference of the Korean CDE Society.",
+      "image": "assets/images/best_paper_2.png",
+      "skills": [
+        "DfMA",
+        "3D Printing",
+        "Modular Construction",
+        "Design for Manufacturing",
+        "Computational Design"
+      ],
+      "verification_url": "",
+      "credential_id": "CDE-BEST-2022-001"
+    },
+    {
+      "id": "cert_023",
+      "title": "Best Paper Award (2023)",
+      "issuer": "Society for Computational Design and Engineering (CDE Korea)",
+      "date": "2023-02-10",
+      "category": "Award",
+      "description": "Received Best Paper Award at the 2023 Winter Conference of the Korean CDE Society for LDA-based topic modeling of residential building client needs.",
+      "image": "assets/images/best_paper_1.jpg",
+      "skills": [
+        "LDA Topic Modeling",
+        "Client Requirements Analysis",
+        "Residential Design",
+        "Natural Language Processing",
+        "Computational Design"
+      ],
+      "verification_url": "",
+      "credential_id": "CDE-BEST-2023-001"
+    }
+  ]
+}

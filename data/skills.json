@@ -1,0 +1,206 @@
+{
+    "programming": {
+      "title": "Programming Languages",
+      "icon": "fas fa-code",
+      "skills": [
+        {
+          "name": "Python",
+          "level": "Advanced",
+          "percentage": 80,
+          "years": 4,
+          "description": "Extensive experience in data analysis, machine learning, and automation"
+        },
+        {
+          "name": "C#",
+          "level": "Intermediate",
+          "percentage": 70,
+          "years": 2,
+          "description": "Game development with Unity and desktop applications"
+        },
+        {
+          "name": "JavaScript",
+          "level": "Basic",
+          "percentage": 30,
+          "years": 2,
+          "description": "Web development and interactive frontend applications"
+        },
+        {
+          "name": "HTML & CSS",
+          "level": "Intermediate",
+          "percentage": 70,
+          "years": 3,
+          "description": "Web development and interactive frontend applications"
+        },
+        {
+          "name": "R",
+          "level": "Basic",
+          "percentage": 40,
+          "years": 1,
+          "description": "Statistical analysis and data visualization"
+        }
+      ]
+    },
+    "bim_software": {
+      "title": "BIM & CAD Software",
+      "icon": "fas fa-cube",
+      "skills": [
+        {
+          "name": "Autodesk Revit",
+          "level": "Expert",
+          "percentage": 95,
+          "years": 5,
+          "description": "Advanced BIM modeling, family creation, and project coordination"
+        },
+        {
+          "name": "Navisworks",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 3,
+          "description": "Model coordination, clash detection, and 4D simulation"
+        },
+        {
+          "name": "Synchro 4D",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 5,
+          "description": "Model coordination, clash detection, and 4D simulation"
+        },
+        {
+          "name": "Rhinoceros 3D",
+          "level": "Advanced",
+          "percentage": 70,
+          "years": 2,
+          "description": "Visual programming for  parametric design"
+        },
+        {
+          "name": "ArchiCAD",
+          "level": "Intermediate",
+          "percentage": 70,
+          "years": 2,
+          "description": "3D modeling and conceptual design"
+        },
+        {
+          "name": "AutoCAD",
+          "level": "Advanced",
+          "percentage": 70,
+          "years": 4,
+          "description": "2D drafting and technical documentation"
+        },
+        {
+          "name": "SketchUp",
+          "level": "Advanced",
+          "percentage": 90,
+          "years": 5,
+          "description": "3D modeling and conceptual design"
+        }
+      ]
+    },
+    "game_engines": {
+      "title": "Game Engines & 3D",
+      "icon": "fas fa-gamepad",
+      "skills": [
+        {
+          "name": "Unity 3D",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 3,
+          "description": "Game development, VR/AR/MR applications, and BIM visualization"
+        },
+        {
+          "name": "Unreal Engine",
+          "level": "Basic",
+          "percentage": 30,
+          "years": 1,
+          "description": "Real-time rendering and architectural visualization"
+        },
+        {
+          "name": "Blender",
+          "level": "Basic",
+          "percentage": 30,
+          "years": 1,
+          "description": "3D modeling, animation, and rendering"
+        },
+        {
+          "name": "3ds Max",
+          "level": "Basic",
+          "percentage": 55,
+          "years": 1,
+          "description": "Architectural visualization and modeling"
+        },
+        {
+          "name": "Twin Motion",
+          "level": "Intermediate",
+          "percentage": 55,
+          "years": 1,
+          "description": "Architectural visualization, modeling, and Simulation"
+        }
+      ]
+    },
+    "ai_ml": {
+      "title": "AI & Machine Learning",
+      "icon": "fas fa-brain",
+      "skills": [
+        {
+          "name": "NLTK",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 2,
+          "description": "Natural language processing for design recommendation systems"
+        },
+        {
+          "name": "matplotlib",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 2,
+          "description": "Matplotable for data analysis using Python"
+        }
+      ]
+    },
+    "tools": {
+      "title": "Development Tools",
+      "icon": "fas fa-tools",
+      "skills": [
+        {
+          "name": "GitHub",
+          "level": "Advanced",
+          "percentage": 80,
+          "years": 3,
+          "description": "Version control and collaborative development"
+        },
+        {
+          "name": "VS Code",
+          "level": "Expert",
+          "percentage": 95,
+          "years": 4,
+          "description": "Primary development environment with extensions"
+        },
+        {
+          "name": "Jupyter",
+          "level": "Advanced",
+          "percentage": 80,
+          "years": 4,
+          "description": "Data analysis and research documentation"
+        }
+      ]
+    },
+    "languages": {
+      "title": "Programming Frameworks",
+      "icon": "fas fa-layer-group",
+      "skills": [
+        {
+          "name": "vue.js",
+          "level": "Basic",
+          "percentage": 30,
+          "years": 1,
+          "description": "Frontend web development and component-based architecture"
+        },
+        {
+          "name": "Flask",
+          "level": "Basic",
+          "percentage": 40,
+          "years": 1,
+          "description": "Python web framework for API development"
+        }
+      ]
+    }
+  }

@@ -1,0 +1,71 @@
+{
+  "academic_experience": [
+    {
+      "id": "exp_001",
+      "position": "Research Assistant",
+      "organization": "ITA Lab, Kyung Hee University",
+      "logo": "../assets/icons/italab.png",
+      "icon": "fas fa-university",
+      "department": "Department of Architecture",
+      "duration": "March 2021 - Present",
+      "location": "Global Campus, Korea",
+      "website": "http://italab.khu.ac.kr/",
+      "Role": "Conducting research on BIM integration with game engines, developing VR/AR applications for construction visualization, and publishing research papers in international journals.",
+      "primary_responsibilities": [
+        "Research on BIM and game engine integration",
+        "Development of VR/AR applications for AEC industry",
+        "Data collection and analysis for research projects",
+        "Manuscript preparation and review"
+      ],
+      "achievements": [
+        "Published 5+ papers in international journals",
+        "Received Presidential Scholarship",
+        "Best Paper Award at Korea CDE Society Conference"
+      ]
+    },
+    {
+      "id": "exp_002",
+      "position": "Teaching Assistant",
+      "organization": "Kyung Hee University",
+      "logo": "../assets/icons/kyunghee.png",
+      "icon": "fas fa-chalkboard-teacher",
+      "department": "Department of Architecture",
+      "course": "Digital Design and Modeling",
+      "duration": "March 2023 - June 2023",
+      "location": "Global Campus, Korea",
+      "website": "https://www.khu.ac.kr",
+      "Role": "Assisting in undergraduate courses related to digital design, BIM software training, and student mentoring.",
+      "primary_responsibilities": [
+        "Conducted lab sessions for BIM software training",
+        "Graded assignments and provided feedback",
+        "Mentored undergraduate students in design projects",
+        "Developed course materials and tutorials"
+      ]
+    }
+  ],
+  "industry_experience": [
+    {
+      "id": "exp_003",
+      "position": "Junior Planning Engineer",
+      "organization": "Value Engineering Pakistan",
+      "logo": "../assets/icons/ve.png",
+      "icon": "fas fa-building",
+      "department": "Pre-Construction",
+      "duration": "August 2019 - February 2021",
+      "location": "Seoul, Korea",
+      "website": "https://thevalueengineering.com/",
+      "Role": "Quantity and cost estimation for bid proposal of USA based construction projects",
+      "primary_responsibilities": [
+        "Quantity and cost estimation for bid proposal of USA based construction projects",
+        "Conducted BIM training sessions for project teams",
+        "Developed custom Revit plugins for project-specific needs",
+        "Coordinated with international design teams"
+      ],
+      "achievements": [
+        "Successfully implemented BIM on 3 major projects",
+        "Reduced design conflicts by 40% through 4D modeling",
+        "Trained over 50 engineers in BIM technologies"
+      ]
+    }
+  ]
+}
