@@ -7,7 +7,7 @@
         "role": "Researcher",
         "status": "Ongoing",
         "funding_amount": "---",
-        "funding_source": "Presidential Scholarship, Kyung Hee University",
+        "funding_source": "Kyung Hee University",
         "icon": "fas fa-cube",
         "image": "assets/images/projects/bim-game-engine.jpg",
         "description": "This research focuses on developing innovative frameworks for integrating Building Information Modeling (BIM) with game engines to enhance visualization and simulation capabilities in the AEC industry. The project explores real-time rendering, interactive environments, and immersive experiences for construction professionals.",
@@ -114,11 +114,7 @@
           "Office building design recommendations systems tailored to client needs (2023)"
         ],
         "collaborators": [
-          "Professor Inhan Kim (Co-Supervisor)",
-          "Jihye Shin (Lead Developer)",
-          "Syed Haseeb Shah (Data Scientist)",
-          "UX Design Team",
-          "Industry Advisory Board"
+          "Professor Inhan Kim (Supervisor)"
         ],
         "challenges": [
           "Handling ambiguous client requirements",
