@@ -68,10 +68,8 @@ portfolio-website/
 │   │   ├── profile_pic.png    # Main profile picture
 │   │   ├── profile_pic_2.jpg  # Hover profile picture
 │   │   ├── projects/          # Project images
-│   │   ├── certificates/      # Certificate images
-│   │   │   └── best-paper-award-2023.jpg  # Award certificates
+│   │   ├── certificates.jpg      # Certificate images
 │   │   ├── logos/             # Company/university logos
-│   │   └── cover images/      # Tab cover images
 │   └── icons/
 │       └── favicon.ico        # Website favicon
 ├── data/
@@ -466,21 +464,6 @@ This portfolio template is open source and available under the [MIT License](LIC
 - ✅ Added image zoom functionality
 - ✅ Enhanced responsive design
 - ✅ Added count badges to navigation
-
-### **Previous Features**
-- Tab persistence with URL hashing
-- Skills section with progress bars
-- JSON-driven content management
-- Floating social media icons
-- Interactive project modals
-
-## 🙏 **Acknowledgments**
-
-- **Kyung Hee University** for academic support
-- **Professor Inhan Kim** for research guidance
-- **ITA Lab** colleagues for collaboration
-- **Open source community** for inspiration and resources
-- **Academic community** for feedback and suggestions
 
 ---
 
