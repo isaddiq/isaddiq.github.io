@@ -12,8 +12,8 @@
     {
       "id": "award_002",
       "title": "Best Paper Award",
-      "issuer": "Korea CDE Society Winter Conference",
-      "date": "2023, 2022",
+      "issuer": "Korea CDE Society Winter Conference, (Paper Title: LDA-based topic modelling of client’s needs for residential building design)",
+      "date": "2023",
       "type": "Recognition",
       "description": "Outstanding research contribution in computational design and engineering",
       "icon": "fas fa-medal"
@@ -26,6 +26,15 @@
       "type": "Publication Award",
       "description": "Selected as Editor's Choice for exceptional research quality and impact",
       "icon": "fas fa-star"
+    },
+    {
+      "id": "award_004",
+      "title": "Best Paper Award",
+      "issuer": "Korea CDE Society Summer Conference, (Paper Title: Proposal of 3D printing production manual for DfMA-based building prototypes)",
+      "date": "2022",
+      "type": "Recognition",
+      "description": "Outstanding research contribution in computational design and engineering",
+      "icon": "fas fa-medal"
     }
   ],
   "certifications": [
