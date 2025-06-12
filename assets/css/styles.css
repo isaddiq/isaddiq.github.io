@@ -1404,7 +1404,8 @@ body.loaded {
   font-size: 1.2em;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
+  //backdrop-filter: blur(10px);
+  background-color: rgb(54, 130, 171);
 }
 
 .social-icon.linkedin {
