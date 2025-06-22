@@ -63,8 +63,21 @@
       }
     ],
     "conferences": [
+       {
+        "id": "conf_2025_01",
+        "title": "Integration Of 4D BIM And VR For Interactive Modular Building Manufacturing Simulations In A Factory-Controlled Environment",
+        "authors": ["Saddiq Ur Rehman", "Kyung-Eun Hwang", "Inhan Kim"],
+        "year": 2025,
+        "conference": "Creative Construction Conference",
+        "location": "Hotel Pinija, Petrčane, Zadar, Croatia",
+        "date": "June. 14-June.17, 2025",
+        "doi": "https://2025.creative-construction-conference.com/program.php",
+        "type": "Oral Presentation",
+        "pages": "#-#",
+        "abstract": "This paper presents a novel approach to Integrated BIM and VR for modular manufacturing simulation."
+      },
       {
-        "id": "conf_2024_01",
+        "id": "conf_2024_02",
         "title": "Shape Grammar-Driven BIM Model Database for a Modular Building Design Recommender System",
         "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
         "year": 2024,
