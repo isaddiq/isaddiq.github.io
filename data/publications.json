@@ -336,29 +336,5 @@
         "type": "Technical Article",
         "language": "Korean"
       }
-
-
-
-    ],
-    "under_review": [
-      {
-        "id": "review_2025_01",
-        "title": "Machine Learning Applications in Sustainable Modular Construction: A Comprehensive Review",
-        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Research Collaborator"],
-        "journal": "Automation in Construction",
-        "status": "Under Review",
-        "submitted_date": "2024-12-15",
-        "expected_decision": "2025-03-01"
-      }
-    ],
-    "in_preparation": [
-      {
-        "id": "prep_2025_01",
-        "title": "Virtual Twin Technologies for Real-time Construction Monitoring: A BIM-Game Engine Integration Approach",
-        "authors": ["Saddiq Ur Rehman", "Inhan Kim"],
-        "target_journal": "Journal of Construction Engineering and Management",
-        "expected_submission": "2025-06-01",
-        "completion_percentage": 75
-      }
     ]
   }
