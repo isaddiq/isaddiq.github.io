@@ -693,11 +693,3 @@ This portfolio template is open source and available under the [MIT License](LIC
 </div>
 
 ---
-
-<div align="center">
-  
-**🚀 Ready to showcase your academic excellence?**
-
-[⬇️ Download Now](https://github.com/isaddiq/portfolio/archive/main.zip) | [🌟 Star This Repo](https://github.com/isaddiq/portfolio) | [🐛 Report Issues](https://github.com/isaddiq/portfolio/issues)
-
-</div>
