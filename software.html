@@ -11,8 +11,18 @@
     <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Reset and Base Styles */
+        /* ==========================================================================
+           Software & Tools Page CSS - Matching Academic Portfolio Style
+           Author: Saddiq Ur Rehman
+           Description: Software page styled to match the academic portfolio design
+           ========================================================================== */
+
+        /* ==========================================================================
+           Base Styles & Reset (Inherited from Academic Portfolio)
+           ========================================================================== */
+
         * {
             margin: 0;
             padding: 0;
@@ -25,9 +35,18 @@
             color: #333;
             background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
             min-height: 100vh;
+            opacity: 0;
+            transition: opacity 0.5s ease;
         }
 
-        /* Header Styles */
+        body.loaded {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           Header Styles - Matching Academic Portfolio
+           ========================================================================== */
+
         .header-wrapper {
             position: fixed;
             top: 0;
@@ -38,20 +57,20 @@
             backdrop-filter: blur(15px);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
         }
 
         .header {
             max-width: 1600px;
             margin: 0 auto;
             padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
         }
 
         .nav-menu {
             display: flex;
-            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .nav-btn {
@@ -67,21 +86,22 @@
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            position: relative;
             text-decoration: none;
             display: inline-block;
         }
 
-        .nav-btn:hover {
+        .nav-btn:hover,
+        .nav-btn.active {
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
             background: linear-gradient(135deg, #9b59b6 0%, #3498db 100%);
         }
 
-        .nav-btn.active {
-            background: linear-gradient(135deg, #9b59b6 0%, #3498db 100%);
-        }
+        /* ==========================================================================
+           Layout Components - Matching Academic Portfolio
+           ========================================================================== */
 
-        /* Main Layout */
         .container {
             max-width: 1600px;
             margin: 0 auto;
@@ -96,7 +116,10 @@
             overflow: hidden;
         }
 
-        /* Tab Cover */
+        /* ==========================================================================
+           Tab Cover Styles - Matching Academic Portfolio
+           ========================================================================== */
+
         .tab-cover {
             height: 300px;
             position: relative;
@@ -104,15 +127,10 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background-image: url('../assets/images/software_cover.jpg'); /* 🔁 Replace with your actual image path */
+            background-color: #333;
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-            background-position: center;
-            padding-top: 0px; /* clip from top */
-            padding-right: 0px; /* clip from right */
-            padding-bottom: 0px; /* clip from bottom */
-            padding-left: 0px; /* clip from left */
+            padding: 0;
             box-sizing: border-box;
         }
 
@@ -123,7 +141,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.4); /* Optional dark overlay for contrast */
+            background: rgba(0, 0, 0, 0.3);
             z-index: 1;
         }
 
@@ -131,7 +149,7 @@
             position: relative;
             z-index: 2;
             text-align: center;
-            color: white;
+            color: rgb(245, 240, 240);
         }
 
         .cover-title {
@@ -148,23 +166,176 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
         }
 
-        /* Tools Container */
-        .tools-container {
-            display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 0;
-            min-height: 600px;
+        .software-cover {
+            background-image: url("assets/images/software_cover.jpg");
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
         }
 
-        .tools-sidebar {
-            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+        /* ==========================================================================
+           Software Section Styles
+           ========================================================================== */
+
+        .software-section {
+            padding: 40px;
+            margin-top: 20px;
+        }
+
+        .section-title {
+            color: #2c3e50;
+            margin: 30px 0 20px 0;
+            font-size: 1.4em;
+            font-weight: 600;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 8px;
+            display: inline-block;
+        }
+
+        /* ==========================================================================
+           Tools Navigation Styles
+           ========================================================================== */
+
+        .tools-nav-container {
+            margin-bottom: 40px;
+        }
+
+        .tools-nav {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tool-nav-btn {
+            padding: 15px 25px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+            font-family: "Inter", sans-serif;
+        }
+
+        .tool-nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: #3498db;
+            border-color: #3498db;
+        }
+
+        .tool-nav-btn.active {
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
             color: white;
-            padding: 30px 0;
+            border-color: #3498db;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
-        .tools-sidebar h3 {
-            color: #ecf0f1;
-            margin: 0 0 20px 30px;
+        .tool-nav-btn i {
+            font-size: 1.1em;
+        }
+
+        /* ==========================================================================
+           Tools Content Styles
+           ========================================================================== */
+
+        .tools-content-container {
+            max-height: 80vh;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .tools-content-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .tools-content-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .tools-content-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            border-radius: 10px;
+        }
+
+        .tool-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tool-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ==========================================================================
+           Tool Header Styles
+           ========================================================================== */
+
+        .tool-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .tool-description {
+            color: #555;
+            font-size: 1.1em;
+            line-height: 1.7;
+            margin: 20px 0;
+            text-align: center;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .tool-badges {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        /* ==========================================================================
+           Tool Details Styles - Using Experience Item Pattern
+           ========================================================================== */
+
+        .tool-details {
+            display: grid;
+            gap: 30px;
+        }
+
+        .tool-info-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3498db;
+        }
+
+        .info-title {
+            color: #2c3e50;
+            margin-bottom: 20px;
             font-size: 1.3em;
             font-weight: 600;
             border-bottom: 2px solid #3498db;
@@ -172,166 +343,246 @@
             display: inline-block;
         }
 
-        .tool-nav {
+        .bio-text {
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #555;
+            line-height: 1.7;
+        }
+
+        .research-interests {
             list-style: none;
             padding: 0;
-            margin: 0;
         }
 
-        .tool-nav-item {
-            margin: 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .tool-nav-item button {
-            width: 100%;
-            padding: 15px 30px;
-            background: none;
-            border: none;
-            color: #bdc3c7;
-            text-align: left;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .research-interests li {
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 15px;
+            color: #555;
+            transition: all 0.3s ease;
+            padding: 8px 0;
         }
 
-        .tool-nav-item button:hover,
-        .tool-nav-item button.active {
-            background: rgba(52, 152, 219, 0.2);
-            color: #ffffff;
-            border-left: 4px solid #3498db;
-            padding-left: 26px;
+        .research-interests li:hover {
+            transform: translateX(5px);
+            color: #333;
         }
 
-        .tool-nav-item i {
+        .research-interests i {
+            color: #3498db;
             font-size: 1.1em;
             width: 20px;
             text-align: center;
         }
 
-        .tools-content {
-            background: white;
-            padding: 40px;
-            overflow-y: auto;
+        /* ==========================================================================
+           Tool Features Grid - Using Experience Item Pattern
+           ========================================================================== */
+
+        .tool-features-grid {
+            margin-top: 30px;
         }
 
-        .tool-detail {
-            display: none;
-            animation: slideInRight 0.4s ease;
-        }
-
-        .tool-detail.active {
-            display: block;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .tool-header {
+        .experience-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 20px;
             margin-bottom: 30px;
-            border-bottom: 3px solid #3498db;
-            padding-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #3498db;
         }
 
-        .tool-title {
-            color: #2c3e50;
-            font-size: 2.5em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .experience-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #9b59b6;
         }
 
-        .tool-short-desc {
-            color: #3498db;
-            font-size: 1.2em;
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-
-        .tool-meta {
+        .exp-header {
             display: flex;
+            align-items: center;
             gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 150px;
+            height: 150px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: white;
+            font-size: 2em;
+            transition: all 0.3s ease;
+        }
+
+        .company-logo:hover {
+            transform: rotate(10deg) scale(1.1);
+        }
+
+        .exp-details h3 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+
+        .company-name {
+            color: #3498db;
+            font-weight: 600;
+            font-size: 1.1em;
+            margin: 5px 0;
+        }
+
+        .exp-duration {
+            color: #6c757d;
+            font-size: 0.9em;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           Capabilities Grid
+           ========================================================================== */
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .capability-item {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .capability-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .capability-item i {
+            color: #3498db;
+            font-size: 1.1em;
+        }
+
+        .capability-item span {
+            font-weight: 500;
+            color: #2c3e50;
+            font-size: 0.9em;
+        }
+
+        /* ==========================================================================
+           Tool Actions Styles
+           ========================================================================== */
+
+        .tool-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
             flex-wrap: wrap;
         }
 
-        .tool-badge {
-            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
-            color: white;
-            padding: 6px 15px;
+        /* ==========================================================================
+           Publication Badge Styles (Reused for Tool Badges)
+           ========================================================================== */
+
+        .pub-badge {
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
+            font-size: 0.8em;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: transform 0.3s ease;
+        }
+
+        .pub-badge:hover {
+            transform: scale(1.05);
+        }
+
+        .impact-factor {
+            background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+            color: #2e7d2e;
+            border: 1px solid #c3e6cb;
+        }
+
+        .editor-choice {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+
+        .corresponding {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            border: 1px solid #b8dac2;
+        }
+
+        .doi-link {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid #3498db;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .tool-description {
-            margin: 30px 0;
+        .doi-link:hover {
+            background: #3498db;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
-        .tool-description h3 {
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 15px;
-            font-weight: 600;
+        /* ==========================================================================
+           Video Section Styles
+           ========================================================================== */
+
+        .tool-video-section {
+            margin-top: 40px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border-left: 5px solid #3498db;
         }
 
-        .tool-description p {
-            color: #555;
-            line-height: 1.7;
-            text-align: justify;
-            margin-bottom: 15px;
-        }
-
-        .tool-description ul {
-            color: #555;
-            line-height: 1.7;
-            padding-left: 20px;
-        }
-
-        .tool-description li {
-            margin-bottom: 8px;
-        }
-
-        .tool-video {
-            margin: 30px 0;
-        }
-
-        .tool-video h3 {
-            color: #2c3e50;
-            font-size: 1.4em;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-
-        .video-container {
+        .video-wrapper {
             position: relative;
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
-            background: #000;
+            /* 16:9 aspect ratio */
+            margin-top: 20px;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
 
-        .video-container iframe {
+        .video-wrapper iframe {
             position: absolute;
             top: 0;
             left: 0;
@@ -341,169 +592,34 @@
             border-radius: 15px;
         }
 
-        .tool-features {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            padding: 25px;
-            border-radius: 15px;
-            margin: 30px 0;
-            border-left: 4px solid #3498db;
-        }
-
-        .tool-features h4 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-            font-weight: 600;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 15px;
-        }
-
-        .feature-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 10px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-        }
-
-        .feature-item i {
-            color: #3498db;
-            font-size: 1.1em;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* Tool Links */
-        .tool-link {
-            display: inline-block;
-            padding: 12px 25px;
-            margin: 0 10px;
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .tool-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);
-            color: white;
-            text-decoration: none;
-        }
-
-        .tool-link.secondary {
-            background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
-        }
-
-        .tool-link.secondary:hover {
-            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
-        }
-
-        .tool-link i {
-            margin-right: 8px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .tools-container {
-                grid-template-columns: 1fr;
-            }
-
-            .tools-sidebar {
-                padding: 20px 0;
-            }
-
-            .tool-nav-item button {
-                padding: 12px 20px;
-                font-size: 13px;
-            }
-
-            .tools-content {
-                padding: 20px;
-            }
-
-            .tool-title {
-                font-size: 2em;
-            }
-
-            .cover-title {
-                font-size: 2.5em;
-            }
-
-            .cover-subtitle {
-                font-size: 1.2em;
-            }
-
-            .nav-menu {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .nav-btn {
-                font-size: 11px;
-                padding: 8px 12px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .tools-content {
-                padding: 15px;
-            }
-
-            .tool-title {
-                font-size: 1.5em;
-            }
-
-            .tool-short-desc {
-                font-size: 1em;
-            }
-
-            .features-grid {
-                grid-template-columns: 1fr;
-            }
-        }
         /* ==========================================================================
-            Social Media Floating Icons
-            ========================================================================== */
+           Social Media Floating Icons (Inherited from Academic Portfolio)
+           ========================================================================== */
 
-            .social-floating {
-                position: fixed;
-                right: 30px;
-                top: 50%;
-                transform: translateY(-50%);
-                display: flex;
-                flex-direction: column;
-                gap: 15px;
-                z-index: 100;
+        .social-floating {
+            position: fixed;
+            right: 30px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
         }
 
         .social-icon {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: white;
-                text-decoration: none;
-                font-size: 1.2em;
-                transition: all 0.3s ease;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-                backdrop-filter: blur(10px);
-                background-color: rgb(54, 130, 171);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            background-color: rgb(54, 130, 171);
         }
 
         .social-icon.linkedin {
@@ -526,84 +642,201 @@
             background: linear-gradient(135deg, #00ccbb 0%, #00a693 100%);
         }
 
+        .social-icon.instagram {
+            background: linear-gradient(135deg, #e1306c 0%, #fd1d1d 50%, #fccc63 100%);
+        }
+
         .social-icon:hover {
             transform: scale(1.15) translateX(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        /* ──────────────────────────────────────────
-            1) Leave your existing .social‐floating / .social-icon rules as they are.
-                We only add ".flagcounter-icon" so it inherits the same floating behavior.
-        ────────────────────────────────────────── */
-        /* ──────────────────────────────────────────
-            2) Popup styling (width: 300px, hidden by default)
-        ────────────────────────────────────────── */
-        .flagcounter-popup {
-            position: absolute;
-            display: none; /* hidden initially */
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            padding: 12px;
-            width: 800px; /* <-- "bigger" width */
-            font-family: Arial, sans-serif;
-            z-index: 2000; /* above your floating icons */
+        /* ==========================================================================
+           Responsive Design
+           ========================================================================== */
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 80px 10px 10px;
+            }
+
+            .header {
+                padding: 10px 15px;
+            }
+
+            .nav-menu {
+                justify-content: center;
+            }
+
+            .nav-btn {
+                font-size: 11px;
+                padding: 8px 12px;
+            }
+
+            .cover-title {
+                font-size: 2.5em;
+            }
+
+            .cover-subtitle {
+                font-size: 1.2em;
+            }
+
+            .software-section {
+                padding: 20px;
+            }
+
+            .tools-nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tool-nav-btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .tools-content-container {
+                max-height: 70vh;
+            }
+
+            .exp-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .company-logo {
+                width: 80px;
+                height: 80px;
+                font-size: 1.5em;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tool-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .tool-badges {
+                justify-content: center;
+            }
+
+            .social-floating {
+                right: 15px;
+                gap: 10px;
+            }
+
+            .social-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
+
+            .tool-info-section {
+                padding: 20px;
+            }
+
+            .tool-video-section {
+                padding: 20px;
+            }
         }
 
-        .flagcounter-popup .counter-container {
-            text-align: center;
-            margin-bottom: 6px;
-        }
+        @media (max-width: 480px) {
+            .container {
+                padding: 75px 5px 5px;
+            }
 
-        .flagcounter-popup img {
-            max-width: 100%;
-            display: block;
-            margin: 0 auto;
-        }
+            .header {
+                padding: 8px 10px;
+            }
 
-        /* Close‐button at the popup's top‐right corner */
-        .flagcounter-popup .close-popup {
-            position: absolute;
-            top: 6px;
-            right: 6px;
-            background: transparent;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            color: #666;
-            line-height: 1;
-            padding: 0;
-        }
-            .flagcounter-popup .close-popup:hover {
-            color: #000;
+            .nav-btn {
+                font-size: 10px;
+                padding: 6px 10px;
+            }
+
+            .cover-title {
+                font-size: 2em;
+            }
+
+            .cover-subtitle {
+                font-size: 1em;
+            }
+
+            .software-section {
+                padding: 15px;
+            }
+
+            .tab-cover {
+                height: 200px;
+            }
+
+            .tool-nav-btn {
+                font-size: 12px;
+                padding: 10px 15px;
+            }
+
+            .tools-content-container {
+                max-height: 60vh;
+            }
+
+            .company-logo {
+                width: 60px;
+                height: 60px;
+                font-size: 1.2em;
+            }
+
+            .exp-header {
+                gap: 10px;
+            }
+
+            .tool-description {
+                font-size: 1em;
+            }
+
+            .info-title {
+                font-size: 1.1em;
+            }
+
+            .section-title {
+                font-size: 1.2em;
+            }
         }
 
         /* ==========================================================================
-            Responsive Design (Social Media Section Only)
-            ========================================================================== */
+           Print Styles
+           ========================================================================== */
 
-        @media (max-width: 768px) {
-        .social-floating {
-            right: 15px;
-            gap: 10px;
+        @media print {
+
+            .social-floating,
+            .nav-menu,
+            .header-wrapper {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+                color: black !important;
+            }
+
+            .content {
+                background: white !important;
+                box-shadow: none !important;
+            }
+
+            .container {
+                padding: 0 !important;
+            }
         }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            font-size: 1em;
-        }
-        }
-
-
-
-
-        
     </style>
 </head>
 
-<body>
+<body class="loaded">
     <!-- Header Navigation -->
     <div class="header-wrapper">
         <div class="header">
@@ -625,637 +858,383 @@
     <div class="container">
         <div class="content">
             <!-- Tab Cover -->
-            <div class="tab-cover">
+            <div class="tab-cover software-cover">
                 <div class="cover-overlay">
-                    <h1 class="cover-title">Software & Tools</h1>
-                    <p class="cover-subtitle">Innovative AEC Technology Solutions</p>
+                    <h1 class="cover-title">Software &amp; Tools</h1>
+                    <p class="cover-subtitle">Innovative AEC Digital Solutions</p>
                 </div>
             </div>
 
-            <div class="tools-container">
-                <div class="tools-sidebar">
-                    <h3>Software Portfolio</h3>
-                    <ul class="tool-nav">
-                        <!-- <li class="tool-nav-item">
-                            <button class="active" onclick="showTool('bim-vr-integration')">
-                                <i class="fas fa-cube"></i>
-                                BIM-VR Integration Platform
-                            </button>
-                        </li> -->
-                        <li class="tool-nav-item">
-                            <button class="active" onclick="showTool('reunixchange')">
-                                <i class="fas fa-exchange-alt"></i>
-                                ReUnixchange
-                            </button>
-                        </li>
-                        <!-- <li class="tool-nav-item">
-                            <button onclick="showTool('modular-design-tool')">
-                                <i class="fas fa-puzzle-piece"></i>
-                                Modular Design Optimizer
-                            </button>
-                        </li>
-                        <li class="tool-nav-item">
-                            <button onclick="showTool('4d-simulator')">
-                                <i class="fas fa-play-circle"></i>
-                                4D Construction Simulator
-                            </button>
-                        </li>
-                        <li class="tool-nav-item">
-                            <button onclick="showTool('ai-chatbot')">
-                                <i class="fas fa-robot"></i>
-                                BIM AI Assistant
-                            </button>
-                        </li>
-                        <li class="tool-nav-item">
-                            <button onclick="showTool('xr-toolkit')">
-                                <i class="fas fa-vr-cardboard"></i>
-                                XR Construction Toolkit
-                            </button>
-                        </li> -->
-                    </ul>
+            <!-- Software Tools Section -->
+            <div class="software-section">
+                <!-- Tools Navigation -->
+                <div class="tools-nav-container">
+                    <div class="tools-nav">
+                        <button class="tool-nav-btn active" data-tool="reunixchange">
+                            <i class="fas fa-exchange-alt"></i>
+                            ReUnixchange
+                        </button>
+                        <!-- <button class="tool-nav-btn" data-tool="ai-chatbot">
+                            <i class="fas fa-robot"></i>
+                            BIM AI Assistant
+                        </button>
+                        <button class="tool-nav-btn" data-tool="xr-toolkit">
+                            <i class="fas fa-vr-cardboard"></i>
+                            XR Construction Toolkit
+                        </button> -->
+                    </div>
                 </div>
 
-                <div class="tools-content">
-
-
-
+                <!-- Tools Content -->
+                <div class="tools-content-container">
                     <!-- ReUnixchange -->
-                    <div id="reunixchange" class="tool-detail active">
+                    <div id="reunixchange" class="tool-content active">
                         <div class="tool-header">
-                            <h2 class="tool-title">ReUnixchange</h2>
-                            <p class="tool-short-desc">Revolutionary data exchange platform for BIM interoperability and
-                                standardized information sharing across AEC workflows.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">Data Exchange</span>
-                                <span class="tool-badge">BIM Interoperability</span>
-                                <span class="tool-badge">OBJ</span>
-                                <span class="tool-badge">CSV</span>
-                                <span class="tool-badge">XML</span>
-                                <span class="tool-badge">Autodesk Revit</span>
-                                <span class="tool-badge">Unity</span>
+                            <h2 class="section-title">ReUnixchange</h2>
+                            <p class="tool-description">Revolutionary data exchange platform for BIM interoperability
+                                and standardized information sharing across AEC workflows.</p>
+
+                            <div class="tool-badges">
+                                <span class="pub-badge impact-factor">Data Exchange</span>
+                                <span class="pub-badge impact-factor">BIM Interoperability</span>
+                                <span class="pub-badge corresponding">OBJ</span>
+                                <span class="pub-badge corresponding">CSV</span>
+                                <span class="pub-badge corresponding">XML</span>
+                                <span class="pub-badge editor-choice">Autodesk Revit</span>
+                                <span class="pub-badge editor-choice">Unity</span>
                             </div>
                         </div>
 
-                        <div class="tool-description">
-                            <h3>Revolutionary Data Exchange</h3>
-                            <p>
-                                ReUniXchange is a Revit plugin that enables seamless export of BIM geometry, metadata, and materials to Unity. It
-                                supports modular construction workflows and immersive XR applications by bridging the gap between design and
-                                visualization environments. The plugin allows users to assign shared parameters (ModularID) to Revit group components,
-                                extract structured metadata into CSV format, export 3D views as OBJ files with MTL and texture data, and re-import any
-                                changes made in Unity through an XML file.
-                                <br>
-                                For modular projects, the plugin can automatically generate ModularID parameters based on group names, enabling logical
-                                tracking and reconstruction of elements inside Unity. Metadata from Revit views can be exported to CSV and attached to
-                                3D objects inside Unity to enable semantic enrichment, selection, and inspection during runtime. Material definitions
-                                used in Revit are also exported into Unity-readable MTL files with associated texture images.
-                                <br>
-                                The OBJ export process converts the current 3D view into geometry and materials that can be directly imported into
-                                Unity. To preserve material assignment, users must not rename the OBJ and MTL files. Material reassignment inside Unity
-                                can only be customized if Unity has already linked them automatically via the Legacy Material Import feature in the
-                                Inspector.
-                                <br>
-                                Changes made inside Unity, such as repositioning modules, adjusting metadata, or reconfiguring object hierarchy, can be
-                                exported from Unity into an XML file. The ReUniXchange plugin in Revit can then read this XML and apply the changes back
-                                into the original BIM model. This enables a complete bidirectional data exchange workflow from design to immersive
-                                visualization and back to BIM.
-                                <br>
-                                The plugin is ideal for architects, engineers, researchers, and developers working in modular construction, BIM-to-XR
-                                pipelines, and digital twin applications. It supports Autodesk Revit versions 2022 through 2025 and Unity versions
-                                2021.3 or later. The plugin outputs files in CSV, OBJ, MTL, and XML formats and stores them locally without any external
-                                transmission.
-                                <br>
+                        <div class="tool-details">
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Revolutionary Data Exchange Platform</h3>
+                                <p class="bio-text">
+                                    ReUniXchange is a cutting-edge Revit plugin that enables seamless export of BIM
+                                    geometry, metadata, and materials to Unity. It supports modular construction
+                                    workflows and immersive XR applications by bridging the gap between design and
+                                    visualization environments. The plugin allows users to assign shared parameters
+                                    (ModularID) to Revit group components, extract structured metadata into CSV format,
+                                    export 3D views as OBJ files with MTL and texture data, and re-import any changes
+                                    made in Unity through an XML file.
+                                </p>
+                                <p class="bio-text">
+                                    For modular projects, the plugin can automatically generate ModularID parameters
+                                    based on group names, enabling logical tracking and reconstruction of elements
+                                    inside Unity. Metadata from Revit views can be exported to CSV and attached to 3D
+                                    objects inside Unity to enable semantic enrichment, selection, and inspection during
+                                    runtime. Material definitions used in Revit are also exported into Unity-readable
+                                    MTL files with associated texture images.
+                                </p>
+                            </div>
 
-                                ReUniXchange is part of a research initiative to integrate BIM and immersive environments through data-driven workflows
-                                and modular logic. It is designed to be lightweight, intuitive, and compatible withboth design and runtime systems.
-                            </p>
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Core Infrastructure Components</h3>
+                                <ul class="research-interests">
+                                    <li><i class="fas fa-cog"></i>Modular ID Parameter Assignment in Revit</li>
+                                    <li><i class="fas fa-database"></i>Semantic and Metadata Extraction to CSV</li>
+                                    <li><i class="fas fa-paint-brush"></i>Material Export and Unity MTL Conversion</li>
+                                    <li><i class="fas fa-cube"></i>3D Model Export with Textures and Materials</li>
+                                    <li><i class="fas fa-sitemap"></i>Unity Hierarchy Creation for Components</li>
+                                    <li><i class="fas fa-sync-alt"></i>Bidirectional XML-based Data Exchange</li>
+                                </ul>
+                            </div>
 
-                            <h3>Core Architecture</h3>
-                            <ul>
-                                <li>Modular ID shared Parameter Assignment in Autodesk Revit</li>
-                                <li>Semantic and Metadata Extraction to CSV file</li>
-                                <li>Autodesk material export and conversion to Unity mtl format</li>
-                                <li>3D Model export to OBJ from Autodesk Revit with material and texture</li>
-                                <li>Semantic enrichment inside Unity and Hierarchy Creation for 3D Components</li>
-                            </ul>
+                            <div class="tool-features-grid">
+                                <div class="experience-item">
+                                    <div class="exp-header">
+                                        <div class="company-logo">
+                                            <i class="fas fa-exchange-alt"></i>
+                                        </div>
+                                        <div class="exp-details">
+                                            <h3>Platform Capabilities</h3>
+                                            <p class="company-name">Advanced BIM-to-Unity Workflow</p>
+                                            <p class="exp-duration">Cross-Platform Integration Solution</p>
+                                        </div>
+                                    </div>
 
-                            <div class="tool-features">
-                                <h4>Platform Capabilities</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-exchange-alt"></i>
-                                        <span>BIM Data Exchange</span>
+                                    <div class="capabilities-grid">
+                                        <div class="capability-item">
+                                            <i class="fas fa-exchange-alt"></i>
+                                            <span>BIM Data Exchange</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-sync"></i>
+                                            <span>Synchronization</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span>Semantic Enrichment</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-network-wired"></i>
+                                            <span>Revit API Integration</span>
+                                        </div>
                                     </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-sync"></i>
-                                        <span>ASynchronization</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>Semantic Enrichment</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-network-wired"></i>
-                                        <span>Revit API Integration</span>
+
+                                    <div class="tool-actions">
+                                        <a href="https://github.com/isaddiq/ReUnixchange" target="_blank"
+                                            class="doi-link">
+                                            <i class="fab fa-github"></i> View on GitHub
+                                        </a>
                                     </div>
                                 </div>
+                            </div>
 
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/ReUnixchange" target="_blank" class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
+                            <div class="tool-video-section">
+                                <h3 class="info-title">Platform Demonstration</h3>
+                                <div class="video-wrapper">
+                                    <iframe src="https://www.youtube.com/embed/CQp8Uhdefsk?start=39"
+                                        title="ReUnixchange Platform Demo" allowfullscreen>
+                                    </iframe>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="tool-video">
-                            <h3>Platform Demonstration</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/CQp8Uhdefsk?start=39"
-                                    title="ReUnixchange Platform Demo" allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BIM-VR Integration Platform -->
-                    <div id="bim-vr-integration" class="tool-detail">
-                        <div class="tool-header">
-                            <h2 class="tool-title">BIM-VR Integration Platform</h2>
-                            <p class="tool-short-desc">Seamless integration between Building Information Models and
-                                Virtual Reality environments for immersive design review and collaboration.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">Unity 3D</span>
-                                <span class="tool-badge">C#</span>
-                                <span class="tool-badge">VR/AR</span>
-                                <span class="tool-badge">BIM</span>
-                            </div>
-                        </div>
-                    
-                        <div class="tool-description">
-                            <h3>Overview</h3>
-                            <p>
-                                The BIM-VR Integration Platform represents a breakthrough in construction visualization
-                                technology, enabling architects, engineers, and stakeholders to experience building
-                                designs in immersive virtual reality environments. This platform bridges the gap between
-                                traditional BIM workflows and cutting-edge visualization technologies.
-                            </p>
-                            <p>
-                                Developed using Unity 3D and advanced C# scripting, the platform supports multiple VR
-                                headsets including Meta Quest 3, HTC Vive, and Oculus Rift. The system enables real-time
-                                navigation through building models, interactive component manipulation, and
-                                collaborative design reviews in shared virtual spaces.
-                            </p>
-                    
-                            <div class="tool-features">
-                                <h4>Key Features</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-eye"></i>
-                                        <span>Immersive 3D Visualization</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-users"></i>
-                                        <span>Multi-user Collaboration</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-hand-pointer"></i>
-                                        <span>Interactive Object Manipulation</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-file-export"></i>
-                                        <span>IFC Format Support</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-cloud"></i>
-                                        <span>Cloud-based Model Sharing</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-comments"></i>
-                                        <span>Voice Annotation System</span>
-                                    </div>
-                                </div>
-                    
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/BIM-VR-Integration" target="_blank" class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    
-                        <div class="tool-video">
-                            <h3>Demonstration Video</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/CQp8Uhdefsk?start=10" title="BIM-VR Integration Platform Demo"
-                                    allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Modular Design Optimizer -->
-                    <div id="modular-design-tool" class="tool-detail">
-                        <div class="tool-header">
-                            <h2 class="tool-title">Modular Design Optimizer</h2>
-                            <p class="tool-short-desc">AI-powered tool for optimizing modular construction designs using
-                                advanced algorithms for cost efficiency and structural performance.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">Python</span>
-                                <span class="tool-badge">Machine Learning</span>
-                                <span class="tool-badge">DfMA</span>
-                                <span class="tool-badge">Optimization</span>
-                            </div>
-                        </div>
-
-                        <div class="tool-description">
-                            <h3>Technical Specifications</h3>
-                            <p>
-                                The Modular Design Optimizer leverages machine learning algorithms and genetic
-                                optimization techniques to enhance Design for Manufacturing and Assembly (DfMA)
-                                processes. This intelligent system analyzes multiple design parameters simultaneously to
-                                recommend optimal modular configurations.
-                            </p>
-
-                            <h3>Core Functionalities</h3>
-                            <ul>
-                                <li>Automated module sizing and standardization recommendations</li>
-                                <li>Cost optimization based on material usage and manufacturing constraints</li>
-                                <li>Structural performance analysis and validation</li>
-                                <li>Transportation and logistics optimization for prefabricated components</li>
-                                <li>Integration with major CAD platforms through API connections</li>
-                            </ul>
-
-                            <div class="tool-features">
-                                <h4>Advanced Capabilities</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-brain"></i>
-                                        <span>AI-Driven Optimization</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-calculator"></i>
-                                        <span>Cost Analysis Engine</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-truck"></i>
-                                        <span>Logistics Planning</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-chart-line"></i>
-                                        <span>Performance Metrics</span>
-                                    </div>
-                                </div>
-
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/Modular-Design-Optimizer" target="_blank"
-                                        class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
-                                    <a href="#documentation" class="tool-link secondary">
-                                        <i class="fas fa-book"></i> Documentation
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tool-video">
-                            <h3>Software Walkthrough</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                    title="Modular Design Optimizer Walkthrough" allowfullscreen>
-                                </iframe>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- 4D Construction Simulator -->
-                    <div id="4d-simulator" class="tool-detail">
-                        <div class="tool-header">
-                            <h2 class="tool-title">4D Construction Simulator</h2>
-                            <p class="tool-short-desc">Advanced 4D simulation platform for visualizing construction
-                                sequences, timeline optimization, and resource allocation in virtual environments.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">Unity 3D</span>
-                                <span class="tool-badge">4D Modeling</span>
-                                <span class="tool-badge">Simulation</span>
-                                <span class="tool-badge">Project Management</span>
-                            </div>
-                        </div>
-
-                        <div class="tool-description">
-                            <h3>Revolutionary Construction Planning</h3>
-                            <p>
-                                The 4D Construction Simulator transforms traditional project management by providing
-                                immersive time-based visualization of construction processes. This tool enables project
-                                managers and construction teams to visualize, analyze, and optimize building sequences
-                                before breaking ground.
-                            </p>
-
-                            <p>
-                                Integrated with industry-standard scheduling software like Primavera P6 and Microsoft
-                                Project, the simulator creates dynamic visual representations of construction timelines,
-                                highlighting potential conflicts and optimization opportunities.
-                            </p>
-
-                            <div class="tool-features">
-                                <h4>Simulation Features</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-clock"></i>
-                                        <span>Time-based Visualization</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-exclamation-triangle"></i>
-                                        <span>Clash Detection</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-tools"></i>
-                                        <span>Resource Tracking</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-route"></i>
-                                        <span>Sequence Optimization</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-chart-gantt"></i>
-                                        <span>Gantt Integration</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-play"></i>
-                                        <span>Interactive Playback</span>
-                                    </div>
-                                </div>
-
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/4D-Construction-Simulator" target="_blank"
-                                        class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
-                                    <a href="#simulation" class="tool-link secondary">
-                                        <i class="fas fa-play-circle"></i> Try Simulator
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tool-video">
-                            <h3>4D Simulation Demo</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                    title="4D Construction Simulator Demo" allowfullscreen>
-                                </iframe>
                             </div>
                         </div>
                     </div>
 
                     <!-- BIM AI Assistant -->
-                    <div id="ai-chatbot" class="tool-detail">
+                    <div id="ai-chatbot" class="tool-content">
                         <div class="tool-header">
-                            <h2 class="tool-title">BIM AI Assistant</h2>
-                            <p class="tool-short-desc">Intelligent conversational AI system providing instant answers to
-                                BIM-related queries, code compliance checks, and design recommendations.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">NLP</span>
-                                <span class="tool-badge">AI/ML</span>
-                                <span class="tool-badge">Python</span>
-                                <span class="tool-badge">Knowledge Base</span>
+                            <h2 class="section-title">BIM AI Assistant</h2>
+                            <p class="tool-description">Intelligent conversational AI system providing instant answers
+                                to BIM-related queries, code compliance checks, and design recommendations.</p>
+
+                            <div class="tool-badges">
+                                <span class="pub-badge impact-factor">Natural Language Processing</span>
+                                <span class="pub-badge impact-factor">Machine Learning</span>
+                                <span class="pub-badge corresponding">Python</span>
+                                <span class="pub-badge editor-choice">Knowledge Base</span>
                             </div>
                         </div>
 
-                        <div class="tool-description">
-                            <h3>Intelligent AEC Support</h3>
-                            <p>
-                                The BIM AI Assistant represents the next generation of construction industry support
-                                tools, combining natural language processing with comprehensive AEC domain knowledge.
-                                This intelligent system provides instant responses to technical queries, building code
-                                interpretations, and design optimization suggestions.
-                            </p>
-
-                            <h3>Knowledge Integration</h3>
-                            <ul>
-                                <li>Comprehensive building codes and standards database</li>
-                                <li>Material properties and specifications library</li>
-                                <li>Construction best practices and methodologies</li>
-                                <li>Sustainability guidelines and green building standards</li>
-                                <li>BIM software workflows and troubleshooting guides</li>
-                            </ul>
-
-                            <div class="tool-features">
-                                <h4>AI Capabilities</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-comments"></i>
-                                        <span>Natural Language Interface</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-book"></i>
-                                        <span>Code Compliance Checker</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-lightbulb"></i>
-                                        <span>Design Recommendations</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-search"></i>
-                                        <span>Intelligent Search</span>
-                                    </div>
-                                </div>
-
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/BIM-AI-Assistant" target="_blank"
-                                        class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
-                                    <a href="#chat" class="tool-link secondary">
-                                        <i class="fas fa-robot"></i> Try AI Chat
-                                    </a>
-                                </div>
+                        <div class="tool-details">
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Intelligent AEC Support System</h3>
+                                <p class="bio-text">
+                                    The BIM AI Assistant represents the next generation of construction industry support
+                                    tools, combining natural language processing with comprehensive AEC domain
+                                    knowledge. This intelligent system provides instant responses to technical queries,
+                                    building code interpretations, and design optimization suggestions.
+                                </p>
                             </div>
-                        </div>
 
-                        <div class="tool-video">
-                            <h3>AI Assistant in Action</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="BIM AI Assistant Demo"
-                                    allowfullscreen>
-                                </iframe>
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Knowledge Integration Framework</h3>
+                                <ul class="research-interests">
+                                    <li><i class="fas fa-book"></i>Comprehensive Building Codes Database</li>
+                                    <li><i class="fas fa-tools"></i>Material Properties Library</li>
+                                    <li><i class="fas fa-hammer"></i>Construction Best Practices</li>
+                                    <li><i class="fas fa-leaf"></i>Sustainability Guidelines</li>
+                                    <li><i class="fas fa-laptop-code"></i>BIM Software Workflows</li>
+                                </ul>
+                            </div>
+
+                            <div class="tool-features-grid">
+                                <div class="experience-item">
+                                    <div class="exp-header">
+                                        <div class="company-logo">
+                                            <i class="fas fa-robot"></i>
+                                        </div>
+                                        <div class="exp-details">
+                                            <h3>AI Capabilities</h3>
+                                            <p class="company-name">Advanced Machine Learning Platform</p>
+                                            <p class="exp-duration">Intelligent Query Processing</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="capabilities-grid">
+                                        <div class="capability-item">
+                                            <i class="fas fa-comments"></i>
+                                            <span>Natural Language Interface</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-book"></i>
+                                            <span>Code Compliance Checker</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-lightbulb"></i>
+                                            <span>Design Recommendations</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-search"></i>
+                                            <span>Intelligent Search</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="tool-actions">
+                                        <a href="https://github.com/isaddiq/BIM-AI-Assistant" target="_blank"
+                                            class="doi-link">
+                                            <i class="fab fa-github"></i> View on GitHub
+                                        </a>
+                                        <a href="#chat" class="doi-link">
+                                            <i class="fas fa-robot"></i> Try AI Chat
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- XR Construction Toolkit -->
-                    <div id="xr-toolkit" class="tool-detail">
+                    <div id="xr-toolkit" class="tool-content">
                         <div class="tool-header">
-                            <h2 class="tool-title">XR Construction Toolkit</h2>
-                            <p class="tool-short-desc">Comprehensive Extended Reality (XR) platform combining VR, AR,
+                            <h2 class="section-title">XR Construction Toolkit</h2>
+                            <p class="tool-description">Comprehensive Extended Reality (XR) platform combining VR, AR,
                                 and MR technologies for enhanced construction workflows and training programs.</p>
-                            <div class="tool-meta">
-                                <span class="tool-badge">Unity XR</span>
-                                <span class="tool-badge">HoloLens</span>
-                                <span class="tool-badge">Meta Quest</span>
-                                <span class="tool-badge">Mixed Reality</span>
+
+                            <div class="tool-badges">
+                                <span class="pub-badge impact-factor">Unity XR</span>
+                                <span class="pub-badge impact-factor">HoloLens</span>
+                                <span class="pub-badge corresponding">Meta Quest</span>
+                                <span class="pub-badge editor-choice">Mixed Reality</span>
                             </div>
                         </div>
 
-                        <div class="tool-description">
-                            <h3>Comprehensive XR Solution</h3>
-                            <p>
-                                The XR Construction Toolkit provides a unified platform for Virtual Reality (VR),
-                                Augmented Reality (AR), and Mixed Reality (MR) applications in the construction
-                                industry. This versatile toolkit supports multiple hardware platforms and provides tools
-                                for training, visualization, and on-site construction assistance.
-                            </p>
-
-                            <h3>Platform Capabilities</h3>
-                            <ul>
-                                <li>Cross-platform XR development framework</li>
-                                <li>Real-time BIM model rendering in XR environments</li>
-                                <li>Interactive training modules for construction safety</li>
-                                <li>On-site AR overlay for construction guidance</li>
-                                <li>Collaborative design review in shared virtual spaces</li>
-                                <li>Progress tracking through AR scanning and measurement tools</li>
-                            </ul>
-
-                            <div class="tool-features">
-                                <h4>XR Technologies</h4>
-                                <div class="features-grid">
-                                    <div class="feature-item">
-                                        <i class="fas fa-vr-cardboard"></i>
-                                        <span>Virtual Reality</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-mobile-alt"></i>
-                                        <span>Augmented Reality</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-glasses"></i>
-                                        <span>Mixed Reality</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-graduation-cap"></i>
-                                        <span>Training Modules</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-ruler"></i>
-                                        <span>Measurement Tools</span>
-                                    </div>
-                                    <div class="feature-item">
-                                        <i class="fas fa-users-cog"></i>
-                                        <span>Team Collaboration</span>
-                                    </div>
-                                </div>
-
-                                <div style="margin-top: 25px; text-align: center;">
-                                    <a href="https://github.com/isaddiq/XR-Construction-Toolkit" target="_blank"
-                                        class="tool-link">
-                                        <i class="fab fa-github"></i> View on GitHub
-                                    </a>
-                                    <a href="#xr-demo" class="tool-link secondary">
-                                        <i class="fas fa-vr-cardboard"></i> Try XR Demo
-                                    </a>
-                                </div>
+                        <div class="tool-details">
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Comprehensive XR Solution Platform</h3>
+                                <p class="bio-text">
+                                    The XR Construction Toolkit provides a unified platform for Virtual Reality (VR),
+                                    Augmented Reality (AR), and Mixed Reality (MR) applications in the construction
+                                    industry. This versatile toolkit supports multiple hardware platforms and provides
+                                    tools for training, visualization, and on-site construction assistance.
+                                </p>
                             </div>
-                        </div>
 
-                        <div class="tool-video">
-                            <h3>XR Toolkit Overview</h3>
-                            <div class="video-container">
-                                <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                                    title="XR Construction Toolkit Overview" allowfullscreen>
-                                </iframe>
+                            <div class="tool-info-section">
+                                <h3 class="info-title">Platform Capabilities</h3>
+                                <ul class="research-interests">
+                                    <li><i class="fas fa-layer-group"></i>Cross-platform XR Development Framework</li>
+                                    <li><i class="fas fa-cubes"></i>Real-time BIM Model Rendering</li>
+                                    <li><i class="fas fa-graduation-cap"></i>Interactive Safety Training Modules</li>
+                                    <li><i class="fas fa-eye"></i>AR Overlay Construction Guidance</li>
+                                    <li><i class="fas fa-users"></i>Collaborative Design Review Spaces</li>
+                                    <li><i class="fas fa-chart-line"></i>AR Progress Tracking Tools</li>
+                                </ul>
+                            </div>
+
+                            <div class="tool-features-grid">
+                                <div class="experience-item">
+                                    <div class="exp-header">
+                                        <div class="company-logo">
+                                            <i class="fas fa-vr-cardboard"></i>
+                                        </div>
+                                        <div class="exp-details">
+                                            <h3>XR Technologies</h3>
+                                            <p class="company-name">Multi-Platform Reality Integration</p>
+                                            <p class="exp-duration">Immersive Construction Solutions</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="capabilities-grid">
+                                        <div class="capability-item">
+                                            <i class="fas fa-vr-cardboard"></i>
+                                            <span>Virtual Reality</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            <span>Augmented Reality</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-glasses"></i>
+                                            <span>Mixed Reality</span>
+                                        </div>
+                                        <div class="capability-item">
+                                            <i class="fas fa-graduation-cap"></i>
+                                            <span>Training Modules</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="tool-actions">
+                                        <a href="https://github.com/isaddiq/XR-Construction-Toolkit" target="_blank"
+                                            class="doi-link">
+                                            <i class="fab fa-github"></i> View on GitHub
+                                        </a>
+                                        <a href="#xr-demo" class="doi-link">
+                                            <i class="fas fa-vr-cardboard"></i> Try XR Demo
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Social Media Floating Icons -->
-        <div class="social-floating">
-            <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="social-icon linkedin" target="_blank"
-                title="LinkedIn">
-                <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://github.com/isaddiq" class="social-icon github" target="_blank" title="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="social-icon scholar" target="_blank"
-                title="Google Scholar">
-                <i class="fas fa-graduation-cap"></i>
-            </a>
-            <a href="https://orcid.org/0000-0002-8098-0939" class="social-icon orcid" target="_blank" title="ORCID">
-                <i class="fab fa-orcid"></i>
-            </a>
-            <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="social-icon researchgate"
-                target="_blank" title="ResearchGate">
-                <i class="fab fa-researchgate"></i>
-            </a>
-            <a href="https://www.instagram.com/callmesaddiq/" class="social-icon instagram" target="_blank" title="instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
-        </div>
+    </div>
+
+    <!-- Social Media Floating Icons -->
+    <div class="social-floating">
+        <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="social-icon linkedin" target="_blank"
+            title="LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/isaddiq" class="social-icon github" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+        </a>
+        <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="social-icon scholar"
+            target="_blank" title="Google Scholar">
+            <i class="fas fa-graduation-cap"></i>
+        </a>
+        <a href="https://orcid.org/0000-0002-8098-0939" class="social-icon orcid" target="_blank" title="ORCID">
+            <i class="fab fa-orcid"></i>
+        </a>
+        <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="social-icon researchgate"
+            target="_blank" title="ResearchGate">
+            <i class="fab fa-researchgate"></i>
+        </a>
+        <a href="https://www.instagram.com/callmesaddiq/" class="social-icon instagram" target="_blank"
+            title="Instagram">
+            <i class="fab fa-instagram"></i>
+        </a>
     </div>
 
     <script>
-        /**
-         * Show specific tool details
-         * @param {string} toolId - ID of the tool to show
-         */
-        function showTool(toolId) {
-            // Hide all tool details
-            const toolDetails = document.querySelectorAll('.tool-detail');
-            toolDetails.forEach(detail => {
-                detail.classList.remove('active');
-            });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Cache elements
+            const navButtons = document.querySelectorAll('.tool-nav-btn');
+            const toolContents = document.querySelectorAll('.tool-content');
 
-            // Remove active class from all tool nav buttons
-            const toolBtns = document.querySelectorAll('.tool-nav-item button');
-            toolBtns.forEach(btn => {
-                btn.classList.remove('active');
-            });
+            // Show tool function
+            function showTool(toolId) {
+                // Hide all tool contents
+                toolContents.forEach(content => {
+                    content.classList.remove('active');
+                });
 
-            // Show selected tool
-            const selectedTool = document.getElementById(toolId);
-            if (selectedTool) {
-                selectedTool.classList.add('active');
-            }
+                // Remove active class from all nav buttons
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
 
-            // Add active class to clicked button
-            if (event && event.target) {
-                event.target.classList.add('active');
-            }
-
-            // Add smooth animation
-            setTimeout(() => {
-                const toolsContent = document.querySelector('.tools-content');
-                if (toolsContent) {
-                    toolsContent.scrollTop = 0;
+                // Show selected tool content
+                const selectedTool = document.getElementById(toolId);
+                if (selectedTool) {
+                    selectedTool.classList.add('active');
                 }
-            }, 100);
-        }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', function () {
-            // Show default tool
+                // Add active class to selected nav button
+                const selectedBtn = document.querySelector(`[data-tool="${toolId}"]`);
+                if (selectedBtn) {
+                    selectedBtn.classList.add('active');
+                }
+
+                // Scroll to top of content area
+                const contentContainer = document.querySelector('.tools-content-container');
+                if (contentContainer) {
+                    contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // Add click event listeners to nav buttons
+            navButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const toolId = btn.getAttribute('data-tool');
+                    showTool(toolId);
+                });
+            });
+
+            // Show default tool (ReUnixchange)
             showTool('reunixchange');
-
-            // Add keyboard navigation
-            document.addEventListener('keydown', function (e) {
-                if (e.target.closest('.tool-nav-item')) {
-                    const toolButtons = Array.from(document.querySelectorAll('.tool-nav-item button'));
-                    const currentIndex = toolButtons.indexOf(e.target);
-
-                    if (e.key === 'ArrowDown' && currentIndex < toolButtons.length - 1) {
-                        e.preventDefault();
-                        toolButtons[currentIndex + 1].focus();
-                        toolButtons[currentIndex + 1].click();
-                    } else if (e.key === 'ArrowUp' && currentIndex > 0) {
-                        e.preventDefault();
-                        toolButtons[currentIndex - 1].focus();
-                        toolButtons[currentIndex - 1].click();
-                    }
-                }
-            });
         });
     </script>
 </body>
