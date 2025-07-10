@@ -11,8 +11,12 @@
     <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Leaflet CSS for OpenStreetMap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <!-- Leaflet JS for OpenStreetMap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
     <style>
         /* ==========================================================================
@@ -368,11 +372,38 @@
             margin-top: 20px;
         }
 
-        .map-container iframe {
+        .map-container #map {
             width: 100%;
             height: 100%;
             border: none;
             border-radius: 15px;
+            z-index: 1;
+        }
+
+        /* Leaflet popup styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .leaflet-popup-content {
+            margin: 15px;
+            font-family: "Inter", sans-serif;
+        }
+
+        .leaflet-popup-content h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .leaflet-popup-content p {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9em;
         }
 
         .map-overlay {
@@ -860,11 +891,9 @@
                                 <div class="contact-text">
                                     <strong>Office Address</strong>
                                     <span>
-                                        Department of Architecture<br>
-                                        Kyung Hee University Global Campus<br>
-                                        1732 Deogyeong-daero, Giheung-gu<br>
-                                        Yongin-si, Gyeonggi-do 17104<br>
-                                        South Korea
+                                        경희대학교 공과대학 (Kyung Hee University College of Engineering)<br>
+                                        26 Seocheon-dong, Yongin-si<br>
+                                        Gyeonggi-do, South Korea
                                     </span>
                                 </div>
                             </div>
@@ -886,6 +915,10 @@
                         <div class="quick-actions">
                             <h4>Quick Actions</h4>
                             <div class="action-buttons">
+                                <a href="mailto:saddiqurrehman@khu.ac.kr" class="action-btn" target="_blank">
+                                    <i class="fas fa-paper-plane"></i>
+                                    Send Email
+                                </a>
                                 <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
                                     class="action-btn" target="_blank">
                                     <i class="fas fa-graduation-cap"></i>
@@ -917,18 +950,15 @@
                     <div class="map-section">
                         <h3 class="section-title">Location</h3>
                         <p class="bio-text">
-                            Located at Kyung Hee University Global Campus in Yongin-si, South Korea. The campus provides
-                            state-of-the-art research facilities and collaborative spaces for architectural technology
-                            development and BIM research initiatives.
+                            Located at Kyung Hee University College of Engineering (경희대학교 공과대학) in Seocheon-dong,
+                            Yongin-si, South Korea. The college provides state-of-the-art research facilities and
+                            collaborative spaces for architectural technology development and BIM research initiatives.
                         </p>
                         <div class="map-container">
-                            <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3172.4537935034097!2d127.2402244!3d37.2419094!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357b5f8a085a024b%3A0x5f4c2688d3e95c42!2sKyung%20Hee%20University%20Global%20Campus!5e0!3m2!1sen!2skr!4v1704067200000!5m2!1sen!2skr"
-                                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                            </iframe>
+                            <div id="map"></div>
                             <div class="map-overlay">
-                                <h4>Kyung Hee University</h4>
-                                <p>Global Campus, Yongin-si, South Korea</p>
+                                <h4>경희대학교 공과대학</h4>
+                                <p>College of Engineering, Yongin-si, South Korea</p>
                             </div>
                         </div>
                     </div>
@@ -1131,10 +1161,53 @@
         }
 
         /**
-         * Copy address to clipboard
+         * Initialize Leaflet Map with exact coordinates
          */
+        function initializeMap() {
+            // Check if Leaflet is available
+            if (typeof L === 'undefined') {
+                console.error('Leaflet not loaded');
+                return;
+            }
+
+            // Exact coordinates for Kyung Hee University College of Engineering
+            const lat = 37.246419;
+            const lng = 127.080889;
+
+            // Initialize the map
+            const map = L.map('map').setView([lat, lng], 16);
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                maxZoom: 19,
+            }).addTo(map);
+
+            // Custom marker icon (optional - using default for now)
+            const marker = L.marker([lat, lng]).addTo(map);
+
+            // Add popup to marker
+            marker.bindPopup(`
+                <div>
+                    <h4>경희대학교 공과대학</h4>
+                    <p>Kyung Hee University College of Engineering<br>
+                    26 Seocheon-dong, Yongin-si<br>
+                    Gyeonggi-do, South Korea</p>
+                </div>
+            `).openPopup();
+
+            // Add a circle to highlight the area
+            L.circle([lat, lng], {
+                color: '#3498db',
+                fillColor: '#3498db',
+                fillOpacity: 0.2,
+                radius: 200
+            }).addTo(map);
+
+            console.log('Map initialized successfully');
+        }
         function copyAddress() {
-            const address = "Department of Architecture, Kyung Hee University Global Campus, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do 17104, South Korea";
+            const address = "Kyung Hee University, Global Campus, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do, South Korea";
 
             if (navigator.clipboard && navigator.clipboard.writeText) {
                 navigator.clipboard.writeText(address).then(() => {
@@ -1192,6 +1265,9 @@
                 // Initialize EmailJS
                 initializeEmailJS();
 
+                // Initialize the map
+                initializeMap();
+
                 // Initialize animations and interactions
                 initializeContactAnimations();
                 initializeActionButtons();
@@ -1203,7 +1279,7 @@
                 }
 
                 // Add click-to-copy functionality for address
-                const addressItem = document.querySelector('.contact-item:nth-child(4)');
+                const addressItem = document.querySelector('.contact-item:nth-child(3)');
                 if (addressItem) {
                     addressItem.addEventListener('click', copyAddress);
                     addressItem.style.cursor = 'pointer';
