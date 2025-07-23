@@ -1,7 +1,22 @@
 {
     "journals": [
-      {
+        {
         "id": "journal_2025_01",
+        "title": "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform",
+        "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
+        "year": 2025,
+        "journal": "Journal of Computational Design and Engineering",
+        "volume": "176(10)",
+        "pages": "106409",
+        "impactFactor": 11.5,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1016/j.autcon.2025.106409",
+        "abstract": "This paper presents a comprehensive framework for BIM to Unity data exchange",
+        "keywords": ["BIM", "Game Engine", "Interoperability", "Visualization", "Integration"]
+      },
+      {
+        "id": "journal_2025_02",
         "title": "Advancing BIM and game engine integration in the AEC industry: innovations, challenges, and future directions",
         "authors": ["Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
         "year": 2025,
