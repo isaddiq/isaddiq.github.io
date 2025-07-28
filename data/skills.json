@@ -148,6 +148,27 @@
           "description": "Natural language processing for design recommendation systems"
         },
         {
+          "name": "pandas",
+          "level": "intermediate",
+          "percentage": 60,
+          "years": 2,
+          "description": "Data manipulation and analyses"
+        },
+        {
+          "name": "numpy",
+          "level": "intermediate",
+          "percentage": 60,
+          "years": 2,
+          "description": "computing with Python"
+        },
+        {
+          "name": "transformers",
+          "level": "basic",
+          "percentage": 30,
+          "years": 1,
+          "description": "for LLM training and usage"
+        },
+        {
           "name": "matplotlib",
           "level": "Advanced",
           "percentage": 85,
@@ -172,7 +193,14 @@
           "level": "Expert",
           "percentage": 95,
           "years": 4,
-          "description": "Primary development environment with extensions"
+          "description": "writing and debugging code"
+        },
+        {
+          "name": "Visual studio",
+          "level": "Expert",
+          "percentage": 90,
+          "years": 1,
+          "description": "mostly used for Revit Plugin development"
         },
         {
           "name": "Jupyter",
@@ -193,6 +221,13 @@
           "percentage": 30,
           "years": 1,
           "description": "Frontend web development and component-based architecture"
+        },
+        {
+          "name": "node.js",
+          "level": "Basic",
+          "percentage": 30,
+          "years": 1,
+          "description": "scalable web servers and RESTful API"
         },
         {
           "name": "Flask",
