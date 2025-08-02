@@ -41,8 +41,8 @@
         "id": "project_004",
         "title": "[중견연구 유형1-일반] 제조화건축을 위한 BIM기반 고객 친화형 AI 자동견적체계 및 시스템 개발 (NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction)",
         "duration": "2025-03-01 – 2026-02-28",
-        "role": "Data pipeline lead: Revit → QTO → AI estimation API (Python + Pandas + LLM)",
-        "status": "Upcoming",
+        "role": "Researcher (BIM-XR Integration)",
+        "status": "Ongoing",
         "funding_amount": "240.401 million KRW",
         "funding_source": "Korean Research Foundation (IRIS Mid-Career Research)",
         "lead_organisation": "Kyung Hee University Department of Architecture - Professor Inhan Kim",
@@ -67,9 +67,8 @@
           "Revit API",
           "Python",
           "Pandas",
-          "Large Language Models (LLM)",
-          "Quantity Take-Off (QTO)",
-          "AI Cost Estimation"
+          "XR",
+          "Game Engine"
         ],
         "impact": "High - Expected 20% reduction in construction cost estimation errors",
         "references": [
@@ -159,3 +158,4 @@
     "collaboration_projects": [],
     "student_projects": []
   }
+
