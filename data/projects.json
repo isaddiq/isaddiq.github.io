@@ -40,7 +40,7 @@
       {
         "id": "project_004",
         "title": "[중견연구 유형1-일반] 제조화건축을 위한 BIM기반 고객 친화형 AI 자동견적체계 및 시스템 개발 (NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction)",
-        "duration": "2025-03-01 – 2026-02-28",
+        "duration": " March 2025 – February 2026",
         "role": "Researcher (BIM-XR Integration)",
         "status": "Ongoing",
         "funding_amount": "240.401 million KRW",
@@ -119,11 +119,11 @@
       {
         "id": "project_003",
         "title": "개방형 BIM기반의 건축설계 적법성 평가 자동화 기술 및 응용기술 개발 (Open BIM-Based Automated Code Compliance Checking Technology & Applications)",
-        "duration": "Mar 2017 – Dec 2021",
+        "duration": "Mar 2021 – Dec 2021",
         "role": "Researcher (rule authoring & test-case development)",
         "status": "Completed",
         "funding_amount": "513.86 million KRW (Phase 5/5 only)",
-        "funding_source": "MLIT open-BIM programme",
+        "funding_source": "MOLIT open-BIM programme",
         "lead_organisation": "buildingSMART Korea & Kyung Hee University (PI Inhan Kim)",
         "icon": "fas fa-check-circle",
         "image": "assets/images/projects/bim-compliance.jpg",
@@ -158,4 +158,5 @@
     "collaboration_projects": [],
     "student_projects": []
   }
+
 
