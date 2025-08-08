@@ -14,13 +14,13 @@
 
     <style>
         /* ==========================================================================
-           Software & Tools Page CSS - Matching Academic Portfolio Style
+           Academic Portfolio CSS - Software & Tools Page
            Author: Saddiq Ur Rehman
-           Description: Software page styled to match the academic portfolio design
+           Description: Software page matching academic portfolio design
            ========================================================================== */
 
         /* ==========================================================================
-           Base Styles & Reset (Inherited from Academic Portfolio)
+           Base Styles & Reset
            ========================================================================== */
 
         * {
@@ -33,7 +33,7 @@
             font-family: "Inter", sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            background: #ffffff;
             min-height: 100vh;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -43,8 +43,49 @@
             opacity: 1;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 20%,
+                    rgba(52, 152, 219, 0.15),
+                    transparent 60%),
+                radial-gradient(circle at 80% 80%,
+                    rgba(155, 89, 182, 0.15),
+                    transparent 60%);
+            animation: subtle-move 20s ease-in-out infinite alternate;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes subtle-move {
+            0% {
+                transform: translate(-30px, -30px);
+            }
+
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
         /* ==========================================================================
-           Header Styles - Matching Academic Portfolio
+           Header Styles - Full Width at Top (Always Visible)
            ========================================================================== */
 
         .header-wrapper {
@@ -99,7 +140,7 @@
         }
 
         /* ==========================================================================
-           Layout Components - Matching Academic Portfolio
+           Layout Components - Wider Layout
            ========================================================================== */
 
         .container {
@@ -117,7 +158,7 @@
         }
 
         /* ==========================================================================
-           Tab Cover Styles - Matching Academic Portfolio
+           Tab Cover Styles
            ========================================================================== */
 
         .tab-cover {
@@ -143,6 +184,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.3);
             z-index: 1;
+            background-position: 50% 30%;
         }
 
         .cover-overlay {
@@ -177,9 +219,8 @@
            Software Section Styles
            ========================================================================== */
 
-        .software-section {
+        .software-container {
             padding: 40px;
-            margin-top: 20px;
         }
 
         .section-title {
@@ -190,6 +231,25 @@
             border-bottom: 3px solid #3498db;
             padding-bottom: 8px;
             display: inline-block;
+        }
+
+        .page-title {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bio-text {
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #555;
+            line-height: 1.7;
         }
 
         /* ==========================================================================
@@ -326,11 +386,19 @@
         }
 
         .tool-info-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             border-left: 5px solid #3498db;
+        }
+
+        .tool-info-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #9b59b6;
         }
 
         .info-title {
@@ -341,13 +409,6 @@
             border-bottom: 2px solid #3498db;
             padding-bottom: 10px;
             display: inline-block;
-        }
-
-        .bio-text {
-            margin-bottom: 20px;
-            text-align: justify;
-            color: #555;
-            line-height: 1.7;
         }
 
         .research-interests {
@@ -563,11 +624,19 @@
 
         .tool-video-section {
             margin-top: 40px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             border-left: 5px solid #3498db;
+        }
+
+        .tool-video-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #9b59b6;
         }
 
         .video-wrapper {
@@ -575,7 +644,6 @@
             width: 100%;
             height: 0;
             padding-bottom: 56.25%;
-            /* 16:9 aspect ratio */
             margin-top: 20px;
             border-radius: 15px;
             overflow: hidden;
@@ -593,7 +661,7 @@
         }
 
         /* ==========================================================================
-           Social Media Floating Icons (Inherited from Academic Portfolio)
+           Social Media Floating Icons
            ========================================================================== */
 
         .social-floating {
@@ -681,7 +749,7 @@
                 font-size: 1.2em;
             }
 
-            .software-section {
+            .software-container {
                 padding: 20px;
             }
 
@@ -767,7 +835,7 @@
                 font-size: 1em;
             }
 
-            .software-section {
+            .software-container {
                 padding: 15px;
             }
 
@@ -866,7 +934,7 @@
             </div>
 
             <!-- Software Tools Section -->
-            <div class="software-section">
+            <div class="software-container">
                 <!-- Tools Navigation -->
                 <div class="tools-nav-container">
                     <div class="tools-nav">
@@ -878,10 +946,6 @@
                             <i class="fas fa-robot"></i>
                             BIM Network Graph Maker
                         </button>
-                        <!-- <button class="tool-nav-btn" data-tool="xr-toolkit">
-                            <i class="fas fa-vr-cardboard"></i>
-                            XR Construction Toolkit
-                        </button> -->
                     </div>
                 </div>
 
@@ -995,8 +1059,9 @@
                     <div id="ai-chatbot" class="tool-content">
                         <div class="tool-header">
                             <h2 class="section-title">BIM Network Graph Maker</h2>
-                            <p class="tool-description">Professional data visualization solutions for Building Information Modeling workflows. Transform your architectural and
-                            engineering data into interactive network diagrams.</p>
+                            <p class="tool-description">Professional data visualization solutions for Building
+                                Information Modeling workflows. Transform your architectural and
+                                engineering data into interactive network diagrams.</p>
 
                             <div class="tool-badges">
                                 <span class="pub-badge impact-factor">BIM</span>
@@ -1013,10 +1078,14 @@
                             <div class="tool-info-section">
                                 <h3 class="info-title">Automatic Network Graph Generation</h3>
                                 <p class="bio-text">
-                                    This specialized application is designed for AEC professionals who need to visualize complex relationships within
-                                    their BIM models. Each tool processes CSV/IFC data exports (by ReUniXchange for Autodesk Revit and ArchUniXchange for
-                                    ArchiCAD, and IFC export as typical IFC from either BIM authoring tool) to create interactive network diagrams that
-                                    reveal connections, dependencies, and hierarchies in your building information models.
+                                    This specialized application is designed for AEC professionals who need to visualize
+                                    complex relationships within
+                                    their BIM models. Each tool processes CSV/IFC data exports (by ReUniXchange for
+                                    Autodesk Revit and ArchUniXchange for
+                                    ArchiCAD, and IFC export as typical IFC from either BIM authoring tool) to create
+                                    interactive network diagrams that
+                                    reveal connections, dependencies, and hierarchies in your building information
+                                    models.
                                 </p>
                             </div>
 
@@ -1025,58 +1094,11 @@
                                 <ul class="research-interests">
                                     <li><i class="fas fa-book"></i>Create Network Diagram for IFC, and CSV</li>
                                     <li><i class="fas fa-tools"></i>Create Hierachy based on different metadata</li>
-                                    <li><i class="fas fa-hammer"></i>Automatic Calculation of elements and its types</li>
+                                    <li><i class="fas fa-hammer"></i>Automatic Calculation of elements and its types
+                                    </li>
                                     <li><i class="fas fa-leaf"></i>IFC semantic Verification</li>
-                                    <li><i class="fas fa-laptop-code"></i>ArchiCAD and Autodesk Revit IFC and CSV support</li>
-                                </ul>
-                            </div>
-
-                                    <div class="tool-actions">
-                                        <a href="https://isaddiq.github.io/BIMUniXchange/" target="_blank"
-                                            class="doi-link">
-                                            <i class="fab fa-github"></i> Try it on GitHub page
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- XR Construction Toolkit -->
-                    <div id="xr-toolkit" class="tool-content">
-                        <div class="tool-header">
-                            <h2 class="section-title">XR Construction Toolkit</h2>
-                            <p class="tool-description">Comprehensive Extended Reality (XR) platform combining VR, AR,
-                                and MR technologies for enhanced construction workflows and training programs.</p>
-
-                            <div class="tool-badges">
-                                <span class="pub-badge impact-factor">Unity XR</span>
-                                <span class="pub-badge impact-factor">HoloLens</span>
-                                <span class="pub-badge corresponding">Meta Quest</span>
-                                <span class="pub-badge editor-choice">Mixed Reality</span>
-                            </div>
-                        </div>
-
-                        <div class="tool-details">
-                            <div class="tool-info-section">
-                                <h3 class="info-title">Comprehensive XR Solution Platform</h3>
-                                <p class="bio-text">
-                                    The XR Construction Toolkit provides a unified platform for Virtual Reality (VR),
-                                    Augmented Reality (AR), and Mixed Reality (MR) applications in the construction
-                                    industry. This versatile toolkit supports multiple hardware platforms and provides
-                                    tools for training, visualization, and on-site construction assistance.
-                                </p>
-                            </div>
-
-                            <div class="tool-info-section">
-                                <h3 class="info-title">Platform Capabilities</h3>
-                                <ul class="research-interests">
-                                    <li><i class="fas fa-layer-group"></i>Cross-platform XR Development Framework</li>
-                                    <li><i class="fas fa-cubes"></i>Real-time BIM Model Rendering</li>
-                                    <li><i class="fas fa-graduation-cap"></i>Interactive Safety Training Modules</li>
-                                    <li><i class="fas fa-eye"></i>AR Overlay Construction Guidance</li>
-                                    <li><i class="fas fa-users"></i>Collaborative Design Review Spaces</li>
-                                    <li><i class="fas fa-chart-line"></i>AR Progress Tracking Tools</li>
+                                    <li><i class="fas fa-laptop-code"></i>ArchiCAD and Autodesk Revit IFC and CSV
+                                        support</li>
                                 </ul>
                             </div>
 
@@ -1084,41 +1106,19 @@
                                 <div class="experience-item">
                                     <div class="exp-header">
                                         <div class="company-logo">
-                                            <i class="fas fa-vr-cardboard"></i>
+                                            <i class="fas fa-robot"></i>
                                         </div>
                                         <div class="exp-details">
-                                            <h3>XR Technologies</h3>
-                                            <p class="company-name">Multi-Platform Reality Integration</p>
-                                            <p class="exp-duration">Immersive Construction Solutions</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="capabilities-grid">
-                                        <div class="capability-item">
-                                            <i class="fas fa-vr-cardboard"></i>
-                                            <span>Virtual Reality</span>
-                                        </div>
-                                        <div class="capability-item">
-                                            <i class="fas fa-mobile-alt"></i>
-                                            <span>Augmented Reality</span>
-                                        </div>
-                                        <div class="capability-item">
-                                            <i class="fas fa-glasses"></i>
-                                            <span>Mixed Reality</span>
-                                        </div>
-                                        <div class="capability-item">
-                                            <i class="fas fa-graduation-cap"></i>
-                                            <span>Training Modules</span>
+                                            <h3>Data Visualization</h3>
+                                            <p class="company-name">BIM Network Graph Generation</p>
+                                            <p class="exp-duration">Interactive Relationship Mapping</p>
                                         </div>
                                     </div>
 
                                     <div class="tool-actions">
-                                        <a href="https://github.com/isaddiq/XR-Construction-Toolkit" target="_blank"
+                                        <a href="https://isaddiq.github.io/BIMUniXchange/" target="_blank"
                                             class="doi-link">
-                                            <i class="fab fa-github"></i> View on GitHub
-                                        </a>
-                                        <a href="#xr-demo" class="doi-link">
-                                            <i class="fas fa-vr-cardboard"></i> Try XR Demo
+                                            <i class="fab fa-github"></i> Try it on GitHub page
                                         </a>
                                     </div>
                                 </div>
