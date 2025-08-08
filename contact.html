@@ -11,22 +11,19 @@
     <!-- External Libraries -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Leaflet CSS for OpenStreetMap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <!-- EmailJS -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <!-- Leaflet JS for OpenStreetMap -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
     <style>
         /* ==========================================================================
-           Contact Page CSS - Matching Academic Portfolio Style
+           Academic Portfolio CSS - Contact Page
            Author: Saddiq Ur Rehman
-           Description: Contact page styled to match the academic portfolio design
+           Description: Contact page matching academic portfolio design
            ========================================================================== */
 
         /* ==========================================================================
-           Base Styles & Reset (Inherited from Academic Portfolio)
+           Base Styles & Reset
            ========================================================================== */
 
         * {
@@ -39,7 +36,7 @@
             font-family: "Inter", sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #2c3e50 0%, #3498db 50%, #9b59b6 100%);
+            background: #ffffff;
             min-height: 100vh;
             opacity: 0;
             transition: opacity 0.5s ease;
@@ -49,8 +46,45 @@
             opacity: 1;
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 20%, rgba(52, 152, 219, 0.15), transparent 60%),
+                radial-gradient(circle at 80% 80%, rgba(155, 89, 182, 0.15), transparent 60%);
+            animation: subtle-move 20s ease-in-out infinite alternate;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes subtle-move {
+            0% {
+                transform: translate(-30px, -30px);
+            }
+
+            100% {
+                transform: translate(30px, 30px);
+            }
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
         /* ==========================================================================
-           Header Styles - Matching Academic Portfolio
+           Header Styles - Full Width at Top (Always Visible)
            ========================================================================== */
 
         .header-wrapper {
@@ -105,7 +139,7 @@
         }
 
         /* ==========================================================================
-           Layout Components - Matching Academic Portfolio
+           Layout Components - Wider Layout
            ========================================================================== */
 
         .container {
@@ -123,7 +157,7 @@
         }
 
         /* ==========================================================================
-           Tab Cover Styles - Matching Academic Portfolio
+           Tab Cover Styles
            ========================================================================== */
 
         .tab-cover {
@@ -133,7 +167,8 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            background-color: #333;
+            /* background-color: #333; */
+            background-image: url("assets/images/contact_cover.jpg");
             background-size: cover;
             background-position: center;
             padding: 0;
@@ -149,6 +184,7 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.3);
             z-index: 1;
+            background-position: 50% 30%;
         }
 
         .cover-overlay {
@@ -183,9 +219,8 @@
            Contact Section Styles
            ========================================================================== */
 
-        .contact-section {
+        .contact-container {
             padding: 40px;
-            margin-top: 20px;
         }
 
         .section-title {
@@ -198,22 +233,43 @@
             display: inline-block;
         }
 
+        .page-title {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .bio-text {
+            margin-bottom: 20px;
+            text-align: justify;
+            color: #555;
+            line-height: 1.7;
+        }
+
         /* ==========================================================================
            Contact Information Styles - Using Experience Item Pattern
            ========================================================================== */
 
-        .contact-info-container {
-            display: grid;
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
         .contact-info-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             border-left: 5px solid #3498db;
+        }
+
+        .contact-info-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #9b59b6;
         }
 
         .contact-details {
@@ -224,7 +280,7 @@
         }
 
         .contact-item {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            background: white;
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
@@ -294,22 +350,30 @@
            ========================================================================== */
 
         .quick-actions {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             border-left: 5px solid #9b59b6;
-            margin-top: 30px;
         }
 
-        .quick-actions h4 {
+        .quick-actions:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .quick-actions h3 {
             color: #2c3e50;
-            margin-bottom: 20px;
-            font-size: 1.3em;
+            margin-bottom: 25px;
+            font-size: 1.4em;
             font-weight: 600;
             border-bottom: 2px solid #9b59b6;
             padding-bottom: 10px;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .action-buttons {
@@ -326,7 +390,7 @@
             border: 1px solid #3498db;
             padding: 12px 20px;
             border-radius: 20px;
-            font-size: 0.9em;
+            font-size: 0.8em;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -341,12 +405,8 @@
         .action-btn:hover {
             background: #3498db;
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
-        }
-
-        .action-btn i {
-            font-size: 1em;
         }
 
         /* ==========================================================================
@@ -354,12 +414,19 @@
            ========================================================================== */
 
         .map-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 30px;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
             border-left: 5px solid #3498db;
-            margin-top: 30px;
+        }
+
+        .map-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            border-left-color: #9b59b6;
         }
 
         .map-container {
@@ -406,114 +473,10 @@
             font-size: 0.9em;
         }
 
-        .map-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            z-index: 10;
-        }
 
-        .map-overlay h4 {
-            color: #2c3e50;
-            margin-bottom: 5px;
-            font-size: 1.1em;
-            font-weight: 600;
-        }
-
-        .map-overlay p {
-            color: #6c757d;
-            margin: 0;
-            font-size: 0.9em;
-        }
 
         /* ==========================================================================
-           Contact Form Styles (if needed later)
-           ========================================================================== */
-
-        .contact-form-section {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            border-left: 5px solid #9b59b6;
-            margin-top: 30px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #2c3e50;
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e9ecef;
-            border-radius: 10px;
-            font-family: "Inter", sans-serif;
-            font-size: 0.9em;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #3498db;
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 120px;
-        }
-
-        .submit-btn {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 1px solid #3498db;
-            padding: 15px 30px;
-            border-radius: 25px;
-            font-size: 1em;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            background: white;
-            cursor: pointer;
-            font-family: "Inter", sans-serif;
-        }
-
-        .submit-btn:hover {
-            background: #3498db;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        /* ==========================================================================
-           Social Media Floating Icons (Inherited from Academic Portfolio)
+           Social Media Floating Icons
            ========================================================================== */
 
         .social-floating {
@@ -572,87 +535,6 @@
         }
 
         /* ==========================================================================
-           Message Alert Styles
-           ========================================================================== */
-
-        .message {
-            padding: 15px 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            display: none;
-            align-items: center;
-            gap: 10px;
-            font-weight: 500;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .message.show {
-            display: flex;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .message.success {
-            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .message.error {
-            background: linear-gradient(135deg, #f8d7da 0%, #f1aeb5 100%);
-            color: #721c24;
-            border: 1px solid #f1aeb5;
-        }
-
-        .message i {
-            font-size: 1.1em;
-        }
-
-        /* ==========================================================================
-           Bio Text Styles
-           ========================================================================== */
-
-        .bio-text {
-            margin-bottom: 20px;
-            text-align: justify;
-            color: #555;
-            line-height: 1.7;
-        }
-
-        /* ==========================================================================
-           Research Interests Styles
-           ========================================================================== */
-
-        .research-interests {
-            list-style: none;
-            padding: 0;
-        }
-
-        .research-interests li {
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            color: #555;
-            transition: all 0.3s ease;
-            padding: 8px 0;
-        }
-
-        .research-interests li:hover {
-            transform: translateX(5px);
-            color: #333;
-        }
-
-        .research-interests i {
-            color: #3498db;
-            font-size: 1.1em;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* ==========================================================================
            Responsive Design
            ========================================================================== */
 
@@ -682,7 +564,7 @@
                 font-size: 1.2em;
             }
 
-            .contact-section {
+            .contact-container {
                 padding: 20px;
             }
 
@@ -728,13 +610,6 @@
             .map-container {
                 height: 350px;
             }
-
-            .map-overlay {
-                position: relative;
-                top: 0;
-                left: 0;
-                margin-top: 15px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -759,7 +634,7 @@
                 font-size: 1em;
             }
 
-            .contact-section {
+            .contact-container {
                 padding: 15px;
             }
 
@@ -813,6 +688,7 @@
             .content {
                 background: white !important;
                 box-shadow: none !important;
+                padding: 0 !important;
             }
 
             .container {
@@ -852,111 +728,110 @@
             </div>
 
             <!-- Contact Section -->
-            <div class="contact-section">
-                <div class="contact-info-container">
-                    <!-- Contact Information Section -->
-                    <div class="contact-info-section">
-                        <h3 class="section-title">Contact Information</h3>
-                        <p class="bio-text">
-                            I welcome collaborations, research inquiries, and academic discussions related to AEC
-                            industry digitalization, BIM technologies, and construction innovation. Feel free to reach
-                            out for potential partnerships, publication opportunities, or technical consultations.
-                        </p>
+            <div class="contact-container">
+                <!-- Contact Information Section -->
+                <div class="contact-info-section">
+                    <h3 class="section-title">Contact Information</h3>
+                    <p class="bio-text">
+                        I welcome collaborations, research inquiries, and academic discussions related to AEC
+                        industry digitalization, BIM technologies, and construction innovation. Feel free to reach
+                        out for potential partnerships, publication opportunities, or technical consultations.
+                    </p>
 
-                        <div class="contact-details">
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="contact-text">
-                                    <strong>Primary Email</strong>
-                                    <span><a href="mailto:saddiqurrehman@khu.ac.kr">saddiqurrehman@khu.ac.kr</a></span>
-                                </div>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
                             </div>
-
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-envelope-open"></i>
-                                </div>
-                                <div class="contact-text">
-                                    <strong>Personal Email</strong>
-                                    <span><a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></span>
-                                </div>
-                            </div>
-
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-university"></i>
-                                </div>
-                                <div class="contact-text">
-                                    <strong>Office Address</strong>
-                                    <span>
-                                        경희대학교 공과대학 (Kyung Hee University College of Engineering)<br>
-                                        26 Seocheon-dong, Yongin-si<br>
-                                        Gyeonggi-do, South Korea
-                                    </span>
-                                </div>
-                            </div>
-
-                            <div class="contact-item">
-                                <div class="contact-icon">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <div class="contact-text">
-                                    <strong>Office Hours</strong>
-                                    <span>
-                                        Monday - Friday: 9:00 AM - 6:00 PM (KST)<br>
-                                        Response time: Within 24 hours
-                                    </span>
-                                </div>
+                            <div class="contact-text">
+                                <strong>Primary Email</strong>
+                                <span><a href="mailto:saddiqurrehman@khu.ac.kr">saddiqurrehman@khu.ac.kr</a></span>
                             </div>
                         </div>
 
-                        <div class="quick-actions">
-                            <h4>Quick Actions</h4>
-                            <div class="action-buttons">
-                                <a href="mailto:saddiqurrehman@khu.ac.kr" class="action-btn" target="_blank">
-                                    <i class="fas fa-paper-plane"></i>
-                                    Send Email
-                                </a>
-                                <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
-                                    class="action-btn" target="_blank">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    Google Scholar
-                                </a>
-                                <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="action-btn"
-                                    target="_blank">
-                                    <i class="fab fa-linkedin"></i>
-                                    LinkedIn
-                                </a>
-                                <a href="https://github.com/isaddiq" class="action-btn" target="_blank">
-                                    <i class="fab fa-github"></i>
-                                    GitHub
-                                </a>
-                                <a href="https://orcid.org/0000-0002-8098-0939" class="action-btn" target="_blank">
-                                    <i class="fab fa-orcid"></i>
-                                    ORCID
-                                </a>
-                                <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf"
-                                    class="action-btn" target="_blank">
-                                    <i class="fab fa-researchgate"></i>
-                                    ResearchGate
-                                </a>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope-open"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Personal Email</strong>
+                                <span><a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></span>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-university"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Office Address</strong>
+                                <span>
+                                    경희대학교 공과대학 (Kyung Hee University College of Engineering)<br>
+                                    26 Seocheon-dong, Yongin-si<br>
+                                    Gyeonggi-do, South Korea
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="contact-text">
+                                <strong>Office Hours</strong>
+                                <span>
+                                    Monday - Friday: 9:00 AM - 6:00 PM (KST)<br>
+                                    Response time: Within 24 hours
+                                </span>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Map Section -->
-                    <div class="map-section">
-                        <h3 class="section-title">Location</h3>
-                        <p class="bio-text">
-                            Located at Kyung Hee University College of Engineering (경희대학교 공과대학) in Seocheon-dong,
-                            Yongin-si, South Korea. The college provides state-of-the-art research facilities and
-                            collaborative spaces for architectural technology development and BIM research initiatives.
-                        </p>
-                        <div class="map-container">
-                            <div id="map"></div>
-                        </div>
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <h3>Quick Actions</h3>
+                    <div class="action-buttons">
+                        <a href="mailto:saddiqurrehman@khu.ac.kr" class="action-btn" target="_blank">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Email
+                        </a>
+                        <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="action-btn"
+                            target="_blank">
+                            <i class="fas fa-graduation-cap"></i>
+                            Google Scholar
+                        </a>
+                        <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="action-btn"
+                            target="_blank">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn
+                        </a>
+                        <a href="https://github.com/isaddiq" class="action-btn" target="_blank">
+                            <i class="fab fa-github"></i>
+                            GitHub
+                        </a>
+                        <a href="https://orcid.org/0000-0002-8098-0939" class="action-btn" target="_blank">
+                            <i class="fab fa-orcid"></i>
+                            ORCID
+                        </a>
+                        <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="action-btn"
+                            target="_blank">
+                            <i class="fab fa-researchgate"></i>
+                            ResearchGate
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="map-section">
+                    <h3 class="section-title">Location</h3>
+                    <p class="bio-text">
+                        Located at Kyung Hee University College of Engineering (경희대학교 공과대학) in Seocheon-dong,
+                        Yongin-si, South Korea. The college provides state-of-the-art research facilities and
+                        collaborative spaces for architectural technology development and BIM research initiatives.
+                    </p>
+                    <div class="map-container">
+                        <div id="map"></div>
                     </div>
                 </div>
             </div>
@@ -990,7 +865,7 @@
     </div>
 
     <script>
-        // Initialize EmailJS only if available
+        // Initialize EmailJS
         function initializeEmailJS() {
             if (typeof emailjs !== 'undefined') {
                 emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
@@ -1000,9 +875,7 @@
             }
         }
 
-        /**
-         * Handle contact form submission
-         */
+        // Handle contact form submission
         function handleFormSubmission(e) {
             e.preventDefault();
 
@@ -1042,45 +915,19 @@
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
             }, 2000);
-
-            /* 
-            // Actual EmailJS implementation (uncomment and configure):
-            if (typeof emailjs !== 'undefined') {
-                emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', formData)
-                    .then(function(response) {
-                        showMessage('success', 'Thank you! Your message has been sent successfully. I will get back to you within 24 hours.');
-                        const form = document.getElementById('contactForm');
-                        if (form) form.reset();
-                    }, function(error) {
-                        showMessage('error', 'Sorry, there was an error sending your message. Please try again or contact me directly via email.');
-                        console.error('EmailJS error:', error);
-                    })
-                    .finally(function() {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-                    });
-            } else {
-                showMessage('error', 'Email service not available. Please contact me directly via email.');
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
-            }
-            */
         }
 
-        /**
-         * Show success or error message
-         */
+        // Show success or error message
         function showMessage(type, text) {
             const messageAlert = document.getElementById('messageAlert');
             if (!messageAlert) return;
 
             messageAlert.className = `message ${type}`;
             messageAlert.innerHTML = `
-            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-            ${text}
-        `;
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+                ${text}
+            `;
 
-            // Add show class safely
             if (messageAlert.classList) {
                 messageAlert.classList.add('show');
             }
@@ -1093,9 +940,7 @@
             }, 5000);
         }
 
-        /**
-         * Form validation
-         */
+        // Form validation
         function validateForm() {
             const name = document.getElementById('name')?.value?.trim() || '';
             const email = document.getElementById('email')?.value?.trim() || '';
@@ -1117,11 +962,8 @@
             return true;
         }
 
-        /**
-         * Initialize Leaflet Map with exact coordinates
-         */
+        // Initialize Leaflet Map
         function initializeMap() {
-            // Check if Leaflet is available
             if (typeof L === 'undefined') {
                 console.error('Leaflet not loaded');
                 return;
@@ -1140,7 +982,7 @@
                 maxZoom: 19,
             }).addTo(map);
 
-            // Custom marker icon (optional - using default for now)
+            // Add marker
             const marker = L.marker([lat, lng]).addTo(map);
 
             // Add popup to marker
@@ -1163,6 +1005,8 @@
 
             console.log('Map initialized successfully');
         }
+
+        // Copy address functionality
         function copyAddress() {
             const address = "Kyung Hee University, Global Campus, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do, South Korea";
 
@@ -1177,9 +1021,7 @@
             }
         }
 
-        /**
-         * Initialize contact animations
-         */
+        // Initialize contact animations
         function initializeContactAnimations() {
             const contactItems = document.querySelectorAll('.contact-item');
             contactItems.forEach((item, index) => {
@@ -1198,9 +1040,7 @@
             });
         }
 
-        /**
-         * Add smooth hover effects to action buttons
-         */
+        // Initialize action buttons
         function initializeActionButtons() {
             const actionButtons = document.querySelectorAll('.action-btn');
             actionButtons.forEach(button => {
@@ -1249,7 +1089,7 @@
             }
         });
 
-        // Add smooth scrolling for any anchor links
+        // Add smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             if (anchor) {
                 anchor.addEventListener('click', function (e) {
