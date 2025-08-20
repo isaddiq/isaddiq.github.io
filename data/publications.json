@@ -86,9 +86,9 @@
         "conference": "Creative Construction Conference",
         "location": "Hotel Pinija, Petrčane, Zadar, Croatia",
         "date": "June. 14-June.17, 2025",
-        "doi": "https://2025.creative-construction-conference.com/program.php",
+        "doi": "https://doi.org/10.22260/CCC2025/0054",
         "type": "Oral Presentation",
-        "pages": "#-#",
+        "pages": "446-454",
         "abstract": "This paper presents a novel approach to Integrated BIM and VR for modular manufacturing simulation."
       },
       {
@@ -353,3 +353,4 @@
       }
     ]
   }
+
