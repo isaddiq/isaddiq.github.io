@@ -338,8 +338,8 @@
         "volume": "Vol 31",
         "pages": "22-25",
         "type": "Technical Article",
-        "language": "Korean"
-        "doi": "http://doi.org/10.13140/RG.2.2.15341.24808",
+        "language": "Korean",
+        "doi": "http://doi.org/10.13140/RG.2.2.15341.24808"
       },
       {
         "id": "report_2024_01",
@@ -350,8 +350,8 @@
         "volume": "Vol 29",
         "pages": "24-27",
         "type": "Technical Article",
-        "language": "Korean"
-        "doi": "http://doi.org/10.13140/RG.2.2.16750.32327",
+        "language": "Korean",
+        "doi": "http://doi.org/10.13140/RG.2.2.16750.32327"
       },
       {
         "id": "report_2023_01",
@@ -362,10 +362,11 @@
         "volume": "Vol 27",
         "pages": "51-56",
         "type": "Technical Article",
-        "language": "Korean"
-        "doi": "http://doi.org/10.13140/RG.2.2.33527.53927",
+        "language": "Korean",
+        "doi": "http://doi.org/10.13140/RG.2.2.33527.53927"
       }
     ]
   }
+
 
 
