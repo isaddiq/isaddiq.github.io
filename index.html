@@ -22,6 +22,9 @@
   <!-- External Libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
   <!-- Custom Styles -->
   <link rel="stylesheet" href="assets/css/styles.css">
@@ -48,10 +51,10 @@
         <button class="nav-btn" onclick="showTab('publications')">Publications</button>
         <button class="nav-btn" onclick="showTab('projects')">Projects</button>
         <button class="nav-btn" onclick="showTab('skills')">Skills</button>
-        <button class="nav-btn" onclick="window.open('software.html', '_self')">Software/Tools</button>
+        <button class="nav-btn" onclick="showTab('software')">Software/Tools</button>
         <button class="nav-btn" onclick="showTab('certifications')">Certifications & Awards</button>
         <button class="nav-btn" onclick="showTab('activities')">Activities</button>
-        <button class="nav-btn" onclick="window.open('contact.html', '_self')">Contact</button>
+        <button class="nav-btn" onclick="showTab('contact')">Contact</button>
       </nav>
     </div>
   </div>
@@ -81,6 +84,15 @@
               </p>
               <p><i class="fas fa-envelope"></i> <a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></p>
               <p><i class="fas fa-map-marker-alt"></i> Kyung Hee University, Korea</p>
+              <div class="citation-info">
+                <p><i class="fas fa-quote-right"></i> 
+                  <span>Citations: </span>
+                  <span id="citation-count" class="citation-count">Loading...</span>
+                  <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" target="_blank" class="scholar-link">
+                    <i class="fas fa-external-link-alt"></i>
+                  </a>
+                </p>
+              </div>
             </div>
           </div>
           <div class="about-section">
@@ -106,47 +118,80 @@
             </p>
 
             <h3 class="section-title">Research Interests</h3>
-            <ul class="research-interests">
-              <li><i class="fas fa-check-circle"></i>Building Information Modeling (BIM)</li>
-              <li><i class="fas fa-check-circle"></i>Design for Manufacturing and Assembly (DfMA)</li>
-              <li><i class="fas fa-check-circle"></i>Virtual Design and Construction (VDC)</li>
-              <li><i class="fas fa-check-circle"></i>BIM and Game Engine Integration</li>
-              <li><i class="fas fa-check-circle"></i>Human Computer Interaction for AEC</li>
-              <li><i class="fas fa-check-circle"></i>Extended Reality</li>
-              <li><i class="fas fa-check-circle"></i>MultiModal AI</li>
-            </ul>
+            <div class="research-interests-grid">
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-cube"></i>
+                </div>
+                <h4>Building Information Modeling (BIM)</h4>
+                <p>Digital representation and data management for construction projects</p>
+              </div>
+              
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-cogs"></i>
+                </div>
+                <h4>Design for Manufacturing and Assembly (DfMA)</h4>
+                <p>Optimizing construction processes through manufacturing principles</p>
+              </div>
+              
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-vr-cardboard"></i>
+                </div>
+                <h4>Extended Reality (XR)</h4>
+                <p>Immersive technologies for architectural visualization and interaction</p>
+              </div>
+              
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-gamepad"></i>
+                </div>
+                <h4>Game Engine Integration</h4>
+                <p>Real-time 3D environments for construction simulation and training</p>
+              </div>
+              
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-robot"></i>
+                </div>
+                <h4>MultiModal AI</h4>
+                <p>Artificial intelligence applications in construction and design automation</p>
+              </div>
+              
+              <div class="research-card">
+                <div class="research-icon">
+                  <i class="fas fa-handshake"></i>
+                </div>
+                <h4>Human Computer Interaction</h4>
+                <p>User experience design for AEC digital tools and interfaces</p>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Recent News Section -->
         <div class="news-section">
           <h3 class="section-title news-title">Recent News & Updates</h3>
-          <div class="news-container">
-            <div class="news-item">
-              <div class="news-date">2025/07</div>
-              <div class="news-content">
+          <div class="news-list">
+            <ul class="news-bullets">
+              <li class="news-bullet-item">
+                <span class="news-date">2025/07</span>
                 <i class="fas fa-journal-whills news-icon"></i>
-                <strong>Publication:</strong> "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform"
-                Accepted in Automation in Construction Journal (IF:11.5)
-              </div>
-            </div>
-            <div class="news-item">
-              <div class="news-date">2025/05</div>
-              <div class="news-content">
+                <span class="news-text"><strong>Publication:</strong> "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform" accepted in Automation in Construction Journal (IF:11.5)</span>
+              </li>
+              <li class="news-bullet-item">
+                <span class="news-date">2025/05</span>
                 <i class="fas fa-journal-whills news-icon"></i>
-                <strong>Publication:</strong> "Integration of 4D BIM and VR for interactive modular building
-                manufacturing simulations in a factory-controlled environment"
-                Accepted in Creative Construction Conference 2025
-              </div>
-            </div>
-            <div class="news-item">
-              <div class="news-date">2025/03</div>
-              <div class="news-content">
+                <span class="news-text"><strong>Publication:</strong> "Integration of 4D BIM and VR for interactive modular building manufacturing simulations in a factory-controlled environment" accepted in Creative Construction Conference 2025</span>
+              </li>
+              <li class="news-bullet-item">
+                <span class="news-date">2025/03</span>
                 <i class="fas fa-journal-whills news-icon"></i>
-                <strong>Publication:</strong> "Advancing BIM and game engine integration in the AEC industry"
-                published in Journal of Computational Design and Engineering
-              </div>
-            </div>
+                <span class="news-text"><strong>Publication:</strong> "Advancing BIM and game engine integration in the AEC industry" published in Journal of Computational Design and Engineering</span>
+              </li>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -171,8 +216,8 @@
               <h3>PhD in Architecture</h3>
               <a href="https://www.khu.ac.kr" class="company-name" target="_blank">Kyung Hee University, Global
                 Campus, Korea</a>
-              <p class="exp-duration">March 2021 - February 2026 | GPA: 4.15/4.3</p>
-              <p><strong>Thesis:</strong> BIM and XR Integration</p>
+              <p class="exp-duration">March 2021 - Present | GPA: 4.15/4.3</p>
+              <p><strong>Thesis:</strong> related to BIM and XR integration</p>
             </div>
           </div>
         </div>
@@ -368,7 +413,7 @@
           <div class="activity-item">
             <i class="fas fa-edit activity-icon"></i>
             <div class="activity-content">
-              <strong>Expert systems with Applications</strong> - Reviewer
+              <strong>Journal of Civil Engineering and Management</strong> - Reviewer
             </div>
           </div>
         </div>
@@ -379,6 +424,328 @@
             <div class="activity-content">
               <strong>ITA Lab, Kyung Hee University</strong> - Research Team Member (2021 - Present)
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Software/Tools Tab -->
+    <div id="software" class="tab-content">
+      <div class="tab-cover software-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Software & Tools</h1>
+          <p class="cover-subtitle">Innovative AEC Digital Solutions</p>
+        </div>
+      </div>
+
+      <div class="software-container">
+        <!-- Tools Navigation -->
+        <div class="tools-nav-container">
+          <div class="tools-nav">
+            <button class="tool-nav-btn active" data-tool="reunixchange">
+              <i class="fas fa-exchange-alt"></i>
+              ReUnixchange
+            </button>
+            <button class="tool-nav-btn" data-tool="ai-chatbot">
+              <i class="fas fa-robot"></i>
+              BIM Network Graph Maker
+            </button>
+          </div>
+        </div>
+
+        <!-- Tools Content -->
+        <div class="tools-content-container">
+          <!-- ReUnixchange -->
+          <div id="reunixchange" class="tool-content active">
+            <div class="tool-header">
+              <h2 class="section-title">ReUnixchange</h2>
+              <p class="tool-description">Revolutionary data exchange platform for BIM interoperability
+                and standardized information sharing across AEC workflows.</p>
+
+              <div class="tool-badges">
+                <span class="pub-badge impact-factor">Data Exchange</span>
+                <span class="pub-badge impact-factor">BIM Interoperability</span>
+                <span class="pub-badge corresponding">OBJ</span>
+                <span class="pub-badge corresponding">CSV</span>
+                <span class="pub-badge corresponding">XML</span>
+                <span class="pub-badge editor-choice">Autodesk Revit</span>
+                <span class="pub-badge editor-choice">Unity</span>
+              </div>
+            </div>
+
+            <div class="tool-details">
+              <div class="tool-info-section">
+                <h3 class="info-title">Revolutionary Data Exchange Platform</h3>
+                <p class="bio-text">
+                  ReUniXchange is a cutting-edge Revit plugin that enables seamless export of BIM
+                  geometry, metadata, and materials to Unity. It supports modular construction
+                  workflows and immersive XR applications by bridging the gap between design and
+                  visualization environments. The plugin allows users to assign shared parameters
+                  (ModularID) to Revit group components, extract structured metadata into CSV format,
+                  export 3D views as OBJ files with MTL and texture data, and re-import any changes
+                  made in Unity through an XML file.
+                </p>
+                <p class="bio-text">
+                  For modular projects, the plugin can automatically generate ModularID parameters
+                  based on group names, enabling logical tracking and reconstruction of elements
+                  inside Unity. Metadata from Revit views can be exported to CSV and attached to 3D
+                  objects inside Unity to enable semantic enrichment, selection, and inspection during
+                  runtime. Material definitions used in Revit are also exported into Unity-readable
+                  MTL files with associated texture images.
+                </p>
+              </div>
+
+              <div class="tool-info-section">
+                <h3 class="info-title">Core Infrastructure Components</h3>
+                <ul class="research-interests">
+                  <li><i class="fas fa-cog"></i>Modular ID Parameter Assignment in Revit</li>
+                  <li><i class="fas fa-database"></i>Semantic and Metadata Extraction to CSV</li>
+                  <li><i class="fas fa-paint-brush"></i>Material Export and Unity MTL Conversion</li>
+                  <li><i class="fas fa-cube"></i>3D Model Export with Textures and Materials</li>
+                  <li><i class="fas fa-sitemap"></i>Unity Hierarchy Creation for Components</li>
+                  <li><i class="fas fa-sync-alt"></i>Bidirectional XML-based Data Exchange</li>
+                </ul>
+              </div>
+
+              <div class="tool-features-grid">
+                <div class="experience-item">
+                  <div class="exp-header">
+                    <div class="company-logo">
+                      <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <div class="exp-details">
+                      <h3>Platform Capabilities</h3>
+                      <p class="company-name">Advanced BIM-to-Unity Workflow</p>
+                      <p class="exp-duration">Cross-Platform Integration Solution</p>
+                    </div>
+                  </div>
+
+                  <div class="capabilities-grid">
+                    <div class="capability-item">
+                      <i class="fas fa-exchange-alt"></i>
+                      <span>BIM Data Exchange</span>
+                    </div>
+                    <div class="capability-item">
+                      <i class="fas fa-sync"></i>
+                      <span>Synchronization</span>
+                    </div>
+                    <div class="capability-item">
+                      <i class="fas fa-shield-alt"></i>
+                      <span>Semantic Enrichment</span>
+                    </div>
+                    <div class="capability-item">
+                      <i class="fas fa-network-wired"></i>
+                      <span>Revit API Integration</span>
+                    </div>
+                  </div>
+
+                  <div class="tool-actions">
+                    <a href="https://github.com/isaddiq/ReUnixchange" target="_blank"
+                      class="doi-link">
+                      <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tool-video-section">
+                <h3 class="info-title">Platform Demonstration</h3>
+                <div class="video-wrapper">
+                  <iframe src="https://www.youtube.com/embed/CQp8Uhdefsk?start=39"
+                    title="ReUnixchange Platform Demo" allowfullscreen>
+                  </iframe>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BIM Network Graph Maker -->
+          <div id="ai-chatbot" class="tool-content">
+            <div class="tool-header">
+              <h2 class="section-title">BIM Network Graph Maker</h2>
+              <p class="tool-description">Professional data visualization solutions for Building
+                Information Modeling workflows. Transform your architectural and
+                engineering data into interactive network diagrams.</p>
+
+              <div class="tool-badges">
+                <span class="pub-badge impact-factor">BIM</span>
+                <span class="pub-badge impact-factor">IFC</span>
+                <span class="pub-badge corresponding">Network Graph</span>
+                <span class="pub-badge editor-choice">ArchiCAD</span>
+                <span class="pub-badge editor-choice">Revit</span>
+                <span class="pub-badge editor-choice">CSV</span>
+                <span class="pub-badge editor-choice">Semantic relationships</span>
+              </div>
+            </div>
+
+            <div class="tool-details">
+              <div class="tool-info-section">
+                <h3 class="info-title">Automatic Network Graph Generation</h3>
+                <p class="bio-text">
+                  This specialized application is designed for AEC professionals who need to visualize
+                  complex relationships within
+                  their BIM models. Each tool processes CSV/IFC data exports (by ReUniXchange for
+                  Autodesk Revit and ArchUniXchange for
+                  ArchiCAD, and IFC export as typical IFC from either BIM authoring tool) to create
+                  interactive network diagrams that
+                  reveal connections, dependencies, and hierarchies in your building information
+                  models.
+                </p>
+              </div>
+
+              <div class="tool-info-section">
+                <h3 class="info-title">Core Features</h3>
+                <ul class="research-interests">
+                  <li><i class="fas fa-book"></i>Create Network Diagram for IFC, and CSV</li>
+                  <li><i class="fas fa-tools"></i>Create Hierachy based on different metadata</li>
+                  <li><i class="fas fa-hammer"></i>Automatic Calculation of elements and its types
+                  </li>
+                  <li><i class="fas fa-leaf"></i>IFC semantic Verification</li>
+                  <li><i class="fas fa-laptop-code"></i>ArchiCAD and Autodesk Revit IFC and CSV
+                    support</li>
+                </ul>
+              </div>
+
+              <div class="tool-features-grid">
+                <div class="experience-item">
+                  <div class="exp-header">
+                    <div class="company-logo">
+                      <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="exp-details">
+                      <h3>Data Visualization</h3>
+                      <p class="company-name">BIM Network Graph Generation</p>
+                      <p class="exp-duration">Interactive Relationship Mapping</p>
+                    </div>
+                  </div>
+
+                  <div class="tool-actions">
+                    <a href="https://isaddiq.github.io/BIMUniXchange/" target="_blank"
+                      class="doi-link">
+                      <i class="fab fa-github"></i> Try it on GitHub page
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Tab -->
+    <div id="contact" class="tab-content">
+      <div class="tab-cover contact-cover">
+        <div class="cover-overlay">
+          <h1 class="cover-title">Contact</h1>
+          <p class="cover-subtitle">Get in Touch</p>
+        </div>
+      </div>
+
+      <div class="contact-container">
+        <!-- Contact Information Section -->
+        <div class="contact-info-section">
+          <h3 class="section-title">Contact Information</h3>
+          <p class="bio-text">
+            I welcome collaborations, research inquiries, and academic discussions related to AEC
+            industry digitalization, BIM technologies, and construction innovation. Feel free to reach
+            out for potential partnerships, publication opportunities, or technical consultations.
+          </p>
+
+          <div class="contact-details">
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="contact-text">
+                <strong>Primary Email</strong>
+                <span><a href="mailto:saddiqurrehman@khu.ac.kr">saddiqurrehman@khu.ac.kr</a></span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-envelope-open"></i>
+              </div>
+              <div class="contact-text">
+                <strong>Personal Email</strong>
+                <span><a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-university"></i>
+              </div>
+              <div class="contact-text">
+                <strong>Office Address</strong>
+                <span>
+                  경희대학교 공과대학 (Kyung Hee University College of Engineering)<br>
+                  26 Seocheon-dong, Yongin-si<br>
+                  Gyeonggi-do, South Korea
+                </span>
+              </div>
+            </div>
+
+            <div class="contact-item">
+              <div class="contact-icon">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div class="contact-text">
+                <strong>Office Hours</strong>
+                <span>
+                  Monday - Friday: 9:00 AM - 6:00 PM (KST)<br>
+                  Response time: Within 24 hours
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+          <h3>Quick Actions</h3>
+          <div class="action-buttons">
+            <a href="mailto:saddiqurrehman@khu.ac.kr" class="action-btn" target="_blank">
+              <i class="fas fa-paper-plane"></i>
+              Send Email
+            </a>
+            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="action-btn"
+              target="_blank">
+              <i class="fas fa-graduation-cap"></i>
+              Google Scholar
+            </a>
+            <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="action-btn"
+              target="_blank">
+              <i class="fab fa-linkedin"></i>
+              LinkedIn
+            </a>
+            <a href="https://github.com/isaddiq" class="action-btn" target="_blank">
+              <i class="fab fa-github"></i>
+              GitHub
+            </a>
+            <a href="https://orcid.org/0000-0002-8098-0939" class="action-btn" target="_blank">
+              <i class="fab fa-orcid"></i>
+              ORCID
+            </a>
+            <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="action-btn"
+              target="_blank">
+              <i class="fab fa-researchgate"></i>
+              ResearchGate
+            </a>
+          </div>
+        </div>
+
+        <!-- Map Section -->
+        <div class="map-section">
+          <h3 class="section-title">Location</h3>
+          <p class="bio-text">
+            Located at Kyung Hee University College of Engineering (경희대학교 공과대학) in Seocheon-dong,
+            Yongin-si, South Korea. The college provides state-of-the-art research facilities and
+            collaborative spaces for architectural technology development and BIM research initiatives.
+          </p>
+          <div class="map-container">
+            <div id="map"></div>
           </div>
         </div>
       </div>
@@ -466,15 +833,69 @@
       <!-- Paste your Flag Counter embed here (unchanged) -->
       <a href="https://info.flagcounter.com/ETDD" target="_blank" rel="noopener">
         <img
-          src="https://s01.flagcounter.com/count2/ETDD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_20/viewers_0/labels_1/pageviews_0/flags_0/percent_0/"
+          src="https://s01.flagcounter.com/count2/ETDD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_200/viewers_0/labels_1/pageviews_0/flags_1/percent_0/"
           alt="Flag Counter" border="0" />
       </a>
     </div>
     <button type="button" class="close-popup" title="Close">✕</button>
   </div>
 
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h4>Saddiq Ur Rehman</h4>
+        <p>PhD Student in Architecture</p>
+        <p>Kyung Hee University, Korea</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Research Focus</h4>
+        <ul>
+          <li>Building Information Modeling (BIM)</li>
+          <li>Extended Reality (XR)</li>
+          <li>MultiModal AI</li>
+          <li>Construction Technology</li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Connect</h4>
+        <div class="footer-social">
+          <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" target="_blank" title="Google Scholar">
+            <i class="fas fa-graduation-cap"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/saddiq-ur-rehman/" target="_blank" title="LinkedIn">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="https://github.com/isaddiq" target="_blank" title="GitHub">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.researchgate.net/profile/Saddiq-Rehman-3" target="_blank" title="ResearchGate">
+            <i class="fab fa-researchgate"></i>
+          </a>
+          <a href="https://orcid.org/0000-0002-4993-9161" target="_blank" title="ORCID">
+            <i class="fab fa-orcid"></i>
+          </a>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <p><i class="fas fa-envelope"></i> saddiqurrehman@khu.ac.kr</p>
+        <p><i class="fas fa-map-marker-alt"></i> Yongin, Korea</p>
+        <p><i class="fas fa-globe"></i> Academic Portfolio</p>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <div class="footer-divider"></div>
+      <div class="footer-copyright">
+        <p>&copy; 2025 Saddiq Ur Rehman. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
 </body>
 
 </html>
-
-
