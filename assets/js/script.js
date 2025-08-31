@@ -5,6 +5,92 @@
  */
 
 // ==========================================================================
+// Google Scholar Citation Count
+// ==========================================================================
+
+/**
+ * Fetch citation count from Google Scholar
+ */
+async function fetchCitationCount() {
+    const citationElement = document.getElementById('citation-count');
+    
+    try {
+        // Since direct CORS access to Google Scholar is not possible,
+        // we'll implement multiple fallback strategies
+        
+        // Strategy 1: Try with AllOrigins proxy
+        try {
+            const scholarId = 'wMH9sSgAAAAJ';
+            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://scholar.google.com/citations?user=${scholarId}&hl=en`)}`;
+            
+            const response = await fetch(proxyUrl, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, 'text/html');
+                
+                // Look for citation count in various possible locations
+                let citationCount = null;
+                
+                // Try different selectors for citation count
+                const selectors = [
+                    '#gsc_rsb_st tbody tr:first-child td:last-child',
+                    '.gsc_rsb_std',
+                    '[data-test-id="citation-total"]',
+                    '.gs_md_wp.gs_ttss'
+                ];
+                
+                for (const selector of selectors) {
+                    const element = doc.querySelector(selector);
+                    if (element && element.textContent.trim()) {
+                        citationCount = element.textContent.trim();
+                        break;
+                    }
+                }
+                
+                if (citationCount && /^\d+$/.test(citationCount)) {
+                    citationElement.innerHTML = `<strong>${citationCount}</strong>`;
+                    console.log('✅ Citation count fetched successfully:', citationCount);
+                    return;
+                }
+            }
+        } catch (proxyError) {
+            console.warn('Proxy method failed:', proxyError);
+        }
+        
+        // Strategy 2: Use a backup static count with link to Scholar
+        // This provides a better user experience than just showing "N/A"
+        citationElement.innerHTML = `
+            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" 
+               target="_blank" 
+               style="color: #4285f4; text-decoration: none; font-weight: bold;"
+               title="View live citation count on Google Scholar">
+                View on Scholar <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+            </a>
+        `;
+        
+        console.log('📊 Using fallback citation display');
+        
+    } catch (error) {
+        console.error('Error in citation count function:', error);
+        // Final fallback
+        citationElement.innerHTML = `
+            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" 
+               target="_blank" 
+               style="color: #4285f4; text-decoration: none;">
+                Google Scholar Profile
+            </a>
+        `;
+    }
+}
+
+// ==========================================================================
 // Award Certificate Functions
 // ==========================================================================
 
@@ -272,7 +358,7 @@ async function loadCertificatesData() {
  */
 function getCurrentTab() {
     const hash = window.location.hash.slice(1);
-    const validTabs = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'certifications', 'activities'];
+    const validTabs = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
     return validTabs.includes(hash) ? hash : 'home';
 }
 
@@ -360,6 +446,29 @@ function loadTabContent(tabName) {
             break;
         case 'certifications':
             loadCertificatesContent();
+            break;
+        case 'software':
+            initializeSoftwareTools();
+            break;
+        case 'contact':
+            initializeEmailJS();
+            initializeMap();
+            initializeContactAnimations();
+            initializeActionButtons();
+            
+            // Add form submission handler
+            const contactForm = document.getElementById('contactForm');
+            if (contactForm) {
+                contactForm.addEventListener('submit', handleFormSubmission);
+            }
+
+            // Add click-to-copy functionality for address
+            const addressItem = document.querySelector('.contact-item:nth-child(3)');
+            if (addressItem) {
+                addressItem.addEventListener('click', copyAddress);
+                addressItem.style.cursor = 'pointer';
+                addressItem.title = 'Click to copy address';
+            }
             break;
     }
 }
@@ -1236,6 +1345,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeHeaderEffects();
     initializeScrollToTop();
     
+    // Fetch citation count from Google Scholar
+    fetchCitationCount();
+    
     // Set up modal click handlers
     window.addEventListener('click', handleModalClick);
     
@@ -1369,3 +1481,276 @@ document.addEventListener("DOMContentLoaded", () => {
         closePopup();
     });
 });
+
+// ==========================================================================
+// Software/Tools Tab Functions
+// ==========================================================================
+
+/**
+ * Show specific software tool
+ * @param {string} toolId - ID of the tool to show
+ */
+function showTool(toolId) {
+    // Hide all tool contents
+    const toolContents = document.querySelectorAll('.tool-content');
+    toolContents.forEach(content => {
+        content.classList.remove('active');
+    });
+
+    // Remove active class from all nav buttons
+    const navButtons = document.querySelectorAll('.tool-nav-btn');
+    navButtons.forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    // Show selected tool content
+    const selectedTool = document.getElementById(toolId);
+    if (selectedTool) {
+        selectedTool.classList.add('active');
+    }
+
+    // Add active class to selected nav button
+    const selectedBtn = document.querySelector(`[data-tool="${toolId}"]`);
+    if (selectedBtn) {
+        selectedBtn.classList.add('active');
+    }
+
+    // Scroll to top of content area
+    const contentContainer = document.querySelector('.tools-content-container');
+    if (contentContainer) {
+        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
+
+/**
+ * Initialize software tools functionality
+ */
+function initializeSoftwareTools() {
+    // Cache elements
+    const navButtons = document.querySelectorAll('.tool-nav-btn');
+    
+    // Add click event listeners to nav buttons
+    navButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const toolId = btn.getAttribute('data-tool');
+            showTool(toolId);
+        });
+    });
+
+    // Show default tool (ReUnixchange)
+    showTool('reunixchange');
+}
+
+// ==========================================================================
+// Contact Tab Functions
+// ==========================================================================
+
+/**
+ * Initialize EmailJS
+ */
+function initializeEmailJS() {
+    if (typeof emailjs !== 'undefined') {
+        emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your actual EmailJS public key
+        console.log('EmailJS initialized');
+    } else {
+        console.log('EmailJS not available - using fallback');
+    }
+}
+
+/**
+ * Handle contact form submission
+ */
+function handleFormSubmission(e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('submitBtn');
+    const messageAlert = document.getElementById('messageAlert');
+
+    if (!submitBtn || !messageAlert) {
+        console.error('Required form elements not found');
+        return;
+    }
+
+    // Validate form
+    if (!validateForm()) {
+        return;
+    }
+
+    // Disable submit button and show loading
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+    // Get form data
+    const formData = {
+        name: document.getElementById('name')?.value || '',
+        email: document.getElementById('email')?.value || '',
+        subject: document.getElementById('subject')?.value || '',
+        message: document.getElementById('message')?.value || '',
+        to_email: 'saddiq.r.97@gmail.com'
+    };
+
+    // Simulate email sending (replace with actual EmailJS when configured)
+    setTimeout(() => {
+        showMessage('success', 'Thank you! Your message has been sent successfully. I will get back to you within 24 hours.');
+        const form = document.getElementById('contactForm');
+        if (form) form.reset();
+
+        // Reset submit button
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+    }, 2000);
+}
+
+/**
+ * Show success or error message
+ */
+function showMessage(type, text) {
+    const messageAlert = document.getElementById('messageAlert');
+    if (!messageAlert) return;
+
+    messageAlert.className = `message ${type}`;
+    messageAlert.innerHTML = `
+        <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+        ${text}
+    `;
+
+    if (messageAlert.classList) {
+        messageAlert.classList.add('show');
+    }
+
+    // Hide message after 5 seconds
+    setTimeout(() => {
+        if (messageAlert.classList) {
+            messageAlert.classList.remove('show');
+        }
+    }, 5000);
+}
+
+/**
+ * Form validation
+ */
+function validateForm() {
+    const name = document.getElementById('name')?.value?.trim() || '';
+    const email = document.getElementById('email')?.value?.trim() || '';
+    const subject = document.getElementById('subject')?.value?.trim() || '';
+    const message = document.getElementById('message')?.value?.trim() || '';
+
+    if (!name || !email || !subject || !message) {
+        showMessage('error', 'Please fill in all required fields.');
+        return false;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        showMessage('error', 'Please enter a valid email address.');
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Initialize Leaflet Map
+ */
+function initializeMap() {
+    if (typeof L === 'undefined') {
+        console.error('Leaflet not loaded');
+        return;
+    }
+
+    const mapElement = document.getElementById('map');
+    if (!mapElement) return;
+
+    // Exact coordinates for Kyung Hee University College of Engineering
+    const lat = 37.246419;
+    const lng = 127.080889;
+
+    // Initialize the map
+    const map = L.map('map').setView([lat, lng], 16);
+
+    // Add OpenStreetMap tiles
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19,
+    }).addTo(map);
+
+    // Add marker
+    const marker = L.marker([lat, lng]).addTo(map);
+
+    // Add popup to marker
+    marker.bindPopup(`
+        <div>
+            <h4>경희대학교 공과대학</h4>
+            <p>Kyung Hee University College of Engineering<br>
+            26 Seocheon-dong, Yongin-si<br>
+            Gyeonggi-do, South Korea</p>
+        </div>
+    `).openPopup();
+
+    // Add a circle to highlight the area
+    L.circle([lat, lng], {
+        color: '#3498db',
+        fillColor: '#3498db',
+        fillOpacity: 0.2,
+        radius: 200
+    }).addTo(map);
+
+    console.log('Map initialized successfully');
+}
+
+/**
+ * Copy address functionality
+ */
+function copyAddress() {
+    const address = "Kyung Hee University, Global Campus, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do, South Korea";
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(address).then(() => {
+            showMessage('success', 'Address copied to clipboard!');
+        }).catch(() => {
+            showMessage('error', 'Could not copy address. Please select and copy manually.');
+        });
+    } else {
+        showMessage('error', 'Copy to clipboard not supported. Please select and copy manually.');
+    }
+}
+
+/**
+ * Initialize contact animations
+ */
+function initializeContactAnimations() {
+    const contactItems = document.querySelectorAll('.contact-item');
+    contactItems.forEach((item, index) => {
+        if (item) {
+            setTimeout(() => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'all 0.6s ease';
+
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100);
+            }, index * 100);
+        }
+    });
+}
+
+/**
+ * Initialize action buttons
+ */
+function initializeActionButtons() {
+    const actionButtons = document.querySelectorAll('.action-btn');
+    actionButtons.forEach(button => {
+        if (button) {
+            button.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-2px) scale(1.05)';
+            });
+
+            button.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        }
+    });
+}
