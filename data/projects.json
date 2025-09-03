@@ -58,7 +58,7 @@
         ],
         "expected_outcomes": [
           "Q4 2025 prototype (web + ArchiCAD plugin+ BIM-XR)",
-          "AI-estimation reference protocol development",
+          "AI-estimation reference protocol development"
         ],
         "technologies": [
           "BIM 5D",
@@ -154,6 +154,7 @@
     "collaboration_projects": [],
     "student_projects": []
   }
+
 
 
 
