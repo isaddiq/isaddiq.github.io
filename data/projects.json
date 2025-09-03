@@ -2,7 +2,7 @@
     "research_projects": [
       {
         "id": "project_001",
-        "title": "로봇 친화형 건축물 설계·시공 및 운영·관리 핵심기술 개발 (Development of Core Technologies for Robot-Friendly Building Design, Construction, Operation & Management)",
+        "title": "Development of Core Technologies for Robot-Friendly Building Design, Construction, Operation & Management",
         "duration": "Apr 2025 – Dec 2026",
         "role": "Researcher (BIM–robot integration work-package)",
         "status": "Ongoing",
@@ -39,7 +39,7 @@
       },
       {
         "id": "project_004",
-        "title": "[중견연구 유형1-일반] 제조화건축을 위한 BIM기반 고객 친화형 AI 자동견적체계 및 시스템 개발 (NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction)",
+        "title": "NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction",
         "duration": " Mar 2025 – Feb 2026",
         "role": "Researcher (BIM-XR Integration)",
         "status": "Ongoing",
@@ -57,20 +57,18 @@
           "Modular prefab process KPI integration"
         ],
         "expected_outcomes": [
-          "Q4 2025 prototype release (web + Revit plugin)",
-          "H1 2026 paper submission to Korea Concrete Institute",
+          "Q4 2025 prototype (web + ArchiCAD plugin+ BIM-XR)",
           "AI-estimation reference protocol development",
-          "Up to 20% reduction in construction cost errors"
         ],
         "technologies": [
           "BIM 5D",
-          "Revit API",
+          "ArchiCAD API",
           "Python",
           "Pandas",
           "XR",
           "Game Engine"
         ],
-        "impact": "High - Expected 20% reduction in construction cost estimation errors",
+        "impact": "High - Expected reduction in construction cost estimation errors",
         "references": [
           "DBpia",
           "ITcon",
@@ -79,7 +77,7 @@
       },
       {
         "id": "project_002",
-        "title": "인공지능 기반의 건축설계 자동화 기술개발 (AI-Based Automated Architectural Design Technology Development)",
+        "title": "AI-Based Automated Architectural Design Technology Development",
         "duration": "Apr 2021 – Dec 2025",
         "role": "Researcher (NLP model tuning & BIM database engineering)",
         "status": "Ongoing",
@@ -93,7 +91,6 @@
         "objectives": [
           "Convert free-text client briefs to BIM-ready design options using BERT-based NLP and generative models",
           "Automate design-performance evaluation and option ranking",
-          "Deliver a cloud-hosted prototype and Revit plug-in by 2025"
         ],
         "key_outputs": [
           "Public web prototype released Nov 2024; user-satisfaction score ≈ 85%",
@@ -118,7 +115,7 @@
       },
       {
         "id": "project_003",
-        "title": "개방형 BIM기반의 건축설계 적법성 평가 자동화 기술 및 응용기술 개발 (Open BIM-Based Automated Code Compliance Checking Technology & Applications)",
+        "title": "Open BIM-Based Automated Code Compliance Checking Technology & Applications",
         "duration": "Mar 2021 – Dec 2021",
         "role": "Researcher (rule authoring & test-case development)",
         "status": "Completed",
@@ -135,8 +132,7 @@
           "Improve design-approval productivity by ≥ 30%"
         ],
         "key_outputs": [
-          "KBim Assess-Lite v2.0 and D-Generator prototype released, adopted by multiple local authorities",
-          "30+ peer-reviewed publications and ISARC best-paper award"
+          "KBim Assess-Lite v2.0 and D-Generator prototype released, adopted by multiple local authorities"
         ],
         "technologies": [
           "Open BIM",
@@ -158,6 +154,7 @@
     "collaboration_projects": [],
     "student_projects": []
   }
+
 
 
 
