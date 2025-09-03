@@ -1,162 +1,156 @@
 {
-    "research_projects": [
-      {
-        "id": "project_001",
-        "title": "Development of Core Technologies for Robot-Friendly Building Design, Construction, Operation & Management",
-        "duration": "Apr 2025 – Dec 2026",
-        "role": "Researcher (BIM–robot integration work-package)",
-        "status": "Ongoing",
-        "funding_amount": "468.03 million KRW (Phase 1/4 only)",
-        "funding_source": "Smart+ Building, MOLIT",
-        "lead_organisation": "Kyung Hee University I-A Cooperation Foundation",
-        "icon": "fas fa-robot",
-        "image": "assets/images/projects/robot-friendly-building.jpg",
-        "description": "Development of core technologies for robot-friendly building design, construction, operation and management.",
-        "detailed_description": "The project marks the first phase of the national Smart+ Building R&D plan, targeting service-robot operation inside healthcare and terminal environments. BIM pipelines feed Unity and ROS simulations, enabling early collision-avoidance and path-planning tests before on-site deployment. Currently showing Phase 1/4 funding from Excel records.",
-        "objectives": [
-          "Publish robot-friendly spatial & component design standards",
-          "Build a multi-robot orchestration and indoor positioning platform",
-          "Run full-scale pilot tests at Gangdong Kyung Hee University Hospital and other facilities"
-        ],
-        "key_outputs": [
-          "Draft design-guideline document and modular digital-twin sandbox delivered June 2025",
-          "Consortium roadmap aligning future phases to UAM- and AV-friendly building research"
-        ],
-        "technologies": [
-          "BIM",
-          "Unity",
-          "ROS",
-          "Digital Twin",
-          "Indoor Positioning Systems",
-          "Multi-robot Orchestration"
-        ],
-        "impact": "High - First phase of national Smart+ Building R&D plan",
-        "references": [
-          "molit.go.kr",
-          "codil.or.kr",
-          "aurum.re.kr"
-        ]
-      },
-      {
-        "id": "project_004",
-        "title": "NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction",
-        "duration": " Mar 2025 – Feb 2026",
-        "role": "Researcher (BIM-XR Integration)",
-        "status": "Ongoing",
-        "funding_amount": "240.401 million KRW",
-        "funding_source": "Korean Research Foundation (IRIS Mid-Career Research)",
-        "lead_organisation": "Kyung Hee University Department of Architecture - Professor Inhan Kim",
-        "icon": "fas fa-calculator",
-        "image": "assets/images/projects/ai-cost-estimation.jpg",
-        "description": "Development of BIM-based customer-friendly AI automated cost estimation system for industrialized construction.",
-        "detailed_description": "This project focuses on developing an AI-powered cost estimation system that integrates with BIM workflows to provide accurate and customer-friendly cost estimates for modular and industrialized construction projects. The system aims to achieve ±3% estimation accuracy and reduce construction cost errors by up to 20%.",
-        "objectives": [
-          "BIM 5D quantity automatic extraction",
-          "AI-based unit price and labor cost learning",
-          "Achieve ±3% estimation accuracy",
-          "Modular prefab process KPI integration"
-        ],
-        "expected_outcomes": [
-          "Q4 2025 prototype (web + ArchiCAD plugin+ BIM-XR)",
-          "AI-estimation reference protocol development"
-        ],
-        "technologies": [
-          "BIM 5D",
-          "ArchiCAD API",
-          "Python",
-          "Pandas",
-          "XR",
-          "Game Engine"
-        ],
-        "impact": "High - Expected reduction in construction cost estimation errors",
-        "references": [
-          "DBpia",
-          "ITcon",
-          "Korea Concrete Institute"
-        ]
-      },
-      {
-        "id": "project_002",
-        "title": "AI-Based Automated Architectural Design Technology Development",
-        "duration": "Apr 2021 – Dec 2025",
-        "role": "Researcher (NLP model tuning & BIM database engineering)",
-        "status": "Ongoing",
-        "funding_amount": "≈ ₩2.04 billion (Total across 5 phases)",
-        "funding_source": "National Land Infrastructure & Transport Technology Programme",
-        "lead_organisation": "Kyungpook National University (PI Seung-Yeon Choo)",
-        "icon": "fas fa-brain",
-        "image": "assets/images/projects/ai-design-automation.jpg",
-        "description": "Development of AI-based building design automation technology using natural language processing and generative models.",
-        "detailed_description": "The consortium is integrating AI with BIM to shorten the concept-design cycle. Maintaining the MongoDB-backed design corpus and fine-tuning transformer models that map client intents to spatial constraints, pushing text-to-BIM workflows toward commercial readiness. Project completed across 5 phases (2021-2025) with total funding of ≈ ₩2.04 billion.",
-        "objectives": [
-          "Convert free-text client briefs to BIM-ready design options using BERT-based NLP and generative models",
-          "Automate design-performance evaluation and option ranking",
-        ],
-        "key_outputs": [
-          "Public web prototype released Nov 2024; user-satisfaction score ≈ 85%",
-          "500-model modular-housing design library populated for machine-learning training"
-        ],
-        "technologies": [
-          "BERT-based NLP",
-          "Generative Models",
-          "BIM",
-          "MongoDB",
-          "Transformer Models",
-          "Revit Plugin",
-          "Cloud Computing"
-        ],
-        "impact": "High - Commercial readiness for text-to-BIM workflows",
-        "references": [
-          "codil.or.kr",
-          "ScienceON",
-          "AIBIM",
-          "https://aibim.kr/"
-        ]
-      },
-      {
-        "id": "project_003",
-        "title": "Open BIM-Based Automated Code Compliance Checking Technology & Applications",
-        "duration": "Mar 2021 – Dec 2021",
-        "role": "Researcher (rule authoring & test-case development)",
-        "status": "Completed",
-        "funding_amount": "513.86 million KRW (Phase 5/5 only)",
-        "funding_source": "MOLIT open-BIM programme",
-        "lead_organisation": "buildingSMART Korea & Kyung Hee University (PI Inhan Kim)",
-        "icon": "fas fa-check-circle",
-        "image": "assets/images/projects/bim-compliance.jpg",
-        "description": "Development of open BIM-based building design compliance assessment automation technology and applications.",
-        "detailed_description": "This completed project established Korea's first open-BIM rule-checking workflow. Contributions centered on mapping IFC entities to rule parameters and building regression test suites that now serve as benchmarks for the newer Smart+ Building regulatory modules. Excel records show Phase 5/5 funding only.",
-        "objectives": [
-          "Translate Korean Building Code clauses into executable IFC logic rules",
-          "Develop KBim Assess-Lite model checker and KBim D-Generator for automatic 2D permit drawings",
-          "Improve design-approval productivity by ≥ 30%"
-        ],
-        "key_outputs": [
-          "KBim Assess-Lite v2.0 and D-Generator prototype released, adopted by multiple local authorities"
-        ],
-        "technologies": [
-          "Open BIM",
-          "IFC",
-          "Korean Building Code",
-          "Rule Checking",
-          "Model Checking",
-          "Automated Drawing Generation"
-        ],
-        "impact": "High - Korea's first open-BIM rule-checking workflow established",
-        "references": [
-          "ScienceON",
-          "iaarc.org",
-          "KoreaScience",
-          "http://www.kbims.or.kr/en_main"
-        ]
-      }
-    ],
-    "collaboration_projects": [],
-    "student_projects": []
-  }
-
-
-
-
-
-
+  "research_projects": [
+    {
+      "id": "project_001",
+      "title": "Development of Core Technologies for Robot-Friendly Building Design, Construction, Operation & Management",
+      "duration": "Apr 2025 – Dec 2026",
+      "role": "Researcher (BIM–robot integration work-package)",
+      "status": "Ongoing",
+      "funding_amount": "468.03 million KRW (Phase 1/4 only)",
+      "funding_source": "Smart+ Building, MOLIT",
+      "lead_organisation": "Kyung Hee University I-A Cooperation Foundation",
+      "icon": "fas fa-robot",
+      "image": "assets/images/projects/robot-friendly-building.jpg",
+      "description": "Development of core technologies for robot-friendly building design, construction, operation and management.",
+      "detailed_description": "The project marks the first phase of the national Smart+ Building R&D plan, targeting service-robot operation inside healthcare and terminal environments. BIM pipelines feed Unity and ROS simulations, enabling early collision-avoidance and path-planning tests before on-site deployment. Currently showing Phase 1/4 funding from Excel records.",
+      "objectives": [
+        "Publish robot-friendly spatial & component design standards",
+        "Build a multi-robot orchestration and indoor positioning platform",
+        "Run full-scale pilot tests at Gangdong Kyung Hee University Hospital and other facilities"
+      ],
+      "key_outputs": [
+        "Draft design-guideline document and modular digital-twin sandbox delivered June 2025",
+        "Consortium roadmap aligning future phases to UAM- and AV-friendly building research"
+      ],
+      "technologies": [
+        "BIM",
+        "Unity",
+        "ROS",
+        "Digital Twin",
+        "Indoor Positioning Systems",
+        "Multi-robot Orchestration"
+      ],
+      "impact": "High - First phase of national Smart+ Building R&D plan",
+      "references": [
+        "molit.go.kr",
+        "codil.or.kr",
+        "aurum.re.kr"
+      ]
+    },
+    {
+      "id": "project_004",
+      "title": "NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction",
+      "duration": " Mar 2025 – Feb 2026",
+      "role": "Researcher (BIM-XR Integration)",
+      "status": "Ongoing",
+      "funding_amount": "240.401 million KRW",
+      "funding_source": "Korean Research Foundation (IRIS Mid-Career Research)",
+      "lead_organisation": "Kyung Hee University Department of Architecture - Professor Inhan Kim",
+      "icon": "fas fa-calculator",
+      "image": "assets/images/projects/ai-cost-estimation.jpg",
+      "description": "Development of BIM-based customer-friendly AI automated cost estimation system for industrialized construction.",
+      "detailed_description": "This project focuses on developing an AI-powered cost estimation system that integrates with BIM workflows to provide accurate and customer-friendly cost estimates for modular and industrialized construction projects. The system aims to achieve ±3% estimation accuracy and reduce construction cost errors by up to 20%.",
+      "objectives": [
+        "BIM 5D quantity automatic extraction",
+        "AI-based unit price and labor cost learning",
+        "Achieve ±3% estimation accuracy",
+        "Modular prefab process KPI integration"
+      ],
+      "expected_outcomes": [
+        "Q4 2025 prototype (web + ArchiCAD plugin+ BIM-XR)",
+        "AI-estimation reference protocol development"
+      ],
+      "technologies": [
+        "BIM 5D",
+        "ArchiCAD API",
+        "Python",
+        "Pandas",
+        "XR",
+        "Game Engine"
+      ],
+      "impact": "High - Expected reduction in construction cost estimation errors",
+      "references": [
+        "DBpia",
+        "ITcon",
+        "Korea Concrete Institute"
+      ]
+    },
+    {
+      "id": "project_002",
+      "title": "AI-Based Automated Architectural Design Technology Development",
+      "duration": "Apr 2021 – Dec 2025",
+      "role": "Researcher (NLP model tuning & BIM database engineering)",
+      "status": "Ongoing",
+      "funding_amount": "≈ ₩2.04 billion (Total across 5 phases)",
+      "funding_source": "National Land Infrastructure & Transport Technology Programme",
+      "lead_organisation": "Kyungpook National University (PI Seung-Yeon Choo)",
+      "icon": "fas fa-brain",
+      "image": "assets/images/projects/ai-design-automation.jpg",
+      "description": "Development of AI-based building design automation technology using natural language processing and generative models.",
+      "detailed_description": "The consortium is integrating AI with BIM to shorten the concept-design cycle. Maintaining the MongoDB-backed design corpus and fine-tuning transformer models that map client intents to spatial constraints, pushing text-to-BIM workflows toward commercial readiness. Project completed across 5 phases (2021-2025) with total funding of ≈ ₩2.04 billion.",
+      "objectives": [
+        "Convert free-text client briefs to BIM-ready design options using BERT-based NLP and generative models",
+        "Automate design-performance evaluation and option ranking"
+      ],
+      "key_outputs": [
+        "Public web prototype released Nov 2024; user-satisfaction score ≈ 85%",
+        "500-model modular-housing design library populated for machine-learning training"
+      ],
+      "technologies": [
+        "BERT-based NLP",
+        "Generative Models",
+        "BIM",
+        "MongoDB",
+        "Transformer Models",
+        "Revit Plugin",
+        "Cloud Computing"
+      ],
+      "impact": "High - Commercial readiness for text-to-BIM workflows",
+      "references": [
+        "codil.or.kr",
+        "ScienceON",
+        "AIBIM",
+        "https://aibim.kr/"
+      ]
+    },
+    {
+      "id": "project_003",
+      "title": "Open BIM-Based Automated Code Compliance Checking Technology & Applications",
+      "duration": "Mar 2021 – Dec 2021",
+      "role": "Researcher (rule authoring & test-case development)",
+      "status": "Completed",
+      "funding_amount": "513.86 million KRW (Phase 5/5 only)",
+      "funding_source": "MOLIT open-BIM programme",
+      "lead_organisation": "buildingSMART Korea & Kyung Hee University (PI Inhan Kim)",
+      "icon": "fas fa-check-circle",
+      "image": "assets/images/projects/bim-compliance.jpg",
+      "description": "Development of open BIM-based building design compliance assessment automation technology and applications.",
+      "detailed_description": "This completed project established Korea's first open-BIM rule-checking workflow. Contributions centered on mapping IFC entities to rule parameters and building regression test suites that now serve as benchmarks for the newer Smart+ Building regulatory modules. Excel records show Phase 5/5 funding only.",
+      "objectives": [
+        "Translate Korean Building Code clauses into executable IFC logic rules",
+        "Develop KBim Assess-Lite model checker and KBim D-Generator for automatic 2D permit drawings",
+        "Improve design-approval productivity by ≥ 30%"
+      ],
+      "key_outputs": [
+        "KBim Assess-Lite v2.0 and D-Generator prototype released, adopted by multiple local authorities"
+      ],
+      "technologies": [
+        "Open BIM",
+        "IFC",
+        "Korean Building Code",
+        "Rule Checking",
+        "Model Checking",
+        "Automated Drawing Generation"
+      ],
+      "impact": "High - Korea's first open-BIM rule-checking workflow established",
+      "references": [
+        "ScienceON",
+        "iaarc.org",
+        "KoreaScience",
+        "http://www.kbims.or.kr/en_main"
+      ]
+    }
+  ],
+  "collaboration_projects": [],
+  "student_projects": []
+}
