@@ -5,87 +5,179 @@
  */
 
 // ==========================================================================
-// Google Scholar Citation Count
+// Theme Toggle Functionality
 // ==========================================================================
 
 /**
- * Fetch citation count from Google Scholar
+ * Toggle between light and dark themes
  */
-async function fetchCitationCount() {
-    const citationElement = document.getElementById('citation-count');
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
-    try {
-        // Since direct CORS access to Google Scholar is not possible,
-        // we'll implement multiple fallback strategies
-        
-        // Strategy 1: Try with AllOrigins proxy
-        try {
-            const scholarId = 'wMH9sSgAAAAJ';
-            const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(`https://scholar.google.com/citations?user=${scholarId}&hl=en`)}`;
-            
-            const response = await fetch(proxyUrl, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
+    document.documentElement.setAttribute('data-theme', newTheme);
+    
+    // Update theme icon
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeIcon) {
+        themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+    
+    // Save theme preference
+    localStorage.setItem('preferred-theme', newTheme);
+    
+    console.log(`🎨 Theme switched to: ${newTheme}`);
+}
+
+/**
+ * Initialize theme from user preference or system preference
+ */
+function initializeTheme() {
+    // Check for saved theme preference or default to 'light'
+    const savedTheme = localStorage.getItem('preferred-theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    
+    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    
+    document.documentElement.setAttribute('data-theme', theme);
+    
+    // Update theme icon
+    const themeIcon = document.getElementById('theme-icon');
+    if (themeIcon) {
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('preferred-theme')) {
+            const newTheme = e.matches ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            if (themeIcon) {
+                themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+            }
+        }
+    });
+}
+
+// ==========================================================================
+// Tab Navigation Functions
+// ==========================================================================
+
+/**
+ * Initialize tab from URL hash on page load
+ */
+function initializeTabFromUrl() {
+    const hash = location.hash.replace('#', '') || 'home';
+    const validTabs = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
+    
+    if (validTabs.includes(hash)) {
+        showTab(hash);
+    } else {
+        showTab('home');
+    }
+}
+
+/**
+ * Add keyboard navigation support
+ */
+function addKeyboardSupport() {
+    document.addEventListener('keydown', function(e) {
+        // Escape key to close modals
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (modal.style.display === 'block') {
+                    closeModal(modal.id);
                 }
             });
-            
-            if (response.ok) {
-                const data = await response.json();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(data.contents, 'text/html');
-                
-                // Look for citation count in various possible locations
-                let citationCount = null;
-                
-                // Try different selectors for citation count
-                const selectors = [
-                    '#gsc_rsb_st tbody tr:first-child td:last-child',
-                    '.gsc_rsb_std',
-                    '[data-test-id="citation-total"]',
-                    '.gs_md_wp.gs_ttss'
-                ];
-                
-                for (const selector of selectors) {
-                    const element = doc.querySelector(selector);
-                    if (element && element.textContent.trim()) {
-                        citationCount = element.textContent.trim();
-                        break;
-                    }
-                }
-                
-                if (citationCount && /^\d+$/.test(citationCount)) {
-                    citationElement.innerHTML = `<strong>${citationCount}</strong>`;
-                    console.log('✅ Citation count fetched successfully:', citationCount);
-                    return;
-                }
-            }
-        } catch (proxyError) {
-            console.warn('Proxy method failed:', proxyError);
         }
         
-        // Strategy 2: Use a backup static count with link to Scholar
-        // This provides a better user experience than just showing "N/A"
-        citationElement.innerHTML = `
-            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" 
-               target="_blank" 
-               style="color: #4285f4; text-decoration: none; font-weight: bold;"
-               title="View live citation count on Google Scholar">
-                View on Scholar <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
-            </a>
-        `;
+        // Tab navigation with arrow keys (when focus is on nav buttons)
+        if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && 
+            e.target.classList.contains('nav-btn')) {
+            
+            const navBtns = Array.from(document.querySelectorAll('.nav-btn'));
+            const currentIndex = navBtns.indexOf(e.target);
+            
+            let nextIndex;
+            if (e.key === 'ArrowRight') {
+                nextIndex = (currentIndex + 1) % navBtns.length;
+            } else {
+                nextIndex = (currentIndex - 1 + navBtns.length) % navBtns.length;
+            }
+            
+            navBtns[nextIndex].focus();
+            e.preventDefault();
+        }
+    });
+}
+
+/**
+ * Load and display news from JSON file
+ */
+async function loadNews() {
+    const newsContainer = document.getElementById('news-bullets');
+    const showMoreBtn = document.getElementById('show-more-news');
+    let currentlyShown = 0;
+    const itemsPerLoad = 5;
+    let allNews = [];
+    
+    try {
+        const response = await fetch('data/news.json');
+        allNews = await response.json();
         
-        console.log('📊 Using fallback citation display');
+        // Clear loading message
+        newsContainer.innerHTML = '';
+        
+        function renderNews(start, count) {
+            const newsToShow = allNews.slice(start, start + count);
+            
+            newsToShow.forEach(newsItem => {
+                const li = document.createElement('li');
+                li.className = 'news-bullet-item';
+                
+                const title = newsItem.title;
+                const details = newsItem.details ? ` ${newsItem.details}` : '';
+                
+                li.innerHTML = `
+                    <span class="news-date">${newsItem.date}</span>
+                    <i class="${newsItem.icon} news-icon"></i>
+                    <span class="news-text">
+                        <strong>${newsItem.type}:</strong> ${title}${details}
+                    </span>
+                `;
+                
+                newsContainer.appendChild(li);
+            });
+        }
+        
+        // Initial load
+        renderNews(0, itemsPerLoad);
+        currentlyShown = itemsPerLoad;
+        
+        // Show "Show More" button if there are more items
+        if (allNews.length > currentlyShown) {
+            showMoreBtn.style.display = 'block';
+            
+            showMoreBtn.addEventListener('click', function() {
+                renderNews(currentlyShown, itemsPerLoad);
+                currentlyShown += itemsPerLoad;
+                
+                if (currentlyShown >= allNews.length) {
+                    showMoreBtn.style.display = 'none';
+                }
+            });
+        }
+        
+        console.log('✅ News loaded successfully');
         
     } catch (error) {
-        console.error('Error in citation count function:', error);
-        // Final fallback
-        citationElement.innerHTML = `
-            <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" 
-               target="_blank" 
-               style="color: #4285f4; text-decoration: none;">
-                Google Scholar Profile
-            </a>
+        console.error('Error loading news:', error);
+        newsContainer.innerHTML = `
+            <li class="news-loading">
+                <i class="fas fa-exclamation-circle"></i>
+                Failed to load news. Please refresh the page.
+            </li>
         `;
     }
 }
@@ -381,10 +473,11 @@ function showTab(tabName) {
         tab.classList.remove('active');
     });
     
-    // Remove active class from all nav buttons
+    // Remove active class and aria-current from all nav buttons
     const navBtns = document.querySelectorAll('.nav-btn');
     navBtns.forEach(btn => {
         btn.classList.remove('active');
+        btn.removeAttribute('aria-current');
     });
     
     // Show selected tab
@@ -393,14 +486,41 @@ function showTab(tabName) {
         selectedTab.classList.add('active');
     }
     
-    // Add active class to corresponding nav button
+    // Add active class and aria-current to corresponding nav button
     const navBtn = document.querySelector(`[onclick="showTab('${tabName}')"]`);
     if (navBtn) {
         navBtn.classList.add('active');
+        navBtn.setAttribute('aria-current', 'page');
     }
+    
+    // Update document title and URL hash
+    const titleMap = {
+        home: 'Home',
+        education: 'Education',
+        experience: 'Experience',
+        publications: 'Publications',
+        projects: 'Projects',
+        skills: 'Skills',
+        software: 'Software & Tools',
+        certifications: 'Certifications & Awards',
+        activities: 'Activities',
+        contact: 'Contact'
+    };
+    
+    const sectionTitle = titleMap[tabName] || 'Portfolio';
+    document.title = `Saddiq Ur Rehman – ${sectionTitle}`;
     
     // Update URL hash for persistence
     setCurrentTab(tabName);
+    if (location.hash !== `#${tabName}`) {
+        history.replaceState(null, '', `#${tabName}`);
+    }
+    
+    // Optional: scroll to top of content smoothly
+    const container = document.querySelector('.container');
+    if (container) {
+        container.scrollTo({ top: 0, behavior: 'smooth' });
+    }
     
     // Load dynamic content if needed
     loadTabContent(tabName);
@@ -1344,9 +1464,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeKeyboardNavigation();
     initializeHeaderEffects();
     initializeScrollToTop();
+    initializeTheme(); // Initialize theme toggle functionality
     
-    // Fetch citation count from Google Scholar
-    fetchCitationCount();
+    // Initialize tab from URL hash on page load
+    initializeTabFromUrl();
+    
+    // Load news dynamically
+    loadNews();
+    
+    // Add keyboard navigation support
+    addKeyboardSupport();
     
     // Set up modal click handlers
     window.addEventListener('click', handleModalClick);
