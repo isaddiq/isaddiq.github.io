@@ -18,6 +18,10 @@
   <!-- In your header section -->
   <link rel="icon" type="image/png" href="assets/images/profile_pic.png" />
 
+  <!-- Performance Optimizations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="canonical" href="https://isaddiq.github.io/">
 
   <!-- External Libraries -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -38,6 +42,35 @@
   <meta property="og:image" content="https://isaddiq.github.io/assets/images/thumbnail.png" />
   <meta property="og:url" content="https://isaddiq.github.io/" />
   <meta property="og:type" content="website" />
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Saddiq Ur Rehman",
+    "jobTitle": "PhD Candidate in Architecture",
+    "affiliation": {
+      "@type": "CollegeOrUniversity",
+      "name": "Kyung Hee University"
+    },
+    "email": "mailto:saddiqurrehman@khu.ac.kr",
+    "image": "https://isaddiq.github.io/assets/images/profile_pic.png",
+    "url": "https://isaddiq.github.io/",
+    "sameAs": [
+      "https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en",
+      "https://www.linkedin.com/in/saddiq-ur-rehman/",
+      "https://github.com/isaddiq",
+      "https://orcid.org/0000-0002-4993-9161",
+      "https://www.researchgate.net/profile/Saddiq-Rehman-3"
+    ],
+    "knowsAbout": ["Building Information Modeling", "Extended Reality", "MultiModal AI", "Construction Technology"],
+    "worksFor": {
+      "@type": "CollegeOrUniversity",
+      "name": "Kyung Hee University"
+    }
+  }
+  </script>
 </head>
 
 <body>
@@ -45,7 +78,7 @@
   <div class="header-wrapper">
     <div class="header">
       <nav class="nav-menu">
-        <button class="nav-btn active" onclick="showTab('home')">Home</button>
+        <button class="nav-btn active" onclick="showTab('home')" aria-current="page">Home</button>
         <button class="nav-btn" onclick="showTab('education')">Education</button>
         <button class="nav-btn" onclick="showTab('experience')">Experience</button>
         <button class="nav-btn" onclick="showTab('publications')">Publications</button>
@@ -56,10 +89,15 @@
         <button class="nav-btn" onclick="showTab('activities')">Activities</button>
         <button class="nav-btn" onclick="showTab('contact')">Contact</button>
       </nav>
+      <div class="theme-toggle">
+        <button id="theme-toggle-btn" class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">
+          <i class="fas fa-moon" id="theme-icon"></i>
+        </button>
+      </div>
     </div>
   </div>
 
-  <div class="container">
+  <main class="container">
     <!-- Content Area -->
     <div class="content">
       <!-- Home Tab -->
@@ -75,23 +113,24 @@
           <div class="profile-section">
             <div class="profile-image-container">
               <img src="assets/images/profile_pic.png" alt="Saddiq Ur Rehman" class="profile-image main"
-                id="profileMain">
-              <img src="assets/images/profile_pic_2.jpg" alt="Saddiq Ur Rehman Alt" class="profile-image hover"
-                id="profileHover">
+                id="profileMain" loading="lazy" width="320" height="320">
+              <img src="assets/images/profile_pic_2.jpg" alt="Saddiq Ur Rehman alternate" class="profile-image hover"
+                id="profileHover" loading="lazy" width="320" height="320">
             </div>
             <div class="contact-info">
               <p><i class="fas fa-envelope"></i> <a href="mailto:saddiqurrehman@khu.ac.kr">saddiqurrehman@khu.ac.kr</a>
               </p>
               <p><i class="fas fa-envelope"></i> <a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a></p>
               <p><i class="fas fa-map-marker-alt"></i> Kyung Hee University, Korea</p>
-              <div class="citation-info">
-                <p><i class="fas fa-quote-right"></i> 
-                  <span>Citations: </span>
-                  <span id="citation-count" class="citation-count">Loading...</span>
-                  <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" target="_blank" class="scholar-link">
-                    <i class="fas fa-external-link-alt"></i>
-                  </a>
-                </p>
+              <div class="cv-download">
+                <a href="https://drive.google.com/file/d/1Rlx_EFeGegWcn31SLxSFt4gB0Ln7OaOx/view?usp=drive_link" 
+                   target="_blank" 
+                   class="cv-button" 
+                   rel="noopener"
+                   title="Download CV">
+                  <i class="fas fa-download"></i>
+                  <span>Download CV</span>
+                </a>
               </div>
             </div>
           </div>
@@ -174,24 +213,19 @@
         <div class="news-section">
           <h3 class="section-title news-title">Recent News & Updates</h3>
           <div class="news-list">
-            <ul class="news-bullets">
-              <li class="news-bullet-item">
-                <span class="news-date">2025/07</span>
-                <i class="fas fa-journal-whills news-icon"></i>
-                <span class="news-text"><strong>Publication:</strong> "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform" accepted in Automation in Construction Journal (IF:11.5)</span>
-              </li>
-              <li class="news-bullet-item">
-                <span class="news-date">2025/05</span>
-                <i class="fas fa-journal-whills news-icon"></i>
-                <span class="news-text"><strong>Publication:</strong> "Integration of 4D BIM and VR for interactive modular building manufacturing simulations in a factory-controlled environment" accepted in Creative Construction Conference 2025</span>
-              </li>
-              <li class="news-bullet-item">
-                <span class="news-date">2025/03</span>
-                <i class="fas fa-journal-whills news-icon"></i>
-                <span class="news-text"><strong>Publication:</strong> "Advancing BIM and game engine integration in the AEC industry" published in Journal of Computational Design and Engineering</span>
-              </li>
+            <ul id="news-bullets" class="news-bullets">
+              <!-- News items will be loaded dynamically -->
+              <li class="news-loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                Loading latest news...
               </li>
             </ul>
+            <div class="news-controls">
+              <button id="show-more-news" class="show-more-btn" style="display: none;">
+                <i class="fas fa-chevron-down"></i>
+                Show More News
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -403,7 +437,7 @@
         </div>
 
         <div class="activity-category">
-          <h3>Review Activities</h3>
+          <h3>Editorial & Review Activities</h3>
           <div class="activity-item">
             <i class="fas fa-edit activity-icon"></i>
             <div class="activity-content">
@@ -413,13 +447,13 @@
           <div class="activity-item">
             <i class="fas fa-edit activity-icon"></i>
             <div class="activity-content">
-              <strong>Expert Systems with Applications</strong> - Reviewer
-           </div>
+              <strong>Journal of Civil Engineering and Management</strong> - Reviewer
+            </div>
           </div>
           <div class="activity-item">
             <i class="fas fa-edit activity-icon"></i>
             <div class="activity-content">
-              <strong>Journal of Civil Engineering and Management</strong> - Reviewer
+              <strong>Expert Systems with Applications</strong> - Reviewer
             </div>
           </div>
         </div>
@@ -757,29 +791,29 @@
       </div>
     </div>
   </div>
-  </div>
+  </main>
 
   <!-- Social Media Floating Icons -->
   <div class="social-floating">
     <a href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/" class="social-icon linkedin" target="_blank"
-      title="LinkedIn">
+      title="LinkedIn" rel="noopener">
       <i class="fab fa-linkedin-in"></i>
     </a>
-    <a href="https://github.com/isaddiq" class="social-icon github" target="_blank" title="GitHub">
+    <a href="https://github.com/isaddiq" class="social-icon github" target="_blank" title="GitHub" rel="noopener">
       <i class="fab fa-github"></i>
     </a>
     <a href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en" class="social-icon scholar" target="_blank"
-      title="Google Scholar">
+      title="Google Scholar" rel="noopener">
       <i class="fas fa-graduation-cap"></i>
     </a>
-    <a href="https://orcid.org/0000-0002-8098-0939" class="social-icon orcid" target="_blank" title="ORCID">
+    <a href="https://orcid.org/0000-0002-8098-0939" class="social-icon orcid" target="_blank" title="ORCID" rel="noopener">
       <i class="fab fa-orcid"></i>
     </a>
     <a href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf" class="social-icon researchgate"
-      target="_blank" title="ResearchGate">
+      target="_blank" title="ResearchGate" rel="noopener">
       <i class="fab fa-researchgate"></i>
     </a>
-    <a href="https://www.instagram.com/callmesaddiq/" class="social-icon instagram" target="_blank" title="instagram">
+    <a href="https://www.instagram.com/callmesaddiq/" class="social-icon instagram" target="_blank" title="instagram" rel="noopener">
       <i class="fab fa-instagram"></i>
     </a>
     <a href="#" class="social-icon flagcounter-icon" title="Show country flags">
@@ -848,11 +882,13 @@
 
   <!-- Footer -->
   <footer class="site-footer">
+
     
     <div class="footer-bottom">
       <div class="footer-divider"></div>
       <div class="footer-copyright">
         <p>&copy; 2025 Saddiq Ur Rehman. All rights reserved.</p>
+        <p>Built with passion for research and innovation in AEC industry.</p>
       </div>
     </div>
   </footer>
@@ -860,5 +896,3 @@
 </body>
 
 </html>
-
-
