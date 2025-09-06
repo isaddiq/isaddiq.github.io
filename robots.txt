@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://isaddiq.github.io/sitemap.xml
+
+# Preferred URLs
+Allow: /index.html
+Allow: /#home
+Allow: /#education
+Allow: /#experience
+Allow: /#publications
+Allow: /#projects
+Allow: /#skills
+Allow: /#software
+Allow: /#certifications
+Allow: /#activities
+Allow: /#contact
+
+# Block unnecessary crawling
+Disallow: /assets/js/
+Disallow: /.git/
+Disallow: /.github/
+Disallow: /node_modules/
+
+# Crawl delay
+Crawl-delay: 1
