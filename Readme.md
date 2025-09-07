@@ -1354,13 +1354,6 @@ SOFTWARE.
 
 <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=E74C3C&background=FFFFFF00&center=true&vCenter=true&width=600&lines=Thank+You+for+Your+Support!;Star+%E2%AD%90+if+You+Like+This+Project;Share+with+Fellow+Researchers;Let's+Build+Amazing+Portfolios!" alt="Typing SVG" />
 
-### 📅 **LAST UPDATED: JUNE 2025** 📅
-
-![GitHub last commit](https://img.shields.io/github/last-commit/isaddiq/portfolio?style=for-the-badge&logo=github&color=green)
-![GitHub contributors](https://img.shields.io/github/contributors/isaddiq/portfolio?style=for-the-badge&logo=github&color=blue)
-![GitHub issues](https://img.shields.io/github/issues/isaddiq/portfolio?style=for-the-badge&logo=github&color=red)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/isaddiq/portfolio?style=for-the-badge&logo=github&color=orange)
-
 ---
 
 ### 🌟 **SHOW YOUR SUPPORT** 🌟
@@ -1384,3 +1377,4 @@ SOFTWARE.
 </div>
 
 </div>
+
