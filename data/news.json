@@ -1,6 +1,15 @@
 [
   {
     "id": 1,
+    "date": "2025/09",
+    "icon": "fas fa-journal-whills",
+    "type": "Publication",
+    "title": "BIM-Based Mixed Reality System for Real-Time Inspection of Factory-Built Modular Units",
+    "details": "accepted in ICCEPM 2025",
+    "importance": "high"
+  },
+  {
+    "id": 1,
     "date": "2025/07",
     "icon": "fas fa-journal-whills",
     "type": "Publication",
@@ -27,3 +36,4 @@
     "importance": "medium"
   }
 ]
+
