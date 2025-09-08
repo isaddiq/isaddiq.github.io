@@ -267,11 +267,6 @@ p {
 }
 
 .content {
-  background: var(--bg-primary);
-  border-radius: 12px;
-  box-shadow: 0 4px 24px var(--shadow-color);
-  overflow: hidden;
-  border: 1px solid var(--border-color);
 }
 
 /* ==========================================================================
@@ -3426,3 +3421,4 @@ a:focus {
     align-self: flex-start;
   }
 }
+
