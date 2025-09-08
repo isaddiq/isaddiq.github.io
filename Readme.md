@@ -9,7 +9,7 @@
 
 ### Saddiq Ur Rehman - PhD Student at Kyung Hee University
 
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=3498DB&center=true&vCenter=true&width=500&lines=Building+Information+Modeling;Artificial+Intelligence;Construction+Technology,DfMA,LLM,Extended+Reality,Modular+Construction" alt="Typing SVG" />
+<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=3498DB&center=true&vCenter=true&width=500&lines=Building+Information+Modeling;Artificial+Intelligence;Construction+Technology;DfMA;LLM;Extended+Reality;Modular+Construction" alt="Typing SVG" />
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/)
 [![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:saddiqurrehman@khu.ac.kr)
@@ -180,6 +180,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 _Made with ❤️ for the academic and research community._
 
 </div>
+
 
 
 
