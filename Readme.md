@@ -1,6 +1,7 @@
 
 
-![Portfolio Banner](https://github.com/user-attachments/assets/f137f97c-be19-4713-828e-e05a04ebc91a)
+<img width="1877" height="821" alt="image" src="https://github.com/user-attachments/assets/a5e638e4-9509-461b-a014-15082c6ff63d" />
+
 
 <div align="center">
 
@@ -179,6 +180,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 _Made with ❤️ for the academic and research community._
 
 </div>
+
 
 
 
