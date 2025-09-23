@@ -2675,23 +2675,7 @@ p {
 
 /* Tools Content Styles */
 .tools-content-container {
-  max-height: 80vh;
-  overflow-y: auto;
   padding-right: 10px;
-}
-
-.tools-content-container::-webkit-scrollbar {
-  width: 8px;
-}
-
-.tools-content-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-.tools-content-container::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #3498db 0%, #9b59b6 100%);
-  border-radius: 10px;
 }
 
 .tool-content {
@@ -3108,10 +3092,6 @@ p {
     justify-content: center;
   }
 
-  .tools-content-container {
-    max-height: 70vh;
-  }
-
   .capabilities-grid {
     grid-template-columns: 1fr;
   }
@@ -3412,4 +3392,3 @@ a:focus {
     align-self: flex-start;
   }
 }
-
