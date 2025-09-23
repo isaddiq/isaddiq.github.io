@@ -3,7 +3,7 @@
     {
       "id": "project_001",
       "title": "Development of Core Technologies for Robot-Friendly Building Design, Construction, Operation & Management",
-      "duration": "Apr 2025 – Dec 2026",
+      "duration": "Apr. 2025 – Feb. 2026",
       "role": "Researcher (BIM–robot integration work-package)",
       "status": "Ongoing",
       "funding_amount": "468.03 million KRW (Phase 1/4 only)",
@@ -39,7 +39,7 @@
     },
     {
       "id": "project_004",
-      "title": "NRF Mid-Career Research Type-1: BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction",
+      "title": "BIM-Based Customer-Friendly AI Automated Cost Estimation System for Industrialized Construction",
       "duration": " Mar 2025 – Feb 2026",
       "role": "Researcher (BIM-XR Integration)",
       "status": "Ongoing",
@@ -128,8 +128,7 @@
       "detailed_description": "This completed project established Korea's first open-BIM rule-checking workflow. Contributions centered on mapping IFC entities to rule parameters and building regression test suites that now serve as benchmarks for the newer Smart+ Building regulatory modules. Excel records show Phase 5/5 funding only.",
       "objectives": [
         "Translate Korean Building Code clauses into executable IFC logic rules",
-        "Develop KBim Assess-Lite model checker and KBim D-Generator for automatic 2D permit drawings",
-        "Improve design-approval productivity by ≥ 30%"
+        "Develop KBim Assess-Lite model checker and KBim D-Generator for automatic 2D permit drawings"
       ],
       "key_outputs": [
         "KBim Assess-Lite v2.0 and D-Generator prototype released, adopted by multiple local authorities"
@@ -154,3 +153,4 @@
   "collaboration_projects": [],
   "student_projects": []
 }
+
