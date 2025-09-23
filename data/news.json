@@ -3,6 +3,15 @@
     "id": 1,
     "date": "2025/09",
     "icon": "fas fa-journal-whills",
+    "type": "Software Release",
+    "title": "ReUniXchange v1.0.0",
+    "details": "a BIM data exchange platform enabling seamless integration between Revit and Unity now available on Autodesk App Store",
+    "importance": "high"
+  },
+  {
+    "id": 1,
+    "date": "2025/09",
+    "icon": "fas fa-journal-whills",
     "type": "Publication",
     "title": "BIM-Based Mixed Reality System for Real-Time Inspection of Factory-Built Modular Units",
     "details": "accepted in ICCEPM 2025",
@@ -36,4 +45,5 @@
     "importance": "medium"
   }
 ]
+
 
