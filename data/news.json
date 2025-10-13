@@ -1,6 +1,15 @@
 [
   {
     "id": 1,
+    "date": "2025/10",
+    "icon": "fas fa-journal-whills",
+    "type": "Publication",
+    "title": "Transformer-Based Framework for mapping Client requirements to BIM,",
+    "details": ""accepted in Automation in Construction Journal (IF:11.5)",
+    "importance": "high"
+  },
+  {
+    "id": 1,
     "date": "2025/09",
     "icon": "fas fa-journal-whills",
     "type": "Software Release",
@@ -45,6 +54,7 @@
     "importance": "medium"
   }
 ]
+
 
 
 
