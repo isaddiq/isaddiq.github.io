@@ -1,5 +1,20 @@
 {
     "journals": [
+     {
+        "id": "journal_2025_01",
+        "title": "Transformer-based framework for mapping client requirements to BIM",
+        "authors": ["Syed Haseeb Shah","Saddiq Ur Rehman", "Inhan Kim", "Kyung-Eun Hwang"],
+        "year": 2025,
+        "journal": "Automation in Construction",
+        "volume": "181",
+        "pages": "106601",
+        "impactFactor": 11.5,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1016/j.autcon.2025.106601",
+        "abstract": "This paper presents a framwork for mapping client office building needs to BIM models using BERT",
+        "keywords": ["BIM", "BERT", "Client", "Recommendation", "requirements"]
+      },
         {
         "id": "journal_2025_01",
         "title": "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform",
@@ -367,6 +382,7 @@
       }
     ]
   }
+
 
 
 
