@@ -3425,7 +3425,7 @@ a:focus {
    ========================================================================== */
 
 .mobile-menu-toggle {
-  display: none;
+  display: none !important;
   background: var(--primary-color);
   color: white;
   border: none;
@@ -3448,7 +3448,7 @@ a:focus {
 
 @media (max-width: 768px) {
   .mobile-menu-toggle {
-    display: block;
+    display: block !important;
   }
 
   .nav-menu {
