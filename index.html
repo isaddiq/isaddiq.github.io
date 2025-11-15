@@ -77,17 +77,50 @@
   <!-- Full Width Header Navigation -->
   <div class="header-wrapper">
     <div class="header">
+      <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation menu">
+        <i class="fas fa-bars"></i>
+      </button>
       <nav class="nav-menu">
-        <button class="nav-btn active" onclick="showTab('home')" aria-current="page">Home</button>
-        <button class="nav-btn" onclick="showTab('education')">Education</button>
-        <button class="nav-btn" onclick="showTab('experience')">Experience</button>
-        <button class="nav-btn" onclick="showTab('publications')">Publications</button>
-        <button class="nav-btn" onclick="showTab('projects')">Projects</button>
-        <button class="nav-btn" onclick="showTab('skills')">Skills</button>
-        <button class="nav-btn" onclick="showTab('software')">Software/Tools</button>
-        <button class="nav-btn" onclick="showTab('certifications')">Certifications & Awards</button>
-        <button class="nav-btn" onclick="showTab('activities')">Activities</button>
-        <button class="nav-btn" onclick="showTab('contact')">Contact</button>
+        <button class="nav-btn active" onclick="showTab('home')" aria-current="page" aria-label="Navigate to Home">
+          <i class="fas fa-home"></i>
+          <span>Home</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('education')" aria-label="Navigate to Education">
+          <i class="fas fa-graduation-cap"></i>
+          <span>Education</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('experience')" aria-label="Navigate to Experience">
+          <i class="fas fa-briefcase"></i>
+          <span>Experience</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('publications')" aria-label="Navigate to Publications">
+          <i class="fas fa-book"></i>
+          <span>Publications</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('projects')" aria-label="Navigate to Projects">
+          <i class="fas fa-project-diagram"></i>
+          <span>Projects</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('skills')" aria-label="Navigate to Skills">
+          <i class="fas fa-cogs"></i>
+          <span>Skills</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('software')" aria-label="Navigate to Software/Tools">
+          <i class="fas fa-laptop-code"></i>
+          <span>Software/Tools</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('certifications')" aria-label="Navigate to Certifications">
+          <i class="fas fa-award"></i>
+          <span>Certifications & Awards</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('activities')" aria-label="Navigate to Activities">
+          <i class="fas fa-users"></i>
+          <span>Activities</span>
+        </button>
+        <button class="nav-btn" onclick="showTab('contact')" aria-label="Navigate to Contact">
+          <i class="fas fa-envelope"></i>
+          <span>Contact</span>
+        </button>
       </nav>
       <div class="theme-toggle">
         <button id="theme-toggle-btn" class="theme-btn" onclick="toggleTheme()" title="Toggle dark/light mode">
@@ -837,6 +870,11 @@
       </div>
     </div>
   </div>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTop" class="scroll-to-top" onclick="scrollToTop()" aria-label="Scroll to top">
+    <i class="fas fa-arrow-up"></i>
+  </button>
 
   <!-- Loading Spinner -->
   <div id="loading" class="loading-spinner">

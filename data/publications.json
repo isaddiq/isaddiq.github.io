@@ -11,9 +11,7 @@
         "impactFactor": 11.5,
         "quartile": "Q1",
         "category": "SCIE",
-        "doi": "https://doi.org/10.1016/j.autcon.2025.106601",
-        "abstract": "This paper presents a framwork for mapping client office building needs to BIM models using BERT",
-        "keywords": ["BIM", "BERT", "Client", "Recommendation", "requirements"]
+        "doi": "https://doi.org/10.1016/j.autcon.2025.106601"
       },
         {
         "id": "journal_2025_01",
@@ -26,9 +24,7 @@
         "impactFactor": 11.5,
         "quartile": "Q1",
         "category": "SCIE",
-        "doi": "https://doi.org/10.1016/j.autcon.2025.106409",
-        "abstract": "This paper presents a comprehensive framework for BIM to Unity data exchange",
-        "keywords": ["BIM", "Game Engine", "Interoperability", "Visualization", "Integration"]
+        "doi": "https://doi.org/10.1016/j.autcon.2025.106409"
       },
       {
         "id": "journal_2025_02",
@@ -41,9 +37,7 @@
         "impactFactor": 6.1,
         "quartile": "Q1",
         "category": "SCIE",
-        "doi": "https://doi.org/10.1093/jcde/qwaf030",
-        "abstract": "This paper presents a comprehensive framework for integrating Building Information Modeling (BIM) with game engines to revolutionize visualization and simulation in the Architecture, Engineering, and Construction (AEC) industry.",
-        "keywords": ["BIM", "Game Engine", "AEC Industry", "Visualization", "Integration"]
+        "doi": "https://doi.org/10.1093/jcde/qwaf030"
       },
       {
         "id": "journal_2024_01",
@@ -57,9 +51,7 @@
         "quartile": "Q1",
         "category": "SCIE",
         "doi": "https://doi.org/10.1093/jcde/qwae041",
-        "badges": ["Corresponding author"],
-        "abstract": "This study introduces an AI-driven design recommendation system that leverages natural language processing to understand client requirements and generate tailored modular housing designs.",
-        "keywords": ["NLP", "Design Recommendation", "Modular Housing", "AI", "Client-Centered Design"]
+        "badges": ["Corresponding author"]
       },
       {
         "id": "journal_2023_01",
@@ -73,9 +65,7 @@
         "quartile": "Q1",
         "category": "SCIE",
         "doi": "https://doi.org/10.1093/jcde/qwad100",
-        "badges": ["Editor's Choice"],
-        "abstract": "This research develops a comprehensive data-driven framework for integrating 4D BIM simulation in modular construction projects, validated through multiple case studies.",
-        "keywords": ["4D BIM", "Modular Construction", "Data Integration", "Simulation", "Case Study"]
+        "badges": ["Editor's Choice"]
       },
       {
         "id": "journal_2020_01",
@@ -86,10 +76,7 @@
         "volume": "11",
         "pages": "1278-1283",
         "impactFactor": 1.1,
-        "doi": "https://www.researchgate.net/publication/339297221_Mechanical_Properties_of_Polyethylene-Sand_Blocks_Produced_from_Recycled_Plastic_Bags",
-        "badges": [],
-        "abstract": "Investigation of mechanical properties of sustainable construction blocks made from recycled polyethylene and sand composite materials.",
-        "keywords": ["Recycled Materials", "Sustainable Construction", "Composite Materials", "Mechanical Properties"]
+        "doi": "https://www.researchgate.net/publication/339297221_Mechanical_Properties_of_Polyethylene-Sand_Blocks_Produced_from_Recycled_Plastic_Bags"
       }
     ],
     "conferences": [
@@ -103,8 +90,7 @@
         "date": "June. 14-June.17, 2025",
         "doi": "https://doi.org/10.22260/CCC2025/0054",
         "type": "Oral Presentation",
-        "pages": "446-454",
-        "abstract": "This paper presents a novel approach to Integrated BIM and VR for modular manufacturing simulation."
+        "pages": "446-454"
       },
       {
         "id": "conf_2024_02",
@@ -116,8 +102,7 @@
         "date": "Jul. 29-Aug.1, 2024",
         "doi": "https://doi.org/10.6106/ICCEPM.2024.0070",
         "type": "Oral Presentation",
-        "pages": "445-452",
-        "abstract": "This paper presents a novel approach to modular building design using shape grammar principles integrated with BIM databases."
+        "pages": "445-452"
       },
       {
         "id": "conf_2022_01",
@@ -129,8 +114,7 @@
         "date": "August 2022",
         "doi": "https://doi.org/10.1007/978-3-031-13588-0_65",
         "type": "Conference Proceedings",
-        "pages": "749-759",
-        "abstract": "This paper consolidates various DfMA construction guidelines and validates them through a Korean case study."
+        "pages": "749-759"
       },
       {
         "id": "conf_2021_01",
@@ -142,8 +126,7 @@
         "date": "2021",
         "doi": "https://gamelab.us.edu.pl/wp-content/uploads/2022/01/1_AFGS-proceeding-v5-20211204.pdf",
         "type": "Conference Paper",
-        "pages": "122-132",
-        "abstract": "This study discusses the progress of automated rule checking in Korea’s national BIM project."
+        "pages": "122-132"
       },
       {
         "id": "conf_2019_01",
@@ -155,8 +138,7 @@
         "date": "October 29-31, 2019",
         "doi": "",
         "type": "Conference Presentation",
-        "pages": "",
-        "abstract": "An experimental investigation into the rotational stiffness of partial fixity joints in post-tensioned precast systems."
+        "pages": ""
       },
       {
         "id": "conf_2019_02",
@@ -168,8 +150,7 @@
         "date": "August 01, 2019",
         "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
         "type": "Conference Presentation",
-        "pages": "227-232",
-        "abstract": "This work demonstrates the application of 4D BIM to the planning and visualization of insulated concrete panel construction."
+        "pages": "227-232"
       },
       {
         "id": "conf_2019_03",
@@ -181,8 +162,7 @@
         "date": "August 01, 2019",
         "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
         "type": "Conference Presentation",
-        "pages": "398-404",
-        "abstract": "Study focuses on pile group behavior and raft foundation capacity via field experiments."
+        "pages": "398-404"
       },
       {
         "id": "conf_2019_04",
@@ -194,8 +174,7 @@
         "date": "August 01, 2019",
         "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
         "type": "Conference Presentation",
-        "pages": "412-419",
-        "abstract": "This paper compares settlement behavior in pile raft foundations with different pile orientations."
+        "pages": "412-419"
       },
       {
         "id": "conf_2019_05",

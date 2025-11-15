@@ -208,6 +208,19 @@ p {
   letter-spacing: 0.3px;
   position: relative;
   text-transform: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.nav-btn i {
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.nav-btn:hover i {
+  transform: scale(1.1);
 }
 
 .nav-btn:hover {
@@ -223,6 +236,20 @@ p {
   color: white;
   border-color: var(--primary-color);
   box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.nav-btn.active i {
+  animation: iconBounce 0.5s ease;
+}
+
+@keyframes iconBounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 /* Count badges for publication navigation */
@@ -3391,4 +3418,501 @@ a:focus {
   .news-date {
     align-self: flex-start;
   }
+}
+
+/* ==========================================================================
+   Mobile Menu Toggle Button
+   ========================================================================== */
+
+.mobile-menu-toggle {
+  display: none;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2em;
+  transition: all 0.3s ease;
+  z-index: 1001;
+}
+
+.mobile-menu-toggle:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+.mobile-menu-toggle:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  .nav-menu {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 280px;
+    height: calc(100vh - 70px);
+    background: var(--bg-primary);
+    flex-direction: column;
+    padding: 20px;
+    gap: 10px;
+    transition: left 0.3s ease;
+    overflow-y: auto;
+    box-shadow: 2px 0 15px var(--shadow-color);
+    z-index: 999;
+  }
+
+  .nav-menu.active {
+    left: 0;
+  }
+
+  .nav-btn {
+    width: 100%;
+    text-align: left;
+    padding: 12px 16px;
+  }
+}
+
+/* ==========================================================================
+   Scroll to Top Button
+   ========================================================================== */
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 998;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.scroll-to-top:hover {
+  background: var(--secondary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .scroll-to-top {
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    font-size: 1em;
+  }
+}
+
+/* ==========================================================================
+   Enhanced Card Hover Effects
+   ========================================================================== */
+
+.publication-item,
+.project-card,
+.certificate-card,
+.experience-item {
+  position: relative;
+  overflow: hidden;
+}
+
+.publication-item::before,
+.project-card::before,
+.certificate-card::before,
+.experience-item::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+.publication-item:hover::before,
+.project-card:hover::before,
+.certificate-card:hover::before,
+.experience-item:hover::before {
+  left: 100%;
+}
+
+/* ==========================================================================
+   Smooth Page Transitions
+   ========================================================================== */
+
+.tab-content {
+  animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Loading States and Skeleton Screens
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--bg-tertiary) 25%,
+    var(--bg-secondary) 50%,
+    var(--bg-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* ==========================================================================
+   Improved Modal Animations
+   ========================================================================== */
+
+.modal {
+  animation: modalFadeIn 0.3s ease;
+}
+
+.modal-content {
+  animation: modalSlideIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: translateY(-50px) scale(0.95);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   Interactive Button Effects
+   ========================================================================== */
+
+button,
+.action-btn,
+.cv-button {
+  position: relative;
+  overflow: hidden;
+}
+
+button::after,
+.action-btn::after,
+.cv-button::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+button:active::after,
+.action-btn:active::after,
+.cv-button:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* ==========================================================================
+   Pulse Animation for Important Elements
+   ========================================================================== */
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pulse-on-hover:hover {
+  animation: pulse 1s infinite;
+}
+
+/* ==========================================================================
+   Tooltip Enhancements
+   ========================================================================== */
+
+[data-tooltip] {
+  position: relative;
+  cursor: help;
+}
+
+[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  padding: 8px 12px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  border-radius: 6px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+[data-tooltip]::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--text-primary);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+[data-tooltip]:hover::before,
+[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+/* ==========================================================================
+   Progress Bar Animation
+   ========================================================================== */
+
+.skill-bar {
+  position: relative;
+  overflow: visible;
+}
+
+.skill-progress {
+  animation: skillBarFill 1s ease-out;
+  position: relative;
+}
+
+@keyframes skillBarFill {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--skill-width, 0%);
+  }
+}
+
+.skill-progress::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  animation: pulse 2s infinite;
+}
+
+/* ==========================================================================
+   Enhanced Social Icons
+   ========================================================================== */
+
+.social-floating .social-icon {
+  position: relative;
+  overflow: hidden;
+}
+
+.social-floating .social-icon::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+}
+
+.social-floating .social-icon:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   Card Flip Effect for Certificates
+   ========================================================================== */
+
+.certificate-card {
+  perspective: 1000px;
+}
+
+.certificate-inner {
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.certificate-card:hover .certificate-inner {
+  transform: rotateY(5deg) scale(1.02);
+}
+
+/* ==========================================================================
+   Gradient Text Effects
+   ========================================================================== */
+
+.gradient-text {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   Enhanced News Items
+   ========================================================================== */
+
+.news-bullet-item {
+  position: relative;
+  padding-left: 20px;
+}
+
+.news-bullet-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: var(--primary-color);
+  border-radius: 50%;
+  animation: newsPulse 2s infinite;
+}
+
+@keyframes newsPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--primary-color-rgb), 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(var(--primary-color-rgb), 0);
+  }
+}
+
+/* ==========================================================================
+   Improved Form Inputs
+   ========================================================================== */
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   Breadcrumb Navigation Enhancement
+   ========================================================================== */
+
+.breadcrumb {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 15px 0;
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.breadcrumb-item::after {
+  content: "/";
+  color: var(--text-muted);
+}
+
+.breadcrumb-item:last-child::after {
+  content: "";
+}
+
+.breadcrumb-item.active {
+  color: var(--primary-color);
+  font-weight: 600;
 }

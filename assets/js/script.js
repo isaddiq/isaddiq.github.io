@@ -39,6 +39,8 @@ function initializeTheme() {
     
     const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
     
+    // Apply theme with smooth transition
+    document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
     document.documentElement.setAttribute('data-theme', theme);
     
     // Update theme icon
@@ -57,6 +59,69 @@ function initializeTheme() {
             }
         }
     });
+}
+
+// ==========================================================================
+// Mobile Menu Toggle Function
+// ==========================================================================
+
+/**
+ * Toggle mobile navigation menu
+ */
+function toggleMobileMenu() {
+    const navMenu = document.querySelector('.nav-menu');
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (navMenu) {
+        navMenu.classList.toggle('active');
+        
+        // Update icon
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+            icon.className = navMenu.classList.contains('active') ? 'fas fa-times' : 'fas fa-bars';
+        }
+        
+        // Prevent body scroll when menu is open
+        document.body.style.overflow = navMenu.classList.contains('active') ? 'hidden' : '';
+    }
+}
+
+/**
+ * Close mobile menu when clicking outside
+ */
+function closeMobileMenuOnClickOutside(event) {
+    const navMenu = document.querySelector('.nav-menu');
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (navMenu && navMenu.classList.contains('active')) {
+        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
+            navMenu.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            const icon = menuToggle.querySelector('i');
+            if (icon) {
+                icon.className = 'fas fa-bars';
+            }
+        }
+    }
+}
+
+/**
+ * Close mobile menu when a nav button is clicked
+ */
+function closeMobileMenuOnNavClick() {
+    const navMenu = document.querySelector('.nav-menu');
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    
+    if (navMenu && navMenu.classList.contains('active')) {
+        navMenu.classList.remove('active');
+        document.body.style.overflow = '';
+        
+        const icon = menuToggle.querySelector('i');
+        if (icon) {
+            icon.className = 'fas fa-bars';
+        }
+    }
 }
 
 // ==========================================================================
@@ -467,7 +532,10 @@ function setCurrentTab(tabName) {
  * @param {string} tabName - Name of the tab to show
  */
 function showTab(tabName) {
-    // Hide all tab contents
+    // Close mobile menu when switching tabs
+    closeMobileMenuOnNavClick();
+    
+    // Hide all tab contents with fade effect
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
         tab.classList.remove('active');
@@ -480,10 +548,15 @@ function showTab(tabName) {
         btn.removeAttribute('aria-current');
     });
     
-    // Show selected tab
+    // Show selected tab with animation
     const selectedTab = document.getElementById(tabName);
     if (selectedTab) {
-        selectedTab.classList.add('active');
+        // Small delay for smooth transition
+        setTimeout(() => {
+            selectedTab.classList.add('active');
+            // Trigger animations for elements in the tab
+            animateTabContent(selectedTab);
+        }, 50);
     }
     
     // Add active class and aria-current to corresponding nav button
@@ -516,25 +589,33 @@ function showTab(tabName) {
         history.replaceState(null, '', `#${tabName}`);
     }
     
-    // Optional: scroll to top of content smoothly
-    const container = document.querySelector('.container');
-    if (container) {
-        container.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-    
     // Load dynamic content if needed
     loadTabContent(tabName);
     
-    // Scroll to top of content area (accounting for fixed header)
-    const contentElement = document.querySelector('.content');
-    if (contentElement) {
-        const headerHeight = CONFIG.headerHeight;
-        const elementPosition = contentElement.offsetTop - headerHeight;
-        window.scrollTo({
-            top: elementPosition,
-            behavior: 'smooth'
-        });
-    }
+    // Smooth scroll to top
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+}
+
+/**
+ * Animate content elements when tab is shown
+ * @param {HTMLElement} tabElement - The tab element to animate
+ */
+function animateTabContent(tabElement) {
+    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category');
+    
+    animatableElements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, index * 50); // Stagger animation
+    });
 }
 
 /**
@@ -1256,13 +1337,30 @@ function handleModalClick(event) {
 // ==========================================================================
 
 /**
- * Scroll smoothly to the top of the page
+ * Scroll smoothly to the top of the page with animation
  */
 function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    const scrollButton = document.getElementById('scrollToTop');
+    
+    // Add clicked animation
+    if (scrollButton) {
+        scrollButton.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            scrollButton.style.transform = '';
+        }, 200);
+    }
+    
+    // Smooth scroll with easing
+    const scrollDuration = 600;
+    const scrollStep = -window.scrollY / (scrollDuration / 15);
+    
+    const scrollInterval = setInterval(() => {
+        if (window.scrollY !== 0) {
+            window.scrollBy(0, scrollStep);
+        } else {
+            clearInterval(scrollInterval);
+        }
+    }, 15);
 }
 
 /**
@@ -1283,6 +1381,15 @@ function initializeScrollToTop() {
     }, 100);
     
     window.addEventListener('scroll', handleScroll);
+    
+    // Add hover effect
+    scrollButton.addEventListener('mouseenter', () => {
+        scrollButton.style.transform = 'translateY(-5px)';
+    });
+    
+    scrollButton.addEventListener('mouseleave', () => {
+        scrollButton.style.transform = 'translateY(0)';
+    });
 }
 
 // ==========================================================================
@@ -1451,10 +1558,16 @@ function throttle(func, limit) {
  * Initialize the application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Academic Portfolio initializing - Enhanced Features with Tab Persistence');
+    console.log('🚀 Academic Portfolio initializing - Enhanced UI/UX with Performance Optimizations');
     
-    // Load all data from JSON files first
-    await loadDataFromJSON();
+    // Load all data from JSON files first with loading indicator
+    const dataPromise = loadDataFromJSON();
+    
+    // Initialize critical components immediately
+    initializeTheme(); // Initialize theme toggle functionality first
+    
+    // Wait for data to load
+    await dataPromise;
     
     // Hide loading spinner after data is loaded
     setTimeout(hideLoadingSpinner, CONFIG.loadingDelay);
@@ -1464,7 +1577,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeKeyboardNavigation();
     initializeHeaderEffects();
     initializeScrollToTop();
-    initializeTheme(); // Initialize theme toggle functionality
     
     // Initialize tab from URL hash on page load
     initializeTabFromUrl();
@@ -1478,6 +1590,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Set up modal click handlers
     window.addEventListener('click', handleModalClick);
     
+    // Add mobile menu click outside listener
+    document.addEventListener('click', closeMobileMenuOnClickOutside);
+    
     // Initialize animations after a short delay
     setTimeout(initializeAnimations, 500);
     
@@ -1490,13 +1605,21 @@ document.addEventListener('DOMContentLoaded', async function() {
         showTab(currentTab);
     });
     
-    // Add resize handler for responsive adjustments
+    // Add resize handler for responsive adjustments with debounce
     const handleResize = debounce(() => {
         const header = document.querySelector('.header-wrapper');
         if (header) {
             CONFIG.headerHeight = header.offsetHeight;
         }
-        console.log('Window resized - Header height updated');
+        
+        // Close mobile menu on desktop view
+        if (window.innerWidth > 768) {
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        }
     }, 250);
     
     window.addEventListener('resize', handleResize);
@@ -1508,9 +1631,69 @@ document.addEventListener('DOMContentLoaded', async function() {
             CONFIG.headerHeight = header.offsetHeight;
         }
     }, 100);
+    
+    // Add performance monitoring
+    if (window.performance && window.performance.timing) {
+        window.addEventListener('load', () => {
+            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
+            console.log(`📊 Page loaded in ${loadTime}ms`);
+        });
+    }
+    
+    // Preload critical images
+    preloadImages([
+        'assets/images/profile_pic.png',
+        'assets/images/profile_pic_2.jpg'
+    ]);
 
-    console.log('✅ Portfolio initialization complete');
+    console.log('✅ Portfolio initialization complete with enhanced features');
 });
+
+/**
+ * Preload images for better performance
+ * @param {Array} imageUrls - Array of image URLs to preload
+ */
+function preloadImages(imageUrls) {
+    imageUrls.forEach(url => {
+        const img = new Image();
+        img.src = url;
+    });
+}
+
+/**
+ * Debounce function for performance optimization
+ * @param {Function} func - Function to debounce
+ * @param {number} wait - Wait time in milliseconds
+ * @returns {Function} Debounced function
+ */
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+/**
+ * Throttle function for scroll events
+ * @param {Function} func - Function to throttle
+ * @param {number} limit - Limit in milliseconds
+ * @returns {Function} Throttled function
+ */
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
 
 // ==========================================================================
 // Error Handling
@@ -1544,6 +1727,7 @@ window.closeModal = closeModal;
 window.openImageZoom = openImageZoom;
 window.closeImageZoom = closeImageZoom;
 window.scrollToTop = scrollToTop;
+window.toggleMobileMenu = toggleMobileMenu;
 
 //FLAG COUNTER JS
 
