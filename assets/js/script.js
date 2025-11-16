@@ -592,6 +592,14 @@ function showTab(tabName) {
     // Load dynamic content if needed
     loadTabContent(tabName);
     
+    // Reinitialize map when contact tab is shown
+    if (tabName === 'contact' && mapInstance) {
+        setTimeout(() => {
+            mapInstance.invalidateSize();
+            mapInstance.setView([37.2464, 127.0809], 18);
+        }, 100);
+    }
+    
     // Smooth scroll to top
     window.scrollTo({
         top: 0,
@@ -1964,6 +1972,8 @@ function validateForm() {
 /**
  * Initialize Leaflet Map
  */
+let mapInstance = null;
+
 function initializeMap() {
     if (typeof L === 'undefined') {
         console.error('Leaflet not loaded');
@@ -1973,39 +1983,45 @@ function initializeMap() {
     const mapElement = document.getElementById('map');
     if (!mapElement) return;
 
-    // Exact coordinates for Kyung Hee University College of Engineering
-    const lat = 37.246419;
-    const lng = 127.080889;
+    // If map already exists, remove it
+    if (mapInstance) {
+        mapInstance.remove();
+    }
 
-    // Initialize the map
-    const map = L.map('map').setView([lat, lng], 16);
+    // Exact coordinates for Kyung Hee University College of Engineering
+    const lat = 37.2464;
+    const lng = 127.0809;
+
+    // Initialize the map with center coordinates
+    mapInstance = L.map('map', {
+        center: [lat, lng],
+        zoom: 18,
+        scrollWheelZoom: true,
+        zoomControl: true
+    });
 
     // Add OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         maxZoom: 19,
-    }).addTo(map);
+    }).addTo(mapInstance);
 
     // Add marker
-    const marker = L.marker([lat, lng]).addTo(map);
-
-    // Add popup to marker
-    marker.bindPopup(`
-        <div>
-            <h4>경희대학교 공과대학</h4>
-            <p>Kyung Hee University College of Engineering<br>
-            26 Seocheon-dong, Yongin-si<br>
-            Gyeonggi-do, South Korea</p>
-        </div>
-    `).openPopup();
+    const marker = L.marker([lat, lng]).addTo(mapInstance);
 
     // Add a circle to highlight the area
     L.circle([lat, lng], {
         color: '#3498db',
         fillColor: '#3498db',
         fillOpacity: 0.2,
-        radius: 200
-    }).addTo(map);
+        radius: 100
+    }).addTo(mapInstance);
+
+    // Force map to invalidate size and recenter after tiles load
+    setTimeout(() => {
+        mapInstance.invalidateSize();
+        mapInstance.setView([lat, lng], 18);
+    }, 250);
 
     console.log('Map initialized successfully');
 }
