@@ -535,7 +535,7 @@ function showTab(tabName) {
     // Close mobile menu when switching tabs
     closeMobileMenuOnNavClick();
     
-    // Hide all tab contents with fade effect
+    // Remove active class from all tabs first
     const tabs = document.querySelectorAll('.tab-content');
     tabs.forEach(tab => {
         tab.classList.remove('active');
@@ -548,15 +548,15 @@ function showTab(tabName) {
         btn.removeAttribute('aria-current');
     });
     
-    // Show selected tab with animation
+    // Show selected tab immediately for smooth transition
     const selectedTab = document.getElementById(tabName);
     if (selectedTab) {
-        // Small delay for smooth transition
-        setTimeout(() => {
+        // Use requestAnimationFrame for smooth rendering
+        requestAnimationFrame(() => {
             selectedTab.classList.add('active');
             // Trigger animations for elements in the tab
             animateTabContent(selectedTab);
-        }, 50);
+        });
     }
     
     // Add active class and aria-current to corresponding nav button
