@@ -81,6 +81,18 @@
     ],
     "conferences": [
        {
+        "id": "conf_2025_02",
+        "title": "BIM-Based Mixed Reality System for Real-Time Inspection of Factory-Built Modular Units",
+        "authors": ["Saddiq Ur Rehman", "Jiyoung Kim", "Kyung-Eun Hwang", "Inhan Kim"],
+        "year": 2025,
+        "conference": "The 11th International Conference on Construction Engineering and Project Management (ICCEPM 2025)",
+        "location": "Jeju, Korea",
+        "date": "November 17-20, 2025",
+        "doi": "https://dx.doi.org/10.6106/ICCEPM.2025.0400",
+        "type": "Conference Paper",
+        "pages": ""
+      },
+       {
         "id": "conf_2025_01",
         "title": "Integration Of 4D BIM And VR For Interactive Modular Building Manufacturing Simulations In A Factory-Controlled Environment",
         "authors": ["Saddiq Ur Rehman", "Kyung-Eun Hwang", "Inhan Kim"],
