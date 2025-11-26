@@ -289,6 +289,24 @@
       ],
       "verification_url": "",
       "credential_id": "CDE-BEST-2023-001"
+    },
+    {
+      "id": "cert_024",
+      "title": "ICCEPM 2025 Participation",
+      "issuer": "ICCEPM",
+      "date": "2025-11-17",
+      "category": "Conference",
+      "description": "Participation in the 11th International Conference on Construction Engineering and Project Management: Advancing Global Construction Research: Innovations, Technologies, and Sustainable Solutions for the Built Environment, held in Sono Calm, Jeju, South Korea.",
+      "image": "assets/images/ICCEPM_2025.jpg",
+      "skills": [
+        "Construction Engineering",
+        "Project Management",
+        "Research Networking",
+        "Sustainable Construction",
+        "Global Construction Research"
+      ],
+      "verification_url": "",
+      "credential_id": "ICCEPM-2025-001"
     }
   ]
 }
