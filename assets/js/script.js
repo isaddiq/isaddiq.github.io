@@ -369,11 +369,39 @@ function openAwardCertificate(awardId) {
 // ==========================================================================
 
 const CONFIG = {
-    animationDuration: 300,
-    loadingDelay: 1000,
+    animationDuration: 350,
+    loadingDelay: 800,
     scrollOffset: 100,
-    headerHeight: 80
+    headerHeight: 80,
+    staggerDelay: 60,
+    observerThreshold: 0.1,
+    debounceDelay: 150
 };
+
+// Utility function for debouncing
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// Utility function for throttling
+function throttle(func, limit) {
+    let inThrottle;
+    return function(...args) {
+        if (!inThrottle) {
+            func.apply(this, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    };
+}
 
 // Data containers - will be populated from JSON files
 let experienceData = [];
@@ -608,21 +636,29 @@ function showTab(tabName) {
 }
 
 /**
- * Animate content elements when tab is shown
+ * Animate content elements when tab is shown using Intersection Observer
  * @param {HTMLElement} tabElement - The tab element to animate
  */
 function animateTabContent(tabElement) {
-    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category');
+    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category, .research-card, .award-item, .activity-item, .news-bullet-item');
+    
+    // Use Intersection Observer for better performance
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                const el = entry.target;
+                el.style.transition = `opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.05}s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.05}s`;
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0) scale(1)';
+                observer.unobserve(el);
+            }
+        });
+    }, { threshold: CONFIG.observerThreshold, rootMargin: '0px 0px -50px 0px' });
     
     animatableElements.forEach((el, index) => {
         el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        
-        setTimeout(() => {
-            el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            el.style.opacity = '1';
-            el.style.transform = 'translateY(0)';
-        }, index * 50); // Stagger animation
+        el.style.transform = 'translateY(30px) scale(0.98)';
+        observer.observe(el);
     });
 }
 
@@ -1352,51 +1388,58 @@ function scrollToTop() {
     
     // Add clicked animation
     if (scrollButton) {
-        scrollButton.style.transform = 'scale(0.9)';
+        scrollButton.style.transform = 'scale(0.85) translateY(-3px)';
         setTimeout(() => {
             scrollButton.style.transform = '';
         }, 200);
     }
     
-    // Smooth scroll with easing
-    const scrollDuration = 600;
-    const scrollStep = -window.scrollY / (scrollDuration / 15);
-    
-    const scrollInterval = setInterval(() => {
-        if (window.scrollY !== 0) {
-            window.scrollBy(0, scrollStep);
-        } else {
-            clearInterval(scrollInterval);
-        }
-    }, 15);
+    // Use native smooth scroll for better performance
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
 }
 
 /**
- * Initialize scroll to top button functionality
+ * Initialize scroll to top button functionality with enhanced effects
  */
 function initializeScrollToTop() {
     const scrollButton = document.getElementById('scrollToTop');
     if (!scrollButton) return;
     
+    let isVisible = false;
+    
     const handleScroll = throttle(() => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const shouldShow = scrollTop > 400;
         
-        if (scrollTop > 300) {
-            scrollButton.classList.add('visible');
-        } else {
-            scrollButton.classList.remove('visible');
+        if (shouldShow !== isVisible) {
+            isVisible = shouldShow;
+            if (shouldShow) {
+                scrollButton.classList.add('visible');
+            } else {
+                scrollButton.classList.remove('visible');
+            }
         }
-    }, 100);
+        
+        // Progress indicator effect
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = Math.min((scrollTop / maxScroll) * 100, 100);
+        scrollButton.style.setProperty('--scroll-progress', `${progress}%`);
+    }, 50);
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
-    // Add hover effect
+    // Enhanced hover effects
     scrollButton.addEventListener('mouseenter', () => {
-        scrollButton.style.transform = 'translateY(-5px)';
+        scrollButton.style.transform = 'translateY(-8px) scale(1.1)';
+        scrollButton.style.boxShadow = '0 12px 35px rgba(var(--primary-color-rgb), 0.4)';
     });
     
     scrollButton.addEventListener('mouseleave', () => {
-        scrollButton.style.transform = 'translateY(0)';
+        scrollButton.style.transform = 'translateY(0) scale(1)';
+        scrollButton.style.boxShadow = '';
     });
 }
 
@@ -1496,25 +1539,47 @@ function initializeKeyboardNavigation() {
 }
 
 /**
- * Initialize header effects (without hiding functionality)
+ * Initialize header effects with enhanced scroll behavior
  */
 function initializeHeaderEffects() {
     const header = document.querySelector('.header-wrapper');
+    if (!header) return;
+    
+    let lastScrollTop = 0;
+    const scrollThreshold = 50;
     
     const handleScroll = throttle(() => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
         
-        // Only change background opacity and shadow based on scroll
-        if (scrollTop > 100) {
-            header.style.background = 'rgba(255, 255, 255, 0.98)';
-            header.style.boxShadow = '0 6px 40px rgba(0, 0, 0, 0.15)';
+        // Enhanced glass morphism effect based on scroll
+        if (scrollTop > scrollThreshold) {
+            header.classList.add('scrolled');
+            if (isDarkMode) {
+                header.style.background = 'rgba(30, 41, 59, 0.95)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            }
+            header.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.12)';
+            header.style.backdropFilter = 'blur(20px) saturate(180%)';
         } else {
-            header.style.background = 'rgba(255, 255, 255, 0.95)';
-            header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.1)';
+            header.classList.remove('scrolled');
+            if (isDarkMode) {
+                header.style.background = 'rgba(30, 41, 59, 0.8)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.7)';
+            }
+            header.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.08)';
+            header.style.backdropFilter = 'blur(20px) saturate(180%)';
         }
+        
+        lastScrollTop = scrollTop;
     }, 16);
     
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Initial call
+    handleScroll();
 }
 
 // ==========================================================================
