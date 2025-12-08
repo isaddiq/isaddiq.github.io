@@ -35,9 +35,9 @@ function toggleTheme() {
 function initializeTheme() {
     // Check for saved theme preference or default to 'light'
     const savedTheme = localStorage.getItem('preferred-theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    const theme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    // Always default to light mode unless user has explicitly saved a preference
+    const theme = savedTheme || 'light';
     
     // Apply theme with smooth transition
     document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
