@@ -182,57 +182,31 @@ function addKeyboardSupport() {
  */
 async function loadNews() {
     const newsContainer = document.getElementById('news-bullets');
-    const showMoreBtn = document.getElementById('show-more-news');
-    let currentlyShown = 0;
-    const itemsPerLoad = 5;
-    let allNews = [];
     
     try {
         const response = await fetch('data/news.json');
-        allNews = await response.json();
+        const allNews = await response.json();
         
         // Clear loading message
         newsContainer.innerHTML = '';
         
-        function renderNews(start, count) {
-            const newsToShow = allNews.slice(start, start + count);
+        allNews.forEach(newsItem => {
+            const li = document.createElement('li');
+            li.className = 'news-bullet-item';
             
-            newsToShow.forEach(newsItem => {
-                const li = document.createElement('li');
-                li.className = 'news-bullet-item';
-                
-                const title = newsItem.title;
-                const details = newsItem.details ? ` ${newsItem.details}` : '';
-                
-                li.innerHTML = `
-                    <span class="news-date">${newsItem.date}</span>
-                    <i class="${newsItem.icon} news-icon"></i>
-                    <span class="news-text">
-                        <strong>${newsItem.type}:</strong> ${title}${details}
-                    </span>
-                `;
-                
-                newsContainer.appendChild(li);
-            });
-        }
-        
-        // Initial load
-        renderNews(0, itemsPerLoad);
-        currentlyShown = itemsPerLoad;
-        
-        // Show "Show More" button if there are more items
-        if (allNews.length > currentlyShown) {
-            showMoreBtn.style.display = 'block';
+            const title = newsItem.title;
+            const details = newsItem.details ? ` ${newsItem.details}` : '';
             
-            showMoreBtn.addEventListener('click', function() {
-                renderNews(currentlyShown, itemsPerLoad);
-                currentlyShown += itemsPerLoad;
-                
-                if (currentlyShown >= allNews.length) {
-                    showMoreBtn.style.display = 'none';
-                }
-            });
-        }
+            li.innerHTML = `
+                <span class="news-date">${newsItem.date}</span>
+                <i class="${newsItem.icon} news-icon"></i>
+                <span class="news-text">
+                    <strong>${newsItem.type}:</strong> ${title}${details}
+                </span>
+            `;
+            
+            newsContainer.appendChild(li);
+        });
         
         console.log('✅ News loaded successfully');
         
@@ -1656,6 +1630,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Load news dynamically
     loadNews();
+
+    // Load Google Scholar citation count
+    loadGoogleScholarCitations();
     
     // Add keyboard navigation support
     addKeyboardSupport();
@@ -1766,6 +1743,103 @@ function throttle(func, limit) {
             setTimeout(() => inThrottle = false, limit);
         }
     };
+}
+
+// ==========================================================================
+// Google Scholar Citation Count
+// ==========================================================================
+
+/**
+ * Fetch citation count from Semantic Scholar API and display in profile
+ */
+async function loadGoogleScholarCitations() {
+    const citationEl = document.getElementById('gs-citations');
+    if (!citationEl) return;
+
+    const SCHOLAR_URL  = 'https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en';
+    const CACHE_KEY    = 'gs_citation_count';
+    const CACHE_TS_KEY = 'gs_citation_ts';
+    const TTL_MS       = 6 * 60 * 60 * 1000; // refresh every 6 hours
+
+    // Multiple proxies tried in order — first success wins
+    const PROXIES = [
+        { url: 'https://api.allorigins.win/get?url=',       json: true  },
+        { url: 'https://api.codetabs.com/v1/proxy?quest=',  json: false },
+        { url: 'https://corsproxy.io/?',                    json: false }
+    ];
+
+    function applyCount(raw) {
+        const n = parseInt(String(raw).replace(/,/g, ''), 10);
+        if (!isNaN(n) && n > 0) {
+            citationEl.innerHTML = n.toLocaleString() + ' citations';
+            citationEl.style.display = '';
+        } else {
+            citationEl.style.display = 'none';
+        }
+    }
+
+    function extractCount(html) {
+        // Strategy 1: parse DOM with CSS selector
+        try {
+            const doc  = new DOMParser().parseFromString(html, 'text/html');
+            const cell = doc.querySelector('#gsc_rsb_st .gsc_rsb_std');
+            if (cell) {
+                const t = cell.textContent.trim();
+                if (/^\d[\d,]*$/.test(t)) return t;
+            }
+        } catch (_) {}
+
+        // Strategy 2: regex on the class attribute in raw HTML
+        const m1 = html.match(/gsc_rsb_std[^>]*>\s*([\d,]+)\s*</);
+        if (m1) return m1[1];
+
+        // Strategy 3: first large number immediately after the stats table opening tag
+        const m2 = html.match(/id="gsc_rsb_st"[\s\S]{0,400}?>\s*([\d,]+)\s*</);
+        if (m2) return m2[1];
+
+        return null;
+    }
+
+    async function fetchFresh() {
+        for (const proxy of PROXIES) {
+            try {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), 8000); // 8 s timeout per proxy
+                const res = await fetch(proxy.url + encodeURIComponent(SCHOLAR_URL), { signal: controller.signal });
+                clearTimeout(timer);
+                if (!res.ok) continue;
+                const html = proxy.json ? ((await res.json()).contents || '') : await res.text();
+                const count = extractCount(html);
+                if (count) {
+                    localStorage.setItem(CACHE_KEY, count);
+                    localStorage.setItem(CACHE_TS_KEY, Date.now().toString());
+                    applyCount(count);
+                    console.log('✅ Google Scholar citations updated:', count, '— via', proxy.url);
+                    return;
+                }
+                console.warn('🔍 Proxy returned HTML but citation not found:', proxy.url);
+            } catch (err) {
+                console.warn('⚠️ Proxy failed:', proxy.url, err.message);
+            }
+        }
+        // All proxies exhausted — keep cached value visible; hide only if nothing cached at all
+        if (!localStorage.getItem(CACHE_KEY)) citationEl.style.display = 'none';
+    }
+
+    // Serve cached value instantly on every page load (zero-wait for returning visitors)
+    const cached   = localStorage.getItem(CACHE_KEY);
+    const cachedTs = parseInt(localStorage.getItem(CACHE_TS_KEY) || '0', 10);
+    const age      = Date.now() - cachedTs;
+
+    if (cached && age < TTL_MS) {
+        applyCount(cached); // cache still fresh — no network call needed
+    } else {
+        if (cached) applyCount(cached); // show stale while re-fetching in background
+        await fetchFresh();
+    }
+
+    // Keep auto-refreshing every 6 hours while the tab is open
+    setInterval(fetchFresh, TTL_MS);
 }
 
 // ==========================================================================
