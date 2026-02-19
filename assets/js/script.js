@@ -1821,24 +1821,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        // Temporarily render the popup (invisible) so we can measure its real width
+        popup.style.visibility = "hidden";
+        popup.style.display    = "block";
+
         // Compute icon's on‐screen position
         const rect       = flagIcon.getBoundingClientRect();
         const scrollTop  = window.scrollY || document.documentElement.scrollTop;
         const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
 
-        // Read the popup's current CSS width (in px), even if display: none
-        const computed = window.getComputedStyle(popup);
-        const popupW    = parseFloat(computed.width);
+        // Measure the popup's actual rendered width now that it's in the DOM
+        const popupW = popup.offsetWidth;
 
-        // Place popup so that its RIGHT edge is flush with the icon's LEFT edge
+        // Place popup so that its RIGHT edge is flush with the icon's LEFT edge (opens to the left)
         const x = scrollLeft + rect.left - popupW;
 
         // Align the TOP edges of popup and icon
         const y = scrollTop + rect.top;
 
-        popup.style.left    = x + "px";
-        popup.style.top     = y + "px";
-        popup.style.display = "block";
+        popup.style.left       = x + "px";
+        popup.style.top        = y + "px";
+        popup.style.visibility = "";
         isOpen = true;
     }
 
