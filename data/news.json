@@ -1,6 +1,15 @@
 [
   {
     "id": 1,
+    "date": "2026/04",
+    "icon": "fas fa-journal-whills",
+    "type": "PhD",
+    "title": "Sucessfully denfeded my PhD thesis on ",
+    "details": "April 1st, 2026",
+    "importance": "high"
+  },
+  {
+    "id": 1,
     "date": "2025/10",
     "icon": "fas fa-journal-whills",
     "type": "Publication",
