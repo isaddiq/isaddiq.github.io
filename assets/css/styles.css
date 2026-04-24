@@ -2319,7 +2319,19 @@ p {
 }
 
 .social-icon.scopus {
-  background: #e9711c;
+  background: #003f7f;
+}
+
+.social-icon.scopus i {
+  font-size: 1.4em;
+}
+
+.scopus-letter {
+  font-size: 1.1em;
+  font-weight: 800;
+  font-family: "Inter", sans-serif;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .social-icon:hover {
