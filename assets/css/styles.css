@@ -9,30 +9,30 @@
    ========================================================================== */
 
 :root {
-  /* LinkedIn-style Professional Palette */
-  --primary-color: #0a66c2; /* LinkedIn blue */
-  --primary-color-rgb: 10, 102, 194;
-  --primary-light: #378fe9;
-  --primary-dark: #004182;
-  --secondary-color: #057642; /* LinkedIn green */
-  --secondary-color-rgb: 5, 118, 66;
-  --accent-color: #b24020; /* LinkedIn warm red */
-  --accent-color-rgb: 178, 64, 32;
+  /* Modern Tech & Academic Palette */
+  --primary-color: #2563eb; /* Bold crisp blue */
+  --primary-color-rgb: 37, 99, 235;
+  --primary-light: #60a5fa;
+  --primary-dark: #1d4ed8;
+  --secondary-color: #0d9488; /* Elegant teal */
+  --secondary-color-rgb: 13, 148, 136;
+  --accent-color: #7c3aed; /* Vibrant indigo */
+  --accent-color-rgb: 124, 58, 237;
   --bg-primary: #ffffff;
-  --bg-secondary: #f3f2ee; /* LinkedIn warm off-white */
-  --bg-tertiary: #eae6df; /* LinkedIn slightly darker off-white */
-  --text-primary: #000000; /* Full black */
-  --text-secondary: #404040; /* Dark gray */
-  --text-muted: #767676; /* Medium gray */
-  --border-color: #e0dfdb; /* LinkedIn border */
-  --shadow-color: rgba(0, 0, 0, 0.08);
-  --shadow-lg: rgba(0, 0, 0, 0.12);
-  --gradient-primary: linear-gradient(135deg, #0a66c2 0%, #004182 100%);
-  --gradient-secondary: linear-gradient(135deg, #057642 0%, #046236 100%);
-  --gradient-accent: linear-gradient(135deg, #b24020 0%, #8f3319 100%);
-  --gradient-bg: linear-gradient(135deg, #ffffff 0%, #f3f2ee 100%);
-  --glass-bg: rgba(255, 255, 255, 0.95);
-  --glass-border: rgba(0, 0, 0, 0.08);
+  --bg-secondary: #f8fafc; /* Crisp, cool Slate-50 */
+  --bg-tertiary: #f1f5f9; /* Slate-100 */
+  --text-primary: #0f172a; /* Slate-900 black */
+  --text-secondary: #334155; /* Slate-700 gray */
+  --text-muted: #64748b; /* Slate-500 gray */
+  --border-color: #e2e8f0; /* Crisp subtle border */
+  --shadow-color: rgba(15, 23, 42, 0.06);
+  --shadow-lg: rgba(15, 23, 42, 0.12);
+  --gradient-primary: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  --gradient-secondary: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  --gradient-accent: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+  --gradient-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --glass-bg: rgba(255, 255, 255, 0.85); /* Brighter glassmorphism */
+  --glass-border: rgba(255, 255, 255, 1);
   --transition-fast: 0.15s ease;
   --transition-normal: 0.2s ease;
   --transition-slow: 0.3s ease;
@@ -43,29 +43,29 @@
 }
 
 [data-theme="dark"] {
-  /* LinkedIn Dark Mode */
-  --primary-color: #70b5f9; /* LinkedIn blue for dark */
-  --primary-color-rgb: 112, 181, 249;
-  --primary-light: #a0ceff;
-  --primary-dark: #378fe9;
-  --secondary-color: #5db87a; /* LinkedIn green dark */
-  --secondary-color-rgb: 93, 184, 122;
-  --accent-color: #f5987e; /* LinkedIn warm accent dark */
-  --accent-color-rgb: 245, 152, 126;
-  --bg-primary: #1b1f23; /* LinkedIn dark bg */
-  --bg-secondary: #212121; /* LinkedIn dark card */
-  --bg-tertiary: #2d2d2d;
-  --text-primary: #ffffffd9; /* LinkedIn dark text */
-  --text-secondary: #ffffffa6;
-  --text-muted: #ffffff73;
-  --border-color: #3d3d3d; /* LinkedIn dark border */
+  /* Modern Slate Dark Palette */
+  --primary-color: #3b82f6; /* Bright blue for dark mode */
+  --primary-color-rgb: 59, 130, 246;
+  --primary-light: #93c5fd;
+  --primary-dark: #2563eb;
+  --secondary-color: #14b8a6; /* Bright teal */
+  --secondary-color-rgb: 20, 184, 166;
+  --accent-color: #8b5cf6; /* Soft indigo */
+  --accent-color-rgb: 139, 92, 246;
+  --bg-primary: #0f172a; /* Deep slate background */
+  --bg-secondary: #1e293b; /* Dark slate cards */
+  --bg-tertiary: #334155; /* Higher elevation slate */
+  --text-primary: #f8fafc; /* Crisp white */
+  --text-secondary: #cbd5e1; /* Soft gray */
+  --text-muted: #94a3b8; /* Muted gray */
+  --border-color: #334155; /* Dark boundary */
   --shadow-color: rgba(0, 0, 0, 0.35);
-  --shadow-lg: rgba(0, 0, 0, 0.5);
-  --gradient-primary: linear-gradient(135deg, #70b5f9 0%, #378fe9 100%);
-  --gradient-secondary: linear-gradient(135deg, #5db87a 0%, #3d9e5c 100%);
-  --gradient-accent: linear-gradient(135deg, #f5987e 0%, #d4674e 100%);
-  --gradient-bg: linear-gradient(135deg, #1b1f23 0%, #212121 100%);
-  --glass-bg: rgba(33, 33, 33, 0.97);
+  --shadow-lg: rgba(0, 0, 0, 0.55);
+  --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  --gradient-secondary: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  --gradient-accent: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  --gradient-bg: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+  --glass-bg: rgba(30, 41, 59, 0.85);
   --glass-border: rgba(255, 255, 255, 0.08);
 }
 
@@ -102,7 +102,7 @@ body {
     sans-serif;
   line-height: 1.6;
   color: var(--text-primary);
-  background: var(--bg-secondary);
+  background: var(--gradient-bg);
   min-height: 100vh;
   opacity: 0;
   transition:
