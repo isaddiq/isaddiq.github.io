@@ -237,5 +237,46 @@
           "description": "Python web framework for API development"
         }
       ]
+    },
+    "agentic_coding": {
+      "title": "Agentic & AI-Assisted Coding",
+      "icon": "fas fa-robot",
+      "skills": [
+        {
+          "name": "GitHub Copilot",
+          "level": "Expert",
+          "percentage": 95,
+          "years": 2,
+          "description": "AI pair programmer for code completion, generation, and refactoring inside VS Code"
+        },
+        {
+          "name": "Cursor",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 1,
+          "description": "AI-first code editor with inline chat, multi-file edits, and codebase context"
+        },
+        {
+          "name": "Claude Code",
+          "level": "Advanced",
+          "percentage": 85,
+          "years": 1,
+          "description": "Agentic CLI coding assistant by Anthropic for autonomous multi-step development tasks"
+        },
+        {
+          "name": "OpenAI Codex",
+          "level": "Intermediate",
+          "percentage": 70,
+          "years": 1,
+          "description": "Cloud-based agentic coding agent for automated code generation and task execution"
+        },
+        {
+          "name": "Antigravity",
+          "level": "Intermediate",
+          "percentage": 65,
+          "years": 1,
+          "description": "AI-powered agentic coding tool for autonomous code generation and project workflows"
+        }
+      ]
     }
   }

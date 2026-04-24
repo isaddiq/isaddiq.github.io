@@ -512,6 +512,74 @@ async function loadCertificatesData() {
 // Navigation Functions with Tab Persistence
 // ==========================================================================
 
+const PAGE_METADATA = {
+    home: {
+        title: 'Saddiq Ur Rehman - BIM, XR & Modular Construction Research',
+        description: 'Official academic portfolio of Saddiq Ur Rehman, PhD candidate at Kyung Hee University researching BIM, XR, DfMA, modular construction, digital twins, AI, and BIM-to-Unity workflows.'
+    },
+    education: {
+        title: 'Education - Saddiq Ur Rehman',
+        description: 'Academic background of Saddiq Ur Rehman, including architecture research at Kyung Hee University and civil engineering education at UET Peshawar.'
+    },
+    experience: {
+        title: 'Experience - Saddiq Ur Rehman',
+        description: 'Research and professional experience in BIM, construction technology, modular construction, AI, XR, and digital workflows for AEC.'
+    },
+    publications: {
+        title: 'Publications - Saddiq Ur Rehman',
+        description: 'Selected journal and conference publications on BIM, semantic data exchange, BIM-to-Unity workflows, game engine integration, 4D BIM, and modular construction.'
+    },
+    projects: {
+        title: 'Research Projects - Saddiq Ur Rehman',
+        description: 'Research projects covering robot-friendly building design, AI-based architectural design, BIM cost estimation, open BIM, rule checking, and digital twin workflows.'
+    },
+    skills: {
+        title: 'Skills - Saddiq Ur Rehman',
+        description: 'Technical skills in BIM software, Unity, Python, C#, AI, machine learning, Revit, Navisworks, IFC, XR, and construction informatics.'
+    },
+    software: {
+        title: 'BIM Software Tools - Saddiq Ur Rehman',
+        description: 'BIM and XR tools by Saddiq Ur Rehman, including ReUniXchange, BIMUniXchange, IFCExplorer, Ifc2Unity, BIM network graphs, and Unity BIM workflows.'
+    },
+    certifications: {
+        title: 'Certifications and Awards - Saddiq Ur Rehman',
+        description: 'Awards, scholarships, certificates, and professional recognition for BIM, construction technology, research, and academic achievement.'
+    },
+    activities: {
+        title: 'Academic Activities - Saddiq Ur Rehman',
+        description: 'Academic service, workshops, conferences, research activities, and professional engagement in BIM, XR, and construction technology.'
+    },
+    contact: {
+        title: 'Contact - Saddiq Ur Rehman',
+        description: 'Contact Saddiq Ur Rehman at Kyung Hee University for BIM, XR, modular construction, DfMA, AI, and construction informatics research collaboration.'
+    }
+};
+
+function updateMetaContent(selector, value) {
+    const element = document.querySelector(selector);
+    if (element && value) {
+        element.setAttribute('content', value);
+    }
+}
+
+function updatePageMetadata(tabName, fallbackSectionTitle) {
+    const metadata = PAGE_METADATA[tabName] || {
+        title: `Saddiq Ur Rehman - ${fallbackSectionTitle}`,
+        description: PAGE_METADATA.home.description
+    };
+    const pageUrl = tabName === 'home'
+        ? 'https://isaddiq.github.io/'
+        : `https://isaddiq.github.io/#${tabName}`;
+
+    document.title = metadata.title;
+    updateMetaContent('meta[name="description"]', metadata.description);
+    updateMetaContent('meta[property="og:title"]', metadata.title);
+    updateMetaContent('meta[property="og:description"]', metadata.description);
+    updateMetaContent('meta[property="og:url"]', pageUrl);
+    updateMetaContent('meta[name="twitter:title"]', metadata.title);
+    updateMetaContent('meta[name="twitter:description"]', metadata.description);
+}
+
 /**
  * Get current tab from URL hash or default to 'home'
  */
@@ -583,7 +651,7 @@ function showTab(tabName) {
     };
     
     const sectionTitle = titleMap[tabName] || 'Portfolio';
-    document.title = `Saddiq Ur Rehman – ${sectionTitle}`;
+    updatePageMetadata(tabName, sectionTitle);
     
     // Update URL hash for persistence
     setCurrentTab(tabName);
@@ -730,7 +798,6 @@ function loadSkillsContent() {
                         <div class="skill-progress">
                             <div class="skill-progress-bar" style="width: 0%;" data-width="${skill.percentage}%"></div>
                         </div>
-                        <div class="skill-years">${skill.years} year${skill.years > 1 ? 's' : ''} of experience</div>
                         ${skill.description ? `<div class="skill-description">${skill.description}</div>` : ''}
                     </div>
                 `).join('')}
