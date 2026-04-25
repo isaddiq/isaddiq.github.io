@@ -848,7 +848,7 @@ function loadPublicationStats() {
             </div>
             <div class="stat-item">
                 <span class="stat-number">${conferenceCount}</span>
-                <span class="stat-label">International Conferencs</span>
+                <span class="stat-label">International Conferences</span>
             </div>
             <div class="stat-item">
                 <span class="stat-number">${koreanCount}</span>
