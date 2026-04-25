@@ -3,6 +3,15 @@
     "id": 1,
     "date": "2026/04",
     "icon": "fas fa-journal-whills",
+    "type": "Publication",
+    "title": "'Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics' got accepted in Automation in Construction Journal",
+    "details": "",
+    "importance": "high"
+  },
+  {
+    "id": 1,
+    "date": "2026/04",
+    "icon": "fas fa-journal-whills",
     "type": "PhD",
     "title": "Successfully defended my doctoral thesis on April 1, 2026.",
     "details": "",
