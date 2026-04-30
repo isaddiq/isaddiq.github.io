@@ -1,5 +1,18 @@
 {
     "journals": [
+    {
+        "id": "journal_2026_02",
+        "title": "Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics",
+        "authors": ["Saddiq Ur Rehman","Kyung-Eun Hwang", "Inhan Kim"],
+        "year": 2026,
+        "journal": "Automation in Construction",
+        "volume": "188",
+        "pages": "106994",
+        "impactFactor": 11.5,
+        "quartile": "Q1",
+        "category": "SCIE",
+        "doi": "https://doi.org/10.1016/j.autcon.2026.106994"
+      },
      {
         "id": "journal_2025_01",
         "title": "Transformer-based framework for mapping client requirements to BIM",
