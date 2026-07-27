@@ -504,9 +504,10 @@ button:focus-visible,
    Home Page Layout & Bio
    ========================================================================== */
 
+/* Sidebar is wide enough to hold "Saddiq Ur Rehman" on one line. */
 .home-content {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 40px;
   align-items: start;
   margin-top: 20px;
@@ -529,10 +530,13 @@ button:focus-visible,
   border-color: var(--border-glow);
 }
 
+/* Fluid rather than fixed, so the portrait fills the card at every width
+   without overflowing narrow phones. */
 .profile-image-container {
   position: relative;
-  width: 232px; /* fills the card between its 24px paddings */
-  height: 244px;
+  width: 100%;
+  max-width: 292px; /* fills the card between its 24px paddings */
+  aspect-ratio: 292 / 307;
   margin: 0 auto 20px;
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -655,16 +659,103 @@ button:focus-visible,
   opacity: 0.5;
 }
 
-.about-section h1 {
-  font-size: 2.5rem;
-  margin-bottom: 4px;
+/* Name and role, sitting directly beneath the portrait in the profile card.
+   Sized for the 232px card interior rather than the old full-width column. */
+.profile-identity {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.about-section .title {
-  font-size: 1.1rem;
+/* The 292px card interior is sized to fit this on one line. */
+.profile-identity h1 {
+  font-size: 1.6rem;
+  line-height: 1.25;
+  margin-bottom: 6px;
+  white-space: nowrap;
+}
+
+.profile-identity .title {
+  font-size: 0.95rem;
+  line-height: 1.55;
   color: var(--secondary-color);
   font-weight: 500;
-  margin-bottom: 24px;
+}
+
+/* --- Curriculum Vitae link ---
+   Built as a document row to match the Google Scholar card above it, rather
+   than a standalone pill button. */
+.cv-download {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-tertiary);
+  text-align: left;
+  text-decoration: none;
+  transition: var(--transition-interactive);
+}
+
+.cv-download:hover {
+  border-color: var(--border-glow);
+  box-shadow: 0 6px 20px var(--shadow-color);
+  transform: translateY(-2px);
+}
+
+.cv-download-icon {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: rgba(var(--secondary-color-rgb), 0.1);
+  color: var(--secondary-color);
+  font-size: 1rem;
+  transition: var(--transition-interactive);
+}
+
+.cv-download:hover .cv-download-icon {
+  background: rgba(var(--secondary-color-rgb), 0.18);
+}
+
+.cv-download-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.cv-download-label {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.cv-download-meta {
+  margin-top: 2px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cv-download-arrow {
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  transition: var(--transition-interactive);
+}
+
+.cv-download:hover .cv-download-arrow {
+  color: var(--secondary-color);
+  transform: translateY(2px);
 }
 
 .bio-text {
@@ -2632,66 +2723,197 @@ button:focus-visible,
 .contact-container {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 56px;
 }
 
-.contact-intro .bio-text {
-  margin-bottom: 0;
+.contact-block {
+  width: 100%;
 }
 
-.contact-details {
+/* Keep the intro at a comfortable reading measure rather than letting it
+   run the full width of the container. */
+.contact-lead {
+  max-width: 68ch;
+  text-align: left;
+  margin-bottom: 28px;
+}
+
+.contact-methods {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 20px;
 }
 
-/* Address spans the full width beneath the two emails */
-.contact-item--address {
-  grid-column: 1 / -1;
-}
-
 .contact-item {
+  position: relative;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 20px;
+  border-radius: var(--radius-lg);
+  padding: 22px;
   display: flex;
   gap: 16px;
-  align-items: center;
+  align-items: flex-start;
+  overflow: hidden;
   box-shadow: 0 4px 10px var(--shadow-color);
   transition: var(--transition-interactive);
 }
 
+/* Accent rail that wipes in on hover. */
+.contact-item::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: linear-gradient(
+    180deg,
+    var(--secondary-color),
+    var(--accent-color)
+  );
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform var(--transition-normal);
+}
+
+/* Staggered reveal. The hidden state is opt-in via .is-revealing, which only
+   JS adds, so the cards stay visible if the script never runs. Transition
+   timing comes from the destination state, which keeps the stagger delay off
+   :hover. */
+.contact-item.is-revealing {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.contact-item.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
 .contact-item:hover {
   border-color: var(--border-glow);
-  transform: translateY(-2px);
+  box-shadow: 0 10px 24px var(--shadow-lg);
+  transition-delay: 0s;
+}
+
+.contact-item:hover::before {
+  transform: scaleY(1);
 }
 
 .contact-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(2, 132, 199, 0.1);
+  width: 44px;
+  height: 44px;
+  background: rgba(var(--secondary-color-rgb), 0.1);
   color: var(--secondary-color);
-  border-radius: 50%;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   flex-shrink: 0;
+  transition: var(--transition-interactive);
 }
 
+.contact-item:hover .contact-icon {
+  background: rgba(var(--secondary-color-rgb), 0.18);
+}
+
+.contact-text {
+  min-width: 0;
+  flex: 1;
+}
+
+/* Micro-label above the value. */
 .contact-text strong {
   display: block;
   font-family: "Outfit", sans-serif;
-  font-size: 1.05rem;
-  color: var(--text-primary);
-  margin-bottom: 2px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
 }
 
-.contact-text span {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+.contact-value {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.45;
+  word-break: break-word;
+  transition: var(--transition-interactive);
+}
+
+a.contact-value:hover {
+  color: var(--secondary-color);
+}
+
+/* Non-link values (e.g. the lab name) read better in the UI face. */
+.contact-value--plain {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.contact-note {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
   line-height: 1.5;
+}
+
+/* Copy-to-clipboard button, revealed on hover/focus on pointer devices. */
+.contact-copy {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: var(--transition-interactive);
+}
+
+.contact-item:hover .contact-copy,
+.contact-copy:focus-visible {
+  opacity: 1;
+}
+
+.contact-copy:hover {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+  background: rgba(var(--secondary-color-rgb), 0.08);
+}
+
+.contact-copy.is-copied,
+.location-btn.is-copied {
+  border-color: var(--success-color);
+  color: var(--success-color);
+  background: rgba(13, 148, 136, 0.1);
+  opacity: 1;
+}
+
+.contact-copy.is-failed,
+.location-btn.is-failed {
+  border-color: #dc2626;
+  color: #dc2626;
+  background: rgba(220, 38, 38, 0.1);
+  opacity: 1;
+}
+
+/* Touch devices get no hover, so keep the button permanently visible. */
+@media (hover: none) {
+  .contact-copy {
+    opacity: 1;
+  }
 }
 
 .quick-actions h3 {
@@ -2734,22 +2956,177 @@ button:focus-visible,
 }
 
 /* Map details */
-.map-section {
-  width: 100%;
+/* Map beside an address panel; they share a row height so the two
+   surfaces line up on desktop. */
+.location-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(280px, 1fr);
+  gap: 24px;
+  align-items: stretch;
 }
 
 .map-container {
-  height: 400px;
+  position: relative;
+  min-height: 440px;
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 4px 20px var(--shadow-color);
   border: 1px solid var(--border-color);
 }
 
+/* Absolute fill so Leaflet always resolves a definite height, whatever
+   the grid row ends up measuring. */
 #map {
-  width: 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   z-index: 1;
+}
+
+.location-panel {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px var(--shadow-color);
+  padding: 28px;
+}
+
+.location-eyebrow {
+  font-family: "Outfit", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
+}
+
+.location-name {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin-bottom: 6px;
+}
+
+.location-sub {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.location-address {
+  font-style: normal;
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.location-address-ko {
+  display: block;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+/* Pin the buttons to the bottom of the panel so they align with the
+   lower edge of the map on desktop. */
+.location-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 24px;
+}
+
+.location-btn {
+  flex: 1 1 140px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 16px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-family: "Outfit", sans-serif;
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: var(--transition-interactive);
+}
+
+.location-btn:hover {
+  border-color: var(--secondary-color);
+  color: var(--secondary-color);
+  background: rgba(var(--secondary-color-rgb), 0.08);
+  transform: translateY(-1px);
+}
+
+.location-btn--primary {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: #ffffff;
+}
+
+.location-btn--primary:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+/* Dark mode's accent colours are light, so flip the button text to dark and
+   lighten the error red to keep both legible. */
+[data-theme="dark"] .location-btn--primary,
+[data-theme="dark"] .location-btn--primary:hover {
+  color: #0b1220;
+}
+
+[data-theme="dark"] .contact-copy.is-failed,
+[data-theme="dark"] .location-btn.is-failed {
+  border-color: #f87171;
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.12);
+}
+
+@media (max-width: 1024px) {
+  .location-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .map-container {
+    min-height: 360px;
+  }
+
+  .location-actions {
+    margin-top: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .contact-container {
+    gap: 40px;
+  }
+
+  .contact-item {
+    padding: 18px;
+  }
+
+  .location-panel {
+    padding: 22px;
+  }
+
+  .location-actions {
+    flex-direction: column;
+  }
 }
 
 /* ==========================================================================
@@ -3082,7 +3459,7 @@ button:focus-visible,
 
 .site-footer {
   margin-top: 72px;
-  padding: 36px 24px 18px;
+  padding: 26px 24px;
   border-top: 1px solid var(--border-color);
   background: var(--bg-tertiary);
 }
@@ -3092,93 +3469,13 @@ button:focus-visible,
   margin: 0 auto;
 }
 
-.footer-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 40px;
-  padding-bottom: 24px;
-}
-
-/* --- Brand column --- */
-.footer-logo {
-  font-family: "Outfit", sans-serif;
-  font-size: 1.15rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--text-primary);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.footer-logo:hover {
-  color: var(--secondary-color);
-}
-
-.footer-role {
-  margin-top: 6px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--secondary-color);
-}
-
-.footer-tagline {
-  margin-top: 8px;
-  max-width: 46ch;
-  font-size: 0.85rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.footer-location {
-  margin-top: 8px;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.footer-location i {
-  margin-right: 6px;
-  color: var(--secondary-color);
-}
-
-/* --- Link columns --- */
-.footer-heading {
-  font-family: "Outfit", sans-serif;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-
-.footer-links {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.footer-links a {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-
-.footer-links a:hover,
-.footer-links a:focus-visible {
-  color: var(--secondary-color);
-}
-
-/* --- Bottom bar --- */
+/* --- Bottom bar (the footer's only row) --- */
 .footer-bottom {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 6px 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
 }
 
 .footer-copyright,
@@ -3198,27 +3495,10 @@ button:focus-visible,
   opacity: 0.5;
 }
 
-@media (max-width: 1024px) {
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px 36px;
-  }
-
-  .footer-brand {
-    grid-column: 1 / -1;
-  }
-}
-
 @media (max-width: 640px) {
   .site-footer {
     margin-top: 56px;
-    padding: 32px 20px 16px;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding-bottom: 20px;
+    padding: 24px 20px;
   }
 
   .footer-bottom {
@@ -3287,13 +3567,16 @@ button:focus-visible,
 
 @media (max-width: 1200px) {
   .home-content {
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 300px 1fr;
     gap: 30px;
   }
 
   .profile-image-container {
-    width: 192px;
-    height: 202px;
+    max-width: 252px;
+  }
+
+  .profile-identity h1 {
+    font-size: 1.45rem;
   }
 }
 
@@ -3403,6 +3686,17 @@ button:focus-visible,
   .profile-section {
     position: relative;
     top: 0;
+  }
+
+  /* The card goes full width here, so the identity can scale back up. */
+  /* The card goes full width here. Scaling with the viewport keeps the name
+     on one line even on a 320px phone, where nowrap would otherwise spill. */
+  .profile-identity h1 {
+    font-size: clamp(1.3rem, 7vw, 1.75rem);
+  }
+
+  .profile-identity .title {
+    font-size: 0.95rem;
   }
 
   /* Software tab: stack sidebar nav above content */
@@ -3525,7 +3819,7 @@ button:focus-visible,
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .contact-details {
+  .contact-methods {
     grid-template-columns: 1fr;
   }
 

@@ -556,23 +556,11 @@
                   height="320"
                 />
               </div>
-              <div class="contact-info">
-                <p>
-                  <i class="fas fa-envelope"></i>
-                  <a href="mailto:saddiqurrehman@khu.ac.kr"
-                    >saddiqurrehman@khu.ac.kr</a
-                  >
-                </p>
-                <p>
-                  <i class="fas fa-envelope"></i>
-                  <a href="mailto:saddiq.r.97@gmail.com"
-                    >saddiq.r.97@gmail.com</a
-                  >
-                </p>
-                <p>
-                  <i class="fas fa-map-marker-alt"></i> Kyung Hee University,
-                  Korea
-                </p>
+
+              <!-- Identity sits directly under the portrait -->
+              <div class="profile-identity">
+                <h1>Saddiq Ur Rehman</h1>
+                <p class="title">PhD Researcher at Kyung Hee University</p>
               </div>
 
               <!--
@@ -613,13 +601,29 @@
                   </div>
                 </div>
               </a>
+
+              <!-- Opens the CV in Drive's viewer, where it can be downloaded -->
+              <a
+                class="cv-download"
+                href="https://drive.google.com/file/d/1tG0tfuSSw6VhtqIiOAMEMCxfHlwg41BR/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Curriculum Vitae, PDF, opens in a new tab"
+              >
+                <span class="cv-download-icon">
+                  <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                </span>
+                <span class="cv-download-text">
+                  <span class="cv-download-label">Curriculum Vitae (CV)</span>
+                </span>
+                <i
+                  class="fas fa-arrow-down cv-download-arrow"
+                  aria-hidden="true"
+                ></i>
+              </a>
             </div>
             <div class="about-section">
-              <h1>Saddiq Ur Rehman</h1>
-              <p class="title">
-                PhD Researcher | Department of Architecture | Kyung Hee
-                University
-              </p>
+              <h3>About Me</h3>
               <p class="bio-text">
                 I am a PhD researcher in Architecture at Kyung Hee University,
                 South Korea, working in the
@@ -1204,70 +1208,123 @@
         </div>
 
         <div class="contact-container">
-          <!-- Intro (single column) -->
-          <div class="contact-intro">
+          <!-- Contact Information -->
+          <section class="contact-block">
             <h3 class="section-title">Contact Information</h3>
-            <p class="bio-text">
+            <p class="bio-text contact-lead">
               I welcome collaborations, research inquiries, and academic
               discussions related to AEC industry digitalization, BIM
               technologies, and construction innovation. Feel free to reach out
               for potential partnerships, publication opportunities, or
               technical consultations.
             </p>
-          </div>
 
-          <!-- Emails & Address (full width) -->
-          <div class="contact-details">
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-              <div class="contact-text">
-                <strong>Primary Email</strong>
-                <span
-                  ><a href="mailto:saddiqurrehman@khu.ac.kr"
-                    >saddiqurrehman@khu.ac.kr</a
-                  ></span
-                >
-              </div>
-            </div>
-
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope-open"></i>
-              </div>
-              <div class="contact-text">
-                <strong>Personal Email</strong>
-                <span
-                  ><a href="mailto:saddiq.r.97@gmail.com"
-                    >saddiq.r.97@gmail.com</a
-                  ></span
-                >
-              </div>
-            </div>
-
-            <div class="contact-item contact-item--address">
-              <div class="contact-icon">
-                <i class="fas fa-university"></i>
-              </div>
-              <div class="contact-text">
-                <strong>Office Address</strong>
-                <span>
-                  경희대학교 공과대학/Kyung Hee University, College of
-                  Engineering, 1732 Deogyeong-daero, Giheung-gu, Yongin-si,
-                  Gyeonggi-do, 446-701, Republic of Korea
+            <div class="contact-methods">
+              <div class="contact-item">
+                <span class="contact-icon">
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
                 </span>
+                <div class="contact-text">
+                  <strong>Academic Email</strong>
+                  <a class="contact-value" href="mailto:saddiqurrehman@khu.ac.kr"
+                    >saddiqurrehman@khu.ac.kr</a
+                  >
+                  <span class="contact-note">Kyung Hee University</span>
+                </div>
+                <button
+                  type="button"
+                  class="contact-copy"
+                  data-copy="saddiqurrehman@khu.ac.kr"
+                  aria-label="Copy academic email address"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i>
+                </button>
+              </div>
+
+              <div class="contact-item">
+                <span class="contact-icon">
+                  <i class="fas fa-envelope-open" aria-hidden="true"></i>
+                </span>
+                <div class="contact-text">
+                  <strong>Personal Email</strong>
+                  <a class="contact-value" href="mailto:saddiq.r.97@gmail.com"
+                    >saddiq.r.97@gmail.com</a
+                  >
+                  <span class="contact-note">General correspondence</span>
+                </div>
+                <button
+                  type="button"
+                  class="contact-copy"
+                  data-copy="saddiq.r.97@gmail.com"
+                  aria-label="Copy personal email address"
+                >
+                  <i class="fas fa-copy" aria-hidden="true"></i>
+                </button>
+              </div>
+
+              <div class="contact-item">
+                <span class="contact-icon">
+                  <i class="fas fa-flask" aria-hidden="true"></i>
+                </span>
+                <div class="contact-text">
+                  <strong>Research Group</strong>
+                  <span class="contact-value contact-value--plain">ITA Lab</span>
+                  <span class="contact-note"
+                    >Department of Architecture, College of Engineering</span
+                  >
+                </div>
               </div>
             </div>
-          </div>
+          </section>
 
-          <!-- Map Section (single column) -->
-          <div class="map-section">
+          <!-- Location -->
+          <section class="contact-block">
             <h3 class="section-title">Location</h3>
-            <div class="map-container">
-              <div id="map"></div>
+
+            <div class="location-grid">
+              <div class="map-container">
+                <div id="map"></div>
+              </div>
+
+              <aside class="location-panel">
+                <span class="location-eyebrow">Campus</span>
+                <h4 class="location-name">Kyung Hee University</h4>
+                <p class="location-sub">
+                  Global Campus &middot; College of Engineering
+                </p>
+
+                <address class="location-address">
+                  <span class="location-address-ko" lang="ko"
+                    >경희대학교 공과대학</span
+                  >
+                  1732 Deogyeong-daero, Giheung-gu<br />
+                  Yongin-si, Gyeonggi-do, 446-701<br />
+                  Republic of Korea
+                </address>
+
+                <div class="location-actions">
+                  <a
+                    class="location-btn location-btn--primary"
+                    href="https://www.google.com/maps/search/?api=1&amp;query=37.2464,127.0809"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i class="fas fa-location-arrow" aria-hidden="true"></i>
+                    Get Directions
+                  </a>
+                  <button
+                    type="button"
+                    class="location-btn"
+                    data-copy="Kyung Hee University, College of Engineering, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do, 446-701, Republic of Korea"
+                    aria-label="Copy full office address"
+                  >
+                    <i class="fas fa-copy" aria-hidden="true"></i>
+                    Copy Address
+                  </button>
+                </div>
+              </aside>
             </div>
-          </div>
+          </section>
         </div>
       </div>
     </main>
@@ -1275,60 +1332,6 @@
     <!-- Site Footer -->
     <footer class="site-footer">
       <div class="footer-inner">
-        <div class="footer-grid">
-          <!-- Brand / identity -->
-          <div class="footer-brand">
-            <a href="#home" class="footer-logo" data-tab="home"
-              >Saddiq Ur Rehman</a
-            >
-            <p class="footer-role">
-              PhD Researcher, Department of Architecture, Kyung Hee University
-            </p>
-            <p class="footer-tagline">
-              BIM, extended reality, AI, and modular construction research.
-            </p>
-            <p class="footer-location">
-              <i class="fas fa-location-dot" aria-hidden="true"></i>
-              ITA Lab, Kyung Hee University, Yongin, South Korea
-            </p>
-          </div>
-
-          <!-- Site navigation -->
-          <nav class="footer-col" aria-label="Footer">
-            <h2 class="footer-heading">Explore</h2>
-            <ul class="footer-links">
-              <li>
-                <a href="#publications" data-tab="publications">Publications</a>
-              </li>
-              <li><a href="#projects" data-tab="projects">Projects</a></li>
-              <li><a href="#software" data-tab="software">Software</a></li>
-              <li><a href="#awards" data-tab="awards">Awards</a></li>
-              <li><a href="#news" data-tab="news">News</a></li>
-            </ul>
-          </nav>
-
-          <!-- Contact -->
-          <div class="footer-col">
-            <h2 class="footer-heading">Get in Touch</h2>
-            <ul class="footer-links">
-              <li>
-                <a href="mailto:saddiqurrehman@khu.ac.kr"
-                  >saddiqurrehman@khu.ac.kr</a
-                >
-              </li>
-              <li>
-                <a href="mailto:saddiq.r.97@gmail.com">saddiq.r.97@gmail.com</a>
-              </li>
-              <li><a href="#contact" data-tab="contact">Contact form</a></li>
-              <li>
-                <a href="http://italab.khu.ac.kr/" target="_blank" rel="noopener"
-                  >ITA Lab</a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-
         <div class="footer-bottom">
           <p class="footer-copyright">
             &copy; 2026 Saddiq Ur Rehman. All rights reserved.

@@ -1502,13 +1502,8 @@ function loadTabContent(tabName) {
                 contactForm.addEventListener('submit', handleFormSubmission);
             }
 
-            // Add click-to-copy functionality for address
-            const addressItem = document.querySelector('.contact-item--address');
-            if (addressItem) {
-                addressItem.addEventListener('click', copyAddress);
-                addressItem.style.cursor = 'pointer';
-                addressItem.title = 'Click to copy address';
-            }
+            // Wire the copy buttons on the contact cards and address panel
+            initializeCopyButtons();
             break;
     }
 }
@@ -3120,40 +3115,90 @@ function initializeMap() {
 }
 
 /**
- * Copy address functionality
+ * Copy text to the clipboard, falling back to execCommand on browsers or
+ * non-secure origins where the async Clipboard API is unavailable.
+ * @param {string} text
+ * @returns {Promise<boolean>} whether the copy succeeded
  */
-function copyAddress() {
-    const address = "Kyung Hee University, Global Campus, 1732 Deogyeong-daero, Giheung-gu, Yongin-si, Gyeonggi-do, South Korea";
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(address).then(() => {
-            showMessage('success', 'Address copied to clipboard!');
-        }).catch(() => {
-            showMessage('error', 'Could not copy address. Please select and copy manually.');
-        });
-    } else {
-        showMessage('error', 'Copy to clipboard not supported. Please select and copy manually.');
+async function copyTextToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        try {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } catch (err) {
+            /* fall through to the legacy path below */
+        }
     }
+
+    const scratch = document.createElement('textarea');
+    scratch.value = text;
+    scratch.setAttribute('readonly', '');
+    scratch.style.position = 'fixed';
+    scratch.style.opacity = '0';
+    document.body.appendChild(scratch);
+    scratch.select();
+
+    let ok = false;
+    try {
+        ok = document.execCommand('copy');
+    } catch (err) {
+        ok = false;
+    }
+    document.body.removeChild(scratch);
+    return ok;
 }
 
 /**
- * Initialize contact animations
+ * Bind every [data-copy] control on the contact tab. Each button briefly
+ * swaps to a confirmation state instead of relying on a global alert
+ * element, so the feedback stays next to what the user clicked.
+ */
+function initializeCopyButtons() {
+    document.querySelectorAll('#contact [data-copy]').forEach((btn) => {
+        if (btn.dataset.copyBound === 'true') return;
+        btn.dataset.copyBound = 'true';
+
+        btn.addEventListener('click', async (event) => {
+            event.preventDefault();
+
+            const original = btn.innerHTML;
+            const label = btn.getAttribute('aria-label') || '';
+            const copied = await copyTextToClipboard(btn.dataset.copy || '');
+            const hasText = btn.textContent.trim().length > 0;
+
+            btn.classList.add(copied ? 'is-copied' : 'is-failed');
+            btn.innerHTML = copied
+                ? '<i class="fas fa-check" aria-hidden="true"></i>' +
+                  (hasText ? ' Copied' : '')
+                : '<i class="fas fa-xmark" aria-hidden="true"></i>' +
+                  (hasText ? ' Failed' : '');
+            btn.setAttribute('aria-label', copied ? 'Copied' : 'Copy failed');
+
+            setTimeout(() => {
+                btn.classList.remove('is-copied', 'is-failed');
+                btn.innerHTML = original;
+                btn.setAttribute('aria-label', label);
+            }, 1800);
+        });
+    });
+}
+
+/**
+ * Stagger the contact cards into view. The reveal runs through a CSS class
+ * rather than inline styles, which would otherwise out-specify the
+ * stylesheet's :hover rules and leave the cards unable to lift.
  */
 function initializeContactAnimations() {
-    const contactItems = document.querySelectorAll('.contact-item');
-    contactItems.forEach((item, index) => {
-        if (item) {
-            setTimeout(() => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateY(20px)';
-                item.style.transition = 'all 0.6s ease';
+    document.querySelectorAll('.contact-item').forEach((item, index) => {
+        item.classList.remove('is-revealed');
+        item.classList.add('is-revealing');
+        // Consumed only by the reveal rule, so it never delays :hover.
+        item.style.setProperty('--reveal-delay', `${index * 90}ms`);
 
-                setTimeout(() => {
-                    item.style.opacity = '1';
-                    item.style.transform = 'translateY(0)';
-                }, 100);
-            }, index * 100);
-        }
+        // Next frame, so the browser registers the pre-reveal state first.
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => item.classList.add('is-revealed'));
+        });
     });
 }
 

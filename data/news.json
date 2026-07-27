@@ -50,7 +50,7 @@
     "importance": "high",
     "images": [
       {
-        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange AEC-to-XR pipeline",
         "caption": "Automation in Construction (IF: 12.6)",
         "fallback": "assets/images/covers/publication-cover.png"
@@ -127,7 +127,7 @@
     "importance": "high",
     "images": [
       {
-        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange immersive XR visualization for modular construction",
         "caption": "ICCEPM 2025",
         "fallback": "assets/images/covers/publication-cover.png"
@@ -167,7 +167,7 @@
     "importance": "high",
     "images": [
       {
-        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange 4D BIM and VR construction simulation",
         "caption": "Creative Construction Conference 2025",
         "fallback": "assets/images/covers/publication-cover.png"
@@ -188,7 +188,7 @@
     "linkLabel": "View Paper (DOI)",
     "images": [
       {
-        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange BIM and game engine integration",
         "caption": "Journal of Computational Design and Engineering",
         "fallback": "assets/images/covers/publication-cover.png"

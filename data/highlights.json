@@ -18,7 +18,7 @@
     "icon": "fas fa-file-alt",
     "title": "Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics",
     "detail": "Published in Automation in Construction (IF: 12.6). The BIMUniXchange AEC-to-XR pipeline spans Revit, ArchiCAD, and Unity.",
-    "image": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+    "image": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
     "imageAlt": "BIMUniXchange AEC-to-XR pipeline",
     "fallbackImage": "assets/images/covers/publication-cover.png",
     "link": "https://doi.org/10.1016/j.autcon.2026.106994",

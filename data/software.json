@@ -252,7 +252,7 @@
       "navIcon": "fas fa-vr-cardboard",
       "title": "BIMUniXchange",
       "description": "Seamless AEC-to-XR pipeline for immersive construction visualization, connecting Revit, ArchiCAD, and Unity for WebXR-ready BIM experiences.",
-      "previewImage": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+      "previewImage": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
       "badges": [
         {
           "label": "BIM Interoperability",
@@ -374,7 +374,7 @@
           "title": "BIMUniXchange Preview",
           "media": "image",
           "autoWrap": true,
-          "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+          "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
           "alt": "BIMUniXchange AEC-to-XR Pipeline",
           "imageClass": "media-image-contain"
         }
