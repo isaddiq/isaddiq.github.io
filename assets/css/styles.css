@@ -666,11 +666,13 @@ button:focus-visible,
   border-bottom: 1px solid var(--border-color);
 }
 
-/* The 292px card interior is sized to fit this on one line. */
+/* Measured: the name renders ~8.2x the font-size in width, so 2rem lands at
+   ~263px inside the 292px card interior. Going past ~2.2rem would overflow,
+   since nowrap gives it nowhere to break. */
 .profile-identity h1 {
-  font-size: 1.6rem;
-  line-height: 1.25;
-  margin-bottom: 6px;
+  font-size: 2rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
   white-space: nowrap;
 }
 
@@ -3575,8 +3577,9 @@ a.contact-value:hover {
     max-width: 252px;
   }
 
+  /* 252px interior here, so ~230px at 1.75rem. */
   .profile-identity h1 {
-    font-size: 1.45rem;
+    font-size: 1.75rem;
   }
 }
 
@@ -3692,7 +3695,7 @@ a.contact-value:hover {
   /* The card goes full width here. Scaling with the viewport keeps the name
      on one line even on a 320px phone, where nowrap would otherwise spill. */
   .profile-identity h1 {
-    font-size: clamp(1.3rem, 7vw, 1.75rem);
+    font-size: clamp(1.3rem, 7vw, 2rem);
   }
 
   .profile-identity .title {
