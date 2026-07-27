@@ -1,4 +1,4 @@
-<img width="1862" height="862" alt="image" src="https://github.com/user-attachments/assets/39de3dc1-e87d-4dca-b885-eb5fd59e0e9c" />
+<img width="1862" height="862" alt="image" src="assets/images/meta/saddiq-ur-rehman-portfolio-thumbnail.png" />
 
 <div align="center">
 
