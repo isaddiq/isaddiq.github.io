@@ -122,6 +122,16 @@ To activate:
 
 Upload the repository files to your web hosting provider or activate **GitHub Pages** in your repository settings under the `main` branch.
 
+### 6. Enable the Date-Stamping Hook
+
+A `pre-commit` hook keeps every "last updated" date current automatically. Git does not enable hooks on clone, so run this once per clone:
+
+```bash
+git config core.hooksPath .githooks
+```
+
+On each commit it stamps today's date into the footer `<time>` element, the JSON-LD `dateModified`, and every `<lastmod>` in `sitemap.xml`. Skip it for a single commit with `SKIP_DATESTAMP=1 git commit ...`.
+
 ## 🔧 Technical Details & Optimizations
 
 - **Vanilla Stack**: Pure HTML5, CSS3, and ES6 JavaScript. No framework overhead.
