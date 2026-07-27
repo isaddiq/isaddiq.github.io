@@ -1375,6 +1375,19 @@ button:focus-visible,
   object-fit: contain;
 }
 
+.education-container .company-logo,
+#experience-container .company-logo {
+  width: 180px;
+  height: auto;
+  align-self: stretch;
+}
+
+.education-container .company-logo img,
+#experience-container .company-logo img {
+  width: 100%;
+  height: 100%;
+}
+
 .company-logo i {
   font-size: 2.2rem;
   color: var(--secondary-color);
@@ -3897,6 +3910,13 @@ a.contact-value:hover {
     flex-direction: column;
     gap: 12px;
     padding: 16px;
+  }
+
+  .education-container .company-logo,
+  #experience-container .company-logo {
+    width: 100%;
+    height: 140px;
+    align-self: auto;
   }
 
   /* Action buttons span the full row so they stay tappable */
