@@ -1,0 +1,199 @@
+[
+  {
+    "id": 10,
+    "date": "2026/07",
+    "icon": "fas fa-award",
+    "type": "Award",
+    "title": "Selected for Kyung Hee University's Top Academic Excellence Award (최우수학술상) in Architecture",
+    "summary": "Top Academic Excellence Award (최우수학술상) from the Graduate School of Kyung Hee University.",
+    "details": "Selected as the recipient of the Top Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University, representing the Department of Architecture within the Arts & Physical Education (예체능) division, among the Fall 2025 (August 2026) graduate award recipients, in recognition of outstanding research achievements in Architecture.",
+    "importance": "high",
+    "link": "https://gskh.khu.ac.kr/gskh_kor/user/bbs/BMSR00040/view.do?menuNo=13100090&boardId=eyJjdCI6IjVBZVVSZ1l1Q29XM2pCUS9wQjhSUnc9PSIsIml2IjoiNGJiOWM4MGFlZjEyMzg1YjljNjE5NWY4ZDE2ZGNkZGUiLCJzIjoiZTM3MmU3MjY1YjMzMThkYiJ9",
+    "linkLabel": "View Official Announcement",
+    "images": [
+      {
+        "src": "assets/images/certificates/khu-academic-excellence-award-2026.png",
+        "alt": "Kyung Hee University Graduate School Top Academic Excellence Award (최우수학술상) announcement listing Saddiq Ur Rehman, Department of Architecture",
+        "caption": "Graduate School of Kyung Hee University: 2025 Fall Semester Academic Excellence Award announcement",
+        "fallback": "assets/images/covers/certifications-awards-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 9,
+    "date": "2026/06",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "Implementation of an Integrated DfX Approach for Modular High-Rise Residential Construction",
+    "summary": "Accepted in the Journal of Civil Engineering and Management.",
+    "details": "The paper 'Implementation of an Integrated DfX Approach for Modular High-Rise Residential Construction' has been accepted in the Journal of Civil Engineering and Management.",
+    "importance": "high",
+    "images": [
+      {
+        "src": "assets/images/covers/publication-cover.png",
+        "alt": "Publication acceptance announcement",
+        "caption": "Journal of Civil Engineering and Management",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 1,
+    "date": "2026/04",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "'Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics' accepted in Automation in Construction",
+    "summary": "New journal acceptance in Automation in Construction (IF: 12.6).",
+    "details": "A cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics has been accepted in Automation in Construction. The work extends the BIMUniXchange pipeline toward fully semantic, immersive AEC workflows across Revit, ArchiCAD, and Unity.",
+    "importance": "high",
+    "images": [
+      {
+        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "alt": "BIMUniXchange AEC-to-XR pipeline",
+        "caption": "Automation in Construction (IF: 12.6)",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 2,
+    "date": "2026/04",
+    "icon": "fas fa-graduation-cap",
+    "type": "PhD",
+    "title": "Successfully defended my doctoral thesis on April 1, 2026",
+    "summary": "PhD thesis defense completed at Kyung Hee University.",
+    "details": "Successfully defended my doctoral thesis, 'A Semantically Enriched BIM to XR Data Exchange Framework with Conversational LLM for Immersive Construction Informatics,' at the Department of Architecture, Kyung Hee University, under the supervision of Professor Inhan Kim.",
+    "importance": "high",
+    "images": [
+      {
+        "src": "https://media.licdn.com/dms/image/v2/D5622AQEQp-E_LDv1mg/feedshare-shrink_1280/B56Z1L9vtYKQAM-/0/1775095970878?e=1781740800&v=beta&t=hQ-oeGarOO16hAy2vkb8_E5GhMGoEjTJgl1ugg_FBHk",
+        "alt": "Doctoral thesis defense milestone",
+        "caption": "Kyung Hee University, Department of Architecture",
+        "fallback": "assets/images/covers/education-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 3,
+    "date": "2025/10",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "Transformer-Based Framework for mapping Client requirements to BIM",
+    "summary": "Accepted in Automation in Construction (IF: 12.6).",
+    "details": "A transformer-based framework for mapping client requirements to BIM has been accepted in Automation in Construction Journal (IF: 12.6).",
+    "importance": "high",
+    "images": [
+      {
+        "src": "assets/images/software/bim-graph-visualization-preview.jpg",
+        "alt": "BIM network graph and semantic data visualization",
+        "caption": "Automation in Construction (IF: 12.6)"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 4,
+    "date": "2026/06",
+    "icon": "fas fa-laptop-code",
+    "type": "Software Release",
+    "title": "ReUniXchange v1.2.0",
+    "summary": "Updated BIM data exchange plugin now available on the Autodesk App Store.",
+    "details": "ReUniXchange v1.2.0, a BIM data exchange plugin enabling seamless integration between Revit and Unity, is now available on the Autodesk App Store.",
+    "importance": "high",
+    "link": "https://apps.autodesk.com/RVT/en/Detail/Index?id=6622158299438821562&appLang=en&os=Win64",
+    "linkLabel": "View on Autodesk App Store",
+    "images": [
+      {
+        "src": "https://media.licdn.com/dms/image/v2/D5622AQGdnM-31fvc8g/feedshare-image-high-res/B56Zl1G5nPI4As-/0/1758606368374?e=1781740800&v=beta&t=Dd19Ev9yQgINV_Q3Q7RiQ69YnVaC_syCskm2l7HhwcY",
+        "alt": "ReUniXchange Revit to Unity plugin on Autodesk App Store",
+        "caption": "ReUniXchange v1.2.0 - Revit to Unity",
+        "fallback": "assets/images/covers/software-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 5,
+    "date": "2025/09",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "BIM-Based Mixed Reality System for Real-Time Inspection of Factory-Built Modular Units",
+    "summary": "Accepted in ICCEPM 2025.",
+    "details": "A BIM-based mixed reality system for real-time inspection of factory-built modular units has been accepted in ICCEPM 2025.",
+    "importance": "high",
+    "images": [
+      {
+        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "alt": "BIMUniXchange immersive XR visualization for modular construction",
+        "caption": "ICCEPM 2025",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 6,
+    "date": "2025/07",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform",
+    "summary": "Accepted in Automation in Construction (IF: 12.6).",
+    "details": "A semantic-enriched framework for asynchronous bidirectional BIM data exchange with an immersive visualization platform has been accepted in Automation in Construction Journal (IF: 12.6).",
+    "importance": "high",
+    "link": "https://doi.org/10.1016/j.autcon.2025.106409",
+    "linkLabel": "View Paper (DOI)",
+    "images": [
+      {
+        "src": "https://media.licdn.com/dms/image/v2/D5622AQGdnM-31fvc8g/feedshare-image-high-res/B56Zl1G5nPI4As-/0/1758606368374?e=1781740800&v=beta&t=Dd19Ev9yQgINV_Q3Q7RiQ69YnVaC_syCskm2l7HhwcY",
+        "alt": "ReUniXchange bidirectional BIM data exchange plugin",
+        "caption": "Automation in Construction (IF: 12.6)",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 7,
+    "date": "2025/05",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "Integration of 4D BIM and VR for interactive modular building manufacturing simulations in a factory-controlled environment",
+    "summary": "Accepted in Creative Construction Conference 2025.",
+    "details": "A study on the integration of 4D BIM and VR for interactive modular building manufacturing simulations in a factory-controlled environment has been accepted in the Creative Construction Conference 2025.",
+    "importance": "high",
+    "images": [
+      {
+        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "alt": "BIMUniXchange 4D BIM and VR construction simulation",
+        "caption": "Creative Construction Conference 2025",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  },
+  {
+    "id": 8,
+    "date": "2025/03",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "Advancing BIM and game engine integration in the AEC industry",
+    "summary": "Published in the Journal of Computational Design and Engineering.",
+    "details": "A review on advancing BIM and game engine integration in the AEC industry, covering innovations, challenges, and future directions, has been published in the Journal of Computational Design and Engineering.",
+    "importance": "medium",
+    "link": "https://doi.org/10.1093/jcde/qwaf030",
+    "linkLabel": "View Paper (DOI)",
+    "images": [
+      {
+        "src": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+        "alt": "BIMUniXchange BIM and game engine integration",
+        "caption": "Journal of Computational Design and Engineering",
+        "fallback": "assets/images/covers/publication-cover.png"
+      }
+    ],
+    "featured": false
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "type": "Award",
+    "date": "2026/07",
+    "icon": "fas fa-award",
+    "title": "Awarded Kyung Hee University's Top Academic Excellence Award (최우수학술상) in Architecture",
+    "detail": "Selected for the Top Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University, representing the Department of Architecture among the August 2026 graduate award recipients. Recognized for outstanding research achievements.",
+    "image": "assets/images/certificates/khu-academic-excellence-award-2026.png",
+    "imageAlt": "Kyung Hee University Graduate School Top Academic Excellence Award (최우수학술상) announcement listing Saddiq Ur Rehman, Department of Architecture",
+    "fallbackImage": "assets/images/covers/certifications-awards-cover.png",
+    "link": "https://gskh.khu.ac.kr/gskh_kor/user/bbs/BMSR00040/view.do?menuNo=13100090&boardId=eyJjdCI6IjVBZVVSZ1l1Q29XM2pCUS9wQjhSUnc9PSIsIml2IjoiNGJiOWM4MGFlZjEyMzg1YjljNjE5NWY4ZDE2ZGNkZGUiLCJzIjoiZTM3MmU3MjY1YjMzMThkYiJ9",
+    "linkLabel": "View Official Announcement",
+    "featured": true
+  },
+  {
+    "type": "Publication",
+    "date": "2026",
+    "icon": "fas fa-file-alt",
+    "title": "Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics",
+    "detail": "Published in Automation in Construction (IF: 12.6). The BIMUniXchange AEC-to-XR pipeline spans Revit, ArchiCAD, and Unity.",
+    "image": "https://github.com/user-attachments/assets/3d1f0a98-5bfe-4764-bab2-172e382ff987",
+    "imageAlt": "BIMUniXchange AEC-to-XR pipeline",
+    "fallbackImage": "assets/images/covers/publication-cover.png",
+    "link": "https://doi.org/10.1016/j.autcon.2026.106994",
+    "linkLabel": "View Paper (DOI)",
+    "featured": true
+  },
+  {
+    "type": "PhD",
+    "date": "2026/04",
+    "icon": "fas fa-graduation-cap",
+    "title": "Successfully defended my doctoral thesis at Kyung Hee University",
+    "detail": "Defended 'A Semantically Enriched BIM to XR Data Exchange Framework with Conversational LLM for Immersive Construction Informatics' under Professor Inhan Kim.",
+    "image": "https://media.licdn.com/dms/image/v2/D5622AQEQp-E_LDv1mg/feedshare-shrink_1280/B56Z1L9vtYKQAM-/0/1775095970878?e=1781740800&v=beta&t=hQ-oeGarOO16hAy2vkb8_E5GhMGoEjTJgl1ugg_FBHk",
+    "imageAlt": "Doctoral thesis defense milestone",
+    "fallbackImage": "assets/images/covers/education-cover.png",
+    "featured": true
+  },
+  {
+    "type": "Software",
+    "date": "2026/06",
+    "icon": "fas fa-laptop-code",
+    "title": "ReUniXchange v1.2.0 is now available on the Autodesk App Store",
+    "softwareId": "reunixchange",
+    "image": "https://media.licdn.com/dms/image/v2/D5622AQGdnM-31fvc8g/feedshare-image-high-res/B56Zl1G5nPI4As-/0/1758606368374?e=1781740800&v=beta&t=Dd19Ev9yQgINV_Q3Q7RiQ69YnVaC_syCskm2l7HhwcY",
+    "imageAlt": "ReUniXchange Revit to Unity plugin",
+    "fallbackImage": "assets/images/covers/software-cover.png",
+    "link": "https://apps.autodesk.com/RVT/en/Detail/Index?id=6622158299438821562&appLang=en&os=Win64",
+    "linkLabel": "View on Autodesk App Store",
+    "featured": true
+  }
+]
