@@ -46,6 +46,9 @@
     box-shadow var(--transition-fast), opacity var(--transition-fast),
     transform var(--transition-fast);
 
+  /* Fixed header height - measured at runtime by script.js, fallback below */
+  --header-height: 66px;
+
   /* Border Radii */
   --radius-xs: 4px;
   --radius-sm: 8px;
@@ -90,7 +93,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 100px;
+  scroll-padding-top: var(--header-height);
 }
 
 body {
@@ -3515,7 +3518,8 @@ a.contact-value:hover {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 100px 24px 40px;
+  /* Sits flush under the fixed header - no gap above the tab covers */
+  padding: var(--header-height) 24px 40px;
 }
 
 /* ==========================================================================
@@ -3585,7 +3589,7 @@ a.contact-value:hover {
 
 @media (max-width: 1024px) {
   .container {
-    padding: 90px 20px 40px;
+    padding: var(--header-height) 20px 40px;
   }
 
   .software-container {
@@ -3608,7 +3612,7 @@ a.contact-value:hover {
 
 @media (max-width: 768px) {
   .container {
-    padding: 84px 16px 32px;
+    padding: var(--header-height) 16px 32px;
   }
 
   .tab-cover {
@@ -3855,7 +3859,7 @@ a.contact-value:hover {
 
 @media (max-width: 480px) {
   .container {
-    padding: 80px 12px 28px;
+    padding: var(--header-height) 12px 28px;
   }
 
   /* Keep the name from crowding the menu button + toggle on small phones */

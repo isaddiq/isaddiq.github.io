@@ -711,6 +711,19 @@ const CONFIG = {
 
 const VALID_TABS = ['home', 'news', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
 
+// Measure the fixed header and expose it as --header-height so the page content
+// (tab covers) starts exactly where the header ends, with no gap in between.
+function syncHeaderHeight() {
+    const header = document.querySelector('.header-wrapper');
+    if (!header) return;
+
+    const height = header.offsetHeight;
+    if (!height) return;
+
+    CONFIG.headerHeight = height;
+    document.documentElement.style.setProperty('--header-height', `${height}px`);
+}
+
 // Utility function for debouncing
 function debounce(func, wait) {
     let timeout;
@@ -2453,11 +2466,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Add resize handler for responsive adjustments with debounce
     const handleResize = debounce(() => {
-        const header = document.querySelector('.header-wrapper');
-        if (header) {
-            CONFIG.headerHeight = header.offsetHeight;
-        }
-        
+        syncHeaderHeight();
+
         // Close mobile menu on desktop view
         if (window.innerWidth > 768) {
             const navMenu = document.querySelector('.nav-menu');
@@ -2474,13 +2484,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     window.addEventListener('resize', handleResize);
     
-    // Initial header height calculation
-    setTimeout(() => {
-        const header = document.querySelector('.header-wrapper');
-        if (header) {
-            CONFIG.headerHeight = header.offsetHeight;
-        }
-    }, 100);
+    // Initial header height calculation (re-run after webfonts settle)
+    syncHeaderHeight();
+    setTimeout(syncHeaderHeight, 100);
+    if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(syncHeaderHeight);
+    }
     
     // Add performance monitoring
     if (window.performance && window.performance.timing) {
