@@ -1505,6 +1505,47 @@ function loadTabContent(tabName) {
 // ==========================================================================
 
 /**
+ * Proficiency ladder, low to high. A skill's position on this ladder is the
+ * only thing the UI shows; the older percentage bars implied a precision
+ * (85 vs 80) that the underlying judgement does not have.
+ */
+const SKILL_LEVELS = ['Basic', 'Intermediate', 'Advanced', 'Expert'];
+
+/**
+ * Map a level string to its 1-based rung, or 0 when unrecognised.
+ * Matching is case-insensitive because the data mixes "Basic" and "basic".
+ * @param {string} level
+ * @returns {number} 0-4
+ */
+function skillLevelStep(level) {
+    const wanted = String(level || '').trim().toLowerCase();
+    const index = SKILL_LEVELS.findIndex(name => name.toLowerCase() === wanted);
+    return index === -1 ? 0 : index + 1;
+}
+
+/**
+ * Render the 4-segment proficiency meter for one skill.
+ * Falls back to the raw label with no meter if the level is unrecognised.
+ * @param {Object} skill
+ * @returns {string} HTML
+ */
+function renderSkillMeter(skill) {
+    const step = skillLevelStep(skill.level);
+    if (step === 0) return '';
+
+    const segments = SKILL_LEVELS
+        .map((_, i) => `<span class="skill-meter-seg${i < step ? ' is-filled' : ''}"></span>`)
+        .join('');
+
+    return `
+        <div class="skill-meter" role="img"
+             aria-label="${escapeHtml(SKILL_LEVELS[step - 1])}, ${step} out of ${SKILL_LEVELS.length}">
+            ${segments}
+        </div>
+    `;
+}
+
+/**
  * Load skills content dynamically
  */
 function loadSkillsContent() {
@@ -1529,36 +1570,30 @@ function loadSkillsContent() {
         <div class="skill-category">
             <h3><i class="${category.icon}"></i> ${category.title}</h3>
             <div class="skills-grid">
-                ${category.skills.map(skill => `
+                ${category.skills.map(skill => {
+                    const step = skillLevelStep(skill.level);
+                    // Normalise casing so "basic" and "Basic" render the same.
+                    const levelLabel = step ? SKILL_LEVELS[step - 1] : skill.level;
+                    return `
                     <div class="skill-item">
                         <div class="skill-header">
                             <span class="skill-name">
                                 ${renderSkillIcon(skill)}
                                 <span>${skill.name}</span>
                             </span>
-                            <span class="skill-level">${skill.level}</span>
+                            <span class="skill-level">${escapeHtml(levelLabel || '')}</span>
                         </div>
-                        <div class="skill-progress">
-                            <div class="skill-progress-bar" style="width: 0%;" data-width="${skill.percentage}%"></div>
-                        </div>
+                        ${renderSkillMeter(skill)}
                         ${skill.description ? `<div class="skill-description">${skill.description}</div>` : ''}
                     </div>
-                `).join('')}
+                `;
+                }).join('')}
             </div>
         </div>
     `).join('');
     
     skillsContainer.innerHTML = skillsHTML;
     attachImageFallbacks(skillsContainer);
-    
-    // Animate progress bars
-    setTimeout(() => {
-        const progressBars = document.querySelectorAll('.skill-progress-bar');
-        progressBars.forEach(bar => {
-            const width = bar.getAttribute('data-width');
-            bar.style.width = width;
-        });
-    }, 500);
 }
 
 // ==========================================================================
