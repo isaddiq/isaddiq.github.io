@@ -523,6 +523,7 @@ button:focus-visible,
   padding: 0 20px;
 }
 
+/* The cover carries a single heading, so it needs no bottom spacing. */
 .cover-title {
   font-family: "Outfit", sans-serif;
   font-size: var(--text-3xl);
@@ -531,14 +532,7 @@ button:focus-visible,
   text-transform: uppercase;
   color: #ffffff;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
-  margin-bottom: var(--space-2);
-}
-
-.cover-subtitle {
-  font-size: var(--text-md);
-  font-weight: 400;
-  color: #e2e8f0;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0;
 }
 
 /* ==========================================================================
@@ -3962,10 +3956,6 @@ a.contact-value:hover {
 
   .cover-title {
     font-size: 1.6rem;
-  }
-
-  .cover-subtitle {
-    font-size: 0.85rem;
   }
 
   /* Software tab on small phones */
