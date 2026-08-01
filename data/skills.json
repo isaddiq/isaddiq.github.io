@@ -5,8 +5,8 @@
     "skills": [
       {
         "name": "Python",
-        "level": "Advanced",
-        "percentage": 80,
+        "level": "Intermediate",
+        "percentage": 70,
         "years": 4,
         "description": "Extensive experience in data analysis, machine learning, and automation",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
@@ -59,23 +59,23 @@
       },
       {
         "name": "Navisworks",
-        "level": "Advanced",
-        "percentage": 85,
+        "level": "Intermediate",
+        "percentage": 70,
         "years": 3,
         "description": "Model coordination, clash detection, and 4D simulation",
         "icon": "assets/icons/skills/autodesk-navisworks-logo.png"
       },
       {
         "name": "Synchro 4D",
-        "level": "Advanced",
-        "percentage": 85,
+        "level": "Intermediate",
+        "percentage": 70,
         "years": 5,
         "description": "Model coordination, clash detection, and 4D simulation",
         "icon": "https://www.bentley.com/wp-content/uploads/2022/04/synchro-software-logo-black-100X100.svg?ver=1691701928"
       },
       {
         "name": "Rhinoceros 3D",
-        "level": "Advanced",
+        "level": "Intermediate",
         "percentage": 70,
         "years": 2,
         "description": "Visual programming for  parametric design",
@@ -91,7 +91,7 @@
       },
       {
         "name": "AutoCAD",
-        "level": "Advanced",
+        "level": "Intermediate",
         "percentage": 70,
         "years": 4,
         "description": "2D drafting and technical documentation",

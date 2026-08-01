@@ -787,7 +787,6 @@ let highlightsData = [];
 let softwareData = [];
 let collaborationsData = null;
 let scholarData = null;
-let announcementsData = [];
 
 // ==========================================================================
 // Data Loading Functions
@@ -807,8 +806,7 @@ async function loadDataFromJSON() {
         loadHighlightsData(),
         loadSoftwareData(),
         loadCollaborationsData(),
-        loadScholarData(),
-        loadAnnouncementsData()
+        loadScholarData()
     ];
 
     try {
@@ -1222,25 +1220,6 @@ async function loadHighlightsData() {
     } catch (error) {
         console.error('❌ Error loading highlights.json:', error);
         highlightsData = [];
-    }
-}
-
-/**
- * Load announcement popup data from JSON (drives the bottom-left popup).
- */
-async function loadAnnouncementsData() {
-    try {
-        const response = await fetch('data/announcements.json');
-        if (response.ok) {
-            announcementsData = await response.json();
-            console.log('✅ Announcements data loaded successfully');
-        } else {
-            console.error('❌ Could not load announcements.json');
-            announcementsData = [];
-        }
-    } catch (error) {
-        console.error('❌ Error loading announcements.json:', error);
-        announcementsData = [];
     }
 }
 
@@ -2455,9 +2434,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     initializeFlagCounterPopup();
 
-    // Show the bottom-left announcement popup a moment after load (data already loaded)
-    setTimeout(renderAnnouncementPopup, 900);
-
     // Handle browser back/forward navigation
     window.addEventListener('hashchange', function() {
         const currentTab = getCurrentTab();
@@ -2624,164 +2600,6 @@ function initializeFlagCounterPopup() {
             closePopup();
         });
     }
-}
-
-// ==========================================================================
-// Announcement Popup (bottom-right, data-driven from data/announcements.json)
-// ==========================================================================
-
-/**
- * Local calendar date as YYYY-MM-DD (used for the "Don't show today" snooze).
- */
-function announcementToday() {
-    const d = new Date();
-    const pad = n => String(n).padStart(2, '0');
-    return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
-}
-
-/**
- * Render the bottom-right announcement popup.
- * Shows every entry in data/announcements.json whose "enabled" is not false and
- * that has not been snoozed for the current day. Dismissal behaviour:
- *   - The ✕ closes the card for this visit only; it reappears on the next load.
- *   - "Don't show today" snoozes that announcement until tomorrow (per id, in
- *     localStorage).
- * To add a popup: append an object to announcements.json. To hide one for good:
- * set "enabled": false. This mirrors how highlights are toggled with "featured".
- */
-function renderAnnouncementPopup() {
-    const today = announcementToday();
-    const items = (Array.isArray(announcementsData) ? announcementsData : [])
-        .filter(a => a && a.enabled !== false)
-        .filter(a => {
-            try { return localStorage.getItem('announcement-snooze:' + a.id) !== today; }
-            catch (e) { return true; }
-        });
-
-    if (items.length === 0) return;
-
-    // Reuse an existing container or create one appended to <body>.
-    let container = document.getElementById('announcement-popup');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'announcement-popup';
-        container.className = 'announcement-popup';
-        container.setAttribute('aria-live', 'polite');
-        container.setAttribute('aria-label', 'Site announcements');
-        document.body.appendChild(container);
-    }
-
-    container.innerHTML = items.map(a => {
-        const typeClass = newsTypeClass(a.type || 'Announcement');
-        const icon = escapeHtml(a.icon || 'fas fa-bullhorn');
-        const type = a.type ? `<span class="announcement-type">${escapeHtml(a.type)}</span>` : '';
-        const title = a.title ? `<span class="announcement-title">${escapeHtml(a.title)}</span>` : '';
-        const message = a.message ? `<span class="announcement-message">${escapeHtml(a.message)}</span>` : '';
-        const link = (a.link && /^https?:/i.test(a.link))
-            ? `<a class="announcement-link" href="${escapeHtml(a.link)}" target="_blank" rel="noopener">
-                 ${escapeHtml(a.linkLabel || 'Learn more')} <i class="fas fa-arrow-right"></i>
-               </a>`
-            : '';
-        return `
-            <div class="announcement-card news-type-${typeClass}" role="status" data-announcement-id="${escapeHtml(a.id || '')}">
-                <i class="${icon} announcement-icon" aria-hidden="true"></i>
-                <div class="announcement-body">
-                    ${type}
-                    ${title}
-                    ${message}
-                    ${link}
-                    <div class="announcement-actions">
-                        <button type="button" class="announcement-snooze">Don't show today</button>
-                    </div>
-                </div>
-                <button type="button" class="announcement-close" aria-label="Close for now" title="Close">✕</button>
-            </div>
-        `;
-    }).join('');
-
-    // Fade a card out; drop the container once its last card is gone.
-    const hideCard = (card) => {
-        card.classList.add('announcement-hiding');
-        setTimeout(() => {
-            card.remove();
-            if (!container.querySelector('.announcement-card')) container.remove();
-        }, 320);
-    };
-
-    container.querySelectorAll('.announcement-card').forEach(card => {
-        const id = card.getAttribute('data-announcement-id');
-
-        // ✕ closes for this visit only; it reappears on the next page load.
-        const closeBtn = card.querySelector('.announcement-close');
-        if (closeBtn) closeBtn.addEventListener('click', () => hideCard(card));
-
-        // "Don't show today" suppresses this announcement until tomorrow.
-        const snoozeBtn = card.querySelector('.announcement-snooze');
-        if (snoozeBtn) snoozeBtn.addEventListener('click', () => {
-            if (id) {
-                try { localStorage.setItem('announcement-snooze:' + id, announcementToday()); }
-                catch (e) { /* storage blocked */ }
-            }
-            hideCard(card);
-        });
-    });
-
-    // Celebrate the announcement with a confetti burst around the popup itself
-    // (skipped for reduced motion).
-    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (!reduceMotion) launchConfetti(container);
-}
-
-/**
- * Fire a lightweight, self-contained confetti burst (no libraries) that stays
- * near the popup. Pieces originate at the top-center of `originEl`, arc up and
- * outward, then fall back down before the container cleans itself up.
- * @param {HTMLElement} originEl - element the burst should emanate from
- */
-function launchConfetti(originEl) {
-    const COLORS = ['#d4af37', '#f5c542', '#60a5fa', '#0284c7', '#c084fc', '#10b981', '#ec4899', '#f39c12'];
-    const PIECES = 60;
-
-    // Emanate from the top-center of the popup; fall back on bottom-right corner.
-    let ox, oy;
-    const rect = originEl && originEl.getBoundingClientRect ? originEl.getBoundingClientRect() : null;
-    if (rect && rect.width) {
-        ox = rect.left + rect.width / 2;
-        oy = rect.top + 6;
-    } else {
-        ox = window.innerWidth - 150;
-        oy = window.innerHeight - 140;
-    }
-
-    const container = document.createElement('div');
-    container.className = 'confetti-container';
-    container.setAttribute('aria-hidden', 'true');
-    container.style.left = ox + 'px';
-    container.style.top = oy + 'px';
-
-    const frag = document.createDocumentFragment();
-    for (let i = 0; i < PIECES; i++) {
-        const piece = document.createElement('span');
-        piece.className = 'confetti-piece';
-        const size = 6 + Math.random() * 7;
-        piece.style.width = size + 'px';
-        piece.style.height = (size * (0.6 + Math.random() * 0.9)) + 'px';
-        piece.style.background = COLORS[(Math.random() * COLORS.length) | 0];
-        if (Math.random() < 0.35) piece.style.borderRadius = '50%';
-        // Trajectory: horizontal spread, an upward peak, then a downward landing.
-        piece.style.setProperty('--tx', (Math.random() * 300 - 150).toFixed(0) + 'px');
-        piece.style.setProperty('--peak', (-(60 + Math.random() * 120)).toFixed(0) + 'px');
-        piece.style.setProperty('--ty', (30 + Math.random() * 150).toFixed(0) + 'px');
-        piece.style.setProperty('--spin', (Math.random() * 720 + 300).toFixed(0) + 'deg');
-        piece.style.setProperty('--fall-duration', (1.5 + Math.random() * 1.1).toFixed(2) + 's');
-        piece.style.setProperty('--fall-delay', (Math.random() * 0.2).toFixed(2) + 's');
-        frag.appendChild(piece);
-    }
-    container.appendChild(frag);
-    document.body.appendChild(container);
-
-    // Remove after the longest possible piece lifetime (duration max + delay max).
-    setTimeout(() => container.remove(), 3200);
 }
 
 // ==========================================================================
