@@ -856,62 +856,67 @@ async function loadCollaborationsData() {
 }
 
 // ==========================================================================
-// Google Scholar Metrics (client-side, self-refreshing every 12 hours)
+// Google Scholar Metrics
 // ==========================================================================
+//
+// The numbers live in data/scholar.json, which .github/workflows/update-scholar.yml
+// rewrites from the live profile every 6 hours (four times a day). Reading them
+// from the repo instead of scraping in the browser means every visitor sees the
+// same figures on the first paint - incognito windows and first-time readers
+// included - with no dependency on per-browser storage.
 
 const SCHOLAR_ID = 'wMH9sSgAAAAJ';
 const SCHOLAR_PROFILE_URL = 'https://scholar.google.com/citations?user=' + SCHOLAR_ID + '&hl=en';
-const SCHOLAR_CACHE_KEY = 'scholarMetrics.v1';
-const SCHOLAR_REFRESH_MS = 12 * 60 * 60 * 1000; // 12 hours
-const SCHOLAR_RETRY_MS = 30 * 60 * 1000; // back-off after a failed fetch
+const SCHOLAR_REFRESH_MS = 6 * 60 * 60 * 1000; // matches the workflow schedule
+const SCHOLAR_MIN_RECHECK_MS = 30 * 60 * 1000; // floor for focus-triggered checks
 const SCHOLAR_FETCH_TIMEOUT_MS = 12000;
 
-let scholarRefreshInFlight = false;
-let scholarLastAttemptAt = 0;
+let scholarLastFetchAt = 0;
+let scholarFetchInFlight = false;
 
 /**
- * Google Scholar serves no CORS-enabled API, so the profile page is pulled
- * through public read-only relays. They are tried in order until one returns
- * a page that actually contains the metrics table.
+ * Read the committed metrics file. Cache-busted and sent with no-store so a
+ * long-lived CDN or browser copy can never pin the card to yesterday's numbers.
+ * Returns the parsed object, or null when the file is unreachable or unusable.
  */
-const SCHOLAR_PROXIES = [
-    (url) => 'https://api.cors.lol/?url=' + encodeURIComponent(url),
-    (url) => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(url),
-    (url) => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
-    (url) => 'https://corsproxy.io/?url=' + encodeURIComponent(url)
-];
+async function fetchScholarFile() {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), SCHOLAR_FETCH_TIMEOUT_MS);
+    try {
+        const response = await fetch('data/scholar.json?v=' + Date.now(), {
+            cache: 'no-store',
+            signal: controller.signal
+        });
+        if (!response.ok) return null;
+
+        const data = await response.json();
+        return isValidScholarMetrics(data) ? data : null;
+    } catch (error) {
+        return null;
+    } finally {
+        clearTimeout(timer);
+    }
+}
 
 /**
  * Load Google Scholar metrics for the first paint.
- * Order of preference: a cached live result from a previous visit, then the
- * committed data/scholar.json seed. Either way the card renders instantly and
- * refreshScholarMetrics() tops it up afterwards if the numbers are stale.
  */
 async function loadScholarData() {
-    const cached = readScholarCache();
-    if (cached) {
-        scholarData = cached.metrics;
-        console.log('✅ Scholar metrics loaded from cache');
+    // Older builds kept a private copy of the metrics per browser, which is
+    // exactly what made one window disagree with the next. Clear it out.
+    try {
+        localStorage.removeItem('scholarMetrics.v1');
+    } catch (error) {
+        /* Storage disabled - nothing to clean up. */
     }
 
-    try {
-        const response = await fetch('data/scholar.json?v=' + Date.now());
-        if (response.ok) {
-            const seed = await response.json();
-            // The seed only wins when there is no cached live reading yet.
-            if (!scholarData) {
-                scholarData = seed;
-                console.log('✅ Scholar metrics loaded from seed file');
-            } else if (seed.profileUrl && !scholarData.profileUrl) {
-                scholarData.profileUrl = seed.profileUrl;
-            }
-        } else if (!scholarData) {
-            console.error('❌ Could not load scholar.json');
-        }
-    } catch (error) {
-        if (!scholarData) {
-            console.error('❌ Error loading scholar.json:', error);
-        }
+    const data = await fetchScholarFile();
+    if (data) {
+        scholarData = data;
+        scholarLastFetchAt = Date.now();
+        console.log('✅ Scholar metrics loaded');
+    } else {
+        console.error('❌ Could not load scholar.json');
     }
 }
 
@@ -939,50 +944,8 @@ function renderScholarMetrics() {
 }
 
 /**
- * Read the cached metrics written by a previous live fetch.
- * Returns { metrics, fetchedAt, isFresh } or null when nothing usable is stored.
- */
-function readScholarCache() {
-    try {
-        const raw = localStorage.getItem(SCHOLAR_CACHE_KEY);
-        if (!raw) return null;
-
-        const cache = JSON.parse(raw);
-        const fetchedAt = Number(cache && cache.fetchedAt);
-        if (!isValidScholarMetrics(cache && cache.metrics) || !fetchedAt) {
-            localStorage.removeItem(SCHOLAR_CACHE_KEY);
-            return null;
-        }
-
-        const age = Date.now() - fetchedAt;
-        return {
-            metrics: cache.metrics,
-            fetchedAt: fetchedAt,
-            // A clock that jumped backwards should not freeze the cache forever.
-            isFresh: age >= 0 && age < SCHOLAR_REFRESH_MS
-        };
-    } catch (error) {
-        return null; // Private mode / disabled storage: just fetch every visit.
-    }
-}
-
-/**
- * Persist a freshly fetched set of metrics with its timestamp.
- */
-function writeScholarCache(metrics) {
-    try {
-        localStorage.setItem(SCHOLAR_CACHE_KEY, JSON.stringify({
-            metrics: metrics,
-            fetchedAt: Date.now()
-        }));
-    } catch (error) {
-        /* Storage unavailable or full - the numbers still render this visit. */
-    }
-}
-
-/**
- * Sanity-check a metrics object before it is cached or rendered, so a captcha
- * page or a truncated response can never overwrite good numbers.
+ * Sanity-check a metrics object before it is rendered, so a half-written or
+ * malformed file can never overwrite good numbers.
  */
 function isValidScholarMetrics(metrics) {
     if (!metrics) return false;
@@ -998,104 +961,47 @@ function isValidScholarMetrics(metrics) {
 }
 
 /**
- * Pull the three "All" figures out of the Scholar profile markup.
- * The stats table holds six cells in order: citations(all), citations(since),
- * h(all), h(since), i10(all), i10(since) - so the "All" column is 0, 2, 4.
- */
-function parseScholarMetrics(html) {
-    if (!html || html.indexOf('gsc_rsb_std') === -1) return null;
-
-    const doc = new DOMParser().parseFromString(html, 'text/html');
-    let cells = doc.querySelectorAll('#gsc_rsb_st td.gsc_rsb_std');
-    if (cells.length < 5) {
-        cells = doc.querySelectorAll('td.gsc_rsb_std');
-    }
-    if (cells.length < 5) return null;
-
-    const toInt = (cell) => parseInt(cell.textContent.replace(/[^\d]/g, ''), 10);
-    const metrics = {
-        citations: toInt(cells[0]),
-        hIndex: toInt(cells[2]),
-        i10Index: toInt(cells[4])
-    };
-
-    return isValidScholarMetrics(metrics) ? metrics : null;
-}
-
-/**
- * Fetch the live profile through the relay list, returning the first result
- * that parses cleanly. Returns null when every relay fails or is blocked.
- */
-async function fetchScholarMetrics() {
-    for (const buildUrl of SCHOLAR_PROXIES) {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), SCHOLAR_FETCH_TIMEOUT_MS);
-        try {
-            const response = await fetch(buildUrl(SCHOLAR_PROFILE_URL), {
-                signal: controller.signal,
-                cache: 'no-store'
-            });
-            if (response.ok) {
-                const metrics = parseScholarMetrics(await response.text());
-                if (metrics) return metrics;
-            }
-        } catch (error) {
-            /* Relay down, blocked, or timed out - fall through to the next one. */
-        } finally {
-            clearTimeout(timer);
-        }
-    }
-    return null;
-}
-
-/**
- * Refresh the card from Google Scholar when the cached numbers are older than
- * 12 hours. Runs in the background: the card already shows the cached or seed
- * values, and only repaints if a live reading comes back.
+ * Re-read the published metrics and repaint the card if they moved.
+ * Runs in the background - the card keeps showing the current figures either
+ * way, so a failed check is invisible to the reader.
  */
 async function refreshScholarMetrics(force) {
-    const cached = readScholarCache();
-    if (!force && cached && cached.isFresh) {
-        console.log('ℹ️ Scholar metrics are less than 12h old, skipping fetch');
-        return;
-    }
-    if (scholarRefreshInFlight) return;
-    // A failed round of relays should not be retried on every tab focus.
-    if (!force && scholarLastAttemptAt && Date.now() - scholarLastAttemptAt < SCHOLAR_RETRY_MS) {
-        return;
-    }
+    if (scholarFetchInFlight) return;
+    if (!force && Date.now() - scholarLastFetchAt < SCHOLAR_MIN_RECHECK_MS) return;
 
-    scholarRefreshInFlight = true;
-    scholarLastAttemptAt = Date.now();
-    let metrics = null;
+    scholarFetchInFlight = true;
+    let data = null;
     try {
-        metrics = await fetchScholarMetrics();
+        data = await fetchScholarFile();
     } finally {
-        scholarRefreshInFlight = false;
+        scholarFetchInFlight = false;
     }
 
-    if (!metrics) {
-        console.warn('⚠️ Live Scholar fetch unavailable, showing last known metrics');
+    if (!data) {
+        console.warn('⚠️ Scholar metrics re-check failed, keeping the current numbers');
         return;
     }
 
-    scholarData = Object.assign({}, scholarData, metrics, {
-        profileUrl: SCHOLAR_PROFILE_URL,
-        updated: new Date().toISOString().slice(0, 10)
-    });
-    writeScholarCache(scholarData);
+    scholarLastFetchAt = Date.now();
+    const changed = !scholarData
+        || scholarData.citations !== data.citations
+        || scholarData.hIndex !== data.hIndex
+        || scholarData.i10Index !== data.i10Index;
+
+    scholarData = data;
     renderScholarMetrics();
-    console.log('✅ Scholar metrics refreshed from Google Scholar');
+    if (changed) {
+        console.log('✅ Scholar metrics refreshed');
+    }
 }
 
 /**
- * Keep the card current without a reload: re-check every 12 hours, and also
- * when a long-idle tab is brought back to the foreground.
+ * Keep a tab that stays open for days in step with the 6-hourly workflow:
+ * re-check on the same cadence, and whenever a long-idle tab comes back to the
+ * foreground (a laptop that was asleep gets no timer ticks).
  */
 function initializeScholarAutoRefresh() {
-    refreshScholarMetrics();
-
-    setInterval(() => refreshScholarMetrics(), SCHOLAR_REFRESH_MS);
+    setInterval(() => refreshScholarMetrics(true), SCHOLAR_REFRESH_MS);
 
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
@@ -2453,8 +2359,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Render home highlights (featured items; data already loaded)
     renderHighlights();
 
-    // Populate the Google Scholar metrics card, then refresh it in the
-    // background if the cached numbers are older than 12 hours
+    // Populate the Google Scholar metrics card, then keep a long-lived tab in
+    // step with the 6-hourly server-side refresh
     renderScholarMetrics();
     initializeScholarAutoRefresh();
 

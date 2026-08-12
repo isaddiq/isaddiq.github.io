@@ -42,7 +42,13 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   |-- news.json           # Timeline updates
 |   |-- projects.json       # Research projects
 |   |-- publications.json   # Journals, conferences, and reports
+|   |-- scholar.json        # Google Scholar metrics (refreshed automatically)
 |   `-- skills.json         # Technical competencies and icon paths
+|-- scripts/
+|   `-- update-scholar.mjs  # Reads the live Scholar profile, rewrites scholar.json
+|-- .github/
+|   `-- workflows/
+|       `-- update-scholar.yml  # Runs that script every 6 hours
 |-- assets/
 |   |-- css/
 |   |   `-- styles.css      # CSS variables, layouts, and animations
@@ -96,6 +102,17 @@ Customize the JSON files under the `data/` directory to update your profile data
 - **`data/experience.json`**: Add your academic and professional history under `academic_experience` or `industry_experience`.
 - **`data/skills.json`**: Manage your skillset by category (e.g., programming, bim_software, game_engines). Define `level` (e.g., Expert), `percentage` (controls progress bar width), and `icon` (FontAwesome or path to logo).
 - **`data/certificates.json`**: List academic awards under `awards` and certifications under `certifications` (with skills tag list, image paths, and credential IDs).
+- **`data/scholar.json`**: Citation count, h-index, and i10-index. **Do not edit by hand** - the `Update Google Scholar metrics` workflow rewrites this file (see below).
+
+#### Google Scholar Metrics (automated)
+
+`.github/workflows/update-scholar.yml` runs `scripts/update-scholar.mjs` every 6 hours (00:17, 06:17, 12:17, and 18:17 UTC). The script reads the public profile, and commits `data/scholar.json` only when a number actually changes - which republishes the Pages site, so every visitor gets the new figures on their next load.
+
+- Point it at a different profile by editing `SCHOLAR_ID` in the script (and the `scholarId` in `data/scholar.json`).
+- Run it on demand from **Actions → Update Google Scholar metrics → Run workflow**.
+- Requires **Settings → Actions → General → Workflow permissions** to be set to *Read and write permissions* so the job can push.
+- If Google answers with a captcha, the run logs a warning and leaves the existing numbers untouched; the next run picks it up.
+- GitHub pauses scheduled workflows in repos with no activity for 60 days - just re-enable it from the Actions tab if that ever happens.
 
 ### 3. Customize Static Content & Social Links
 
