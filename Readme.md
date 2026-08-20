@@ -18,7 +18,7 @@
 
 ## 📖 Overview
 
-A modern, responsive academic portfolio website showcasing the research, publications, and professional journey of Saddiq Ur Rehman, a PhD student specializing in Building Information Modeling (BIM) and Artificial Intelligence in the construction industry.
+A modern, responsive academic portfolio website showcasing the research, publications, and professional journey of Saddiq Ur Rehman, a postdoctoral researcher specializing in Building Information Modeling (BIM) and Artificial Intelligence in the construction industry.
 
 ## ✨ Features
 

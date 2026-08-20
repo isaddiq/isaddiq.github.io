@@ -1,5 +1,18 @@
 [
   {
+    "type": "PhD",
+    "date": "2026/08",
+    "icon": "fas fa-graduation-cap",
+    "title": "Graduated with a PhD in Architecture and received the Top Academic Excellence Award on stage",
+    "detail": "Doctoral degree conferred by Kyung Hee University at the 2025학년도 후기 학위수여식, where the Top Academic Excellence Award (최우수학술상) was presented by the Vice President for Academic Affairs (Seoul).",
+    "image": "assets/images/news/graduation.jpg",
+    "imageAlt": "Saddiq Ur Rehman in doctoral regalia receiving the Top Academic Excellence Award on stage at the Kyung Hee University degree conferral ceremony",
+    "fallbackImage": "assets/images/covers/education-cover.png",
+    "link": "#news",
+    "linkLabel": "See in News",
+    "featured": true
+  },
+  {
     "type": "Award",
     "date": "2026/07",
     "icon": "fas fa-award",
@@ -34,7 +47,7 @@
     "image": "https://media.licdn.com/dms/image/v2/D5622AQEQp-E_LDv1mg/feedshare-shrink_1280/B56Z1L9vtYKQAM-/0/1775095970878?e=1781740800&v=beta&t=hQ-oeGarOO16hAy2vkb8_E5GhMGoEjTJgl1ugg_FBHk",
     "imageAlt": "Doctoral thesis defense milestone",
     "fallbackImage": "assets/images/covers/education-cover.png",
-    "featured": true
+    "featured": false
   },
   {
     "type": "Software",

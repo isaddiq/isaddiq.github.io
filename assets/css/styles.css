@@ -579,16 +579,24 @@ button:focus-visible,
 }
 
 .profile-image {
+  /* Both portraits are stacked absolutely so each one always fills the frame
+     edge to edge. In normal flow the main image left a sliver at the top that
+     let the hover portrait show through. */
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: opacity var(--transition-slow);
 }
 
+/* Graduation portrait is a full-length shot, so pull the crop up off centre. */
+.profile-image.main {
+  object-position: 50% 68%;
+}
+
 .profile-image.hover {
-  position: absolute;
-  top: 0;
-  left: 0;
   opacity: 0;
 }
 
