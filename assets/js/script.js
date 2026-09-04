@@ -1156,7 +1156,7 @@ async function loadSoftwareData() {
 const PAGE_METADATA = {
     home: {
         title: 'Saddiq Ur Rehman - BIM, XR & Modular Construction Research',
-        description: 'Official academic portfolio of Saddiq Ur Rehman, postdoctoral researcher at Kyung Hee University researching BIM, XR, DfMA, modular construction, digital twins, AI, and BIM-to-Unity workflows.'
+        description: 'Official academic portfolio of Saddiq Ur Rehman, PhD in Architecture from Kyung Hee University, researching BIM, XR, DfMA, modular construction, digital twins, AI, and BIM-to-Unity workflows.'
     },
     news: {
         title: 'News - Saddiq Ur Rehman',
