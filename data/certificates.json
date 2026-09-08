@@ -53,6 +53,25 @@
   ],
   "certifications": [
     {
+      "id": "cert_028",
+      "title": "Springer Nature Reviewer Certificate",
+      "issuer": "Springer Nature",
+      "date": "2026-09-08",
+      "category": "Peer Review",
+      "description": "Reviewer certificate recognizing contribution to 1 manuscript in 2026 for Artificial Intelligence Review.",
+      "image": "assets/images/certificates/springer-nature-reviewer-certificate-2026-09-08.jpg",
+      "skills": [
+        "Peer Review",
+        "Artificial Intelligence",
+        "Manuscript Review",
+        "Research Evaluation",
+        "Scholarly Service"
+      ],
+      "verification_url": "",
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-09-08",
+      "featured": false
+    },
+    {
       "id": "cert_027",
       "title": "Springer Nature Reviewer Certificate",
       "issuer": "Springer Nature",
