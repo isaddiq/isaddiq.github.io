@@ -1400,11 +1400,12 @@ button:focus-visible,
   height: 100%;
 }
 
-/* Experience cards list several roles, so the logo sits as a compact mark in
-   the top-left corner rather than stretching down the whole card. */
+/* Experience cards list several roles, so the logo keeps the education tab's
+   width but sits in the top-left corner instead of stretching down the whole
+   card, which would blow it up to the height of the role list. */
 #experience-container .company-logo {
-  width: 96px;
-  height: 96px;
+  width: 180px;
+  height: 130px;
   align-self: flex-start;
 }
 
@@ -4277,8 +4278,8 @@ a.contact-value:hover {
   }
 
   #experience-container .company-logo {
-    width: 72px;
-    height: 72px;
+    width: 140px;
+    height: 100px;
     align-self: flex-start;
   }
 
