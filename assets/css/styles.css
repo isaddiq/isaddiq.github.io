@@ -1266,20 +1266,30 @@ button:focus-visible,
 .education-container,
 #experience-container {
   position: relative;
-  padding-left: 32px;
+  padding-left: 44px;
   margin: 20px 0;
 }
 
-/* Core vertical line */
+/*
+  Core vertical rail. It fades out at both ends rather than stopping on a hard
+  edge, so the column reads as a continuing thread instead of a boxed-in bar.
+*/
 .education-container::before,
 #experience-container::before {
   content: "";
   position: absolute;
-  top: 8px;
-  left: 8px;
-  bottom: 8px;
+  top: 0;
+  bottom: 0;
+  left: 13px;
   width: 2px;
-  background: var(--border-color);
+  border-radius: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--border-color) 36px,
+    var(--border-color) calc(100% - 36px),
+    transparent 100%
+  );
 }
 
 .experience-item {
@@ -1291,25 +1301,55 @@ button:focus-visible,
   margin-bottom: 0;
 }
 
-/* Node indicator */
-.experience-item::before {
+/*
+  Timeline node. Scoped to the two timeline containers so the same card markup
+  can be reused elsewhere (software feature grids) without picking up a dot.
+  A small hollow disc sitting on the rail, punched out of the page background
+  so the rail appears to pass behind it.
+*/
+.education-container .experience-item::before,
+#experience-container .experience-item::before {
   content: "";
   position: absolute;
-  top: 14px;
-  left: -32px;
-  width: 18px;
-  height: 18px;
+  top: 28px;
+  left: -36px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  background: var(--bg-primary);
-  border: 4px solid var(--secondary-color);
-  box-shadow: 0 0 0 4px var(--bg-primary);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0 0 5px var(--bg-primary);
   z-index: 2;
-  transition: transform var(--transition-normal);
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    background-color var(--transition-normal);
 }
 
-.experience-item:hover::before {
-  transform: scale(1.2);
-  border-color: var(--accent-color);
+/* Short tick joining the node to the card, so the two do not float apart */
+.education-container .experience-item::after,
+#experience-container .experience-item::after {
+  content: "";
+  position: absolute;
+  top: 33px;
+  left: -19px;
+  width: 15px;
+  height: 2px;
+  background: var(--border-color);
+  transition: background-color var(--transition-normal);
+}
+
+.education-container .experience-item:hover::before,
+#experience-container .experience-item:hover::before {
+  transform: scale(1.15);
+  border-color: var(--secondary-color);
+  background: var(--secondary-color);
+}
+
+.education-container .experience-item:hover::after,
+#experience-container .experience-item:hover::after {
+  background: var(--secondary-color);
+  width: 19px;
 }
 
 .exp-header {
@@ -1349,17 +1389,23 @@ button:focus-visible,
   object-fit: contain;
 }
 
-.education-container .company-logo,
-#experience-container .company-logo {
+.education-container .company-logo {
   width: 180px;
   height: auto;
   align-self: stretch;
 }
 
-.education-container .company-logo img,
-#experience-container .company-logo img {
+.education-container .company-logo img {
   width: 100%;
   height: 100%;
+}
+
+/* Experience cards list several roles, so the logo sits as a compact mark in
+   the top-left corner rather than stretching down the whole card. */
+#experience-container .company-logo {
+  width: 96px;
+  height: 96px;
+  align-self: flex-start;
 }
 
 .company-logo i {
@@ -1401,6 +1447,117 @@ button:focus-visible,
 
 .exp-details p strong {
   color: var(--text-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Roles held at one organization
+   The card header carries the logo, organization name and shared department;
+   every role the person held there is a node on a smaller inner timeline.
+   -------------------------------------------------------------------------- */
+
+.exp-details h3 .company-name {
+  font-size: inherit;
+  font-weight: inherit;
+  color: var(--text-primary);
+  margin-bottom: 0;
+  transition: color var(--transition-normal);
+}
+
+.exp-details h3 .company-name:hover {
+  color: var(--secondary-color);
+}
+
+.exp-department {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: 16px;
+}
+
+.role-timeline {
+  position: relative;
+  padding-left: 22px;
+}
+
+.role-timeline::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: linear-gradient(
+    to bottom,
+    var(--border-color),
+    var(--border-color) calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+.role-entry {
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.role-entry:last-child {
+  padding-bottom: 0;
+}
+
+/* Node on the inner timeline, sat on the border-left of .role-timeline */
+.role-entry::before {
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: -26px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 0 0 3px var(--bg-secondary);
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    background-color var(--transition-normal);
+}
+
+/* An ongoing role reads as filled rather than hollow */
+.role-entry.role-current::before {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.role-entry:hover::before {
+  transform: scale(1.2);
+  border-color: var(--secondary-color);
+}
+
+.role-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.role-entry .exp-duration {
+  margin-bottom: 6px;
+}
+
+.role-unit {
+  display: inline-block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--secondary-color);
+  margin-bottom: 6px;
+}
+
+a.role-unit:hover {
+  color: var(--accent-color);
+}
+
+.role-entry p {
+  margin-bottom: 4px;
 }
 
 /* ==========================================================================
@@ -1721,13 +1878,122 @@ button:focus-visible,
 }
 
 /* ==========================================================================
-   Projects Grid
+   Projects Timeline
+   Cards alternate either side of a centre rail, newest at the top. The year
+   pill sitting on the rail is the node - a separate dot would only repeat it.
    ========================================================================== */
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 24px;
+.project-timeline {
+  position: relative;
+  padding: 8px 0;
+  /*
+    Entries flow in one column, so pulling every right-hand card up by
+    --project-stagger interleaves the two sides: each card starts around the
+    middle of the one before it instead of below it. Every consecutive pair
+    then advances by (card height + gap - stagger), which keeps the rhythm even
+    on both sides. Keep the stagger under half a card height or cards on the
+    same side start to collide.
+  */
+  --project-gap: 36px;
+  --project-stagger: 150px;
+}
+
+/* Centre rail, fading out at both ends so it reads as a continuing thread */
+.project-timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  border-radius: 1px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0,
+    var(--border-color) 40px,
+    var(--border-color) calc(100% - 40px),
+    transparent 100%
+  );
+}
+
+/* Half-width minus the centre gutter that holds the year pill */
+.project-entry {
+  position: relative;
+  width: calc(50% - 56px);
+  margin-bottom: var(--project-gap);
+}
+
+.project-entry.is-right {
+  margin-left: auto;
+  margin-top: calc(var(--project-stagger) * -1);
+  margin-bottom: calc(var(--project-gap) - var(--project-stagger));
+}
+
+/* Nothing follows the last card, so it must not pull the container short */
+.project-entry:last-child,
+.project-entry.is-right:last-child {
+  margin-bottom: 0;
+}
+
+.project-marker {
+  position: absolute;
+  top: 18px;
+  z-index: 2;
+  padding: 3px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  background: var(--bg-secondary);
+  box-shadow: 0 0 0 5px var(--bg-primary);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition:
+    color var(--transition-normal),
+    border-color var(--transition-normal),
+    background-color var(--transition-normal);
+}
+
+.project-entry.is-left .project-marker {
+  left: calc(100% + 56px);
+  transform: translateX(-50%);
+}
+
+.project-entry.is-right .project-marker {
+  right: calc(100% + 56px);
+  transform: translateX(50%);
+}
+
+/* Tick joining the card to the pill on the rail */
+.project-entry::after {
+  content: "";
+  position: absolute;
+  top: 29px;
+  width: 20px;
+  height: 2px;
+  background: var(--border-color);
+  transition: background-color var(--transition-normal);
+}
+
+.project-entry.is-left::after {
+  left: 100%;
+}
+
+.project-entry.is-right::after {
+  right: 100%;
+}
+
+.project-entry:hover .project-marker {
+  color: var(--bg-secondary);
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+}
+
+.project-entry:hover::after {
+  background: var(--secondary-color);
 }
 
 .project-card {
@@ -1822,6 +2088,25 @@ button:focus-visible,
   font-size: 0.78rem;
   color: var(--text-muted);
   margin-top: auto;
+}
+
+.project-status {
+  align-self: flex-start;
+  margin-top: 10px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--bg-tertiary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* An ongoing project is the one worth spotting at a glance */
+.project-status.status-ongoing {
+  background: rgba(var(--secondary-color-rgb), 0.12);
+  color: var(--secondary-color);
 }
 
 /* ==========================================================================
@@ -3832,6 +4117,81 @@ a.contact-value:hover {
     gap: 16px;
   }
 
+  .education-container,
+  #experience-container {
+    padding-left: 30px;
+  }
+
+  .education-container .experience-item::before,
+  #experience-container .experience-item::before {
+    left: -22px;
+  }
+
+  /* No room for the connector tick once the rail sits this close */
+  .education-container .experience-item::after,
+  #experience-container .experience-item::after {
+    display: none;
+  }
+
+  /* Projects timeline folds to a single left-hand rail */
+  .project-timeline {
+    padding-left: 30px;
+  }
+
+  .project-timeline::before {
+    left: 13px;
+    margin-left: 0;
+  }
+
+  .project-entry,
+  .project-entry.is-right {
+    width: auto;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: var(--project-gap);
+  }
+
+  /* The pill no longer fits in the gutter, so it moves above the card and a
+     plain dot takes its place on the rail. */
+  .project-entry.is-left .project-marker,
+  .project-entry.is-right .project-marker {
+    position: static;
+    transform: none;
+    display: inline-block;
+    margin-bottom: 10px;
+    box-shadow: none;
+  }
+
+  .project-entry::after {
+    display: none;
+  }
+
+  .project-entry::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: -22px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    box-shadow: 0 0 0 5px var(--bg-primary);
+  }
+
+  .project-entry:hover::before {
+    border-color: var(--secondary-color);
+    background: var(--secondary-color);
+  }
+
+  .role-timeline {
+    padding-left: 18px;
+  }
+
+  .role-entry::before {
+    left: -22px;
+  }
+
   .software-features-list li {
     padding: 14px 16px;
     font-size: 0.88rem;
@@ -3910,11 +4270,16 @@ a.contact-value:hover {
     padding: 16px;
   }
 
-  .education-container .company-logo,
-  #experience-container .company-logo {
+  .education-container .company-logo {
     width: 100%;
     height: 140px;
     align-self: auto;
+  }
+
+  #experience-container .company-logo {
+    width: 72px;
+    height: 72px;
+    align-self: flex-start;
   }
 
   /* Action buttons span the full row so they stay tappable */

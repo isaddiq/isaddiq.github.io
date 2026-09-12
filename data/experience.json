@@ -1,21 +1,31 @@
 {
+  "organizations": {
+    "khu": {
+      "name": "Kyung Hee University",
+      "logo": "assets/logos/organizations/kyung-hee-university-logo.png",
+      "icon": "fas fa-university",
+      "website": "https://www.khu.ac.kr",
+      "department": "Department of Architecture"
+    }
+  },
   "academic_experience": [
     {
       "id": "exp_004",
       "position": "Postdoctoral Fellow",
-      "organization": "ITA Lab, Kyung Hee University",
+      "organization": "Kyung Hee University",
       "logo": "assets/logos/organizations/kyung-hee-university-logo.png",
       "icon": "fas fa-university",
       "department": "Department of Architecture",
       "duration": "September 2026 - Present",
       "location": "Global Campus, Korea",
-      "website": "http://italab.khu.ac.kr/",
+      "website": "https://www.khu.ac.kr",
       "primary_responsibilities": [
         "Research on human-robot interaction in the built environment",
         "Design and evaluation of interfaces for human-robot collaboration on site",
         "Integration of BIM and digital twin data into robotic workflows",
         "Manuscript preparation and review"
-      ]
+      ],
+      "group": "khu"
     },
     {
       "id": "exp_001",
@@ -32,7 +42,10 @@
         "Development of VR/AR applications for AEC industry",
         "Data collection and analysis for research projects",
         "Manuscript preparation and review"
-      ]
+      ],
+      "group": "khu",
+      "unit": "ITA Lab",
+      "unit_website": "http://italab.khu.ac.kr/"
     },
     {
       "id": "exp_002",
@@ -50,7 +63,8 @@
         "Graded assignments and provided feedback",
         "Mentored undergraduate students in design projects",
         "Developed course materials and tutorials"
-      ]
+      ],
+      "group": "khu"
     }
   ],
   "industry_experience": [

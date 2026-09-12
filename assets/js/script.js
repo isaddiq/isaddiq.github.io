@@ -778,6 +778,10 @@ function renderSkillIcon(skill) {
 
 // Data containers - will be populated from JSON files
 let experienceData = [];
+// Shared organization records (data/experience.json -> "organizations"), keyed
+// by the "group" id an experience item points at. Roles held at the same
+// organization are rendered as one card with a timeline of roles inside it.
+let experienceOrganizations = {};
 let publicationsData = {};
 let projectsData = [];
 let certificatesData = {};
@@ -1038,6 +1042,7 @@ async function loadExperienceData() {
         const response = await fetch('data/experience.json');
         if (response.ok) {
             const experienceJSON = await response.json();
+            experienceOrganizations = experienceJSON.organizations || {};
             experienceData = [
                 ...(experienceJSON.academic_experience || []),
                 ...(experienceJSON.industry_experience || [])
@@ -1812,29 +1817,103 @@ function loadExperienceContent() {
         return;
     }
     
-    experienceContainer.innerHTML = experienceData.map(exp => `
+    experienceContainer.innerHTML = groupExperienceByOrganization(experienceData)
+        .map(renderExperienceGroup)
+        .join('');
+    attachImageFallbacks(experienceContainer);
+}
+
+/**
+ * Collapse roles that share a "group" id into a single entry, so one
+ * organization shows one logo with its roles listed underneath. Items without
+ * a group stay on their own. Original ordering is preserved: a group takes the
+ * position of its first role.
+ */
+function groupExperienceByOrganization(items) {
+    const groups = [];
+    const byId = {};
+
+    items.forEach(exp => {
+        const org = exp.group ? experienceOrganizations[exp.group] : null;
+        if (!org) {
+            groups.push({ org: null, roles: [exp] });
+            return;
+        }
+        if (!byId[exp.group]) {
+            byId[exp.group] = { org, roles: [] };
+            groups.push(byId[exp.group]);
+        }
+        byId[exp.group].roles.push(exp);
+    });
+
+    return groups;
+}
+
+/**
+ * One card per organization. Details shared by every role (department) are
+ * hoisted into the card header instead of repeating on each role.
+ */
+function renderExperienceGroup({ org, roles }) {
+    const lead = roles[0];
+    const name = org ? org.name : (lead.organization || lead.company);
+    const logo = org ? org.logo : lead.logo;
+    const icon = (org ? org.icon : lead.icon) || 'fas fa-building';
+    const website = (org ? org.website : (lead.companyUrl || lead.website)) || '#';
+    const sharedDepartment = roles.every(r => r.department && r.department === lead.department)
+        ? lead.department
+        : null;
+
+    return `
         <div class="experience-item">
             <div class="exp-header">
                 <div class="company-logo">
-                    ${exp.logo ? 
-                        `<img src="${exp.logo}" alt="${exp.organization || exp.company}" data-fallback-icon="${exp.icon || 'fas fa-building'}">` :
-                        `<i class="${exp.icon || 'fas fa-building'}"></i>`
+                    ${logo ?
+                        `<img src="${logo}" alt="${name}" data-fallback-icon="${icon}">` :
+                        `<i class="${icon}"></i>`
                     }
                 </div>
                 <div class="exp-details">
-                    <h3>${exp.position || exp.title}</h3>
-                    <a href="${exp.companyUrl || exp.website || '#'}" class="company-name" target="_blank" rel="noopener">${exp.organization || exp.company}</a>
-                    <p class="exp-duration">${exp.duration?.display || exp.duration}</p>
-                    ${exp.department ? `<p><strong>Department:</strong> ${exp.department}</p>` : ''}
-                    ${exp.course ? `<p><strong>Course:</strong> ${exp.course}</p>` : ''}
-                    ${exp.task ? `<p><strong>Task:</strong> ${exp.task}</p>` : ''}
-                    ${exp.primary_responsibilities ? `<p><strong>Responsibilities:</strong> ${Array.isArray(exp.primary_responsibilities) ? exp.primary_responsibilities[0] : exp.primary_responsibilities}</p>` : ''}
-                    ${exp.responsibilities ? `<p><strong>Responsibilities:</strong> ${exp.responsibilities}</p>` : ''}
+                    <h3>
+                        ${website === '#'
+                            ? name
+                            : `<a href="${website}" class="company-name" target="_blank" rel="noopener">${name}</a>`
+                        }
+                    </h3>
+                    ${sharedDepartment ? `<p class="exp-department">${sharedDepartment}</p>` : ''}
+                    <div class="role-timeline">
+                        ${roles.map(role => renderExperienceRole(role, sharedDepartment)).join('')}
+                    </div>
                 </div>
             </div>
         </div>
-    `).join('');
-    attachImageFallbacks(experienceContainer);
+    `;
+}
+
+/**
+ * A single role inside an organization card.
+ */
+function renderExperienceRole(exp, sharedDepartment) {
+    const unit = exp.unit
+        ? (exp.unit_website
+            ? `<a href="${exp.unit_website}" class="role-unit" target="_blank" rel="noopener">${exp.unit}</a>`
+            : `<span class="role-unit">${exp.unit}</span>`)
+        : '';
+
+    const duration = exp.duration?.display || exp.duration || '';
+    const isCurrent = /present|current/i.test(duration);
+
+    return `
+        <div class="role-entry${isCurrent ? ' role-current' : ''}">
+            <h4 class="role-title">${exp.position || exp.title}</h4>
+            <p class="exp-duration">${duration}</p>
+            ${unit}
+            ${!sharedDepartment && exp.department ? `<p><strong>Department:</strong> ${exp.department}</p>` : ''}
+            ${exp.course ? `<p><strong>Course:</strong> ${exp.course}</p>` : ''}
+            ${exp.task ? `<p><strong>Task:</strong> ${exp.task}</p>` : ''}
+            ${exp.primary_responsibilities ? `<p><strong>Responsibilities:</strong> ${Array.isArray(exp.primary_responsibilities) ? exp.primary_responsibilities[0] : exp.primary_responsibilities}</p>` : ''}
+            ${exp.responsibilities ? `<p><strong>Responsibilities:</strong> ${exp.responsibilities}</p>` : ''}
+        </div>
+    `;
 }
 
 // ==========================================================================
@@ -1862,23 +1941,79 @@ function loadProjectsContent() {
         return;
     }
     
-    projectsContainer.innerHTML = projectsData.map(project => `
-        <div class="project-card" data-project-id="${project.id}" role="button" tabindex="0">
-            <div class="project-image">
-                ${project.image ? `
-                    <img src="${project.image}" alt="${project.title}" class="project-card-image"
-                         onerror="this.outerHTML='&lt;i class=\\'${project.icon || 'fas fa-project-diagram'}\\'&gt;&lt;/i&gt;'" />
-                ` : `
-                    <i class="${project.icon || 'fas fa-project-diagram'}"></i>
-                `}
-            </div>
-            <div class="project-info">
-                <div class="project-title">${project.title}</div>
-                <div class="project-role">${project.role}</div>
-                <div class="project-duration">${project.duration}</div>
+    // Newest first, so the timeline reads from current work downwards.
+    const ordered = [...projectsData].sort(
+        (a, b) => projectTimelineSortKey(b) - projectTimelineSortKey(a)
+    );
+
+    projectsContainer.innerHTML = ordered.map((project, index) => `
+        <div class="project-entry ${index % 2 === 0 ? 'is-left' : 'is-right'}">
+            <span class="project-marker" aria-hidden="true">${projectMarkerLabel(project)}</span>
+            <div class="project-card" data-project-id="${project.id}" role="button" tabindex="0">
+                <div class="project-image">
+                    ${project.image ? `
+                        <img src="${project.image}" alt="${project.title}" class="project-card-image"
+                             onerror="this.outerHTML='&lt;i class=\\'${project.icon || 'fas fa-project-diagram'}\\'&gt;&lt;/i&gt;'" />
+                    ` : `
+                        <i class="${project.icon || 'fas fa-project-diagram'}"></i>
+                    `}
+                </div>
+                <div class="project-info">
+                    <div class="project-title">${project.title}</div>
+                    <div class="project-role">${project.role}</div>
+                    <div class="project-duration">${project.duration}</div>
+                    ${project.status ? `<span class="project-status">${project.status}</span>` : ''}
+                </div>
             </div>
         </div>
     `).join('');
+}
+
+const PROJECT_MONTHS = {
+    jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6,
+    jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12,
+    // Academic terms, for course projects that give a semester instead of a month
+    spring: 3, summer: 6, fall: 9, autumn: 9, winter: 12
+};
+
+/**
+ * Pull a sortable year/month out of one side of a duration string, e.g.
+ * "Apr. 2025", "Mar 2021", "2024 Spring". Returns 0 when no year is present.
+ */
+function parseProjectDatePart(text) {
+    const year = (text.match(/\b(?:19|20)\d{2}\b/) || [])[0];
+    if (!year) return 0;
+
+    const monthKey = Object.keys(PROJECT_MONTHS).find(
+        key => new RegExp('\b' + key, 'i').test(text)
+    );
+
+    return Number(year) * 100 + (monthKey ? PROJECT_MONTHS[monthKey] : 1);
+}
+
+/**
+ * Sort key for the timeline: a project's end date, falling back to its start
+ * date when the duration names a single point in time.
+ */
+function projectTimelineSortKey(project) {
+    const parts = String(project.duration || '').split(/[–—-]/);
+    const start = parseProjectDatePart(parts[0] || '');
+    const end = parts.length > 1 ? parseProjectDatePart(parts[1]) : 0;
+    return end || start;
+}
+
+/**
+ * Label for the marker sitting on the rail: "2021–25" for a span,
+ * a bare year for a project that starts and ends in the same one.
+ */
+function projectMarkerLabel(project) {
+    const parts = String(project.duration || '').split(/[–—-]/);
+    const start = Math.floor(parseProjectDatePart(parts[0] || '') / 100);
+    const end = parts.length > 1 ? Math.floor(parseProjectDatePart(parts[1]) / 100) : 0;
+
+    if (!start) return '';
+    if (!end || end === start) return String(start);
+    return `${start}–${String(end).slice(-2)}`;
 }
 
 /**
