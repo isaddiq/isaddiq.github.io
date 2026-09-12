@@ -1,6 +1,23 @@
 {
   "academic_experience": [
     {
+      "id": "exp_004",
+      "position": "Postdoctoral Fellow",
+      "organization": "ITA Lab, Kyung Hee University",
+      "logo": "assets/logos/organizations/kyung-hee-university-logo.png",
+      "icon": "fas fa-university",
+      "department": "Department of Architecture",
+      "duration": "September 2026 - Present",
+      "location": "Global Campus, Korea",
+      "website": "http://italab.khu.ac.kr/",
+      "primary_responsibilities": [
+        "Research on human-robot interaction in the built environment",
+        "Design and evaluation of interfaces for human-robot collaboration on site",
+        "Integration of BIM and digital twin data into robotic workflows",
+        "Manuscript preparation and review"
+      ]
+    },
+    {
       "id": "exp_001",
       "position": "Research Assistant",
       "organization": "ITA Lab, Kyung Hee University",
