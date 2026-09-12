@@ -2044,7 +2044,7 @@ function openProjectModal(projectId) {
             ${project.status ? `<strong>Status:</strong> ${project.status}<br>` : ''}
         </div>
         <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Project Description</h3>
-        <p style="margin-bottom: 20px; text-align: justify; line-height: 1.6; color: var(--text-secondary);">${project.description || project.detailed_description}</p>
+        <p style="margin-bottom: 20px; line-height: 1.7; max-width: 72ch; color: var(--text-secondary);">${project.description || project.detailed_description}</p>
         ${project.problem ? `
             <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Problem &amp; Challenges</h3>
             <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
@@ -2463,6 +2463,148 @@ function initializeHeaderEffects() {
 // Event Listeners and Initialization
 // ==========================================================================
 
+/** Fixed grid with intersection nodes that brighten and grow near the mouse. */
+function initializeInteractiveBackground() {
+    const background = document.querySelector('.grid-background');
+    if (!background || background.querySelector('canvas')) return;
+
+    background.setAttribute('aria-hidden', 'true');
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    if (!context) return;
+    background.appendChild(canvas);
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const pointer = { x: 0, y: 0, targetX: 0, targetY: 0, active: false, strength: 0 };
+    let width = 0;
+    let height = 0;
+    let frame = null;
+    let lastTime = null;
+    let ink = '';
+    const spacing = 48;
+    const radius = 170;
+
+    function updateInk() {
+        ink = document.documentElement.getAttribute('data-theme') === 'dark'
+            ? '105, 190, 235' : '36, 112, 164';
+    }
+
+    function draw() {
+        context.clearRect(0, 0, width, height);
+        context.lineWidth = 0.8;
+
+        function gridLine(position, vertical, major) {
+            context.strokeStyle = `rgba(${ink}, ${major ? 0.19 : 0.10})`;
+            context.beginPath();
+            context.moveTo(vertical ? position : 0, vertical ? 0 : position);
+            context.lineTo(vertical ? position : width, vertical ? height : position);
+            context.stroke();
+        }
+
+        for (let x = 0, column = 0; x <= width; x += spacing, column++) {
+            gridLine(x, true, column % 4 === 0);
+        }
+        for (let y = 0, row = 0; y <= height; y += spacing, row++) {
+            gridLine(y, false, row % 4 === 0);
+        }
+
+        // Centres stay anchored at intersections; only node size and light respond.
+        for (let x = 0; x <= width; x += spacing) {
+            for (let y = 0; y <= height; y += spacing) {
+                const distance = Math.hypot(x - pointer.x, y - pointer.y);
+                const proximity = Math.max(0, 1 - distance / radius);
+                const reaction = proximity * proximity * pointer.strength;
+                if (reaction > 0.01) {
+                    context.fillStyle = `rgba(${ink}, ${reaction * 0.12})`;
+                    context.beginPath();
+                    context.arc(x, y, 3 + reaction * 5, 0, Math.PI * 2);
+                    context.fill();
+                }
+                context.fillStyle = `rgba(${ink}, ${0.28 + reaction * 0.55})`;
+                context.beginPath();
+                context.arc(x, y, 1.3 + reaction * 2.1, 0, Math.PI * 2);
+                context.fill();
+            }
+        }
+    }
+
+    function animate(time) {
+        frame = null;
+        if (document.hidden || reducedMotion.matches) return;
+        const elapsed = lastTime === null ? 1 / 60 : Math.min((time - lastTime) / 1000, 0.06);
+        lastTime = time;
+        const ease = 1 - Math.exp(-10 * elapsed);
+        pointer.x += (pointer.targetX - pointer.x) * ease;
+        pointer.y += (pointer.targetY - pointer.y) * ease;
+        const targetStrength = pointer.active ? 1 : 0;
+        pointer.strength += (targetStrength - pointer.strength) * ease;
+        const settled = Math.abs(targetStrength - pointer.strength) < 0.001
+            && Math.abs(pointer.targetX - pointer.x) + Math.abs(pointer.targetY - pointer.y) < 0.1;
+        if (settled) {
+            pointer.x = pointer.targetX;
+            pointer.y = pointer.targetY;
+            pointer.strength = targetStrength;
+        }
+        draw();
+        if (!settled) frame = requestAnimationFrame(animate);
+        else lastTime = null;
+    }
+
+    function requestDraw() {
+        if (frame === null && !document.hidden && !reducedMotion.matches) {
+            frame = requestAnimationFrame(animate);
+        }
+    }
+
+    function reset() {
+        if (frame !== null) cancelAnimationFrame(frame);
+        frame = null;
+        lastTime = null;
+        pointer.active = false;
+        pointer.strength = 0;
+        if (!document.hidden) draw();
+    }
+
+    function resize() {
+        width = background.clientWidth;
+        height = background.clientHeight;
+        const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
+        canvas.width = Math.round(width * ratio);
+        canvas.height = Math.round(height * ratio);
+        context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        reset();
+    }
+
+    window.addEventListener('pointermove', (event) => {
+        if (event.pointerType !== 'mouse' || reducedMotion.matches || document.hidden) return;
+        if (!pointer.active && pointer.strength === 0) {
+            pointer.x = event.clientX;
+            pointer.y = event.clientY;
+        }
+        pointer.targetX = event.clientX;
+        pointer.targetY = event.clientY;
+        pointer.active = true;
+        requestDraw();
+    }, { passive: true });
+    const clearPointer = () => {
+        pointer.active = false;
+        if (pointer.strength > 0) requestDraw();
+    };
+    document.documentElement.addEventListener('pointerleave', clearPointer);
+    window.addEventListener('blur', clearPointer);
+    window.addEventListener('resize', resize, { passive: true });
+    document.addEventListener('visibilitychange', reset);
+    reducedMotion.addEventListener('change', reset);
+
+    new MutationObserver(() => {
+        updateInk();
+        if (!document.hidden) draw();
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+    updateInk();
+    resize();
+}
+
 /**
  * Initialize the application when DOM is loaded
  */
@@ -2477,6 +2619,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Initialize critical components immediately
     initializeTheme(); // Initialize theme toggle functionality first
+    initializeInteractiveBackground();
     initializeStaticEventHandlers();
     
     // Wait for data to load
@@ -3342,7 +3485,7 @@ function buildCollabGraph() {
         sx: 0, sy: 0,
         scale: 1,
         depth: 0,
-        color: '#4f46e5',
+        color: '#183247', // Deep navy, matching the refreshed palette
         meta: data.center || {}
     };
 

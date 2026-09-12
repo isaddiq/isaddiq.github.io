@@ -9,35 +9,41 @@
    ========================================================================== */
 
 :root {
-  /* Color Palette - Scientific & Academic Light Mode.
-     Surfaces step primary -> secondary -> tertiary so cards read as elevated
-     above the page (dark mode uses the same three-step idea). */
-  --primary-color: #020617; /* Darker slate/navy */
-  --primary-color-rgb: 2, 6, 23;
-  --secondary-color: #0284c7; /* Cyber blue */
-  --secondary-color-rgb: 2, 132, 199;
-  --accent-color: #4f46e5; /* Tech purple/indigo */
-  --accent-color-rgb: 79, 70, 229;
-  --success-color: #0d9488; /* Tech teal */
-  --bg-primary: #f6f8fb; /* Page recedes so white cards float above it */
+  /* Colour palette - light mode.
+     One blue carries every link and active control; navy carries headings.
+     Purple and cyan accents were removed so nothing competes with the blue.
+     Status and institutional colours (success, brand marks) stay as they are,
+     because there the colour is the information. */
+  --primary-color: #183247; /* Deep navy - headings and solid fills */
+  --primary-color-rgb: 24, 50, 71;
+  --secondary-color: #245f87; /* The one blue: links and active controls */
+  --secondary-color-rgb: 36, 95, 135;
+  --accent-color: #245f87; /* Same blue - kept as a token for existing rules */
+  --accent-color-rgb: 36, 95, 135;
+  --secondary-hover: #17415e; /* Darker blue for hover and pressed states */
+  --success-color: #0d7a6f; /* Meaningful status colour, retained */
+  --bg-primary: #f5f7f8; /* Pale grey page */
   --bg-secondary: #ffffff; /* Card surface */
-  --bg-tertiary: #eef2f7; /* Inset wells, icon tiles, table stripes */
-  --text-primary: #0f172a; /* Slate-900: near-black without the harshness */
-  --text-secondary: #475569; /* Slate-600 for body copy */
-  --text-muted: #64748b; /* Slate-500 for labels and captions */
-  --border-color: #d9e0e8; /* Tuned against the off-white page */
-  --border-glow: rgba(2, 132, 199, 0.25);
-  --shadow-color: rgba(15, 23, 42, 0.08);
-  --shadow-lg: rgba(15, 23, 42, 0.12);
-  --glass-bg: rgba(255, 255, 255, 0.85);
+  --bg-tertiary: #edf1f4; /* Inset wells, icon tiles, table stripes */
+  --text-primary: #183247; /* Deep navy headings */
+  --text-secondary: #465563; /* Slate body copy */
+  --text-muted: #6b7a88; /* Labels and captions */
+  --border-color: #dce3e8; /* Light grey */
+  /* Hover borders are a plain tint now, not a glow */
+  --border-glow: rgba(36, 95, 135, 0.38);
+  --shadow-color: rgba(24, 50, 71, 0.06);
+  --shadow-lg: rgba(24, 50, 71, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.88);
   --glass-border: rgba(255, 255, 255, 0.95);
-  --grid-color: rgba(148, 163, 184, 0.12);
+  /* Navy wash over every cover image, so white titles stay legible */
+  --cover-overlay-top: rgba(24, 50, 71, 0.5);
+  --cover-overlay-bottom: rgba(24, 50, 71, 0.74);
 
-  /* Elevation - three steps, used instead of ad-hoc box-shadow recipes.
-     1 = resting card, 2 = raised/hover, 3 = overlay (modals, popovers). */
-  --elev-1: 0 1px 2px rgba(15, 23, 42, 0.04), 0 4px 12px var(--shadow-color);
-  --elev-2: 0 2px 4px rgba(15, 23, 42, 0.05), 0 10px 26px var(--shadow-lg);
-  --elev-3: 0 8px 20px rgba(15, 23, 42, 0.1), 0 24px 56px var(--shadow-lg);
+  /* Elevation - cards rest almost flat; only overlays cast a real shadow.
+     1 = resting card, 2 = raised/active, 3 = overlay (modals, popovers). */
+  --elev-1: 0 1px 2px rgba(24, 50, 71, 0.05);
+  --elev-2: 0 1px 2px rgba(24, 50, 71, 0.06), 0 4px 10px var(--shadow-color);
+  --elev-3: 0 8px 20px rgba(24, 50, 71, 0.12), 0 24px 56px var(--shadow-lg);
 
   /* Spacing scale - 4px base. Use these instead of literal pixel values. */
   --space-1: 4px;
@@ -84,38 +90,40 @@
   --radius-xs: 4px;
   --radius-sm: 8px;
   --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
 }
 
 [data-theme="dark"] {
-  /* Color Palette - Scientific & Cyber Dark Mode */
-  --primary-color: #38bdf8; /* Brilliant cyber cyan */
-  --primary-color-rgb: 56, 189, 248;
-  --secondary-color: #60a5fa; /* Cyber light blue */
-  --secondary-color-rgb: 96, 165, 250;
-  --accent-color: #c084fc; /* Lavender purple */
-  --accent-color-rgb: 192, 132, 252;
-  --success-color: #14b8a6; /* Bright teal */
-  --bg-primary: #070a13; /* Deep cyber obsidian background */
-  --bg-secondary: #0e1320; /* Deep navy-slate card surface */
-  --bg-tertiary: #131b2e; /* High-elevation container */
-  --text-primary: #f8fafc; /* Off-white */
-  --text-secondary: #cbd5e1; /* Light gray */
-  --text-muted: #94a3b8; /* Slate gray */
-  --border-color: #1e293b; /* Dark border */
-  --border-glow: rgba(56, 189, 248, 0.2);
-  --shadow-color: rgba(0, 0, 0, 0.4);
-  --shadow-lg: rgba(0, 0, 0, 0.6);
-  --glass-bg: rgba(14, 19, 32, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.05);
-  --grid-color: rgba(56, 189, 248, 0.04);
+  /* Colour palette - dark mode. Slate rather than black, with one muted
+     light blue standing in for the light theme's single blue. */
+  --primary-color: #8dbcdc; /* Muted light blue */
+  --primary-color-rgb: 141, 188, 220;
+  --secondary-color: #8dbcdc; /* Links and active controls */
+  --secondary-color-rgb: 141, 188, 220;
+  --accent-color: #8dbcdc; /* Same blue - no purple in dark mode either */
+  --accent-color-rgb: 141, 188, 220;
+  --secondary-hover: #b4d5ec; /* Lighter blue for hover and pressed states */
+  --success-color: #3fb8a5; /* Meaningful status colour, retained */
+  --bg-primary: #14212b; /* Slate page */
+  --bg-secondary: #1c2d39; /* Card surface */
+  --bg-tertiary: #24394a; /* Inset wells and icon tiles */
+  --text-primary: #f1f5f7; /* Off-white */
+  --text-secondary: #c3cfd8; /* Body copy */
+  --text-muted: #93a3af; /* Labels and captions */
+  --border-color: #2c3e4c; /* Dark border */
+  --border-glow: rgba(141, 188, 220, 0.42);
+  --shadow-color: rgba(0, 0, 0, 0.35);
+  --shadow-lg: rgba(0, 0, 0, 0.5);
+  --glass-bg: rgba(28, 45, 57, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --cover-overlay-top: rgba(11, 21, 29, 0.52);
+  --cover-overlay-bottom: rgba(11, 21, 29, 0.78);
 
-  /* Elevation reads as depth of shadow on dark surfaces, so the ambient
-     layer is dropped and the cast shadow carries more weight. */
-  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px var(--shadow-color);
-  --elev-2: 0 2px 6px rgba(0, 0, 0, 0.4), 0 10px 26px var(--shadow-lg);
-  --elev-3: 0 8px 24px rgba(0, 0, 0, 0.5), 0 24px 56px var(--shadow-lg);
+  /* Same restraint as light mode: flat at rest, depth only for overlays. */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.28);
+  --elev-2: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 10px var(--shadow-color);
+  --elev-3: 0 8px 24px rgba(0, 0, 0, 0.45), 0 24px 56px var(--shadow-lg);
 }
 
 /* ==========================================================================
@@ -141,8 +149,8 @@ body {
     "Segoe UI",
     Roboto,
     sans-serif;
-  line-height: 1.6;
-  color: var(--text-primary);
+  line-height: 1.7;
+  color: var(--text-secondary);
   background-color: var(--bg-primary);
   min-height: 100vh;
   opacity: 0;
@@ -150,7 +158,7 @@ body {
     opacity 0.5s ease,
     background-color var(--transition-normal),
     color var(--transition-normal);
-  font-size: 15px;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -159,19 +167,28 @@ body.loaded {
   opacity: 1;
 }
 
-/* Technical blueprint background overlay */
+/* Interactive architectural grid, kept behind all page content. */
+body {
+  isolation: isolate;
+}
+
 .grid-background {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -2;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
   pointer-events: none;
-  background-image:
-    linear-gradient(var(--grid-color) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-  background-size: 30px 30px;
+  background: var(--bg-primary);
+}
+
+.grid-background canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+@media print {
+  .grid-background { display: none; }
 }
 
 /* Scrollbar styling */
@@ -203,9 +220,17 @@ h5,
 h6 {
   font-family: "Outfit", sans-serif;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.015em;
   color: var(--text-primary);
-  line-height: 1.25;
+  line-height: 1.3;
+}
+
+/* Sub-headings carry the lighter end of the 600-700 range */
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 600;
 }
 
 h1 {
@@ -224,6 +249,19 @@ h4 {
 p {
   color: var(--text-secondary);
   margin-bottom: 1rem;
+  text-align: left;
+}
+
+/*
+  Running prose is capped at roughly 72 characters. Applied to the paragraph
+  classes rather than to every <p>, so table cells, captions and chips that
+  happen to use <p> keep the width of their container. .bio-text is deliberately
+  left out - see below.
+*/
+.tool-description,
+.news-summary,
+.activity-description {
+  max-width: 72ch;
 }
 
 a {
@@ -233,7 +271,16 @@ a {
 }
 
 a:hover {
-  color: var(--accent-color);
+  color: var(--secondary-hover);
+}
+
+/* Underline on hover is for links sitting in running text, where colour alone
+   is a weak signal. Buttons, chips and icon links keep their own treatment. */
+p a:hover,
+.bio-text a:hover,
+li a:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 a:focus-visible,
@@ -292,21 +339,15 @@ button:focus-visible,
 
 .logo-name {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  transition: opacity var(--transition-fast);
+  color: var(--text-primary);
+  transition: color var(--transition-fast);
 }
 
 .site-logo:hover .logo-name {
-  opacity: 0.8;
+  color: var(--secondary-color);
 }
 
 /* Nav Menu */
@@ -439,9 +480,13 @@ button:focus-visible,
    Hero Cover Banner System
    ========================================================================== */
 
-/* Every tab carries the same full-height cover. */
+/*
+  Every tab carries the same banner. They are short now - tall enough to set
+  the scene, short enough that the content starts near the top of the viewport.
+  Home gets the taller of the two because it is the landing view.
+*/
 .tab-cover {
-  height: 300px;
+  height: 160px;
   position: relative;
   display: flex;
   align-items: center;
@@ -451,8 +496,12 @@ button:focus-visible,
   background-size: cover;
   background-position: center;
   margin-bottom: var(--space-6);
-  box-shadow: var(--elev-2);
+  box-shadow: var(--elev-1);
   border: 1px solid var(--border-color);
+}
+
+.tab-cover.home-cover {
+  height: 220px;
 }
 
 /* Individual tab background images */
@@ -500,6 +549,11 @@ button:focus-visible,
   background-image: url("../images/covers/news-cover.webp");
 }
 
+/*
+  One navy wash across every cover. Light enough to read the photograph
+  through, deep enough that the white title still clears contrast against a
+  bright patch of image.
+*/
 .tab-cover::before {
   content: "";
   position: absolute;
@@ -507,10 +561,10 @@ button:focus-visible,
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
+  background-image: linear-gradient(
     180deg,
-    rgba(7, 10, 19, 0.2) 0%,
-    rgba(7, 10, 19, 0.7) 100%
+    var(--cover-overlay-top) 0%,
+    var(--cover-overlay-bottom) 100%
   );
   z-index: 1;
 }
@@ -526,12 +580,10 @@ button:focus-visible,
 /* The cover carries a single heading, so it needs no bottom spacing. */
 .cover-title {
   font-family: "Outfit", sans-serif;
-  font-size: var(--text-3xl);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  text-transform: uppercase;
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  letter-spacing: -0.01em;
   color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   margin-bottom: 0;
 }
 
@@ -641,7 +693,6 @@ button:focus-visible,
 .scholar-metrics:hover {
   border-color: var(--border-glow);
   box-shadow: var(--elev-2);
-  transform: translateY(-2px);
 }
 
 .scholar-metrics-header {
@@ -677,16 +728,9 @@ button:focus-visible,
 .scholar-stat-value {
   font-family: "Outfit", sans-serif;
   font-size: 1.35rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.1;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--text-primary);
 }
 
 .scholar-stat-label {
@@ -709,14 +753,15 @@ button:focus-visible,
   border-bottom: 1px solid var(--border-color);
 }
 
-/* Measured: the name renders ~8.2x the font-size in width, so 2rem lands at
-   ~263px inside the 292px card interior. Going past ~2.2rem would overflow,
-   since nowrap gives it nowhere to break. */
+/* The name is allowed to wrap rather than being held on one line by nowrap,
+   which previously capped the size at ~2.2rem to avoid overflow. Balanced
+   wrapping keeps the two lines close in length where the browser supports it. */
 .profile-identity h1 {
   font-size: 2rem;
-  line-height: 1.2;
+  line-height: 1.25;
   margin-bottom: 8px;
-  white-space: nowrap;
+  text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .profile-identity .title {
@@ -729,11 +774,11 @@ button:focus-visible,
 /* Shared prose treatment: About Me, the Contact lead, and the Software tab's
    info sections all render as .bio-text.
 
-   Prose runs the full width of its column so the text block lines up with the
-   cover above it. Justified, with hyphenation on to keep the ragged-free edge
-   from opening whitespace rivers at that width. */
-.bio-text,
-.tool-description {
+   Runs the full width of its section so the text block lines up with the cover
+   and the cards around it, and justified so both edges square up with them.
+   Hyphenation is on because justifying at this width otherwise opens
+   whitespace rivers between words. */
+.bio-text {
   font-size: var(--text-md);
   color: var(--text-secondary);
   line-height: 1.7;
@@ -743,6 +788,14 @@ button:focus-visible,
   hyphens: auto;
   -webkit-hyphens: auto;
   -ms-hyphens: auto;
+}
+
+.tool-description {
+  font-size: var(--text-md);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: var(--space-5);
+  text-align: left;
 }
 
 /* Research Interests Blueprint Cards */
@@ -766,11 +819,8 @@ button:focus-visible,
 }
 
 .research-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary-color);
-  box-shadow:
-    0 8px 24px var(--shadow-lg),
-    0 0 15px var(--border-glow);
+  border-color: var(--border-glow);
+  box-shadow: var(--elev-2);
 }
 
 .research-icon {
@@ -796,8 +846,11 @@ button:focus-visible,
   color: var(--text-primary);
 }
 
+/* One short line under the keyword - the cards are narrow, so the measure is
+   set by the grid track rather than needing a cap of its own. */
 .research-card p {
   font-size: 0.88rem;
+  line-height: 1.55;
   color: var(--text-muted);
   margin-bottom: 0;
 }
@@ -955,7 +1008,6 @@ button:focus-visible,
 
 .highlight-card:hover {
   border-color: var(--border-glow);
-  transform: translateY(-4px);
   box-shadow: var(--elev-2);
 }
 
@@ -1365,7 +1417,6 @@ button:focus-visible,
 
 .exp-header:hover {
   border-color: var(--border-glow);
-  transform: translateX(4px);
   box-shadow: var(--elev-2);
 }
 
@@ -1554,7 +1605,7 @@ button:focus-visible,
 }
 
 a.role-unit:hover {
-  color: var(--accent-color);
+  color: var(--secondary-hover);
 }
 
 .role-entry p {
@@ -1596,7 +1647,6 @@ a.role-unit:hover {
 
 .stat-item:hover {
   border-color: var(--border-glow);
-  transform: translateY(-2px);
 }
 
 .stat-number {
@@ -1699,7 +1749,6 @@ a.role-unit:hover {
 
 .publication-item:hover {
   border-color: var(--border-glow);
-  transform: translateY(-2px);
   box-shadow: var(--elev-2);
 }
 
@@ -1768,21 +1817,29 @@ a.role-unit:hover {
 }
 
 .pub-badge.impact-factor {
-  background: rgba(56, 189, 248, 0.1);
+  background: rgba(var(--secondary-color-rgb), 0.1);
   color: var(--secondary-color);
-  border-color: rgba(56, 189, 248, 0.2);
+  border-color: rgba(var(--secondary-color-rgb), 0.28);
 }
 
+/* Author role, not a status: a filled badge separates it from the outlined
+   ones without needing a second hue. */
 .pub-badge.corresponding {
-  background: rgba(124, 58, 237, 0.1);
-  color: var(--accent-color);
-  border-color: rgba(124, 58, 237, 0.2);
+  background: var(--secondary-color);
+  color: #ffffff;
+  border-color: var(--secondary-color);
 }
 
+[data-theme="dark"] .pub-badge.corresponding {
+  color: var(--bg-primary);
+}
+
+/* Editorial status keeps its own colour, because here the colour is the
+   information rather than decoration. */
 .pub-badge.editor-choice {
-  background: rgba(13, 148, 136, 0.1);
+  background: rgba(13, 122, 111, 0.12);
   color: var(--success-color);
-  border-color: rgba(13, 148, 136, 0.2);
+  border-color: rgba(13, 122, 111, 0.3);
 }
 
 .doi-link {
@@ -1803,7 +1860,8 @@ a.role-unit:hover {
 
 .doi-link:hover,
 .doi-link:focus-visible {
-  transform: translateY(-2px);
+  border-color: var(--secondary-color);
+  box-shadow: var(--elev-2);
 }
 
 /* GitHub Link (Vibrant Green) */
@@ -2010,11 +2068,8 @@ a.role-unit:hover {
 }
 
 .project-card:hover {
-  transform: translateY(-6px);
   border-color: var(--border-glow);
-  box-shadow:
-    0 10px 25px var(--shadow-lg),
-    0 0 12px var(--border-glow);
+  box-shadow: var(--elev-2);
 }
 
 .project-image {
@@ -2049,11 +2104,7 @@ a.role-unit:hover {
 }
 
 .project-card:hover .project-image {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color) 0%,
-    var(--secondary-color) 100%
-  );
+  background: var(--secondary-color);
   color: var(--bg-secondary);
 }
 
@@ -2157,7 +2208,6 @@ a.role-unit:hover {
 
 .skill-item:hover {
   border-color: var(--border-glow);
-  transform: translateY(-2px);
   box-shadow: var(--elev-2);
 }
 
@@ -2245,9 +2295,10 @@ a.role-unit:hover {
   background: var(--secondary-color);
 }
 
-/* The top rung reads as the accent so "Expert" is distinguishable at a glance. */
+/* The top rung is a darker blue, so "Expert" is distinguishable at a glance
+   without introducing a second hue. */
 .skill-meter-seg.is-filled:nth-child(4) {
-  background: var(--accent-color);
+  background: var(--secondary-hover);
 }
 
 .skill-description {
@@ -2288,7 +2339,6 @@ a.role-unit:hover {
 
 .award-item:hover {
   border-color: var(--border-glow);
-  transform: translateY(-2px);
   box-shadow: var(--elev-2);
 }
 
@@ -2477,14 +2527,8 @@ a.role-unit:hover {
 }
 
 .collab-mode-btn.active {
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color),
-    var(--accent-color)
-  );
+  background: var(--secondary-color);
   color: #ffffff;
-  box-shadow: 0 4px 12px
-    rgba(var(--secondary-color-rgb), 0.35);
 }
 
 .collab-mode-btn i {
@@ -2546,13 +2590,8 @@ a.role-unit:hover {
 }
 
 .collab-dim-btn.active {
-  background: linear-gradient(
-    135deg,
-    var(--accent-color),
-    var(--secondary-color)
-  );
+  background: var(--secondary-color);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(var(--accent-color-rgb), 0.35);
 }
 
 .collab-hint {
@@ -2606,12 +2645,8 @@ a.role-unit:hover {
 
 .collab-controls button:hover {
   color: #ffffff;
-  background: linear-gradient(
-    135deg,
-    var(--secondary-color),
-    var(--accent-color)
-  );
-  border-color: transparent;
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
 }
 
 .collab-canvas-wrap {
@@ -2902,11 +2937,8 @@ a.role-unit:hover {
 }
 
 .software-features-list li:hover {
-  transform: translateY(-3px);
   border-color: var(--border-glow);
-  box-shadow:
-    0 8px 20px var(--shadow-lg),
-    0 0 12px var(--border-glow);
+  box-shadow: var(--elev-2);
 }
 
 .software-features-list li i {
@@ -3046,11 +3078,7 @@ a.role-unit:hover {
   position: absolute;
   inset: 0 auto 0 0;
   width: 3px;
-  background: linear-gradient(
-    180deg,
-    var(--secondary-color),
-    var(--accent-color)
-  );
+  background: var(--secondary-color);
   transform: scaleY(0);
   transform-origin: top;
   transition: transform var(--transition-normal);
@@ -3234,7 +3262,6 @@ a.contact-value:hover {
   border-color: var(--border-glow);
   background: var(--bg-tertiary);
   color: var(--text-primary);
-  transform: translateY(-2px);
 }
 
 /* Map details */
@@ -3350,7 +3377,6 @@ a.contact-value:hover {
   border-color: var(--secondary-color);
   color: var(--secondary-color);
   background: rgba(var(--secondary-color-rgb), 0.08);
-  transform: translateY(-1px);
 }
 
 .location-btn--primary {
@@ -3360,8 +3386,8 @@ a.contact-value:hover {
 }
 
 .location-btn--primary:hover {
-  background: var(--accent-color);
-  border-color: var(--accent-color);
+  background: var(--secondary-hover);
+  border-color: var(--secondary-hover);
   color: #ffffff;
 }
 
@@ -3587,10 +3613,18 @@ a.contact-value:hover {
   z-index: 900;
 }
 
+/*
+  Each service wears its own colour at rest, held in a per-icon custom property
+  so one rule can apply it. Hover and keyboard focus deepen the icon rather
+  than introducing the colour, since the colour is already there.
+*/
 .social-icon {
   width: 44px;
   height: 44px;
   border-radius: 50%;
+  border: 1px solid var(--brand-color, var(--border-color));
+  background: var(--brand-color, var(--bg-secondary));
+  color: #ffffff;
   box-shadow: var(--elev-1);
   display: flex;
   align-items: center;
@@ -3599,65 +3633,41 @@ a.contact-value:hover {
   transition: var(--transition-interactive);
 }
 
-/* Social Icon Branding Colors (Visible by default) */
 .social-icon.linkedin {
-  background: #0077b5;
-  border-color: #0077b5;
-  color: white;
+  --brand-color: #0077b5;
 }
 .social-icon.github {
-  background: #24292e;
-  border-color: #333333;
-  color: white;
+  --brand-color: #24292e;
 }
 .social-icon.scholar {
-  background: #4285f4;
-  border-color: #4285f4;
-  color: white;
+  --brand-color: #4285f4;
 }
 .social-icon.orcid {
-  background: #a6ce39;
-  border-color: #a6ce39;
-  color: white;
+  --brand-color: #a6ce39;
 }
 .social-icon.researchgate {
-  background: #00ccb1;
-  border-color: #00ccb1;
-  color: white;
+  --brand-color: #00ccb1;
 }
 .social-icon.scopus {
-  background: #ff6600;
-  border-color: #ff6600;
-  color: white;
+  --brand-color: #ff6600;
 }
+
+/* ORCID's green is light enough that white on it would not carry */
+.social-icon.orcid {
+  color: #1f2d16;
+}
+
+/* The flag counter is not a brand mark, so it stays a neutral card */
 .social-icon.flagcounter-icon {
-  background: var(--bg-secondary);
+  --brand-color: var(--bg-secondary);
   border-color: var(--border-color);
   color: var(--text-secondary);
 }
 
-.social-icon:hover {
-  animation: socialPulse 1.2s infinite ease-in-out;
+.social-icon:hover,
+.social-icon:focus-visible {
+  filter: brightness(0.88);
   box-shadow: var(--elev-2);
-  color: white;
-}
-
-.social-icon.flagcounter-icon:hover {
-  background: var(--primary-color);
-  border-color: var(--primary-color);
-  color: var(--bg-secondary);
-}
-
-@keyframes socialPulse {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-  100% {
-    transform: scale(1);
-  }
 }
 
 .scopus-letter {
@@ -3732,7 +3742,6 @@ a.contact-value:hover {
 
 .scroll-to-top:hover {
   background: var(--secondary-color);
-  transform: translateY(-4px);
 }
 
 /* ==========================================================================
@@ -3925,8 +3934,12 @@ a.contact-value:hover {
   }
 
   .tab-cover {
-    height: 220px;
+    height: 120px;
     margin-bottom: var(--space-6);
+  }
+
+  .tab-cover.home-cover {
+    height: 160px;
   }
 
   .header {
@@ -3997,10 +4010,10 @@ a.contact-value:hover {
   }
 
   /* The card goes full width here, so the identity can scale back up. */
-  /* The card goes full width here. Scaling with the viewport keeps the name
-     on one line even on a 320px phone, where nowrap would otherwise spill. */
+  /* The card goes full width here, so the name can scale back up; it wraps
+     rather than overflowing if it still runs out of room. */
   .profile-identity h1 {
-    font-size: clamp(1.3rem, 7vw, 2rem);
+    font-size: clamp(1.5rem, 6vw, 2rem);
   }
 
   .profile-identity .title {
@@ -4223,10 +4236,6 @@ a.contact-value:hover {
     padding: 0 16px;
   }
 
-  .social-icon:hover {
-    transform: none;
-  }
-
   .scroll-to-top {
     bottom: 24px;
     right: 24px;
@@ -4243,12 +4252,8 @@ a.contact-value:hover {
     font-size: 0.8rem;
   }
 
-  .tab-cover {
-    height: 180px;
-  }
-
   .cover-title {
-    font-size: 1.6rem;
+    font-size: 1.35rem;
   }
 
   /* Software tab on small phones */
