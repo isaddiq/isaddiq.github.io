@@ -167,7 +167,7 @@ body.loaded {
   opacity: 1;
 }
 
-/* Interactive architectural grid, kept behind all page content. */
+/* Static architectural grid, kept behind all page content. */
 body {
   isolation: isolate;
 }
@@ -796,6 +796,25 @@ button:focus-visible,
   line-height: 1.7;
   margin-bottom: var(--space-5);
   text-align: left;
+}
+
+/* About Me reads as a card on the page grid, so the ruling behind the page
+   never runs under the prose. */
+.about-intro {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  box-shadow: var(--elev-1);
+  margin-bottom: 50px;
+}
+
+.about-intro h3 {
+  margin-bottom: var(--space-4);
+}
+
+.about-intro .bio-text:last-child {
+  margin-bottom: 0;
 }
 
 /* Research Interests Blueprint Cards */
