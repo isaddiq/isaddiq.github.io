@@ -255,6 +255,13 @@ function handleDelegatedActionClick(event) {
         return;
     }
 
+    const seminarTrigger = event.target.closest('[data-seminar-id]');
+    if (seminarTrigger) {
+        event.preventDefault();
+        openSeminarModal(seminarTrigger.dataset.seminarId);
+        return;
+    }
+
     const certificateTrigger = event.target.closest('[data-certificate-id]');
     if (certificateTrigger) {
         event.preventDefault();
@@ -266,7 +273,7 @@ function handleDelegatedActionKeydown(event) {
     if (event.key !== 'Enter' && event.key !== ' ') return;
     if (!(event.target instanceof Element)) return;
 
-    const actionTrigger = event.target.closest('[data-close-modal], [data-close-zoom], [data-image-zoom-src], [data-award-id], [data-project-id], [data-certificate-id]');
+    const actionTrigger = event.target.closest('[data-close-modal], [data-close-zoom], [data-image-zoom-src], [data-award-id], [data-project-id], [data-certificate-id], [data-seminar-id]');
     if (!actionTrigger) return;
 
     event.preventDefault();
@@ -785,6 +792,7 @@ let experienceOrganizations = {};
 let publicationsData = {};
 let projectsData = [];
 let certificatesData = {};
+let seminarsData = [];
 let skillsData = {};
 let newsData = [];
 let highlightsData = [];
@@ -806,6 +814,7 @@ async function loadDataFromJSON() {
         loadExperienceData(),
         loadSkillsData(),
         loadCertificatesData(),
+        loadSeminarsData(),
         loadNewsData(),
         loadHighlightsData(),
         loadSoftwareData(),
@@ -1097,6 +1106,26 @@ async function loadCertificatesData() {
 }
 
 /**
+ * Load seminars & presentations data from JSON
+ */
+async function loadSeminarsData() {
+    try {
+        const response = await fetch('data/seminars.json');
+        if (response.ok) {
+            const data = await response.json();
+            seminarsData = data.seminars || [];
+            console.log('✅ Seminars data loaded successfully');
+        } else {
+            console.error('❌ Could not load seminars.json');
+            seminarsData = [];
+        }
+    } catch (error) {
+        console.error('❌ Error loading seminars.json:', error);
+        seminarsData = [];
+    }
+}
+
+/**
  * Load news data from JSON
  */
 async function loadNewsData() {
@@ -1332,7 +1361,7 @@ function showTab(tabName) {
  * @param {HTMLElement} tabElement - The tab element to animate
  */
 function animateTabContent(tabElement) {
-    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category, .research-card, .award-item, .activity-item, .news-bullet-item, .news-card, .highlight-card');
+    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category, .research-card, .award-item, .activity-item, .seminar-item, .news-bullet-item, .news-card, .highlight-card');
     
     // Use Intersection Observer for better performance
     const observer = new IntersectionObserver((entries) => {
@@ -1391,6 +1420,7 @@ function loadTabContent(tabName) {
             initializeSoftwareTools();
             break;
         case 'activities':
+            loadSeminarsContent();
             initCollaborationNetwork();
             break;
         case 'contact':
@@ -2103,6 +2133,115 @@ function openProjectModal(projectId) {
 }
 
 // ==========================================================================
+// Seminars & Presentations Functions
+// ==========================================================================
+
+/**
+ * Render the Seminars & Presentations list inside the Activities tab.
+ * Entries that carry a certificate image open in the shared certificate modal.
+ */
+function loadSeminarsContent() {
+    const container = document.getElementById('seminars-container');
+    if (!container) return;
+
+    const seminars = (seminarsData || [])
+        .slice()
+        .sort((a, b) => String(b.date || '').localeCompare(String(a.date || '')));
+
+    if (seminars.length === 0) {
+        container.innerHTML = `
+            <div class="seminars-empty">
+                <i class="fas fa-chalkboard-user"></i>
+                <p>No seminars or presentations listed yet.</p>
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = seminars.map(seminar => {
+        const hasCertificate = Boolean(seminar.image);
+        const metaLine = [seminar.date, seminar.location].filter(Boolean).map(escapeHtml).join(' &middot; ');
+        const label = [seminar.type, seminar.role].filter(Boolean).map(escapeHtml).join(' &middot; ');
+
+        return `
+        <div class="seminar-item${hasCertificate ? ' clickable-seminar' : ''}"
+             ${hasCertificate ? `data-seminar-id="${escapeHtml(seminar.id)}" role="button" tabindex="0"` : ''}>
+            <div class="seminar-thumb">
+                ${hasCertificate
+                    ? `<img src="${escapeHtml(seminar.image)}" alt="${escapeHtml(seminar.title)} certificate" data-fallback-icon="fas fa-chalkboard-user">`
+                    : `<i class="fas fa-chalkboard-user"></i>`
+                }
+            </div>
+            <div class="seminar-info">
+                ${label ? `<span class="seminar-badge">${label}</span>` : ''}
+                <strong class="seminar-title">${escapeHtml(seminar.title)}</strong>
+                ${seminar.organizer ? `<p class="seminar-meta"><i class="fas fa-building"></i> ${escapeHtml(seminar.organizer)}</p>` : ''}
+                ${metaLine ? `<p class="seminar-meta"><i class="fas fa-calendar-day"></i> ${metaLine}</p>` : ''}
+                ${hasCertificate ? `<span class="seminar-action"><i class="fas fa-certificate"></i> View Certificate</span>` : ''}
+            </div>
+        </div>
+        `;
+    }).join('');
+
+    attachImageFallbacks(container);
+}
+
+/**
+ * Open a seminar's certificate in the shared certificate modal
+ * @param {string} seminarId - ID of the seminar entry
+ */
+function openSeminarModal(seminarId) {
+    const modal = document.getElementById('certificateModal');
+    const content = document.getElementById('certificateModalContent');
+    if (!modal || !content) return;
+
+    const seminar = (seminarsData || []).find(item => item.id === seminarId);
+    if (!seminar) return;
+
+    const title = escapeHtml(seminar.title);
+
+    content.innerHTML = `
+        <h2 style="color: var(--text-primary); margin-bottom: 20px; text-align: center;">${title}</h2>
+        ${seminar.image ? `
+            <div class="modal-certificate-image" style="text-align: center;">
+                <img src="${escapeHtml(seminar.image)}" alt="${title} certificate" class="modal-certificate-preview" data-image-zoom-src="${escapeHtml(seminar.image)}" data-image-zoom-alt="${title}" data-fallback-icon="fas fa-chalkboard-user">
+                <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 10px; text-align: center;">Click image to enlarge</p>
+            </div>
+        ` : ''}
+        <div style="text-align: center; background: var(--bg-tertiary); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin: 20px 0; color: var(--text-secondary);">
+            ${seminar.organizer ? `<p style="margin-bottom: 10px;"><strong>Organized by:</strong> ${escapeHtml(seminar.organizer)}</p>` : ''}
+            ${seminar.date ? `<p style="margin-bottom: 10px;"><strong>Date:</strong> ${escapeHtml(seminar.date)}</p>` : ''}
+            ${seminar.location ? `<p style="margin-bottom: 10px;"><strong>Location:</strong> ${escapeHtml(seminar.location)}</p>` : ''}
+            ${seminar.role ? `<p style="margin-bottom: 10px;"><strong>Role:</strong> ${escapeHtml(seminar.role)}</p>` : ''}
+            ${seminar.description ? `<p style="margin-bottom: 0;"><strong>Description:</strong> ${escapeHtml(seminar.description)}</p>` : ''}
+        </div>
+        ${(seminar.topics && seminar.topics.length) ? `
+            <div style="margin-top: 20px;">
+                <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Topics:</h4>
+                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    ${seminar.topics.map(topic => `
+                        <span style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
+                                     color: white; padding: 5px 12px; border-radius: 15px;
+                                     font-size: 0.8em; font-weight: 500;">${escapeHtml(topic)}</span>
+                    `).join('')}
+                </div>
+            </div>
+        ` : ''}
+        ${seminar.verification_url ? `
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="${escapeHtml(seminar.verification_url)}" target="_blank" rel="noopener" style="color: var(--secondary-color); text-decoration: none; font-weight: 500;">
+                    <i class="fas fa-external-link-alt"></i> More Information
+                </a>
+            </div>
+        ` : ''}
+    `;
+    attachImageFallbacks(content);
+
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+// ==========================================================================
 // Certificates Functions
 // ==========================================================================
 
@@ -2382,7 +2521,7 @@ function initializeAnimations() {
     }, observerOptions);
 
     // Observe elements that should animate
-    const animateElements = '.experience-item, .publication-item, .project-card, .certificate-card, .award-item, .activity-item, .news-item, .news-card, .highlight-card, .skill-item';
+    const animateElements = '.experience-item, .publication-item, .project-card, .certificate-card, .award-item, .activity-item, .seminar-item, .news-item, .news-card, .highlight-card, .skill-item';
     document.querySelectorAll(animateElements).forEach(el => {
         el.style.transform = 'translateY(20px)';
         el.style.opacity = '0';
