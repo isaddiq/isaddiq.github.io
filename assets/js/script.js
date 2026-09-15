@@ -672,7 +672,7 @@ function openAwardCertificate(awardId) {
         
         ${award.details ? `
             <div style="margin: 25px 0;">
-                <h4 style="color: var(--secondary-color); margin-bottom: 15px; font-size: 1.2em;">
+                <h4 style="color: var(--text-primary); margin-bottom: 15px; font-size: 1.2em;">
                     <i class="fas fa-star"></i> Achievement Highlights
                 </h4>
                 <ul style="list-style: none; padding: 0;">
@@ -2073,28 +2073,28 @@ function openProjectModal(projectId) {
             ${project.collaborators ? `<strong>Collaborators:</strong> ${Array.isArray(project.collaborators) ? project.collaborators.join(', ') : project.collaborators}<br>` : ''}
             ${project.status ? `<strong>Status:</strong> ${project.status}<br>` : ''}
         </div>
-        <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Project Description</h3>
+        <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Project Description</h3>
         <p style="margin-bottom: 20px; line-height: 1.7; max-width: 72ch; color: var(--text-secondary);">${project.description || project.detailed_description}</p>
         ${project.problem ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Problem &amp; Challenges</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Problem &amp; Challenges</h3>
             <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
                 ${project.problem.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
             </ul>
         ` : ''}
         ${project.objectives ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Objectives</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Objectives</h3>
             <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
                 ${project.objectives.map(obj => `<li style="margin-bottom: 8px; line-height: 1.5;">${obj}</li>`).join('')}
             </ul>
         ` : ''}
         ${project.methodology ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Methodology</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Methodology</h3>
             <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
                 ${project.methodology.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
             </ul>
         ` : ''}
         ${project.workflow_stages ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Workflow</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Workflow</h3>
             <div style="margin-bottom: 20px;">
                 ${project.workflow_stages.map(s => `
                     <div style="margin-bottom: 14px; padding: 12px 15px; background: var(--bg-tertiary); border-left: 4px solid var(--secondary-color); border-radius: var(--radius-xs);">
@@ -2105,23 +2105,23 @@ function openProjectModal(projectId) {
             </div>
         ` : ''}
         ${project.contribution ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Contribution</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Contribution</h3>
             <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
                 ${project.contribution.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
             </ul>
         ` : ''}
         ${project.technologies ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Technologies Used</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Technologies Used</h3>
             <p style="margin-bottom: 20px; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); font-family: monospace;">${Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}</p>
         ` : ''}
         ${project.outcomes ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Key Outcomes</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Key Outcomes</h3>
             <div style="background: var(--bg-tertiary); padding: 15px; border-radius: var(--radius-md); border-left: 4px solid var(--success-color); color: var(--text-primary);">
                 ${Array.isArray(project.outcomes) ? project.outcomes.map(outcome => `<p style="margin-bottom: 10px;">${outcome}</p>`).join('') : `<p>${project.outcomes}</p>`}
             </div>
         ` : ''}
         ${project.outputs ? `
-            <h3 style="color: var(--secondary-color); margin: 20px 0 10px 0;">Outputs</h3>
+            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Outputs</h3>
             <div style="background: var(--bg-tertiary); padding: 15px; border-radius: var(--radius-md); border-left: 4px solid var(--success-color); color: var(--text-primary);">
                 ${Array.isArray(project.outputs) ? project.outputs.map(out => `<p style="margin-bottom: 10px;">${out}</p>`).join('') : `<p>${project.outputs}</p>`}
             </div>
@@ -2217,7 +2217,7 @@ function openSeminarModal(seminarId) {
         </div>
         ${(seminar.topics && seminar.topics.length) ? `
             <div style="margin-top: 20px;">
-                <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Topics:</h4>
+                <h4 style="color: var(--text-primary); margin-bottom: 10px;">Topics:</h4>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     ${seminar.topics.map(topic => `
                         <span style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
@@ -2335,7 +2335,7 @@ function openCertificateModal(certId) {
         </div>
         ${cert.skills ? `
             <div style="margin-top: 20px;">
-                <h4 style="color: var(--secondary-color); margin-bottom: 10px;">Skills Acquired:</h4>
+                <h4 style="color: var(--text-primary); margin-bottom: 10px;">Skills Acquired:</h4>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
                     ${cert.skills.map(skill => `
                         <span style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%); 
@@ -2616,22 +2616,29 @@ function initializeGridBackground() {
     let width = 0;
     let height = 0;
     let ink = '';
+    let inkScale = 1;
     const spacing = 48;
 
+    /* Visibility of the ruling, and the only knobs worth touching: raise them
+       for a more present grid, lower them to push it back toward bare texture.
+       Every fourth line is a major one, at twice the weight of the rest. */
+    const MAJOR_ALPHA = 0.22;
+    const MINOR_ALPHA = 0.11;
+
     function updateInk() {
-        ink = document.documentElement.getAttribute('data-theme') === 'dark'
-            ? '105, 190, 235' : '36, 112, 164';
+        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+        ink = dark ? '105, 190, 235' : '36, 112, 164';
+        // Light ink on a dark ground reads stronger at equal alpha; ease off.
+        inkScale = dark ? 0.72 : 1;
     }
 
-    /* Faint enough to read as paper ruling behind the text rather than as a
-       pattern competing with it; every fourth line is the only one that
-       registers at all. */
     function draw() {
         context.clearRect(0, 0, width, height);
         context.lineWidth = 0.8;
 
         function gridLine(position, vertical, major) {
-            context.strokeStyle = `rgba(${ink}, ${major ? 0.07 : 0.035})`;
+            const alpha = (major ? MAJOR_ALPHA : MINOR_ALPHA) * inkScale;
+            context.strokeStyle = `rgba(${ink}, ${alpha.toFixed(4)})`;
             context.beginPath();
             context.moveTo(vertical ? position : 0, vertical ? 0 : position);
             context.lineTo(vertical ? position : width, vertical ? height : position);
@@ -2656,7 +2663,7 @@ function initializeGridBackground() {
         draw();
     }
 
-    window.addEventListener('resize', resize, { passive: true });
+    window.addEventListener('resize', throttle(resize, 150), { passive: true });
 
     new MutationObserver(() => {
         updateInk();

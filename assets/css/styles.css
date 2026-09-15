@@ -10,11 +10,11 @@
 
 :root {
   /* Colour palette - light mode.
-     One blue carries every link and active control; navy carries headings.
+     One blue carries links and active controls; black carries headings.
      Purple and cyan accents were removed so nothing competes with the blue.
      Status and institutional colours (success, brand marks) stay as they are,
      because there the colour is the information. */
-  --primary-color: #183247; /* Deep navy - headings and solid fills */
+  --primary-color: #183247; /* Deep navy - solid fills and UI accents */
   --primary-color-rgb: 24, 50, 71;
   --secondary-color: #245f87; /* The one blue: links and active controls */
   --secondary-color-rgb: 36, 95, 135;
@@ -25,7 +25,7 @@
   --bg-primary: #f5f7f8; /* Pale grey page */
   --bg-secondary: #ffffff; /* Card surface */
   --bg-tertiary: #edf1f4; /* Inset wells, icon tiles, table stripes */
-  --text-primary: #183247; /* Deep navy headings */
+  --text-primary: #000000; /* True black headings and emphasized text */
   --text-secondary: #465563; /* Slate body copy */
   --text-muted: #6b7a88; /* Labels and captions */
   --border-color: #dce3e8; /* Light grey */
@@ -231,6 +231,11 @@ h4,
 h5,
 h6 {
   font-weight: 600;
+}
+
+strong,
+b {
+  color: var(--text-primary);
 }
 
 h1 {
@@ -704,7 +709,7 @@ button:focus-visible,
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--text-secondary);
+  color: var(--text-primary);
   margin-bottom: 12px;
 }
 
@@ -767,6 +772,7 @@ button:focus-visible,
 .profile-identity .title {
   font-size: 0.95rem;
   line-height: 1.55;
+  text-align: center;
   color: var(--secondary-color);
   font-weight: 500;
 }
@@ -1065,7 +1071,7 @@ button:focus-visible,
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: var(--secondary-color);
+  color: var(--text-primary);
 }
 
 .highlight-date {
@@ -1497,7 +1503,7 @@ button:focus-visible,
 .company-name {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   display: inline-block;
   margin-bottom: 8px;
 }
@@ -1535,13 +1541,13 @@ button:focus-visible,
 }
 
 .exp-details h3 .company-name:hover {
-  color: var(--secondary-color);
+  color: var(--text-primary);
 }
 
 .exp-department {
   font-size: 0.92rem;
   font-weight: 600;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
@@ -1619,7 +1625,7 @@ button:focus-visible,
   display: inline-block;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -1672,7 +1678,7 @@ a.role-unit:hover {
   font-family: "Outfit", sans-serif;
   font-size: 2rem;
   font-weight: 800;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   display: block;
   line-height: 1.1;
   margin-bottom: 4px;
@@ -1681,7 +1687,7 @@ a.role-unit:hover {
 .stat-label {
   font-size: 0.8rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -1784,7 +1790,7 @@ a.role-unit:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 .pub-title,
@@ -2027,7 +2033,7 @@ a.role-unit:hover {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--text-muted);
+  color: var(--text-primary);
   white-space: nowrap;
   transition:
     color var(--transition-normal),
@@ -2149,7 +2155,7 @@ a.role-unit:hover {
 
 .project-role {
   font-size: 0.88rem;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   font-weight: 600;
   margin-bottom: 4px;
 }
@@ -2171,7 +2177,7 @@ a.role-unit:hover {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
 }
 
 /* An ongoing project is the one worth spotting at a glance */
@@ -2231,6 +2237,7 @@ a.role-unit:hover {
 }
 
 .skill-header {
+  color: var(--text-primary);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -3114,7 +3121,7 @@ a.role-unit:hover {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
 }
 
 .capability-item i {
@@ -3275,7 +3282,7 @@ a.role-unit:hover {
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
@@ -3442,7 +3449,7 @@ a.contact-value:hover {
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: var(--secondary-color);
+  color: var(--text-primary);
   margin-bottom: 10px;
 }
 
