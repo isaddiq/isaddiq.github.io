@@ -887,39 +887,83 @@
           <!-- Publication stats will be dynamically loaded here -->
         </div>
 
-        <div class="publications-nav">
-          <button type="button" class="pub-btn active" data-pub="journals">
-            International Journals
-            <span id="journals-count" class="count-badge">0</span>
-          </button>
-          <button type="button" class="pub-btn" data-pub="conferences">
-            International Conferences
-            <span id="conferences-count" class="count-badge">0</span>
-          </button>
-          <button type="button" class="pub-btn" data-pub="korean">
-            Korean Conferences
-            <span id="korean-count" class="count-badge">0</span>
-          </button>
-          <button type="button" class="pub-btn" data-pub="reports">
-            Technical Reports
-            <span id="reports-count" class="count-badge">0</span>
-          </button>
-        </div>
+        <!-- Type selector in a sidebar that stays in view beside the list -->
+        <div class="publications-layout">
+          <aside class="publications-sidebar">
+            <nav class="publications-nav" aria-label="Publication types">
+              <span class="publications-nav-title">Publication type</span>
+              <button type="button" class="pub-btn active" data-pub="all">
+                <span class="pub-btn-label">All Publications</span>
+                <span id="all-count" class="count-badge">0</span>
+              </button>
+              <button type="button" class="pub-btn" data-pub="journals">
+                <span class="pub-btn-label">International Journals</span>
+                <span id="journals-count" class="count-badge">0</span>
+              </button>
+              <button type="button" class="pub-btn" data-pub="conferences">
+                <span class="pub-btn-label">International Conferences</span>
+                <span id="conferences-count" class="count-badge">0</span>
+              </button>
+              <button type="button" class="pub-btn" data-pub="korean">
+                <span class="pub-btn-label">Korean Conferences</span>
+                <span id="korean-count" class="count-badge">0</span>
+              </button>
+              <button type="button" class="pub-btn" data-pub="reports">
+                <span class="pub-btn-label">Technical Reports</span>
+                <span id="reports-count" class="count-badge">0</span>
+              </button>
+            </nav>
 
-        <div id="journals" class="pub-content active">
-          <!-- International Journals will be loaded here -->
-        </div>
+            <!-- Filters: always open beside the list on desktop; a collapsible
+                 panel under the type strip on narrow screens -->
+            <details class="pub-filters" id="pub-filters" open>
+              <summary class="pub-filters-toggle">
+                <span><i class="fas fa-sliders"></i> Filters</span>
+                <span class="pub-filters-active" id="pub-filters-active"></span>
+              </summary>
+              <div class="pub-filters-body">
+                <div class="pub-filters-head">
+                  <span class="publications-nav-title">Filter</span>
+                  <button type="button" class="pub-filter-reset" hidden>
+                    Clear all
+                  </button>
+                </div>
+                <label class="pub-search">
+                  <i class="fas fa-magnifying-glass" aria-hidden="true"></i>
+                  <input
+                    type="search"
+                    id="pub-search"
+                    placeholder="Search title, author, venue"
+                    aria-label="Search publications"
+                    autocomplete="off"
+                  />
+                </label>
+                <div id="pub-filter-groups">
+                  <!-- Authorship, year and topic filters are rendered here -->
+                </div>
+              </div>
+            </details>
+          </aside>
 
-        <div id="conferences" class="pub-content">
-          <!-- International Conferences will be loaded here -->
-        </div>
+          <div class="publications-list show-all" id="publications-list">
+            <div class="pub-results" id="pub-results" role="status" hidden></div>
 
-        <div id="korean" class="pub-content">
-          <!-- Korean Conferences will be loaded here -->
-        </div>
+            <div id="journals" class="pub-content active">
+              <!-- International Journals will be loaded here -->
+            </div>
 
-        <div id="reports" class="pub-content">
-          <!-- Technical Reports will be loaded here -->
+            <div id="conferences" class="pub-content">
+              <!-- International Conferences will be loaded here -->
+            </div>
+
+            <div id="korean" class="pub-content">
+              <!-- Korean Conferences will be loaded here -->
+            </div>
+
+            <div id="reports" class="pub-content">
+              <!-- Technical Reports will be loaded here -->
+            </div>
+          </div>
         </div>
       </div>
 

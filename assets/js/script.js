@@ -184,6 +184,7 @@ function initializeStaticEventHandlers() {
     document.querySelectorAll('[data-pub]').forEach(button => {
         button.addEventListener('click', () => {
             showPublications(button.dataset.pub);
+            scrollToPublicationListTop();
         });
     });
 
@@ -1582,66 +1583,366 @@ function loadPublicationStats() {
     `;
     
     // Update navigation button counts
-    updatePublicationNavCounts(journalCount, conferenceCount, koreanCount, reportCount);
+    updatePublicationNavCounts();
 }
 
+// --------------------------------------------------------------------------
+// Publication filters (sidebar): type, authorship, year, topic and search
+// --------------------------------------------------------------------------
+
 /**
- * Update publication navigation button counts
- * @param {number} journalCount - Number of journal publications
- * @param {number} conferenceCount - Number of conference publications
- * @param {number} koreanCount - Number of Korean conference publications
- * @param {number} reportCount - Number of technical reports
+ * The site owner's name as it appears in author lists (see formatAuthors).
  */
-function updatePublicationNavCounts(journalCount, conferenceCount, koreanCount, reportCount) {
-    const journalsCountEl = document.getElementById('journals-count');
-    const conferencesCountEl = document.getElementById('conferences-count');
-    const koreanCountEl = document.getElementById('korean-count');
-    const reportsCountEl = document.getElementById('reports-count');
-    
-    if (journalsCountEl) journalsCountEl.textContent = journalCount;
-    if (conferencesCountEl) conferencesCountEl.textContent = conferenceCount;
-    if (koreanCountEl) koreanCountEl.textContent = koreanCount;
-    if (reportsCountEl) reportsCountEl.textContent = reportCount;
+const PUB_SELF = 'Saddiq Ur Rehman';
+
+/**
+ * Publication types: `tab` is the id of the list each renders into and of
+ * its sidebar button; `keys` are the publications.json arrays it reads.
+ */
+const PUB_TYPES = [
+    { tab: 'journals', keys: ['journals'], label: 'International Journals' },
+    { tab: 'conferences', keys: ['conferences'], label: 'International Conferences' },
+    { tab: 'korean', keys: ['korean_conferences', 'korean'], label: 'Korean Conferences' },
+    { tab: 'reports', keys: ['technical_reports', 'reports'], label: 'Technical Reports' }
+];
+
+const PUB_ROLES = [
+    { value: 'all', label: 'All' },
+    { value: 'first', label: 'First author' },
+    { value: 'co', label: 'Co-author' },
+    { value: 'corresponding', label: 'Corresponding author' }
+];
+
+/**
+ * Current selection. Everything is shown by default; within a filter, the
+ * chosen topics are alternatives (any of them), and the filters combine.
+ */
+const pubFilters = { type: 'all', role: 'all', year: 'all', topics: new Set(), query: '' };
+
+function pubTypeList(type) {
+    for (const key of type.keys) {
+        if (Array.isArray(publicationsData[key])) return publicationsData[key];
+    }
+    return [];
 }
 
 /**
- * Show specific publication type
- * @param {string} pubType - Type of publication to show
+ * Whether the site owner holds an authorship role on a publication.
+ * Corresponding authorship isn't implied by author order, so it comes from
+ * the data: `"corresponding": true` or a "Corresponding author" badge.
+ */
+function pubHasRole(pub, role) {
+    const authors = Array.isArray(pub.authors) ? pub.authors : [];
+    const first = authors.length > 0 && String(authors[0]).includes(PUB_SELF);
+    if (role === 'first') return first;
+    if (role === 'co') return !first;
+    if (role === 'corresponding') {
+        return pub.corresponding === true ||
+            (Array.isArray(pub.badges) && pub.badges.some(badge => /corresponding/i.test(badge)));
+    }
+    return true;
+}
+
+/**
+ * Does a publication pass the current filters? `skip` leaves one filter out,
+ * which gives each option the count it would have if chosen.
+ */
+function pubMatches(pub, skip) {
+    if (skip !== 'role' && pubFilters.role !== 'all' && !pubHasRole(pub, pubFilters.role)) return false;
+    if (skip !== 'year' && pubFilters.year !== 'all' && String(pub.year) !== pubFilters.year) return false;
+    if (skip !== 'topics' && pubFilters.topics.size &&
+        !(pub.topics || []).some(topic => pubFilters.topics.has(topic))) return false;
+    if (skip !== 'query' && pubFilters.query) {
+        const haystack = [pub.title, (pub.authors || []).join(' '), pub.journal, pub.conference, pub.year]
+            .filter(Boolean).join(' ').toLowerCase();
+        if (!pubFilters.query.split(/\s+/).every(word => haystack.includes(word))) return false;
+    }
+    return true;
+}
+
+function pubFilterCount() {
+    return (pubFilters.role !== 'all' ? 1 : 0) + (pubFilters.year !== 'all' ? 1 : 0) +
+        pubFilters.topics.size + (pubFilters.query ? 1 : 0);
+}
+
+/** Publications of the selected type (or all types). */
+function pubScopeItems() {
+    return PUB_TYPES
+        .filter(type => pubFilters.type === 'all' || type.tab === pubFilters.type)
+        .flatMap(pubTypeList);
+}
+
+/**
+ * Update the type buttons: counts after the filters.
+ */
+function updatePublicationNavCounts() {
+    let total = 0;
+    PUB_TYPES.forEach(type => {
+        const n = pubTypeList(type).filter(pub => pubMatches(pub)).length;
+        total += n;
+        const el = document.getElementById(`${type.tab}-count`);
+        if (el) el.textContent = n;
+    });
+    const all = document.getElementById('all-count');
+    if (all) all.textContent = total;
+}
+
+/**
+ * Render the authorship, year and topic filters with live counts for the
+ * selected type. Options that would match nothing are disabled.
+ */
+function renderPublicationFilters() {
+    const groups = document.getElementById('pub-filter-groups');
+    if (!groups) return;
+
+    // Keep keyboard focus on the same control across the re-render
+    const focused = document.activeElement && groups.contains(document.activeElement)
+        ? { filter: document.activeElement.dataset.filter, value: document.activeElement.value }
+        : null;
+
+    const scope = pubScopeItems();
+    const count = (skip, test) => scope.filter(pub => pubMatches(pub, skip) && test(pub)).length;
+    const everything = PUB_TYPES.flatMap(pubTypeList);
+
+    const roleOptions = PUB_ROLES.map(role => {
+        const n = count('role', pub => pubHasRole(pub, role.value));
+        const checked = pubFilters.role === role.value;
+        return `
+            <label class="pub-option${n || checked ? '' : ' is-disabled'}">
+                <input type="radio" name="pub-role" value="${role.value}" data-filter="role"
+                    ${checked ? 'checked' : ''} ${n || checked ? '' : 'disabled'}>
+                <span class="pub-option-label">${role.label}</span>
+                <span class="pub-option-count">${n}</span>
+            </label>`;
+    }).join('');
+
+    const years = Array.from(new Set(everything.map(pub => String(pub.year)).filter(Boolean)))
+        .sort((a, b) => b.localeCompare(a));
+    const yearOptions = years.map(year => {
+        const n = count('year', pub => String(pub.year) === year);
+        const selected = pubFilters.year === year;
+        return `<option value="${year}" ${selected ? 'selected' : ''} ${n || selected ? '' : 'disabled'}>${year} (${n})</option>`;
+    }).join('');
+
+    // Topics, most common first
+    const frequency = {};
+    everything.forEach(pub => (pub.topics || []).forEach(topic => {
+        frequency[topic] = (frequency[topic] || 0) + 1;
+    }));
+    const topics = Object.keys(frequency).sort((a, b) => frequency[b] - frequency[a] || a.localeCompare(b));
+    const topicOptions = topics.map(topic => {
+        const n = count('topics', pub => (pub.topics || []).includes(topic));
+        const checked = pubFilters.topics.has(topic);
+        return `
+            <label class="pub-option${n || checked ? '' : ' is-disabled'}">
+                <input type="checkbox" value="${escapeHtml(topic)}" data-filter="topic"
+                    ${checked ? 'checked' : ''} ${n || checked ? '' : 'disabled'}>
+                <span class="pub-option-label">${escapeHtml(topic)}</span>
+                <span class="pub-option-count">${n}</span>
+            </label>`;
+    }).join('');
+
+    groups.innerHTML = `
+        <fieldset class="pub-filter-group">
+            <legend>Authorship</legend>
+            ${roleOptions}
+        </fieldset>
+        <div class="pub-filter-group">
+            <label class="pub-filter-legend" for="pub-year">Year</label>
+            <select id="pub-year" class="pub-year-select" data-filter="year">
+                <option value="all" ${pubFilters.year === 'all' ? 'selected' : ''}>All years</option>
+                ${yearOptions}
+            </select>
+        </div>
+        ${topics.length ? `
+        <fieldset class="pub-filter-group">
+            <legend>Topic</legend>
+            ${topicOptions}
+        </fieldset>` : ''}
+    `;
+
+    if (focused && focused.filter) {
+        const selector = focused.filter === 'year'
+            ? '#pub-year'
+            : `[data-filter="${focused.filter}"][value="${CSS.escape(focused.value)}"]`;
+        const target = groups.querySelector(selector);
+        if (target) target.focus();
+    }
+
+    // Reset buttons and the collapsed-panel badge
+    const active = pubFilterCount();
+    document.querySelectorAll('.pub-filters-head .pub-filter-reset').forEach(btn => { btn.hidden = !active; });
+    const badge = document.getElementById('pub-filters-active');
+    if (badge) badge.textContent = active ? `${active} active` : '';
+}
+
+/**
+ * One line above the list: how many publications the filters leave, with a
+ * way to clear them. Hidden while nothing is filtered.
+ */
+function renderPublicationResults() {
+    const el = document.getElementById('pub-results');
+    if (!el) return;
+    if (!pubFilterCount()) {
+        el.hidden = true;
+        el.innerHTML = '';
+        return;
+    }
+    const scope = pubScopeItems();
+    const shown = scope.filter(pub => pubMatches(pub)).length;
+    el.innerHTML = shown
+        ? `<span>Showing <strong>${shown}</strong> of ${scope.length} publications</span>
+           <button type="button" class="pub-filter-reset"><i class="fas fa-xmark"></i> Clear filters</button>`
+        : `<span>No publications match these filters.</span>
+           <button type="button" class="pub-filter-reset"><i class="fas fa-xmark"></i> Clear filters</button>`;
+    el.hidden = false;
+}
+
+/**
+ * Wire the sidebar filters once. Every change re-renders the lists, counts
+ * and filter options.
+ */
+function initPublicationFilters() {
+    const panel = document.getElementById('pub-filters');
+    if (!panel || panel.dataset.bound) return;
+    panel.dataset.bound = 'true';
+
+    const groups = document.getElementById('pub-filter-groups');
+    groups.addEventListener('change', (e) => {
+        const input = e.target;
+        if (input.dataset.filter === 'role') pubFilters.role = input.value;
+        else if (input.dataset.filter === 'year') pubFilters.year = input.value;
+        else if (input.dataset.filter === 'topic') {
+            if (input.checked) pubFilters.topics.add(input.value);
+            else pubFilters.topics.delete(input.value);
+        } else return;
+        loadPublicationsContent();
+    });
+
+    const search = document.getElementById('pub-search');
+    if (search) {
+        search.addEventListener('input', debounce(() => {
+            pubFilters.query = search.value.trim().toLowerCase();
+            loadPublicationsContent();
+        }, 180));
+    }
+
+    // "Clear" buttons live in the sidebar, the results line and empty lists
+    const tab = document.getElementById('publications');
+    if (tab) {
+        tab.addEventListener('click', (e) => {
+            if (!e.target.closest('.pub-filter-reset')) return;
+            pubFilters.role = 'all';
+            pubFilters.year = 'all';
+            pubFilters.topics.clear();
+            pubFilters.query = '';
+            if (search) search.value = '';
+            loadPublicationsContent();
+        });
+    }
+
+    // The panel is always open beside the list on wide screens and starts
+    // collapsed under the type strip on narrow ones.
+    const wide = window.matchMedia('(min-width: 901px)');
+    const syncPanel = () => { panel.open = wide.matches; };
+    syncPanel();
+    if (wide.addEventListener) wide.addEventListener('change', syncPanel);
+}
+
+/**
+ * Show one publication type, or every type ('all') in sections.
+ * @param {string} pubType - 'all' or a PUB_TYPES tab id
  */
 function showPublications(pubType) {
-    // Hide all publication contents
-    const pubContents = document.querySelectorAll('.pub-content');
-    pubContents.forEach(content => {
-        content.classList.remove('active');
+    pubFilters.type = pubType;
+    const list = document.getElementById('publications-list');
+    if (list) list.classList.toggle('show-all', pubType === 'all');
+
+    document.querySelectorAll('.pub-content').forEach(content => {
+        content.classList.toggle('active', pubType === 'all' || content.id === pubType);
     });
-    
-    // Remove active class from all pub buttons
-    const pubBtns = document.querySelectorAll('.pub-btn');
-    pubBtns.forEach(btn => {
-        btn.classList.remove('active');
+    document.querySelectorAll('.pub-btn').forEach(btn => {
+        const on = btn.dataset.pub === pubType;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
-    
-    // Show selected publication type
-    const selectedPub = document.getElementById(pubType);
-    if (selectedPub) {
-        selectedPub.classList.add('active');
+
+    // Option counts are per type
+    renderPublicationFilters();
+    renderPublicationResults();
+}
+
+/**
+ * After switching type from the sticky selector deep in a list, bring the
+ * new list's first item into view. Does nothing while the list top is
+ * already on screen.
+ */
+function scrollToPublicationListTop() {
+    const list = document.getElementById('publications-list');
+    if (!list) return;
+    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 66;
+    // On narrow screens the selector is a strip stuck under the header
+    const sidebar = document.querySelector('.publications-sidebar');
+    const strip = sidebar && getComputedStyle(sidebar).position === 'sticky' &&
+        sidebar.getBoundingClientRect().width >= list.getBoundingClientRect().width
+        ? sidebar.offsetHeight : 0;
+    const offset = header + strip + 16;
+    const top = list.getBoundingClientRect().top - offset;
+    if (top >= 0) return;
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: window.scrollY + top, behavior: reduced ? 'auto' : 'smooth' });
+}
+
+/**
+ * Items of a list that pass the filters, keeping their original numbers.
+ */
+function pubVisibleItems(list) {
+    return list
+        .map((pub, index) => ({ pub, number: index + 1 }))
+        .filter(({ pub }) => pubMatches(pub));
+}
+
+/**
+ * Heading for a type's section, shown when all types are listed together.
+ */
+function pubSectionTitle(tab, count) {
+    const type = PUB_TYPES.find(t => t.tab === tab);
+    return `<h3 class="pub-section-title">${type ? type.label : ''}<span class="count-badge">${count}</span></h3>`;
+}
+
+/**
+ * Render a type's list for the current filters: numbered items, or a note
+ * with a way out when the filters leave none (the section is hidden instead
+ * when all types are shown together).
+ */
+function pubRenderList(container, tab, list, renderItem) {
+    const visible = pubVisibleItems(list);
+    container.classList.toggle('is-empty', !visible.length);
+    if (!visible.length) {
+        const type = PUB_TYPES.find(t => t.tab === tab);
+        container.innerHTML = `
+            <div class="pub-filter-empty">
+                <p>No ${type ? type.label.toLowerCase() : 'publications'} match these filters.</p>
+                <button type="button" class="pub-filter-reset">Clear filters</button>
+            </div>`;
+        return;
     }
-    
-    // Add active class to matching button
-    const selectedButton = document.querySelector(`.pub-btn[data-pub="${pubType}"]`);
-    if (selectedButton) {
-        selectedButton.classList.add('active');
-    }
+    container.innerHTML = pubSectionTitle(tab, visible.length) +
+        visible.map(({ pub, number }) => renderItem(pub, number)).join('');
 }
 
 /**
  * Load publications content dynamically
  */
 function loadPublicationsContent() {
+    initPublicationFilters();
     loadJournals();
     loadConferences();
     loadKoreanConferences();
     loadTechnicalReports();
+    updatePublicationNavCounts();
+    renderPublicationFilters();
+    renderPublicationResults();
 }
 
 /**
@@ -1667,9 +1968,9 @@ function loadJournals() {
         return;
     }
     
-    journalsContainer.innerHTML = journals.map((pub, index) => `
+    pubRenderList(journalsContainer, 'journals', journals, (pub, number) => `
         <div class="publication-item">
-            <div class="publication-number">${index + 1}</div>
+            <div class="publication-number">${number}</div>
             <div class="pub-title">${pub.title}</div>
             <div class="pub-authors">${formatAuthors(pub.authors)}</div>
             <div class="pub-journal">${[pub.journal, pub.volume, pub.pages].filter(Boolean).join(', ')} (${pub.year})</div>
@@ -1680,7 +1981,7 @@ function loadJournals() {
                 ${pub.doi && pub.doi !== '#' ? `<a href="${pub.doi}" class="doi-link" target="_blank" rel="noopener">DOI Link</a>` : (pub.status ? `<span class="pub-badge ${getBadgeClass(pub.status)}">${escapeHtml(pub.status)}</span>` : '')}
             </div>
         </div>
-    `).join('');
+    `);
 }
 
 /**
@@ -1706,9 +2007,9 @@ function loadConferences() {
         return;
     }
     
-    conferencesContainer.innerHTML = conferences.map((pub, index) => `
+    pubRenderList(conferencesContainer, 'conferences', conferences, (pub, number) => `
         <div class="publication-item">
-            <div class="publication-number">${index + 1}</div>
+            <div class="publication-number">${number}</div>
             <div class="pub-title">${pub.title}</div>
             <div class="pub-authors">${formatAuthors(pub.authors)} (${pub.year})</div>
             <div class="pub-journal">${pub.conference}${pub.location ? `, ${pub.location}` : ''}${pub.date ? `, ${pub.date}` : ''}</div>
@@ -1718,7 +2019,7 @@ function loadConferences() {
                 ${pub.doi ? `<a href="${pub.doi}" class="doi-link" target="_blank" rel="noopener">DOI Link</a>` : ''}
             </div>
         </div>
-    `).join('');
+    `);
 }
 
 /**
@@ -1744,9 +2045,9 @@ function loadKoreanConferences() {
         return;
     }
     
-    koreanContainer.innerHTML = korean.map((pub, index) => `
+    pubRenderList(koreanContainer, 'korean', korean, (pub, number) => `
         <div class="publication-item">
-            <div class="publication-number">${index + 1}</div>
+            <div class="publication-number">${number}</div>
             <div class="pub-title">${pub.title}</div>
             <div class="pub-authors">${formatAuthors(pub.authors)} (${pub.year})</div>
             <div class="pub-journal">${pub.conference}${pub.volume ? `, ${pub.volume}` : ''}${pub.pages ? `, ${pub.pages}` : ''}</div>
@@ -1754,7 +2055,7 @@ function loadKoreanConferences() {
                 ${pub.badges ? pub.badges.map(badge => `<span class="pub-badge ${getBadgeClass(badge)}">${badge}</span>`).join('') : ''}
             </div>
         </div>
-    `).join('');
+    `);
 }
 
 /**
@@ -1780,9 +2081,9 @@ function loadTechnicalReports() {
         return;
     }
     
-    reportsContainer.innerHTML = reports.map((pub, index) => `
+    pubRenderList(reportsContainer, 'reports', reports, (pub, number) => `
         <div class="publication-item">
-            <div class="publication-number">${index + 1}</div>
+            <div class="publication-number">${number}</div>
             <div class="pub-title">${pub.title}</div>
             <div class="pub-authors">${formatAuthors(pub.authors)} (${pub.year})</div>
             <div class="pub-journal">${pub.journal}${pub.volume ? `, ${pub.volume}` : ''}${pub.pages ? `, pages ${pub.pages}` : ''}</div>
@@ -1790,7 +2091,7 @@ function loadTechnicalReports() {
                 ${pub.link ? `<a href="${pub.link}" class="doi-link" target="_blank" rel="noopener">${escapeHtml(pub.linkLabel || 'View Report')}</a>` : ''}
             </div>
         </div>
-    `).join('');
+    `);
 }
 
 /**
