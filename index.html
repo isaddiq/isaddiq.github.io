@@ -1058,76 +1058,100 @@
             <div
               class="collab-network"
               id="collab-network"
-              aria-label="Academic collaboration network graph"
+              aria-label="Academic collaboration network"
             >
+              <div class="collab-summary" id="collab-summary"></div>
+
               <div class="collab-toolbar">
                 <div class="collab-modes" role="tablist">
                   <button
                     type="button"
                     class="collab-mode-btn active"
                     data-mode="author"
+                    role="tab"
+                    aria-selected="true"
                   >
-                    <i class="fas fa-user"></i> By Author
+                    <i class="fas fa-user"></i> Co-authors
                   </button>
                   <button
                     type="button"
                     class="collab-mode-btn"
                     data-mode="university"
+                    role="tab"
+                    aria-selected="false"
                   >
-                    <i class="fas fa-building"></i> By Organization
+                    <i class="fas fa-building-columns"></i> Organizations
                   </button>
                   <button
                     type="button"
                     class="collab-mode-btn"
                     data-mode="country"
+                    role="tab"
+                    aria-selected="false"
                   >
-                    <i class="fas fa-globe"></i> By Country
+                    <i class="fas fa-earth-asia"></i> Countries
                   </button>
                 </div>
                 <div class="collab-toolbar-right">
-                  <div class="collab-dims" role="tablist">
+                  <div class="collab-dims" role="group" aria-label="View">
                     <button
                       type="button"
                       class="collab-dim-btn active"
                       data-dim="2d"
                     >
-                      <i class="fas fa-circle-nodes"></i> 2D
+                      2D
                     </button>
                     <button type="button" class="collab-dim-btn" data-dim="3d">
-                      <i class="fas fa-cube"></i> 3D
+                      3D
                     </button>
                   </div>
                   <button
                     type="button"
                     class="collab-reset-btn"
                     id="collab-reset"
-                    title="Re-center the graph"
+                    title="Reset the view"
+                    aria-label="Reset the view"
                   >
                     <i class="fas fa-arrows-rotate"></i>
                   </button>
                 </div>
               </div>
 
-              <div class="collab-canvas-wrap">
-                <canvas id="collab-canvas"></canvas>
-                <div class="collab-tooltip" id="collab-tooltip" hidden></div>
-                <div class="collab-legend" id="collab-legend"></div>
-                <div class="collab-hint" id="collab-hint">
-                  <i class="fas fa-arrows-up-down-left-right"></i> Drag to
-                  rotate · Shift-drag to pan · Scroll to zoom
+              <div class="collab-body">
+                <div class="collab-canvas-wrap">
+                  <canvas id="collab-canvas"></canvas>
+                  <div
+                    class="collab-map"
+                    id="collab-map"
+                    aria-label="Map of collaborating countries"
+                  ></div>
+                  <div class="collab-tooltip" id="collab-tooltip" hidden></div>
+                  <div class="collab-legend" id="collab-legend"></div>
+                  <div class="collab-hint" id="collab-hint">
+                    <i class="fas fa-arrows-up-down-left-right"></i> Drag to
+                    rotate · Shift-drag to pan · Scroll to zoom
+                  </div>
+                  <div class="collab-controls" id="collab-controls">
+                    <button type="button" data-act="zoom-in" title="Zoom in" aria-label="Zoom in">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                    <button type="button" data-act="zoom-out" title="Zoom out" aria-label="Zoom out">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" data-act="fit" title="Fit to view" aria-label="Fit to view">
+                      <i class="fas fa-expand"></i>
+                    </button>
+                  </div>
                 </div>
-                <div class="collab-controls" id="collab-controls">
-                  <button type="button" data-act="zoom-in" title="Zoom in">
-                    <i class="fas fa-plus"></i>
-                  </button>
-                  <button type="button" data-act="zoom-out" title="Zoom out">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" data-act="fit" title="Zoom to extent">
-                    <i class="fas fa-expand"></i>
-                  </button>
-                </div>
+                <aside class="collab-panel" id="collab-panel"></aside>
               </div>
+
+              <p class="collab-note">
+                Based on the co-authored publications listed on this site. Line
+                weight shows the number of joint publications; the curves
+                inside the ring connect co-authors who have also published
+                with each other.
+              </p>
             </div>
           </div>
         </div>

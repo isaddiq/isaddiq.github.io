@@ -3336,7 +3336,13 @@ function initializeActionButtons() {
 }
 
 // ==========================================================================
-// Academic Collaboration Network (interactive co-authorship graph)
+// Academic Collaboration Network (co-authorship graph + country map)
+//
+// Modelled on the "Network" view of research-portal profiles: the researcher
+// sits at the centre, collaborators are grouped by organisation around a ring,
+// the line to each one is weighted by joint publications, and faint curves
+// inside the ring show collaborators who have also published with each other.
+// The country view is a map with arcs from the home institution.
 // ==========================================================================
 
 const collabNet = {
@@ -3345,24 +3351,27 @@ const collabNet = {
     ctx: null,
     tooltip: null,
     legend: null,
+    panel: null,
     wrap: null,
     mode: 'author',
     dim: '2d',
     nodes: [],
+    links: [],
+    groups: [],
+    layout: null,
     center: null,
     width: 0,
     height: 0,
     dpr: 1,
     alpha: 1,
+    intro: 1,
     running: false,
     rafId: null,
     hovered: null,
-    dragging: null,
-    dragMoved: false,
     // 3D camera / rotation state
     rotX: -0.35,
     rotY: 0.6,
-    autoSpin: 0.0032,
+    autoSpin: 0.0024,
     focal: 820,
     visible: true,
     reducedMotion: false,
@@ -3376,8 +3385,21 @@ const collabNet = {
     dragNode: null,
     lastPx: 0,
     lastPy: 0,
-    countryColors: {},
-    palette: ['#0ea5e9', '#16a34a', '#f59e0b', '#a855f7', '#ef4444', '#14b8a6', '#ec4899', '#6366f1']
+    // Palette slot per organisation / country, shared by every view so an
+    // organisation keeps its colour when switching modes. The colours
+    // themselves are CSS tokens (--collab-c0..7) so they follow the theme.
+    groupIndex: {},
+    countryIndex: {},
+    paletteSize: 8,
+    // Publications as lists of collaborator indices (built once)
+    pubAuthorSets: [],
+    coauthoredOutputs: 0,
+    // Leaflet state for the country map
+    map: null,
+    mapTiles: null,
+    mapLayer: null,
+    mapMarkers: {},
+    mapBounds: null
 };
 
 // Fallback for CanvasRenderingContext2D.roundRect (older browsers)
@@ -3408,15 +3430,101 @@ function collabAffiliation(item) {
 }
 
 /**
- * Resolve a stable color for a country from the palette.
+ * Normalise a person's name for matching against publication author lists.
  */
-function collabCountryColor(country) {
-    if (!country) return '#64748b';
-    if (!collabNet.countryColors[country]) {
-        const idx = Object.keys(collabNet.countryColors).length % collabNet.palette.length;
-        collabNet.countryColors[country] = collabNet.palette[idx];
+function collabNameKey(name) {
+    return String(name || '').toLowerCase().replace(/[^a-z]/g, '');
+}
+
+/**
+ * CSS custom property for a palette slot (used by the HTML panel and legend).
+ */
+function collabColorVar(slot) {
+    if (slot == null || slot < 0) return 'var(--text-muted)';
+    return `var(--collab-c${slot % collabNet.paletteSize})`;
+}
+
+/**
+ * Resolve the palette tokens to concrete colours for canvas / Leaflet drawing.
+ */
+function collabReadPalette() {
+    const styles = getComputedStyle(document.documentElement);
+    const read = (name, fallback) => (styles.getPropertyValue(name) || '').trim() || fallback;
+    const colors = [];
+    for (let i = 0; i < collabNet.paletteSize; i++) colors.push(read(`--collab-c${i}`, '#2b6a99'));
+    return {
+        colors,
+        text: read('--text-primary', '#15222d'),
+        sub: read('--text-secondary', '#465563'),
+        muted: read('--text-muted', '#6b7a88'),
+        bg: read('--bg-secondary', '#ffffff'),
+        ink: read('--primary-color', '#183247')
+    };
+}
+
+function collabSlotColor(theme, slot) {
+    if (slot == null || slot < 0) return theme.muted;
+    return theme.colors[slot % theme.colors.length];
+}
+
+/**
+ * Assign palette slots: organisations by joint publications, then any
+ * affiliation that only appears on an author; countries likewise.
+ */
+function collabAssignSlots(data) {
+    const byPapers = (a, b) => (b.papers || 0) - (a.papers || 0) || String(a.name).localeCompare(String(b.name));
+
+    const groups = {};
+    (data.byUniversity || []).slice().sort(byPapers).forEach(org => {
+        if (!(org.name in groups)) groups[org.name] = Object.keys(groups).length;
+    });
+    (data.byAuthor || []).forEach(author => {
+        const org = collabAffiliation(author);
+        if (org && !(org in groups)) groups[org] = Object.keys(groups).length;
+    });
+    collabNet.groupIndex = groups;
+
+    const countries = {};
+    (data.byCountry || []).slice().sort(byPapers).forEach(c => {
+        if (!(c.name in countries)) countries[c.name] = Object.keys(countries).length;
+    });
+    collabNet.countryIndex = countries;
+}
+
+/**
+ * Turn publications.json into lists of collaborator indices, so co-author to
+ * co-author links can be drawn. Names are matched loosely, plus any "aliases"
+ * listed for an author in collaborations.json.
+ */
+function collabIndexPublications(data) {
+    const byKey = {};
+    (data.byAuthor || []).forEach((author, i) => {
+        [author.name].concat(author.aliases || []).forEach(name => {
+            byKey[collabNameKey(name)] = i;
+        });
+    });
+
+    const sets = [];
+    let outputs = 0;
+    const lists = (publicationsData && typeof publicationsData === 'object')
+        ? Object.values(publicationsData).filter(Array.isArray)
+        : [];
+    for (const list of lists) {
+        for (const pub of list) {
+            if (!pub || !Array.isArray(pub.authors)) continue;
+            const found = new Set();
+            for (const name of pub.authors) {
+                const idx = byKey[collabNameKey(name)];
+                if (idx != null) found.add(idx);
+            }
+            if (found.size) {
+                outputs++;
+                sets.push(Array.from(found));
+            }
+        }
     }
-    return collabNet.countryColors[country];
+    collabNet.pubAuthorSets = sets;
+    collabNet.coauthoredOutputs = outputs;
 }
 
 /**
@@ -3431,16 +3539,24 @@ function initCollaborationNetwork() {
         collabNet.ctx = canvas.getContext('2d');
         collabNet.tooltip = document.getElementById('collab-tooltip');
         collabNet.legend = document.getElementById('collab-legend');
+        collabNet.panel = document.getElementById('collab-panel');
         collabNet.wrap = canvas.closest('.collab-canvas-wrap');
         collabNet.reducedMotion = window.matchMedia &&
             window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        // View mode buttons (author / university / country)
+        collabAssignSlots(collaborationsData);
+
+        // View mode buttons (author / organisation / country)
         document.querySelectorAll('.collab-mode-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                document.querySelectorAll('.collab-mode-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.collab-mode-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.setAttribute('aria-selected', 'false');
+                });
                 btn.classList.add('active');
+                btn.setAttribute('aria-selected', 'true');
                 collabNet.mode = btn.dataset.mode;
+                collabResetCamera();
                 buildCollabGraph();
             });
         });
@@ -3448,26 +3564,30 @@ function initCollaborationNetwork() {
         // Dimension buttons (2D / 3D)
         document.querySelectorAll('.collab-dim-btn').forEach(btn => {
             btn.addEventListener('click', () => {
+                if (btn.disabled) return;
                 document.querySelectorAll('.collab-dim-btn').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 collabNet.dim = btn.dataset.dim;
-                if (collabNet.wrap) collabNet.wrap.classList.toggle('is-3d', collabNet.dim === '3d');
+                collabResetCamera();
                 buildCollabGraph();
             });
         });
 
         const resetBtn = document.getElementById('collab-reset');
         if (resetBtn) resetBtn.addEventListener('click', () => {
+            if (collabNet.mode === 'country') {
+                collabFitMap();
+                return;
+            }
             collabNet.rotX = -0.35;
             collabNet.rotY = 0.6;
-            collabNet.zoom = 1;
-            collabNet.panX = 0;
-            collabNet.panY = 0;
+            collabResetCamera();
             buildCollabGraph();
         });
 
         bindCollabPointerEvents();
-        window.addEventListener('resize', collabResize);
+        bindCollabPanelEvents();
+        window.addEventListener('resize', throttle(collabResize, 150), { passive: true });
 
         // Pause the loop when the graph scrolls out of view / tab is hidden
         if ('IntersectionObserver' in window) {
@@ -3478,16 +3598,32 @@ function initCollaborationNetwork() {
             io.observe(collabNet.wrap);
         }
 
+        // Canvas and map colours come from theme tokens; repaint on a switch.
+        new MutationObserver(() => {
+            if (collabNet.mode === 'country') renderCollabMap(false);
+            else ensureCollabRunning();
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
         collabNet.initialized = true;
     }
+
+    // Publications may have loaded after the first visit; index them each time.
+    collabIndexPublications(collaborationsData);
+    renderCollabSummary();
 
     // The Activities tab becomes visible inside a requestAnimationFrame, so the
     // container may still be display:none (zero width) right now. Wait until it
     // has a real size before sizing the canvas and laying out the graph.
     collabWhenVisible(() => {
-        collabResize();
+        collabResize(true);
         buildCollabGraph();
     });
+}
+
+function collabResetCamera() {
+    collabNet.zoom = 1;
+    collabNet.panX = 0;
+    collabNet.panY = 0;
 }
 
 /**
@@ -3505,9 +3641,10 @@ function collabWhenVisible(cb, attempts) {
 }
 
 /**
- * Size the canvas to its container with device-pixel-ratio support.
+ * Size the canvas to its container with device-pixel-ratio support. On a
+ * later resize the layout is recomputed in place, without the intro motion.
  */
-function collabResize() {
+function collabResize(skipRebuild) {
     const { canvas, wrap } = collabNet;
     if (!canvas || !wrap) return;
     const rect = wrap.getBoundingClientRect();
@@ -3519,54 +3656,87 @@ function collabResize() {
     canvas.width = Math.round(rect.width * dpr);
     canvas.height = Math.round(rect.height * dpr);
     collabNet.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    startCollabSim();
+
+    if (skipRebuild === true) return;
+    if (collabNet.mode === 'country') {
+        if (collabNet.map) {
+            collabNet.map.invalidateSize();
+            collabFitMap();
+        }
+    } else if (collabNet.center) {
+        buildCollabGraph({ animate: false });
+    }
+}
+
+/**
+ * Show the canvas or the map for the current mode and keep the toolbar honest
+ * (the map has no 3D view).
+ */
+function collabSyncView() {
+    const isMap = collabNet.mode === 'country';
+    const wrap = collabNet.wrap;
+    if (wrap) {
+        wrap.classList.toggle('is-map', isMap);
+        wrap.classList.toggle('is-3d', !isMap && collabNet.dim === '3d');
+    }
+    document.querySelectorAll('.collab-dim-btn').forEach(btn => {
+        btn.disabled = isMap;
+    });
 }
 
 /**
  * Build the node set for the currently selected mode/dimension and (re)start
- * the layout. Works for both the 2D (canvas-space) and 3D (model-space) paths.
+ * the layout. Works for both the 2D (radial) and 3D (model-space) paths.
  */
-function buildCollabGraph() {
+function buildCollabGraph(opts) {
     const data = collaborationsData;
     if (!data) return;
+    const animate = !(opts && opts.animate === false) && !collabNet.reducedMotion;
 
-    let items = [];
-    if (collabNet.mode === 'university') items = data.byUniversity || [];
-    else if (collabNet.mode === 'country') items = data.byCountry || [];
-    else items = data.byAuthor || [];
+    collabSyncView();
+    renderCollabPanel();
+    collabNet.hovered = null;
+    hideCollabTooltip();
 
+    if (collabNet.mode === 'country') {
+        renderCollabLegend();
+        renderCollabMap(true);
+        return;
+    }
+
+    const isAuthor = collabNet.mode === 'author';
+    const items = isAuthor ? (data.byAuthor || []) : (data.byUniversity || []);
     const cx = collabNet.width / 2;
     const cy = collabNet.height / 2;
     const maxPapers = Math.max(1, ...items.map(i => i.papers || 1));
     const is3D = collabNet.dim === '3d';
+    const n = items.length;
+    // Nodes shrink with the canvas so a phone-sized ring doesn't overlap.
+    const sizeScale = Math.max(0.55, Math.min(1, Math.min(collabNet.width, collabNet.height) / 620));
 
-    // Center node (me)
     collabNet.center = {
         id: '__center__',
         label: (data.center && data.center.shortName) || 'Me',
         isCenter: true,
         papers: 0,
-        x: cx, y: cy,
+        x: cx, y: cy, tx: cx, ty: cy,
         mx: 0, my: 0, mz: 0,
         vx: 0, vy: 0, vz: 0,
-        r: 30,
-        sr: 30,
-        sx: 0, sy: 0,
+        r: (isAuthor ? 24 : 28) * Math.max(0.75, sizeScale),
+        sr: 24,
+        sx: cx, sy: cy,
         scale: 1,
         depth: 0,
-        color: '#183247', // Deep navy, matching the refreshed palette
+        slot: -1,
+        neighbours: new Set(),
         meta: data.center || {}
     };
 
-    const n = items.length;
     collabNet.nodes = items.map((item, i) => {
-        const country = collabNet.mode === 'country' ? item.name : item.country;
+        const group = isAuthor ? collabAffiliation(item) : item.name;
         const papers = item.papers || 1;
-        const r = 12 + 16 * Math.sqrt(papers / maxPapers);
-
-        // 2D seed position: radial ring around canvas centre
-        const angle = (i / Math.max(1, n)) * Math.PI * 2 - Math.PI / 2;
-        const radius2d = Math.min(collabNet.width, collabNet.height) * 0.32 + (Math.random() * 40 - 20);
+        const share = Math.sqrt(papers / maxPapers);
+        const r = (isAuthor ? 5 + 11 * share : 9 + 17 * share) * sizeScale;
 
         // 3D seed position: even spread on a sphere (Fibonacci), radius by ties
         const k = i + 0.5;
@@ -3576,54 +3746,343 @@ function buildCollabGraph() {
 
         return {
             id: 'n' + i,
+            index: i,
             label: item.name,
             papers,
             isCenter: false,
-            x: cx + Math.cos(angle) * radius2d,
-            y: cy + Math.sin(angle) * radius2d,
+            group,
+            slot: group in collabNet.groupIndex ? collabNet.groupIndex[group] : -1,
+            x: cx, y: cy, tx: cx, ty: cy,
+            angle: 0,
             mx: Math.sin(phi) * Math.cos(theta) * rad3d,
             my: Math.sin(phi) * Math.sin(theta) * rad3d,
             mz: Math.cos(phi) * rad3d,
             vx: 0, vy: 0, vz: 0,
             r,
             sr: r,
-            sx: 0, sy: 0,
+            sx: cx, sy: cy,
             scale: 1,
             depth: 0,
-            color: collabCountryColor(country),
             fixed: false,
+            neighbours: new Set(),
             meta: {
-                affiliation: collabNet.mode === 'author' ? collabAffiliation(item) : item.name,
-                university: item.name,
-                country: item.country || (collabNet.mode === 'country' ? item.name : ''),
+                affiliation: isAuthor ? collabAffiliation(item) : item.name,
+                country: item.country || '',
                 authors: item.authors
             }
         };
     });
 
+    collabNet.links = isAuthor ? collabBuildLinks(collabNet.nodes) : [];
     collabNet.maxPapers = maxPapers;
     collabNet.is3D = is3D;
+    // Size the 3D sphere to the canvas: its outer shell (~250 model units)
+    // swells by up to ~1.45x when rotated toward the camera.
+    collabNet.scale3d = Math.max(0.4, Math.min(1, (Math.min(collabNet.width, collabNet.height) / 2 - 40) / 360));
+    if (is3D) {
+        for (const node of collabNet.nodes) {
+            node.mx *= collabNet.scale3d;
+            node.my *= collabNet.scale3d;
+            node.mz *= collabNet.scale3d;
+        }
+    }
+
+    if (!is3D) collabLayoutRadial(animate);
+    collabNet.intro = animate ? 0 : 1;
+
     renderCollabLegend();
     startCollabSim();
 }
 
 /**
- * Render the country color legend.
+ * Co-author to co-author links: every pair of collaborators who appear on the
+ * same publication, weighted by how many they share.
+ */
+function collabBuildLinks(nodes) {
+    const counts = new Map();
+    for (const set of collabNet.pubAuthorSets) {
+        for (let i = 0; i < set.length; i++) {
+            for (let j = i + 1; j < set.length; j++) {
+                const a = Math.min(set[i], set[j]);
+                const b = Math.max(set[i], set[j]);
+                const key = a + ':' + b;
+                counts.set(key, (counts.get(key) || 0) + 1);
+            }
+        }
+    }
+    const links = [];
+    counts.forEach((count, key) => {
+        const [ai, bi] = key.split(':').map(Number);
+        const a = nodes[ai];
+        const b = nodes[bi];
+        if (!a || !b) return;
+        a.neighbours.add(b);
+        b.neighbours.add(a);
+        links.push({ a, b, count });
+    });
+    return links;
+}
+
+/**
+ * Radial ego layout. Collaborators are grouped by organisation into sectors of
+ * one ring (largest organisation first, clockwise from the top) and sorted by
+ * joint publications within each sector; tie strength shows in node size and
+ * line weight. Each sector is marked by an arc just outside the ring, and the
+ * labels run outward along each spoke beyond it, so they never collide
+ * however many names there are. With only a few nodes, stronger ties are
+ * pulled closer to the centre instead and labels sit beside the nodes.
+ */
+function collabLayoutRadial(animate) {
+    const { nodes, width, height } = collabNet;
+    const cx = width / 2;
+    const cy = height / 2;
+    const n = nodes.length;
+    const rotated = n > 10;
+    const maxNodeR = Math.max(...nodes.map(nd => nd.r), 0);
+    const S = Math.min(width, height) / 2 - 12;
+    const font = S < 220 ? 10 : 11.5;
+
+    let labelMax, rOut, rIn, rArc, labelStart;
+    if (rotated) {
+        labelMax = Math.max(52, Math.min(128, S * 0.42));
+        rOut = S - labelMax - 14 - maxNodeR;
+        if (rOut < S * 0.4) {
+            // Narrow screens: give the ring its room and shorten the labels.
+            rOut = S * 0.4;
+            labelMax = Math.max(40, S - rOut - 14 - maxNodeR);
+        }
+        rIn = rOut;
+        rArc = rOut + maxNodeR + 5;
+        labelStart = rArc + 6;
+    } else {
+        // Few nodes: horizontal labels beside each node, so the ring can use
+        // more of the height and the labels spill into the spare width.
+        labelMax = Math.max(80, Math.min(190, width / 2 - S * 0.62 - maxNodeR - 16));
+        rOut = S * 0.62;
+        rIn = S * 0.4;
+        rArc = 0;
+        labelStart = 0;
+    }
+
+    // Order: by organisation slot, then joint publications, then name.
+    const order = nodes.slice().sort((a, b) =>
+        (a.slot < 0 ? 999 : a.slot) - (b.slot < 0 ? 999 : b.slot) ||
+        b.papers - a.papers ||
+        a.label.localeCompare(b.label));
+
+    const groupsInOrder = [];
+    order.forEach(nd => {
+        const last = groupsInOrder[groupsInOrder.length - 1];
+        if (!last || last.group !== nd.group) {
+            groupsInOrder.push({ group: nd.group, slot: nd.slot, members: [nd] });
+        } else {
+            last.members.push(nd);
+        }
+    });
+
+    const gap = rotated && groupsInOrder.length > 1 ? 0.9 : 0;
+    const units = n + gap * groupsInOrder.length;
+    const unit = (Math.PI * 2) / Math.max(1, units);
+    const maxPapers = collabNet.maxPapers || 1;
+    const logMax = Math.log(Math.max(2, maxPapers));
+
+    let cursor = gap / 2;
+    const start = -Math.PI / 2;
+    const groups = [];
+    for (const g of groupsInOrder) {
+        const a0 = start + cursor * unit;
+        for (const nd of g.members) {
+            const angle = start + (cursor + 0.5) * unit;
+            const t = Math.log(Math.max(1, nd.papers)) / logMax;
+            const radius = rOut - t * (rOut - rIn);
+            nd.angle = angle;
+            nd.tx = cx + Math.cos(angle) * radius;
+            nd.ty = cy + Math.sin(angle) * radius;
+            if (!animate) {
+                nd.x = nd.tx;
+                nd.y = nd.ty;
+            } else {
+                nd.x = cx;
+                nd.y = cy;
+            }
+            cursor += 1;
+        }
+        groups.push({ name: g.group, slot: g.slot, a0, a1: start + cursor * unit });
+        cursor += gap;
+    }
+
+    collabNet.groups = groups;
+    collabNet.layout = { cx, cy, rArc, rRing: rOut, labelStart, labelMax, font, rotated };
+}
+
+/**
+ * Render the colour key: organisations in the author view. The other views
+ * label every node directly, so they need no key.
  */
 function renderCollabLegend() {
     const legend = collabNet.legend;
     if (!legend) return;
-    const countries = Object.keys(collabNet.countryColors);
-    if (collabNet.mode === 'university' || collabNet.mode === 'country' || collabNet.mode === 'author') {
-        legend.innerHTML = countries
-            .map(c => `<div class="legend-item"><span class="legend-dot" style="background:${collabNet.countryColors[c]}"></span>${c}</div>`)
-            .join('');
-        legend.style.display = countries.length ? 'flex' : 'none';
+    if (collabNet.mode !== 'author') {
+        legend.innerHTML = '';
+        legend.hidden = true;
+        return;
     }
+    const seen = new Map();
+    (collaborationsData.byAuthor || []).forEach(author => {
+        const org = collabAffiliation(author);
+        if (org && !seen.has(org)) seen.set(org, collabNet.groupIndex[org]);
+    });
+    const items = Array.from(seen.entries()).sort((a, b) => a[1] - b[1]);
+    legend.innerHTML = '<div class="legend-title">Affiliation</div>' + items
+        .map(([org, slot]) => `<div class="legend-item"><span class="legend-dot" style="background:${collabColorVar(slot)}"></span>${escapeHtml(org)}</div>`)
+        .join('');
+    // Toggled with [hidden] rather than an inline display, so the stylesheet
+    // can still hide the key on small screens.
+    legend.hidden = !items.length;
 }
 
 /**
- * Begin / re-heat the force simulation (resets layout energy).
+ * Headline figures above the graph.
+ */
+function renderCollabSummary() {
+    const el = document.getElementById('collab-summary');
+    const data = collaborationsData;
+    if (!el || !data) return;
+    const stats = [
+        [(data.byAuthor || []).length, 'Co-authors'],
+        [(data.byUniversity || []).length, 'Organizations'],
+        [(data.byCountry || []).length, 'Countries'],
+        [collabNet.coauthoredOutputs, 'Co-authored publications']
+    ].filter(([value]) => value > 0);
+    el.innerHTML = stats
+        .map(([value, label]) => `<div class="collab-stat"><span class="collab-stat-value">${value}</span><span class="collab-stat-label">${label}</span></div>`)
+        .join('');
+}
+
+/**
+ * Ranked list beside the graph: one row per collaborator, organisation or
+ * country, with a bar for joint publications. Rows and nodes highlight each
+ * other on hover.
+ */
+function renderCollabPanel() {
+    const panel = collabNet.panel;
+    const data = collaborationsData;
+    if (!panel || !data) return;
+
+    const mode = collabNet.mode;
+    const items = (mode === 'university' ? data.byUniversity
+        : mode === 'country' ? data.byCountry
+            : data.byAuthor) || [];
+    const max = Math.max(1, ...items.map(item => item.papers || 0));
+    const sorted = items
+        .map((item, index) => ({ item, index }))
+        .sort((a, b) => (b.item.papers || 0) - (a.item.papers || 0) ||
+            String(a.item.name).localeCompare(String(b.item.name)));
+
+    const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+    const rows = sorted.map(({ item, index }) => {
+        let slot;
+        let meta;
+        if (mode === 'country') {
+            slot = collabNet.countryIndex[item.name];
+            meta = item.authors ? plural(item.authors, 'co-author') : '';
+        } else if (mode === 'university') {
+            slot = collabNet.groupIndex[item.name];
+            meta = [item.country, item.authors ? plural(item.authors, 'co-author') : '']
+                .filter(Boolean).join(' · ');
+        } else {
+            const org = collabAffiliation(item);
+            slot = collabNet.groupIndex[org];
+            meta = [org, item.country].filter(Boolean).join(' · ');
+        }
+        const papers = item.papers || 0;
+        const pct = Math.max(4, Math.round((papers / max) * 100));
+        return `
+            <li>
+                <button type="button" class="collab-row" data-idx="${index}" style="--row-color:${collabColorVar(slot)}"
+                    aria-label="${escapeHtml(item.name)}, ${plural(papers, 'joint publication')}">
+                    <span class="collab-row-dot" aria-hidden="true"></span>
+                    <span class="collab-row-text">
+                        <span class="collab-row-name">${escapeHtml(item.name)}</span>
+                        ${meta ? `<span class="collab-row-meta">${escapeHtml(meta)}</span>` : ''}
+                    </span>
+                    <span class="collab-row-count" aria-hidden="true">${papers}</span>
+                    <span class="collab-row-bar" aria-hidden="true"><span style="width:${pct}%"></span></span>
+                </button>
+            </li>`;
+    }).join('');
+
+    const title = mode === 'university' ? 'Organizations' : mode === 'country' ? 'Countries' : 'Co-authors';
+    panel.innerHTML = `
+        <div class="collab-panel-head">
+            <h4>${title}</h4>
+            <span>Joint publications</span>
+        </div>
+        <ol class="collab-list">${rows}</ol>`;
+}
+
+/**
+ * Mark the panel row for a node (or clear with -1).
+ */
+function collabMarkRow(index) {
+    const panel = collabNet.panel;
+    if (!panel) return;
+    panel.querySelectorAll('.collab-row.is-active').forEach(row => row.classList.remove('is-active'));
+    if (index == null || index < 0) return;
+    const row = panel.querySelector(`.collab-row[data-idx="${index}"]`);
+    if (row) row.classList.add('is-active');
+}
+
+/**
+ * Hovering or focusing a panel row highlights its node (or map marker).
+ */
+function bindCollabPanelEvents() {
+    const panel = collabNet.panel;
+    if (!panel) return;
+
+    const activate = (row) => {
+        const index = Number(row.dataset.idx);
+        collabMarkRow(index);
+        if (collabNet.mode === 'country') {
+            const marker = collabNet.mapMarkers[index];
+            if (marker) marker.openTooltip();
+            return;
+        }
+        const node = collabNet.nodes[index];
+        if (!node) return;
+        collabNet.hovered = node;
+        collabComputeScreen();
+        showCollabTooltip(node, node.sx, node.sy - node.sr);
+        ensureCollabRunning();
+    };
+
+    const clear = () => {
+        collabMarkRow(-1);
+        if (collabNet.mode === 'country') {
+            Object.values(collabNet.mapMarkers).forEach(m => m.closeTooltip());
+            return;
+        }
+        collabNet.hovered = null;
+        hideCollabTooltip();
+        ensureCollabRunning();
+    };
+
+    panel.addEventListener('mouseover', (e) => {
+        const row = e.target.closest('.collab-row');
+        if (row) activate(row);
+    });
+    panel.addEventListener('mouseleave', clear);
+    panel.addEventListener('focusin', (e) => {
+        const row = e.target.closest('.collab-row');
+        if (row) activate(row);
+    });
+    panel.addEventListener('focusout', (e) => {
+        if (!panel.contains(e.relatedTarget)) clear();
+    });
+}
+
+/**
+ * Begin / re-heat the layout (resets layout energy).
  */
 function startCollabSim() {
     collabNet.alpha = 1;
@@ -3634,20 +4093,24 @@ function startCollabSim() {
  * Resume the render loop without re-heating the layout (e.g. hover, orbit).
  */
 function ensureCollabRunning() {
-    if (!collabNet.running && collabNet.visible) {
+    if (!collabNet.running && collabNet.visible && collabNet.mode !== 'country') {
         collabNet.running = true;
         collabNet.rafId = requestAnimationFrame(collabTick);
     }
 }
 
 /**
- * Main animation tick: integrate forces (while warm), spin (3D) and draw.
+ * Main animation tick: advance the layout (while warm), spin (3D) and draw.
  */
 function collabTick() {
-    if (!collabNet.visible) { collabNet.running = false; return; }
+    if (!collabNet.visible || collabNet.mode === 'country') {
+        collabNet.running = false;
+        return;
+    }
 
     const warm = collabNet.alpha > 0.01;
     if (warm) stepCollabPhysics();
+    if (collabNet.intro < 1) collabNet.intro = Math.min(1, collabNet.intro + 0.028);
 
     // Continuous auto-rotation in 3D mode (paused while interacting / inspecting)
     const spinning = collabNet.is3D && collabNet.action === 'none' &&
@@ -3656,7 +4119,7 @@ function collabTick() {
 
     drawCollab();
 
-    if (warm || spinning || collabNet.hovered || collabNet.action !== 'none') {
+    if (warm || spinning || collabNet.intro < 1 || collabNet.hovered || collabNet.action !== 'none') {
         collabNet.rafId = requestAnimationFrame(collabTick);
     } else {
         collabNet.running = false;
@@ -3664,69 +4127,25 @@ function collabTick() {
 }
 
 /**
- * One step of the force-directed layout (delegates to 2D or 3D).
+ * One layout step. In 2D every node eases toward its place on the ring (and
+ * springs back there after being dragged); 3D runs a small force simulation.
  */
 function stepCollabPhysics() {
     if (collabNet.is3D) { stepCollabPhysics3D(); return; }
 
-    const nodes = collabNet.nodes;
-    const center = collabNet.center;
-    const cx = collabNet.width / 2;
-    const cy = collabNet.height / 2;
-    const maxPapers = collabNet.maxPapers || 1;
-    const alpha = collabNet.alpha;
-
-    // Pin the center
-    center.x = cx;
-    center.y = cy;
-
-    // Repulsion between satellite nodes
-    for (let i = 0; i < nodes.length; i++) {
-        const a = nodes[i];
-        for (let j = i + 1; j < nodes.length; j++) {
-            const b = nodes[j];
-            let dx = a.x - b.x;
-            let dy = a.y - b.y;
-            let dist2 = dx * dx + dy * dy;
-            if (dist2 < 1) { dist2 = 1; dx = Math.random(); dy = Math.random(); }
-            const dist = Math.sqrt(dist2);
-            const minDist = a.r + b.r + 14;
-            const strength = (3200 + (minDist * minDist) * 0.6) / dist2;
-            const fx = (dx / dist) * strength * alpha;
-            const fy = (dy / dist) * strength * alpha;
-            if (!a.fixed) { a.vx += fx; a.vy += fy; }
-            if (!b.fixed) { b.vx -= fx; b.vy -= fy; }
+    for (const node of collabNet.nodes) {
+        if (node.fixed) continue;
+        node.x += (node.tx - node.x) * 0.14;
+        node.y += (node.ty - node.y) * 0.14;
+    }
+    collabNet.alpha *= 0.94;
+    if (collabNet.alpha <= 0.01) {
+        for (const node of collabNet.nodes) {
+            if (node.fixed) continue;
+            node.x = node.tx;
+            node.y = node.ty;
         }
     }
-
-    // Spring from center: stronger ties (more papers) sit closer
-    for (const node of nodes) {
-        if (node.fixed) continue;
-        const dx = node.x - center.x;
-        const dy = node.y - center.y;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        const rest = 220 - 90 * (node.papers / maxPapers);
-        const k = 0.02;
-        const disp = dist - rest;
-        const fx = (dx / dist) * disp * k * alpha;
-        const fy = (dy / dist) * disp * k * alpha;
-        node.vx -= fx;
-        node.vy -= fy;
-    }
-
-    // Integrate + damping + keep inside bounds
-    for (const node of nodes) {
-        if (node.fixed) { node.vx = 0; node.vy = 0; continue; }
-        node.vx *= 0.86;
-        node.vy *= 0.86;
-        node.x += node.vx * 0.5;
-        node.y += node.vy * 0.5;
-        const pad = node.r + 6;
-        node.x = Math.max(pad, Math.min(collabNet.width - pad, node.x));
-        node.y = Math.max(pad, Math.min(collabNet.height - pad, node.y));
-    }
-
-    collabNet.alpha *= 0.97;
 }
 
 /**
@@ -3751,7 +4170,8 @@ function stepCollabPhysics3D() {
             let dist2 = dx * dx + dy * dy + dz * dz;
             if (dist2 < 1) { dist2 = 1; dx = Math.random(); dy = Math.random(); dz = Math.random(); }
             const dist = Math.sqrt(dist2);
-            const strength = (5200 + (a.r + b.r) * (a.r + b.r)) / dist2;
+            const s3 = collabNet.scale3d || 1;
+            const strength = (5200 * s3 * s3 + (a.r + b.r) * (a.r + b.r)) / dist2;
             const fx = (dx / dist) * strength * alpha;
             const fy = (dy / dist) * strength * alpha;
             const fz = (dz / dist) * strength * alpha;
@@ -3763,7 +4183,7 @@ function stepCollabPhysics3D() {
     // Spring toward the origin: stronger ties sit closer
     for (const node of nodes) {
         const dist = Math.sqrt(node.mx * node.mx + node.my * node.my + node.mz * node.mz) || 1;
-        const rest = 250 - 100 * (node.papers / maxPapers);
+        const rest = (250 - 100 * (node.papers / maxPapers)) * (collabNet.scale3d || 1);
         const disp = dist - rest;
         const k = 0.02;
         node.vx -= (node.mx / dist) * disp * k * alpha;
@@ -3828,10 +4248,11 @@ function collabScreenToWorld(sx, sy) {
 
 /**
  * Compute final screen coords (sx, sy, sr, depth) for every node + the centre,
- * handling the 2D (canvas-space) and 3D (projected) cases plus the camera.
+ * handling the 2D and 3D (projected) cases plus the camera.
  */
 function collabComputeScreen() {
     const { center, nodes } = collabNet;
+    if (!center) return;
     const is3D = collabNet.is3D;
     const z = collabNet.zoom;
 
@@ -3862,108 +4283,238 @@ function collabComputeScreen() {
     collabNet._dRange = (maxD - minD) || 1;
 }
 
+function collabEase(t) {
+    return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+}
+
 /**
- * Draw edges, labels and nodes for both 2D and 3D (camera-aware, depth-shaded).
+ * Draw the graph. Layers, back to front: organisation arcs, co-author links,
+ * links to the centre, nodes, labels, and the hovered link's count.
+ * Hovering a collaborator isolates them, their link to the centre and their
+ * own co-authors; everything else fades back.
  */
 function drawCollab() {
     const { ctx, width, height, center, nodes, hovered } = collabNet;
-    if (!ctx) return;
+    if (!ctx || !center) return;
 
     collabComputeScreen();
-
     ctx.clearRect(0, 0, width, height);
-    const styles = getComputedStyle(document.documentElement);
-    const colors = {
-        textColor: (styles.getPropertyValue('--text-primary') || '#000').trim(),
-        subColor: (styles.getPropertyValue('--text-secondary') || '#333').trim(),
-        cardBg: (styles.getPropertyValue('--bg-secondary') || '#fff').trim()
-    };
-    const maxPapers = collabNet.maxPapers || 1;
+
+    const theme = collabReadPalette();
     const is3D = collabNet.is3D;
     const z = collabNet.zoom;
+    const zs = Math.max(0.6, Math.min(1.6, z));
+    const maxPapers = collabNet.maxPapers || 1;
+    const layout = collabNet.layout || {};
+    const intro = collabEase(collabNet.intro);
+    const labelIntro = collabEase(Math.max(0, (collabNet.intro - 0.45) / 0.55));
     const depthAlpha = (d) => is3D
-        ? 0.45 + 0.55 * (1 - (d - collabNet._minD) / collabNet._dRange)
+        ? 0.35 + 0.65 * (1 - (d - collabNet._minD) / collabNet._dRange)
         : 1;
+    const focus = hovered && !hovered.isCenter ? hovered : null;
+    const related = (node) => !focus || node === focus || focus.neighbours.has(node);
+    const colorOf = (node) => collabSlotColor(theme, node.slot);
 
-    // Edges (far to near in 3D)
+    ctx.lineCap = 'round';
+
+    // 1. Organisation arcs around the outside of the ring
+    if (!is3D && layout.rotated && collabNet.groups.length > 1) {
+        const c = collabApplyCamera(layout.cx, layout.cy);
+        const pad = 0.012;
+        for (const g of collabNet.groups) {
+            const dim = focus && focus.slot !== g.slot;
+            ctx.beginPath();
+            ctx.arc(c.x, c.y, layout.rArc * z, g.a0 + pad, Math.max(g.a0 + pad, g.a1 - pad));
+            ctx.strokeStyle = collabSlotColor(theme, g.slot);
+            ctx.globalAlpha = (dim ? 0.25 : 0.85) * labelIntro;
+            ctx.lineWidth = 3 * zs;
+            ctx.lineCap = 'butt';
+            ctx.stroke();
+        }
+        ctx.lineCap = 'round';
+    }
+
+    // 2. Co-author to co-author links, bowed toward the centre so they bundle
+    for (const link of collabNet.links) {
+        const { a, b } = link;
+        const on = focus && (a === focus || b === focus);
+        let alpha = focus ? (on ? 0.7 : 0.04) : 0.2;
+        if (is3D) alpha *= (depthAlpha(a.depth) + depthAlpha(b.depth)) / 2;
+        ctx.beginPath();
+        ctx.moveTo(a.sx, a.sy);
+        if (is3D) {
+            ctx.lineTo(b.sx, b.sy);
+        } else {
+            const mx = (a.sx + b.sx) / 2;
+            const my = (a.sy + b.sy) / 2;
+            const qx = mx + (center.sx - mx) * 0.6;
+            const qy = my + (center.sy - my) * 0.6;
+            ctx.quadraticCurveTo(qx, qy, b.sx, b.sy);
+        }
+        ctx.strokeStyle = on ? colorOf(focus) : theme.muted;
+        ctx.globalAlpha = alpha * intro;
+        ctx.lineWidth = (0.6 + 0.45 * Math.min(link.count, 6)) * zs;
+        ctx.stroke();
+    }
+
+    // 3. Links to the centre, weighted by joint publications
     const order = is3D ? nodes.slice().sort((a, b) => b.depth - a.depth) : nodes;
     for (const node of order) {
-        const active = hovered && (hovered === node || hovered === center);
-        const avgScale = (center.scale + node.scale) / 2;
-        const w = Math.max(1, (1 + (node.papers / maxPapers) * 11) * avgScale * z);
-        let a = is3D ? depthAlpha(node.depth) * 0.7 : 0.45;
-        if (hovered) a = active ? 0.95 : (is3D ? 0.12 : 0.18);
+        const w = (0.8 + 3.6 * Math.sqrt(node.papers / maxPapers)) * zs * (is3D ? node.scale : 1);
+        let alpha = is3D ? 0.45 * depthAlpha(node.depth) : 0.42;
+        if (focus) alpha = node === focus ? 0.9 : 0.06;
         ctx.beginPath();
         ctx.moveTo(center.sx, center.sy);
         ctx.lineTo(node.sx, node.sy);
-        ctx.strokeStyle = node.color;
-        ctx.globalAlpha = a;
+        ctx.strokeStyle = colorOf(node);
+        ctx.globalAlpha = alpha * intro;
         ctx.lineWidth = w;
-        ctx.lineCap = 'round';
         ctx.stroke();
-        ctx.globalAlpha = 1;
     }
+    ctx.globalAlpha = 1;
 
-    // Nodes + centre, far to near so nearer overlaps farther
+    // 4. Nodes, far to near in 3D so nearer ones overlap farther ones
     const all = is3D
         ? nodes.concat([center]).sort((a, b) => b.depth - a.depth)
         : nodes.concat([center]);
     for (const node of all) {
-        const baseAlpha = node.isCenter ? 1 : depthAlpha(node.depth);
-        collabDrawNode(ctx, node, node.isCenter, node.scale * z, baseAlpha, colors);
+        const alpha = node.isCenter ? 1 : depthAlpha(node.depth) * (related(node) ? 1 : 0.22);
+        collabDrawNode(ctx, node, theme, alpha, node.isCenter ? theme.ink : colorOf(node));
     }
 
-    // Edge weight pills on top
+    // 5. Labels on top, each with a halo so it stays legible over the lines.
+    //    In 3D only the near side of the sphere is labelled, unless hovered.
     for (const node of nodes) {
-        const dim = hovered && hovered !== node && hovered !== center;
-        const avgScale = (center.scale + node.scale) / 2 * z;
-        const mx = (center.sx + node.sx) / 2;
-        const my = (center.sy + node.sy) / 2;
-        const alpha = (dim ? 0.22 : 1) * (is3D ? 0.5 + 0.5 * depthAlpha(node.depth) : 1);
-        collabDrawEdgeLabel(ctx, String(node.papers), mx, my, node.color, Math.max(0.7, avgScale), alpha);
+        const strong = focus && (node === focus || focus.neighbours.has(node));
+        let alpha = (related(node) ? 1 : 0.2) * labelIntro;
+        if (is3D) {
+            const d = depthAlpha(node.depth);
+            alpha = strong || node === hovered ? 1 : (d < 0.62 ? 0 : (d - 0.62) / 0.38) * (related(node) ? 1 : 0.2);
+        }
+        collabDrawLabel(ctx, node, theme, alpha, strong || node === hovered);
     }
+    collabDrawCenterLabel(ctx, center, theme, labelIntro);
+
+    // 6. Joint-publication count on the hovered link
+    if (focus) {
+        const mx = center.sx + (focus.sx - center.sx) * 0.5;
+        const my = center.sy + (focus.sy - center.sy) * 0.5;
+        collabDrawEdgeLabel(ctx, String(focus.papers), mx, my, colorOf(focus), zs, 1);
+    }
+    ctx.globalAlpha = 1;
 }
 
 /**
- * Draw a single node (circle + label) using its computed screen coords.
+ * Draw a single node: a flat disc with a surface-coloured rim. The centre
+ * node carries the researcher's initials.
  */
-function collabDrawNode(ctx, node, isCenter, scale, baseAlpha, colors) {
-    const hovered = collabNet.hovered;
-    const dimmed = hovered && hovered !== node && !isCenter;
+function collabDrawNode(ctx, node, theme, alpha, color) {
     const r = Math.max(2, node.sr || node.r);
-    const alpha = (dimmed ? 0.35 : 1) * baseAlpha;
-    const sc = Math.min(1.6, Math.max(0.6, scale));
+    const isHovered = collabNet.hovered === node;
 
     ctx.globalAlpha = alpha;
     ctx.beginPath();
     ctx.arc(node.sx, node.sy, r, 0, Math.PI * 2);
-    ctx.fillStyle = node.color;
-    ctx.shadowColor = node.color;
-    ctx.shadowBlur = (hovered === node ? 22 : 10) * sc;
+    ctx.fillStyle = color;
     ctx.fill();
-    ctx.shadowBlur = 0;
-
-    ctx.lineWidth = (isCenter ? 3 : 2) * sc;
-    ctx.strokeStyle = colors.cardBg;
+    ctx.lineWidth = node.isCenter ? 3 : 1.5;
+    ctx.strokeStyle = theme.bg;
     ctx.stroke();
 
-    if (isCenter) {
+    if (isHovered) {
         ctx.beginPath();
-        ctx.arc(node.sx, node.sy, Math.max(2, r - 6 * sc), 0, Math.PI * 2);
-        ctx.strokeStyle = 'rgba(255,255,255,0.55)';
+        ctx.arc(node.sx, node.sy, r + 4, 0, Math.PI * 2);
         ctx.lineWidth = 1.5;
+        ctx.strokeStyle = color;
         ctx.stroke();
     }
 
-    // Label
-    ctx.globalAlpha = (dimmed ? 0.4 : 1) * baseAlpha;
-    const fontSize = Math.max(9, (isCenter ? 12 : 11) * Math.min(1.3, Math.max(0.85, scale)));
-    ctx.font = (isCenter ? '700 ' : '600 ') + fontSize.toFixed(1) + 'px Inter, sans-serif';
-    ctx.fillStyle = isCenter ? colors.textColor : colors.subColor;
+    if (node.isCenter) {
+        const words = String(node.label).split(/\s+/).filter(Boolean);
+        const initials = words.length > 1
+            ? words[0][0] + words[words.length - 1][0]
+            : (words[0] || '').slice(0, 2);
+        ctx.fillStyle = theme.bg;
+        ctx.font = `600 ${(r * 0.72).toFixed(1)}px "Source Serif 4", Georgia, serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(initials, node.sx, node.sy + r * 0.04);
+    }
+    ctx.globalAlpha = 1;
+}
+
+/**
+ * Draw a collaborator's name: along its spoke in the ring layout, beside the
+ * node when there are only a few, or under it in 3D.
+ */
+function collabDrawLabel(ctx, node, theme, alpha, strong) {
+    if (alpha <= 0.01) return;
+    const layout = collabNet.layout || {};
+    const is3D = collabNet.is3D;
+    const z = collabNet.zoom;
+    const zs = Math.max(0.85, Math.min(1.35, z));
+    const fs = (is3D ? 11 : (layout.font || 11.5)) * zs;
+    const maxW = (is3D ? 140 : (layout.labelMax || 128)) * zs;
+
+    ctx.globalAlpha = alpha;
+    ctx.font = `${strong ? 600 : 500} ${fs.toFixed(1)}px Inter, sans-serif`;
+    const text = collabTruncate(ctx, node.label, maxW);
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 3.5;
+    ctx.strokeStyle = theme.bg;
+    ctx.fillStyle = strong ? theme.text : theme.sub;
+
+    if (!is3D && layout.rotated) {
+        const flip = Math.cos(node.angle) < 0;
+        // Start past the organisation arc; a node dragged off the ring keeps
+        // its label just outside the disc instead.
+        const settled = !node.fixed && Math.abs(node.x - node.tx) + Math.abs(node.y - node.ty) < 2;
+        const gap = settled ? (layout.labelStart - layout.rRing) * z : node.sr + 5;
+        const off = gap * (flip ? -1 : 1);
+        ctx.save();
+        ctx.translate(node.sx, node.sy);
+        ctx.rotate(flip ? node.angle + Math.PI : node.angle);
+        ctx.textAlign = flip ? 'right' : 'left';
+        ctx.textBaseline = 'middle';
+        ctx.strokeText(text, off, 0);
+        ctx.fillText(text, off, 0);
+        ctx.restore();
+    } else if (!is3D) {
+        const right = node.sx >= collabNet.center.sx - 1;
+        const x = node.sx + (node.sr + 8) * (right ? 1 : -1);
+        ctx.textAlign = right ? 'left' : 'right';
+        ctx.textBaseline = 'alphabetic';
+        ctx.strokeText(text, x, node.sy - 1);
+        ctx.fillText(text, x, node.sy - 1);
+        // Second line: the tie strength, in the node's colour
+        const sub = `${node.papers} joint publication${node.papers === 1 ? '' : 's'}`;
+        ctx.font = `500 ${(fs * 0.88).toFixed(1)}px Inter, sans-serif`;
+        ctx.textBaseline = 'top';
+        ctx.fillStyle = theme.muted;
+        ctx.strokeText(sub, x, node.sy + 3);
+        ctx.fillText(sub, x, node.sy + 3);
+    } else {
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.strokeText(text, node.sx, node.sy + node.sr + 4);
+        ctx.fillText(text, node.sx, node.sy + node.sr + 4);
+    }
+    ctx.globalAlpha = 1;
+}
+
+function collabDrawCenterLabel(ctx, center, theme, alpha) {
+    const zs = Math.max(0.85, Math.min(1.35, collabNet.zoom * (collabNet.is3D ? center.scale : 1)));
+    ctx.globalAlpha = alpha;
+    ctx.font = `600 ${(12.5 * zs).toFixed(1)}px Inter, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
-    const label = collabTruncate(ctx, node.label, isCenter ? 160 : 130);
-    ctx.fillText(label, node.sx, node.sy + r + 4);
+    ctx.lineJoin = 'round';
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = theme.bg;
+    ctx.fillStyle = theme.text;
+    const y = center.sy + center.sr + 6;
+    ctx.strokeText(center.label, center.sx, y);
+    ctx.fillText(center.label, center.sx, y);
     ctx.globalAlpha = 1;
 }
 
@@ -3971,10 +4522,10 @@ function collabDrawNode(ctx, node, isCenter, scale, baseAlpha, colors) {
  * Draw an edge weight pill (the joint-paper count).
  */
 function collabDrawEdgeLabel(ctx, label, mx, my, color, scale, alpha) {
-    const fs = Math.max(8.5, 11 * scale);
+    const fs = Math.max(9, 11 * scale);
     ctx.font = '700 ' + fs.toFixed(1) + 'px Inter, sans-serif';
     const tw = ctx.measureText(label).width;
-    const padX = 6 * scale, h = (18 * scale);
+    const padX = 7 * scale, h = 19 * scale;
     ctx.globalAlpha = alpha;
     ctx.beginPath();
     ctx.roundRect(mx - tw / 2 - padX, my - h / 2, tw + padX * 2, h, h / 2);
@@ -3986,6 +4537,157 @@ function collabDrawEdgeLabel(ctx, label, mx, my, color, scale, alpha) {
     ctx.fillText(label, mx, my + 0.5);
     ctx.globalAlpha = 1;
 }
+
+// --------------------------------------------------------------------------
+// Country view: a map with arcs from the home institution
+// --------------------------------------------------------------------------
+
+/**
+ * Points along a gentle arc between two [lat, lng] positions.
+ */
+function collabArc(from, to) {
+    const [lat1, lng1] = from;
+    const [lat2, lng2] = to;
+    const dx = lng2 - lng1;
+    const dy = lat2 - lat1;
+    // Control point off to one side of the midpoint, a quarter of the length out
+    const cx = (lng1 + lng2) / 2 - dy * 0.25;
+    const cy = (lat1 + lat2) / 2 + dx * 0.25;
+    const points = [];
+    for (let i = 0; i <= 40; i++) {
+        const t = i / 40;
+        const u = 1 - t;
+        points.push([
+            u * u * lat1 + 2 * u * t * cy + t * t * lat2,
+            u * u * lng1 + 2 * u * t * cx + t * t * lng2
+        ]);
+    }
+    return points;
+}
+
+function collabSetMapTiles() {
+    const map = collabNet.map;
+    if (!map) return;
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    // Esri's grey canvas basemaps: quiet enough for the arcs to carry the
+    // colour, and served without an API key.
+    const style = dark ? 'World_Dark_Gray_Base' : 'World_Light_Gray_Base';
+    if (collabNet.mapTiles && collabNet.mapTiles._collabStyle === style) return;
+    if (collabNet.mapTiles) collabNet.mapTiles.remove();
+    collabNet.mapTiles = L.tileLayer(`https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/${style}/MapServer/tile/{z}/{y}/{x}`, {
+        attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+        maxZoom: 16
+    }).addTo(map);
+    collabNet.mapTiles._collabStyle = style;
+}
+
+function collabFitMap() {
+    const map = collabNet.map;
+    if (!map || !collabNet.mapBounds) return;
+    map.invalidateSize();
+    map.fitBounds(collabNet.mapBounds, { padding: [70, 70], maxZoom: 4 });
+}
+
+/**
+ * Draw (or redraw) the country map. `fit` re-frames the view on all markers.
+ */
+function renderCollabMap(fit) {
+    const el = document.getElementById('collab-map');
+    const data = collaborationsData;
+    if (!el || !data || typeof L === 'undefined') return;
+
+    if (!collabNet.map) {
+        collabNet.map = L.map(el, {
+            worldCopyJump: true,
+            scrollWheelZoom: false,
+            zoomSnap: 0.25,
+            minZoom: 1
+        });
+        // Wheel zoom only once the map has been clicked, so it never traps
+        // the page scroll on the way past.
+        collabNet.map.on('click focus', () => collabNet.map.scrollWheelZoom.enable());
+        collabNet.map.on('mouseout blur', () => collabNet.map.scrollWheelZoom.disable());
+    }
+    const map = collabNet.map;
+    collabSetMapTiles();
+
+    if (collabNet.mapLayer) collabNet.mapLayer.remove();
+    const layer = L.layerGroup().addTo(map);
+    collabNet.mapLayer = layer;
+    collabNet.mapMarkers = {};
+
+    const theme = collabReadPalette();
+    const home = data.center || {};
+    const hasHome = home.lat != null && home.lng != null;
+    const countries = (data.byCountry || []);
+    const max = Math.max(1, ...countries.map(c => c.papers || 0));
+    const points = [];
+    const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+    // Arcs first, so the markers sit on top of them
+    countries.forEach(country => {
+        if (country.lat == null || country.lng == null) return;
+        if (!hasHome || country.name === home.country) return;
+        const color = collabSlotColor(theme, collabNet.countryIndex[country.name]);
+        L.polyline(collabArc([home.lat, home.lng], [country.lat, country.lng]), {
+            color,
+            weight: 1.5 + 3 * Math.sqrt((country.papers || 1) / max),
+            opacity: 0.75,
+            interactive: false
+        }).addTo(layer);
+    });
+
+    countries.forEach((country, index) => {
+        if (country.lat == null || country.lng == null) return;
+        const color = collabSlotColor(theme, collabNet.countryIndex[country.name]);
+        const radius = 7 + 17 * Math.sqrt((country.papers || 1) / max);
+        const isHome = country.name === home.country;
+        const marker = L.circleMarker([country.lat, country.lng], {
+            radius,
+            color: theme.bg,
+            weight: 2,
+            fillColor: color,
+            fillOpacity: 0.82
+        }).addTo(layer);
+        const lines = [
+            `<strong>${escapeHtml(country.name)}</strong>`,
+            isHome ? 'Home country' : '',
+            country.authors ? plural(country.authors, 'co-author') : '',
+            plural(country.papers || 0, 'joint publication')
+        ].filter(Boolean).join('<br>');
+        marker.bindTooltip(lines, { direction: 'top', offset: [0, -radius], className: 'collab-map-tip' });
+        marker.on('mouseover', () => collabMarkRow(index));
+        marker.on('mouseout', () => collabMarkRow(-1));
+        collabNet.mapMarkers[index] = marker;
+        points.push([country.lat, country.lng]);
+    });
+
+    // Home institution: a small ringed dot on top of its country
+    if (hasHome) {
+        L.circleMarker([home.lat, home.lng], {
+            radius: 4,
+            color: theme.ink,
+            weight: 3,
+            fillColor: theme.bg,
+            fillOpacity: 1
+        }).bindTooltip(`<strong>${escapeHtml(home.university || 'Home institution')}</strong><br>Home institution`, {
+            direction: 'bottom',
+            offset: [0, 6],
+            className: 'collab-map-tip'
+        }).addTo(layer);
+        points.push([home.lat, home.lng]);
+    }
+
+    collabNet.mapBounds = points.length ? L.latLngBounds(points) : null;
+    if (fit) {
+        // The map container has only just become visible; size it first.
+        requestAnimationFrame(collabFitMap);
+    }
+}
+
+// --------------------------------------------------------------------------
+// Camera, hit testing and interaction
+// --------------------------------------------------------------------------
 
 /**
  * Zoom by a multiplicative factor about a screen anchor (defaults to centre).
@@ -4003,12 +4705,17 @@ function collabZoomBy(factor, anchorX, anchorY) {
 }
 
 /**
- * Fit the whole graph within the viewport (zoom to extent) for the current view.
+ * Fit the whole graph within the viewport. The 2D ring is laid out to fit
+ * already, so it just resets the camera; 3D measures the projected extent.
  */
 function collabZoomToExtent() {
     const nodes = collabNet.nodes;
     if (!nodes.length) return;
-    const is3D = collabNet.is3D;
+    if (!collabNet.is3D) {
+        collabResetCamera();
+        ensureCollabRunning();
+        return;
+    }
     const cx = collabNet.width / 2, cy = collabNet.height / 2;
 
     let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -4016,10 +4723,9 @@ function collabZoomToExtent() {
         minX = Math.min(minX, pre.x - r); maxX = Math.max(maxX, pre.x + r);
         minY = Math.min(minY, pre.y - r); maxY = Math.max(maxY, pre.y + r);
     };
-    const cPre = is3D ? collabProject(0, 0, 0) : { x: cx, y: cy, scale: 1 };
-    acc(cPre, collabNet.center.r);
+    acc(collabProject(0, 0, 0), collabNet.center.r);
     for (const node of nodes) {
-        const pre = is3D ? collabProject(node.mx, node.my, node.mz) : { x: node.x, y: node.y, scale: 1 };
+        const pre = collabProject(node.mx, node.my, node.mz);
         acc(pre, node.r * pre.scale + 26); // pad for labels
     }
 
@@ -4054,7 +4760,7 @@ function collabNodeAt(x, y) {
     const all = collabNet.nodes.concat(collabNet.center ? [collabNet.center] : []);
     let best = null;
     for (const node of all) {
-        const rr = (node.sr || node.r) + 3;
+        const rr = Math.max(8, (node.sr || node.r) + 4);
         const dx = x - (node.sx != null ? node.sx : node.x);
         const dy = y - (node.sy != null ? node.sy : node.y);
         if (dx * dx + dy * dy <= rr * rr) {
@@ -4112,9 +4818,7 @@ function bindCollabPointerEvents() {
             const w = collabScreenToWorld(x, y);
             collabNet.dragNode.x = w.x;
             collabNet.dragNode.y = w.y;
-            collabNet.dragNode.vx = 0;
-            collabNet.dragNode.vy = 0;
-            collabNet.alpha = Math.max(collabNet.alpha, 0.5);
+            showCollabTooltip(collabNet.dragNode, x, y);
             startCollabSim();
             if (e.cancelable) e.preventDefault();
             return;
@@ -4122,6 +4826,7 @@ function bindCollabPointerEvents() {
 
         const node = collabNodeAt(x, y);
         collabNet.hovered = node;
+        collabMarkRow(node && !node.isCenter ? node.index : -1);
         setCursor(node ? 'pointer' : 'grab');
         if (node) showCollabTooltip(node, x, y);
         else hideCollabTooltip();
@@ -4138,13 +4843,17 @@ function bindCollabPointerEvents() {
             collabNet.action = 'pan';
             setCursor('grabbing');
         } else if (node && !node.isCenter && !collabNet.is3D) {
-            // 2D: grab a node to reposition it
+            // 2D: pull a node out; it springs back to the ring on release
             collabNet.action = 'dragNode';
             collabNet.dragNode = node;
+            collabNet.hovered = node;
             node.fixed = true;
         } else if (node) {
             // Clicked a node (or centre): keep the tooltip, don't start a drag gesture
+            collabNet.hovered = node;
             collabNet.action = 'none';
+            if (e.touches) showCollabTooltip(node, x, y);
+            ensureCollabRunning();
             return;
         } else if (collabNet.is3D) {
             collabNet.action = 'orbit';
@@ -4178,7 +4887,12 @@ function bindCollabPointerEvents() {
     window.addEventListener('mouseup', onUp);
     canvas.addEventListener('wheel', onWheel, { passive: false });
     canvas.addEventListener('mouseleave', () => {
-        if (collabNet.action === 'none') { collabNet.hovered = null; hideCollabTooltip(); }
+        if (collabNet.action === 'none') {
+            collabNet.hovered = null;
+            collabMarkRow(-1);
+            hideCollabTooltip();
+            ensureCollabRunning();
+        }
     });
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
     canvas.addEventListener('touchstart', onDown, { passive: false });
@@ -4205,26 +4919,25 @@ function bindCollabPointerEvents() {
 function showCollabTooltip(node, x, y) {
     const tt = collabNet.tooltip;
     if (!tt) return;
+    const m = node.meta || {};
+    const row = (icon, text) => `<div class="tt-row"><i class="fas ${icon}"></i>${escapeHtml(String(text))}</div>`;
     let rows = '';
     if (node.isCenter) {
-        const m = node.meta || {};
-        if (m.university) rows += `<div class="tt-row"><i class="fas fa-university"></i>${m.university}</div>`;
-        if (m.country) rows += `<div class="tt-row"><i class="fas fa-globe"></i>${m.country}</div>`;
-        tt.innerHTML = `<div class="tt-title">${node.label}</div>${rows}`;
+        if (m.university) rows += row('fa-building-columns', m.university);
+        if (m.country) rows += row('fa-globe', m.country);
     } else {
-        const m = node.meta || {};
         if (collabNet.mode === 'author') {
-            if (m.affiliation) rows += `<div class="tt-row"><i class="fas fa-building"></i>${m.affiliation}</div>`;
-            if (m.country) rows += `<div class="tt-row"><i class="fas fa-globe"></i>${m.country}</div>`;
-        } else if (collabNet.mode === 'university') {
-            if (m.country) rows += `<div class="tt-row"><i class="fas fa-globe"></i>${m.country}</div>`;
-            if (m.authors) rows += `<div class="tt-row"><i class="fas fa-users"></i>${m.authors} co-authors</div>`;
+            if (m.affiliation) rows += row('fa-building-columns', m.affiliation);
+            if (m.country) rows += row('fa-globe', m.country);
         } else {
-            if (m.authors) rows += `<div class="tt-row"><i class="fas fa-users"></i>${m.authors} co-authors</div>`;
+            if (m.country) rows += row('fa-globe', m.country);
+            if (m.authors) rows += row('fa-users', `${m.authors} co-author${m.authors === 1 ? '' : 's'}`);
         }
-        rows += `<div class="tt-row"><i class="fas fa-file-lines"></i>${node.papers} joint paper${node.papers > 1 ? 's' : ''}</div>`;
-        tt.innerHTML = `<div class="tt-title">${node.label}</div>${rows}`;
+        rows += row('fa-file-lines', `${node.papers} joint publication${node.papers === 1 ? '' : 's'}`);
+        const shared = node.neighbours ? node.neighbours.size : 0;
+        if (shared) rows += row('fa-share-nodes', `Also published with ${shared} other co-author${shared === 1 ? '' : 's'} here`);
     }
+    tt.innerHTML = `<div class="tt-title">${escapeHtml(node.label)}</div>${rows}`;
     tt.style.left = x + 'px';
     tt.style.top = y + 'px';
     tt.hidden = false;
