@@ -1,4 +1,4 @@
-<img width="1862" height="862" alt="image" src="assets/images/meta/saddiq-ur-rehman-portfolio-thumbnail.png" />
+<img width="1200" height="630" alt="image" src="assets/images/meta/saddiq-ur-rehman-portfolio-thumbnail.png" />
 
 <div align="center">
 

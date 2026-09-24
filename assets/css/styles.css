@@ -678,8 +678,13 @@ button:focus-visible,
   transition: opacity var(--transition-slow);
 }
 
-/* Graduation portrait is a full-length shot, so pull the crop up off centre. */
+/* Headshot is taller than the frame; keep the face clear of the top edge. */
 .profile-image.main {
+  object-position: 50% 30%;
+}
+
+/* Graduation portrait is a full-length shot, so pull the crop up off centre. */
+.profile-image.hover-1 {
   object-position: 50% 68%;
 }
 
@@ -687,7 +692,8 @@ button:focus-visible,
   opacity: 0;
 }
 
-.profile-image-container:hover .profile-image.hover {
+.profile-image-container[data-hover="1"]:hover .profile-image.hover-1,
+.profile-image-container[data-hover="2"]:hover .profile-image.hover-2 {
   opacity: 1;
 }
 

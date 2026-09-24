@@ -3066,9 +3066,19 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Preload critical images
     preloadImages([
-        'assets/images/profile/saddiq-ur-rehman-profile2.jpg',
-        'assets/images/profile/saddiq-ur-rehman-profile-alt.jpg'
+        'assets/images/profile/Profile_1.jpg',
+        'assets/images/profile/Profile_2.jpg',
+        'assets/images/profile/Profile_3.jpg'
     ]);
+
+    // Alternate the hover portrait: Profile_2 on one hover, Profile_3 on the
+    // next. Flipping on leave lets the current one fade out before switching.
+    const profileFrame = document.querySelector('.profile-image-container');
+    if (profileFrame) {
+        profileFrame.addEventListener('mouseleave', () => {
+            profileFrame.dataset.hover = profileFrame.dataset.hover === '1' ? '2' : '1';
+        });
+    }
 
     console.log('✅ Portfolio initialization complete with enhanced features');
 });
