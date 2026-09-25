@@ -2,7 +2,6 @@
 #
 # Stamps today's date into every "last updated" field before each commit:
 #
-#   index.html   <time id="last-updated" datetime="...">...</time>   (visible footer)
 #   index.html   "dateModified": "..."                               (JSON-LD)
 #   sitemap.xml  <lastmod>...</lastmod>                              (all entries)
 #
@@ -22,9 +21,6 @@ fi
 cd "$(git rev-parse --show-toplevel)"
 
 ISO=$(date +%Y-%m-%d)
-# Long form without a zero-padded day, portably (BSD date has no %-d).
-DAY=$(date +%d | sed 's/^0//')
-LONG="$(date +%B) $DAY, $(date +%Y)"
 
 DATE_RE='[0-9]{4}-[0-9]{2}-[0-9]{2}'
 
@@ -53,9 +49,6 @@ echo "pre-commit: stamping last-updated date ($ISO)"
 # --- index.html ---------------------------------------------------------
 if [ -f index.html ]; then
   if was_clean index.html; then CLEAN=yes; else CLEAN=no; fi
-
-  # Visible footer: rewrite both the datetime attribute and the shown text.
-  sed -i -E "s#(<time id=\"last-updated\" datetime=\")${DATE_RE}(\">)[^<]*(</time>)#\1${ISO}\2${LONG}\3#" index.html
 
   # JSON-LD structured data.
   sed -i -E "s#(\"dateModified\"[[:space:]]*:[[:space:]]*\")${DATE_RE}(\")#\1${ISO}\2#g" index.html

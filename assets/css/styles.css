@@ -4631,21 +4631,9 @@ a.contact-value:hover {
   gap: 6px 24px;
 }
 
-.footer-copyright,
-.footer-meta {
+.footer-copyright {
   font-size: 0.78rem;
   color: var(--text-muted);
-}
-
-.footer-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer-sep {
-  opacity: 0.5;
 }
 
 @media (max-width: 640px) {
