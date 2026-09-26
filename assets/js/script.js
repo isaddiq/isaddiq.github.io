@@ -485,7 +485,7 @@ function collectHighlights() {
         title: i.title, detail: i.summary || i.details || '',
         image: i.images && i.images[0] && i.images[0].src,
         imageAlt: i.images && i.images[0] && i.images[0].alt,
-        fallbackImage: 'assets/images/covers/news-cover.png',
+        fallbackImage: 'assets/images/covers/news-cover.webp',
         link: i.link, linkLabel: i.linkLabel, softwareId: i.softwareId
     }));
 
@@ -498,7 +498,7 @@ function collectHighlights() {
             cards.push({
                 type: 'Publication', date: String(p.year || ''), icon: 'fas fa-file-alt',
                 title: p.title, detail: p.detail || detailBits.filter(Boolean).join(' · '),
-                image: p.image, fallbackImage: 'assets/images/covers/publication-cover.png',
+                image: p.image, fallbackImage: 'assets/images/covers/publication-cover.webp',
                 link: p.doi || p.link, linkLabel: p.linkLabel || 'View Paper (DOI)'
             });
         });
@@ -508,13 +508,13 @@ function collectHighlights() {
     ((certificatesData && certificatesData.awards) || []).filter(a => a.featured).forEach(a => cards.push({
         type: 'Award', date: a.date, icon: a.icon || 'fas fa-trophy',
         title: a.title, detail: a.description || a.issuer || '',
-        fallbackImage: 'assets/images/covers/certifications-awards-cover.png',
+        fallbackImage: 'assets/images/covers/certifications-awards-cover.webp',
         link: '#certifications', linkLabel: 'View Awards'
     }));
     ((certificatesData && certificatesData.certifications) || []).filter(c => c.featured).forEach(c => cards.push({
         type: 'Certificate', date: c.date, icon: 'fas fa-certificate',
         title: c.title, detail: c.description || c.issuer || '',
-        image: c.image, fallbackImage: 'assets/images/covers/certifications-awards-cover.png',
+        image: c.image, fallbackImage: 'assets/images/covers/certifications-awards-cover.webp',
         link: c.verification_url || '#certifications', linkLabel: c.verification_url ? 'Verify' : 'View Certificates'
     }));
 
@@ -522,7 +522,7 @@ function collectHighlights() {
     (Array.isArray(projectsData) ? projectsData : []).filter(p => p.featured).forEach(p => cards.push({
         type: 'Project', date: p.duration || p.status || '', icon: p.icon || 'fas fa-project-diagram',
         title: p.title, detail: p.description || '',
-        image: p.image, fallbackImage: 'assets/images/covers/projects-cover.png',
+        image: p.image, fallbackImage: 'assets/images/covers/projects-cover.webp',
         link: '#projects', linkLabel: 'View Projects'
     }));
 
@@ -532,7 +532,7 @@ function collectHighlights() {
         cards.push({
             type: 'Software', date: t.highlightDate || '', icon: t.navIcon || 'fas fa-laptop-code',
             title: t.title, detail: t.description || '',
-            image: t.previewImage, fallbackImage: 'assets/images/covers/software-cover.png',
+            image: t.previewImage, fallbackImage: 'assets/images/covers/software-cover.webp',
             link: t.highlightLink || (firstAction && firstAction.href) || '#software',
             linkLabel: t.highlightLinkLabel || (firstAction && firstAction.label) || 'View in Software',
             softwareId: t.id

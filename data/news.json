@@ -15,7 +15,7 @@
         "src": "assets/images/news/graduation.jpg",
         "alt": "Saddiq Ur Rehman in doctoral regalia receiving the Top Academic Excellence Award (최우수학술상) on stage at the Kyung Hee University degree conferral ceremony",
         "caption": "Kyung Hee University, 2025학년도 후기 학위수여식: Top Academic Excellence Award (우수학술상 수여)",
-        "fallback": "assets/images/covers/education-cover.png"
+        "fallback": "assets/images/covers/education-cover.webp"
       }
     ],
     "featured": false
@@ -36,7 +36,7 @@
         "src": "assets/images/certificates/khu-academic-excellence-award-2026.png",
         "alt": "Kyung Hee University Graduate School Top Academic Excellence Award (최우수학술상) announcement listing Saddiq Ur Rehman, Department of Architecture",
         "caption": "Graduate School of Kyung Hee University: 2025 Fall Semester Academic Excellence Award announcement",
-        "fallback": "assets/images/covers/certifications-awards-cover.png"
+        "fallback": "assets/images/covers/certifications-awards-cover.webp"
       }
     ],
     "featured": false
@@ -52,10 +52,10 @@
     "importance": "high",
     "images": [
       {
-        "src": "assets/images/covers/publication-cover.png",
+        "src": "assets/images/covers/publication-cover.webp",
         "alt": "Publication acceptance announcement",
         "caption": "Journal of Civil Engineering and Management",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false
@@ -74,7 +74,7 @@
         "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange AEC-to-XR pipeline",
         "caption": "Automation in Construction (IF: 12.6)",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false
@@ -93,7 +93,7 @@
         "src": "https://media.licdn.com/dms/image/v2/D5622AQEQp-E_LDv1mg/feedshare-shrink_1280/B56Z1L9vtYKQAM-/0/1775095970878?e=1781740800&v=beta&t=hQ-oeGarOO16hAy2vkb8_E5GhMGoEjTJgl1ugg_FBHk",
         "alt": "Doctoral thesis defense milestone",
         "caption": "Kyung Hee University, Department of Architecture",
-        "fallback": "assets/images/covers/education-cover.png"
+        "fallback": "assets/images/covers/education-cover.webp"
       }
     ],
     "featured": false
@@ -132,7 +132,7 @@
         "src": "https://media.licdn.com/dms/image/v2/D5622AQGdnM-31fvc8g/feedshare-image-high-res/B56Zl1G5nPI4As-/0/1758606368374?e=1781740800&v=beta&t=Dd19Ev9yQgINV_Q3Q7RiQ69YnVaC_syCskm2l7HhwcY",
         "alt": "ReUniXchange Revit to Unity plugin on Autodesk App Store",
         "caption": "ReUniXchange v1.2.0 - Revit to Unity",
-        "fallback": "assets/images/covers/software-cover.png"
+        "fallback": "assets/images/covers/software-cover.webp"
       }
     ],
     "featured": false
@@ -151,7 +151,7 @@
         "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange immersive XR visualization for modular construction",
         "caption": "ICCEPM 2025",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false
@@ -172,7 +172,7 @@
         "src": "https://media.licdn.com/dms/image/v2/D5622AQGdnM-31fvc8g/feedshare-image-high-res/B56Zl1G5nPI4As-/0/1758606368374?e=1781740800&v=beta&t=Dd19Ev9yQgINV_Q3Q7RiQ69YnVaC_syCskm2l7HhwcY",
         "alt": "ReUniXchange bidirectional BIM data exchange plugin",
         "caption": "Automation in Construction (IF: 12.6)",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false
@@ -191,7 +191,7 @@
         "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange 4D BIM and VR construction simulation",
         "caption": "Creative Construction Conference 2025",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false
@@ -212,7 +212,7 @@
         "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
         "alt": "BIMUniXchange BIM and game engine integration",
         "caption": "Journal of Computational Design and Engineering",
-        "fallback": "assets/images/covers/publication-cover.png"
+        "fallback": "assets/images/covers/publication-cover.webp"
       }
     ],
     "featured": false

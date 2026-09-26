@@ -6,7 +6,7 @@
       "navIcon": "fas fa-exchange-alt",
       "title": "ReUniXchange",
       "description": "Data exchange platform for BIM interoperability and standardized information sharing across AEC workflows.",
-      "previewImage": "assets/images/covers/software-cover.png",
+      "previewImage": "assets/images/covers/software-cover.webp",
       "highlightLink": "https://apps.autodesk.com/RVT/en/Detail/Index?id=6622158299438821562&appLang=en&os=Win64",
       "highlightLinkLabel": "View on Autodesk App Store",
       "badges": [
@@ -387,7 +387,7 @@
       "navIcon": "fas fa-vr-cardboard",
       "title": "BIM-VR for 4D Simulation",
       "description": "Interactive 4D BIM-VR prototype for modular building manufacturing, synchronizing Revit BIM geometry, semantic metadata, and schedule data inside Unity/OpenXR.",
-      "previewImage": "assets/images/covers/software-cover.png",
+      "previewImage": "assets/images/covers/software-cover.webp",
       "badges": [
         {
           "label": "4D BIM",
@@ -502,7 +502,7 @@
       "navIcon": "fas fa-glasses",
       "title": "BIM-MR for Modular Construction",
       "description": "Mixed reality inspection system for factory-built modular units, linking discipline-layered BIM geometry and semantic metadata with real-time Unity/XR interaction.",
-      "previewImage": "assets/images/covers/software-cover.png",
+      "previewImage": "assets/images/covers/software-cover.webp",
       "badges": [
         {
           "label": "BIM-MR",
@@ -621,7 +621,7 @@
       "navIcon": "fas fa-cube",
       "title": "IFC Static Web Viewer",
       "description": "A browser-based, zero-install, WebXR-ready IFC building model viewer built on A-Frame and web-ifc-three. Supports IFC2X3, IFC4, and IFC4X3.",
-      "previewImage": "assets/images/software/ifc-explorer-web-viewer-screenshot.png",
+      "previewImage": "assets/images/software/ifc-explorer-web-viewer-screenshot.jpg",
       "badges": [
         {
           "label": "IFC2X3",
