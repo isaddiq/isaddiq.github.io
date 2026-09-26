@@ -3066,7 +3066,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Preload critical images
     preloadImages([
-        'assets/images/profile/Profile_1.jpg',
+        'assets/images/profile/Profile_1.png',
         'assets/images/profile/Profile_2.jpg',
         'assets/images/profile/Profile_3.jpg'
     ]);
