@@ -1554,7 +1554,11 @@ function loadPublicationStats() {
     const koreanCount = (publicationsData.korean_conferences || publicationsData.korean || []).length;
     const reportCount = (publicationsData.technical_reports || publicationsData.reports || []).length;
     const totalCount = journalCount + conferenceCount + koreanCount + reportCount;
-    
+    // Sum of journal impact factors, rounded to dodge float noise (62.300000001)
+    const cumulativeIF = (publicationsData.journals || [])
+        .reduce((sum, p) => sum + (Number(p.impactFactor) || 0), 0);
+    const cumulativeIFText = (Math.round(cumulativeIF * 10) / 10).toFixed(1);
+
     // Update main stats display
     statsContainer.innerHTML = `
         <h3>Publication Overview</h3>
@@ -1580,6 +1584,11 @@ function loadPublicationStats() {
                 <span class="stat-label">Technical Reports</span>
             </div>
         </div>
+        <p class="stat-summary" title="Sum of the impact factors of all journal articles">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>
+            Cumulative journal impact factor: <strong>${cumulativeIFText}</strong>
+            <span class="stat-summary-note">across ${journalCount} journal articles</span>
+        </p>
     `;
     
     // Update navigation button counts

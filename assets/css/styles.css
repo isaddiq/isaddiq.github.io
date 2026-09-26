@@ -1741,6 +1741,39 @@ a.role-unit:hover {
   letter-spacing: 0.05em;
 }
 
+/* One-line summary under the count tiles (cumulative journal IF). */
+.stat-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px 8px;
+  margin: 16px 0 0;
+  padding: 10px 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.stat-summary i {
+  color: var(--primary-color);
+}
+
+.stat-summary strong {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-variant-numeric: lining-nums;
+  color: var(--primary-color);
+}
+
+.stat-summary-note {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
 /* Publications layout: the type selector sits in a sidebar that sticks
    below the header, so it stays in reach however far down the list is read. */
 .publications-layout {
