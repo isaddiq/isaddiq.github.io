@@ -214,6 +214,15 @@ function handleDelegatedActionClick(event) {
         return;
     }
 
+    // Research-interest cards open Publications filtered to one topic (an
+    // empty topic shows everything, with any earlier filters cleared).
+    const researchTopic = event.target.closest('[data-research-topic]');
+    if (researchTopic) {
+        event.preventDefault();
+        openPublicationsForTopic(researchTopic.dataset.researchTopic);
+        return;
+    }
+
     const tabTrigger = event.target.closest('[data-tab]');
     if (tabTrigger) {
         event.preventDefault();
@@ -1856,6 +1865,24 @@ function initPublicationFilters() {
     const syncPanel = () => { panel.open = wide.matches; };
     syncPanel();
     if (wide.addEventListener) wide.addEventListener('change', syncPanel);
+}
+
+/**
+ * Switch to Publications showing every type, filtered to a single topic.
+ * @param {string} topic - a publications.json topic, or '' for no filter
+ */
+function openPublicationsForTopic(topic) {
+    pubFilters.role = 'all';
+    pubFilters.year = 'all';
+    pubFilters.query = '';
+    pubFilters.topics.clear();
+    if (topic) pubFilters.topics.add(topic);
+    const search = document.getElementById('pub-search');
+    if (search) search.value = '';
+
+    showTab('publications');
+    loadPublicationsContent();
+    showPublications('all');
 }
 
 /**

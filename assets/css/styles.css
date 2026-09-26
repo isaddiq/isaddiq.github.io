@@ -862,61 +862,183 @@ button:focus-visible,
   margin-bottom: 0;
 }
 
-/* Research Interests Blueprint Cards */
+/* Research Interests: cards, each tinted by its own --accent (set
+   inline from the collaboration palette), with a picture on a curved panel
+   at the right. The whole card links to related work. */
 .research-interests-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
   gap: var(--space-5);
   margin-top: var(--space-6);
 }
 
 .research-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 24px;
-  transition: var(--transition-interactive);
+  --accent: var(--secondary-color);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--bg-secondary));
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  min-height: 236px;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--border-color));
+  background: linear-gradient(120deg, var(--bg-secondary) 40%, var(--accent-soft));
+  color: inherit;
+  text-decoration: none;
   box-shadow: var(--elev-1);
+  transition: var(--transition-interactive);
 }
 
-.research-card:hover {
-  border-color: var(--border-glow);
+.research-card:hover,
+.research-card:focus-visible {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-color));
   box-shadow: var(--elev-2);
+  transform: translateY(-2px);
+}
+
+.research-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.research-card-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* The picture's curve is ~13% into its panel at mid-height, so this
+     leaves a clear gap between the description and the picture. */
+  width: 50%;
+  padding: 22px 8px 22px 22px;
+}
+
+.research-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 4px;
 }
 
 .research-icon {
-  width: 48px;
-  height: 48px;
-  background: var(--bg-tertiary);
-  border-radius: var(--radius-sm);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--secondary-color);
-  font-size: 1.35rem;
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg-secondary));
+  color: var(--accent);
+  font-size: 1.3rem;
   transition: var(--transition-interactive);
 }
 
 .research-card:hover .research-icon {
-  background: var(--primary-color);
+  background: var(--accent);
   color: var(--bg-secondary);
 }
 
 .research-card h4 {
-  font-size: 1.1rem;
+  font-size: 1.08rem;
+  line-height: 1.3;
   color: var(--text-primary);
+  margin: 0;
 }
 
-/* One short line under the keyword - the cards are narrow, so the measure is
-   set by the grid track rather than needing a cap of its own. */
 .research-card p {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   line-height: 1.55;
   color: var(--text-muted);
-  margin-bottom: 0;
+  margin: 0;
+}
+
+.research-go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  margin-top: auto;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  background: var(--bg-secondary);
+  color: var(--accent);
+  font-size: 0.85rem;
+  transition: var(--transition-interactive);
+}
+
+.research-card:hover .research-go {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--bg-secondary);
+  transform: translateX(3px);
+}
+
+/* The picture panel's left edge is a quarter ellipse sweeping from the top
+   right down to the bottom left, as in the reference layout. In light mode
+   the pictures' white ground multiplies into the card's tint, so each one
+   blends into its card instead of sitting on it as a white block. */
+.research-art {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 52%;
+  overflow: hidden;
+  border-top-left-radius: 100% 100%;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg-secondary));
+}
+
+.research-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 60% 50%;
+  mix-blend-mode: multiply;
+  transition: transform var(--transition-slow);
+}
+
+.research-card:hover .research-art img {
+  transform: scale(1.04);
+}
+
+[data-theme="dark"] .research-art img {
+  mix-blend-mode: normal;
+  opacity: 0.88;
+}
+
+/* Too narrow for side by side: the picture becomes a banner above the text,
+   curving away along its lower-left edge. */
+@media (max-width: 560px) {
+  .research-card { flex-direction: column; min-height: 0; }
+  .research-card-body { width: 100%; padding: 18px; }
+  .research-art {
+    position: relative;
+    order: -1;
+    width: 100%;
+    height: 170px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 100% 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .research-card:hover,
+  .research-card:hover .research-go,
+  .research-card:hover .research-art img { transform: none; }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Recent News Log Feed */
