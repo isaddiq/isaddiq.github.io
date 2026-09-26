@@ -2912,7 +2912,7 @@ function initializeHeaderEffects() {
 // Event Listeners and Initialization
 // ==========================================================================
 
-/** Static architectural grid drawn once behind all page content. */
+/** Static isometric drafting grid drawn once behind all page content. */
 function initializeGridBackground() {
     const background = document.querySelector('.grid-background');
     if (!background || background.querySelector('canvas')) return;
@@ -2927,13 +2927,20 @@ function initializeGridBackground() {
     let height = 0;
     let ink = '';
     let inkScale = 1;
-    const spacing = 48;
 
-    /* Visibility of the ruling, and the only knobs worth touching: raise them
-       for a more present grid, lower them to push it back toward bare texture.
-       Every fourth line is a major one, at twice the weight of the rest. */
-    const MAJOR_ALPHA = 0.22;
-    const MINOR_ALPHA = 0.11;
+    /* Isometric drafting paper: a triangular lattice of vertical lines and
+       lines at +/-30 degrees, the ruling used for isometric building
+       drawings. EDGE is the length of one lattice edge. Every fourth line in
+       each family is a major one, and all three families meet on the same
+       lattice points, so the majors form larger isometric cells. The alphas
+       are the knobs worth touching: raise them for a more present grid,
+       lower them to push it back toward bare texture. */
+    const EDGE = 56;
+    const MAJOR_EVERY = 4;
+    const MAJOR_ALPHA = 0.18;
+    const MINOR_ALPHA = 0.075;
+    const SLOPE = Math.tan(Math.PI / 6);       // 30 degrees
+    const COLUMN = EDGE * Math.cos(Math.PI / 6); // spacing of the verticals
 
     function updateInk() {
         const dark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -2946,21 +2953,36 @@ function initializeGridBackground() {
         context.clearRect(0, 0, width, height);
         context.lineWidth = 0.8;
 
-        function gridLine(position, vertical, major) {
-            const alpha = (major ? MAJOR_ALPHA : MINOR_ALPHA) * inkScale;
-            context.strokeStyle = `rgba(${ink}, ${alpha.toFixed(4)})`;
-            context.beginPath();
-            context.moveTo(vertical ? position : 0, vertical ? 0 : position);
-            context.lineTo(vertical ? position : width, vertical ? height : position);
-            context.stroke();
+        // One path per weight keeps this to two strokes however large the screen.
+        const minor = new Path2D();
+        const major = new Path2D();
+        const isMajor = i => ((i % MAJOR_EVERY) + MAJOR_EVERY) % MAJOR_EVERY === 0;
+
+        // Verticals.
+        for (let k = 0; k * COLUMN <= width; k++) {
+            const path = isMajor(k) ? major : minor;
+            path.moveTo(k * COLUMN, 0);
+            path.lineTo(k * COLUMN, height);
         }
 
-        for (let x = 0, column = 0; x <= width; x += spacing, column++) {
-            gridLine(x, true, column % 4 === 0);
+        // Diagonals y = c + x·tan30 and y = c - x·tan30, with intercepts c on
+        // multiples of EDGE so they cross the verticals on the lattice points.
+        const run = width * SLOPE;
+        for (let m = Math.floor(-run / EDGE); m * EDGE <= height; m++) {
+            const path = isMajor(m) ? major : minor;
+            path.moveTo(0, m * EDGE);
+            path.lineTo(width, m * EDGE + run);
         }
-        for (let y = 0, row = 0; y <= height; y += spacing, row++) {
-            gridLine(y, false, row % 4 === 0);
+        for (let n = 0; n * EDGE <= height + run; n++) {
+            const path = isMajor(n) ? major : minor;
+            path.moveTo(0, n * EDGE);
+            path.lineTo(width, n * EDGE - run);
         }
+
+        context.strokeStyle = `rgba(${ink}, ${(MINOR_ALPHA * inkScale).toFixed(4)})`;
+        context.stroke(minor);
+        context.strokeStyle = `rgba(${ink}, ${(MAJOR_ALPHA * inkScale).toFixed(4)})`;
+        context.stroke(major);
     }
 
     function resize() {

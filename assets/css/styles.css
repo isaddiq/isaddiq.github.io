@@ -192,7 +192,7 @@ body.loaded {
   opacity: 1;
 }
 
-/* Static architectural grid, kept behind all page content. */
+/* Static isometric drafting grid (drawn in script.js), kept behind all page content. */
 body {
   isolation: isolate;
 }
