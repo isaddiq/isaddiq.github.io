@@ -192,7 +192,8 @@ body.loaded {
   opacity: 1;
 }
 
-/* Static isometric drafting grid (drawn in script.js), kept behind all page content. */
+/* Static glass-block background: an isometric grid tiled with glossy 3D glass
+   cubes (drawn on a canvas in script.js), kept behind all page content. */
 body {
   isolation: isolate;
 }

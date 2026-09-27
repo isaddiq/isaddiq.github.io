@@ -2941,7 +2941,17 @@ function initializeHeaderEffects() {
 // Event Listeners and Initialization
 // ==========================================================================
 
-/** Static isometric drafting grid drawn once behind all page content. */
+/**
+ * Static glass-block background drawn once behind all page content.
+ *
+ * An isometric drafting grid is tiled with small glossy glass cubes, one
+ * grid cell on a side. Each cube is lit from above: a pale glass top face, a
+ * lightly tinted left wall and a deeper right wall, so the three faces read
+ * as solid 3D blocks. Every face carries its own white gloss streak, crisp
+ * blue grid lines separate each cell, and a soft reflection band sweeps
+ * diagonally across the whole sheet. It is redrawn
+ * only on resize and theme change, with separate light and dark palettes.
+ */
 function initializeGridBackground() {
     const background = document.querySelector('.grid-background');
     if (!background || background.querySelector('canvas')) return;
@@ -2956,18 +2966,18 @@ function initializeGridBackground() {
     let height = 0;
     let ink = '';
     let inkScale = 1;
+    let glass = null;
 
     /* Isometric drafting paper: a triangular lattice of vertical lines and
        lines at +/-30 degrees, the ruling used for isometric building
-       drawings. EDGE is the length of one lattice edge. Every fourth line in
-       each family is a major one, and all three families meet on the same
-       lattice points, so the majors form larger isometric cells. The alphas
-       are the knobs worth touching: raise them for a more present grid,
-       lower them to push it back toward bare texture. */
+       drawings. EDGE is the length of one lattice edge, which is also the
+       side of each glass cube shaded behind the lines; every line is drawn
+       at the same weight and colour so every cell stands apart. LINE_ALPHA
+       and LINE_WIDTH are the knobs worth touching: raise them for crisper
+       cell borders, lower them to keep the grid clear of the content. */
     const EDGE = 56;
-    const MAJOR_EVERY = 4;
-    const MAJOR_ALPHA = 0.18;
-    const MINOR_ALPHA = 0.075;
+    const LINE_ALPHA = 0.16;
+    const LINE_WIDTH = 0.5;
     const SLOPE = Math.tan(Math.PI / 6);       // 30 degrees
     const COLUMN = EDGE * Math.cos(Math.PI / 6); // spacing of the verticals
 
@@ -2976,42 +2986,149 @@ function initializeGridBackground() {
         ink = dark ? '105, 190, 235' : '36, 112, 164';
         // Light ink on a dark ground reads stronger at equal alpha; ease off.
         inkScale = dark ? 0.72 : 1;
+
+        /* Glass panes behind the lines: each hexagon is read as a cube lit
+           from above. All three faces are tinted glass, never bare white:
+           the top is the palest, the walls deeper, the right one most of
+           all. Tints are
+           [rgb, alpha at top-left, alpha at bottom-right]; the fade across the
+           screen keeps it from looking like flat paint. GLOSS is the white
+           shine painted into every face and SHEEN a soft reflection band laid
+           over the whole sheet. */
+        glass = dark
+            ? {
+                top: [ink, 0.04, 0.022],
+                left: [ink, 0.06, 0.035],
+                right: ['0, 0, 0', 0.24, 0.15],
+                gloss: 0.08,
+                sheen: 0.025
+            }
+            : {
+                top: [ink, 0.028, 0.018],
+                left: [ink, 0.055, 0.035],
+                right: [ink, 0.1, 0.065],
+                gloss: 0.6,
+                sheen: 0.3
+            };
+    }
+
+    function wash([rgb, from, to]) {
+        const gradient = context.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, `rgba(${rgb}, ${from})`);
+        gradient.addColorStop(1, `rgba(${rgb}, ${to})`);
+        return gradient;
+    }
+
+    /* A white gradient from (x0, y0) to (x1, y1), with stops given as
+       [offset, share of the gloss alpha]. */
+    function shine(x0, y0, x1, y1, stops) {
+        const gradient = context.createLinearGradient(x0, y0, x1, y1);
+        stops.forEach(([offset, share]) => {
+            gradient.addColorStop(offset, `rgba(255, 255, 255, ${(glass.gloss * share).toFixed(4)})`);
+        });
+        return gradient;
+    }
+
+    /* Fill the lattice as isometric cubes, one lattice edge on a side. Cube
+       centres are the lattice points (k, j) with k + 2j divisible by 3;
+       every hexagon around one splits into top, left and right rhombi whose
+       edges all run along grid lines, so the panes sit exactly inside the
+       existing ruling. */
+    function drawGlass() {
+        const side = EDGE;     // cube edge length
+        const reach = COLUMN;  // half a hexagon's width
+
+        // The three faces of one cube, centred on the origin.
+        const faces = {
+            top: [[0, 0], [-reach, -side / 2], [0, -side], [reach, -side / 2]],
+            left: [[0, 0], [-reach, -side / 2], [-reach, side / 2], [0, side]],
+            right: [[0, 0], [0, side], [reach, side / 2], [reach, -side / 2]]
+        };
+        const facePath = (points, x = 0, y = 0, path = new Path2D()) => {
+            points.forEach(([px, py], i) => path[i ? 'lineTo' : 'moveTo'](x + px, y + py));
+            path.closePath();
+            return path;
+        };
+
+        const centres = [];
+        for (let k = -1; k * reach <= width + reach; k++) {
+            const shift = k * side / 2;
+            const jStart = Math.floor((-side - shift) / side) - 1;
+            const jEnd = Math.ceil((height + side - shift) / side) + 1;
+            for (let j = jStart; j <= jEnd; j++) {
+                if ((((k + 2 * j) % 3) + 3) % 3 !== 0) continue;
+                centres.push([k * reach, j * side + shift]);
+            }
+        }
+
+        // Tint: one screen-wide path per face so the fade runs across the sheet.
+        Object.keys(faces).forEach(name => {
+            const path = new Path2D();
+            centres.forEach(([x, y]) => facePath(faces[name], x, y, path));
+            context.fillStyle = wash(glass[name]);
+            context.fill(path);
+        });
+
+        /* Gloss: gradients in cube-local space, so every face gets the same
+           shine however far across the screen it sits. The top catches a
+           diagonal streak; the left wall is bright at its upper edge and
+           picks up a faint reflection at the foot; the right wall carries a
+           narrow vertical streak near its front edge. */
+        const gloss = {
+            top: shine(-reach, -side, reach, 0,
+                [[0.2, 0], [0.42, 1], [0.6, 0]]),
+            left: shine(-reach, -side / 2, 0, side,
+                [[0, 0.9], [0.4, 0], [0.85, 0], [1, 0.35]]),
+            right: shine(0, 0, reach, 0,
+                [[0.08, 0], [0.22, 0.8], [0.4, 0], [0.9, 0], [1, 0.3]])
+        };
+        Object.keys(faces).forEach(name => {
+            const local = facePath(faces[name]);
+            context.fillStyle = gloss[name];
+            centres.forEach(([x, y]) => {
+                context.save();
+                context.translate(x, y);
+                context.fill(local);
+                context.restore();
+            });
+        });
+
+        const sheen = context.createLinearGradient(0, 0, width, height);
+        sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        sheen.addColorStop(0.3, `rgba(255, 255, 255, ${glass.sheen})`);
+        sheen.addColorStop(0.55, 'rgba(255, 255, 255, 0)');
+        context.fillStyle = sheen;
+        context.fillRect(0, 0, width, height);
     }
 
     function draw() {
         context.clearRect(0, 0, width, height);
-        context.lineWidth = 0.8;
+        drawGlass();
 
-        // One path per weight keeps this to two strokes however large the screen.
-        const minor = new Path2D();
-        const major = new Path2D();
-        const isMajor = i => ((i % MAJOR_EVERY) + MAJOR_EVERY) % MAJOR_EVERY === 0;
+        // One path keeps this to a single stroke however large the screen.
+        const lines = new Path2D();
 
         // Verticals.
         for (let k = 0; k * COLUMN <= width; k++) {
-            const path = isMajor(k) ? major : minor;
-            path.moveTo(k * COLUMN, 0);
-            path.lineTo(k * COLUMN, height);
+            lines.moveTo(k * COLUMN, 0);
+            lines.lineTo(k * COLUMN, height);
         }
 
         // Diagonals y = c + x·tan30 and y = c - x·tan30, with intercepts c on
         // multiples of EDGE so they cross the verticals on the lattice points.
         const run = width * SLOPE;
         for (let m = Math.floor(-run / EDGE); m * EDGE <= height; m++) {
-            const path = isMajor(m) ? major : minor;
-            path.moveTo(0, m * EDGE);
-            path.lineTo(width, m * EDGE + run);
+            lines.moveTo(0, m * EDGE);
+            lines.lineTo(width, m * EDGE + run);
         }
         for (let n = 0; n * EDGE <= height + run; n++) {
-            const path = isMajor(n) ? major : minor;
-            path.moveTo(0, n * EDGE);
-            path.lineTo(width, n * EDGE - run);
+            lines.moveTo(0, n * EDGE);
+            lines.lineTo(width, n * EDGE - run);
         }
 
-        context.strokeStyle = `rgba(${ink}, ${(MINOR_ALPHA * inkScale).toFixed(4)})`;
-        context.stroke(minor);
-        context.strokeStyle = `rgba(${ink}, ${(MAJOR_ALPHA * inkScale).toFixed(4)})`;
-        context.stroke(major);
+        context.lineWidth = LINE_WIDTH;
+        context.strokeStyle = `rgba(${ink}, ${(LINE_ALPHA * inkScale).toFixed(4)})`;
+        context.stroke(lines);
     }
 
     function resize() {
