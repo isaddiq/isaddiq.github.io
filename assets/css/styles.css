@@ -1787,6 +1787,11 @@ button:focus-visible,
   margin-bottom: 2px;
 }
 
+/* Date, unit and responsibilities sit indented under the role title */
+.role-details {
+  padding-left: 18px;
+}
+
 .role-entry .exp-duration {
   margin-bottom: 6px;
 }
@@ -5240,6 +5245,10 @@ a.contact-value:hover {
 
   .role-entry::before {
     left: -22px;
+  }
+
+  .role-details {
+    padding-left: 12px;
   }
 
   .software-features-list li {

@@ -2272,13 +2272,15 @@ function renderExperienceRole(exp, sharedDepartment) {
     return `
         <div class="role-entry${isCurrent ? ' role-current' : ''}">
             <h4 class="role-title">${exp.position || exp.title}</h4>
-            <p class="exp-duration">${duration}</p>
-            ${unit}
-            ${!sharedDepartment && exp.department ? `<p><strong>Department:</strong> ${exp.department}</p>` : ''}
-            ${exp.course ? `<p><strong>Course:</strong> ${exp.course}</p>` : ''}
-            ${exp.task ? `<p><strong>Task:</strong> ${exp.task}</p>` : ''}
-            ${exp.primary_responsibilities ? `<p><strong>Responsibilities:</strong> ${Array.isArray(exp.primary_responsibilities) ? exp.primary_responsibilities[0] : exp.primary_responsibilities}</p>` : ''}
-            ${exp.responsibilities ? `<p><strong>Responsibilities:</strong> ${exp.responsibilities}</p>` : ''}
+            <div class="role-details">
+                <p class="exp-duration">${duration}</p>
+                ${unit}
+                ${!sharedDepartment && exp.department ? `<p><strong>Department:</strong> ${exp.department}</p>` : ''}
+                ${exp.course ? `<p><strong>Course:</strong> ${exp.course}</p>` : ''}
+                ${exp.task ? `<p><strong>Task:</strong> ${exp.task}</p>` : ''}
+                ${exp.primary_responsibilities ? `<p><strong>Responsibilities:</strong> ${Array.isArray(exp.primary_responsibilities) ? exp.primary_responsibilities[0] : exp.primary_responsibilities}</p>` : ''}
+                ${exp.responsibilities ? `<p><strong>Responsibilities:</strong> ${exp.responsibilities}</p>` : ''}
+            </div>
         </div>
     `;
 }
