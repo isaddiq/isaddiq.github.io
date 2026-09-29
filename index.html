@@ -193,7 +193,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-09-27"
+            "dateModified": "2026-09-29"
           },
           {
             "@type": "Person",
@@ -1438,10 +1438,12 @@
       </a>
       <a
         href="#"
-        class="social-icon flagcounter-icon"
-        title="Show country flags"
+        class="social-icon visitor-map-icon"
+        title="Show visitor map"
+        aria-controls="visitor-map-popup"
+        aria-expanded="false"
       >
-        <i class="fas fa-flag"></i>
+        <i class="fas fa-earth-americas"></i>
       </a>
     </div>
 
@@ -1524,23 +1526,43 @@
     <!-- Custom JavaScript -->
     <script src="assets/js/script.js"></script>
 
-    <!-- ─── Hidden popup for Flag Counter ─── -->
-    <div id="flagcounter-popup" class="flagcounter-popup">
-      <div class="counter-container">
-        <!-- Paste your Flag Counter embed here (unchanged) -->
+    <!-- ─── Hidden popup for the MapMyVisitors map ─── -->
+    <!-- The widget script is injected into .visitor-map-container on first
+         open (see initializeVisitorMapPopup), so it can size itself. -->
+    <div
+      id="visitor-map-popup"
+      class="visitor-map-popup"
+      role="dialog"
+      aria-label="Visitor map"
+    >
+      <div class="visitor-map-header">
+        <span class="visitor-map-title">Visitors</span>
+        <div class="visitor-map-controls">
+          <button type="button" data-map-zoom="in" title="Zoom in" aria-label="Zoom in">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button type="button" data-map-zoom="out" title="Zoom out" aria-label="Zoom out">
+            <i class="fas fa-minus"></i>
+          </button>
+          <button type="button" data-map-zoom="reset" title="Reset view" aria-label="Reset view">
+            <i class="fas fa-rotate-left"></i>
+          </button>
+          <button type="button" class="close-popup" title="Close" aria-label="Close">
+            <i class="fas fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+      <div class="visitor-map-container"></div>
+      <div class="visitor-map-footer">
+        <span>Scroll or pinch to zoom, drag to pan</span>
         <a
-          href="https://info.flagcounter.com/ETDD"
+          href="https://mapmyvisitors.com/web/1c8ix"
           target="_blank"
           rel="noopener"
         >
-          <img
-            src="https://s01.flagcounter.com/count2/ETDD/bg_FFFFFF/txt_000000/border_CCCCCC/columns_8/maxflags_200/viewers_0/labels_1/pageviews_0/flags_1/percent_0/"
-            alt="Flag Counter"
-            border="0"
-          />
+          Full map <i class="fas fa-arrow-up-right-from-square"></i>
         </a>
       </div>
-      <button type="button" class="close-popup" title="Close">✕</button>
     </div>
 
   </body>
