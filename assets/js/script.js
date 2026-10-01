@@ -3310,7 +3310,7 @@ window.toggleMobileMenu = toggleMobileMenu;
 // VISITOR MAP JS
 
 const VISITOR_MAP_SRC =
-    "https://mapmyvisitors.com/map.js?d=dAcb2_BoXDEP42aMIh1ZNj-pstz0Q-KSFcWpECxil0E&cl=ffffff";
+    "https://mapmyvisitors.com/map.js?d=dAcb2_BoXDEP42aMIh1ZNj-pstz0Q-KSFcWpECxil0E&cl=ffffff&t=tt";
 const VISITOR_MAP_ZOOM_STEP = 1.6;
 const VISITOR_MAP_ZOOM_MAX = 6; // times the widget's starting view
 const VISITOR_MAP_BG_MAX_WIDTH = 3600; // px, cap on the sharper backgrounds fetched while zooming

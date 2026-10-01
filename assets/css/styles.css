@@ -2510,6 +2510,17 @@ a.role-unit:hover {
   box-shadow: var(--elev-2);
 }
 
+/* In a publication's badge row the link takes the badges' size, so it reads
+   as one of the set rather than a larger button beside them. */
+.pub-details .doi-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  box-shadow: none;
+}
+
 /* GitHub Link (Vibrant Green) */
 .doi-link[href*="github.com"]:not([href*="sponsors"]) {
   background: rgba(46, 164, 79, 0.1);
@@ -4682,11 +4693,12 @@ a.contact-value:hover {
   color: #1f2d16;
 }
 
-/* The visitor map is not a brand mark, so it stays a neutral card */
+/* The visitor map has no brand colour, so it wears an ocean-to-land globe
+   gradient. A gradient is not a valid border colour, so the border is set
+   separately. */
 .social-icon.visitor-map-icon {
-  --brand-color: var(--bg-secondary);
-  border-color: var(--border-color);
-  color: var(--text-secondary);
+  --brand-color: linear-gradient(135deg, #1e88e5, #43a047);
+  border-color: #2b8f8a;
 }
 
 .social-icon:hover,

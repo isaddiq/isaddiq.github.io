@@ -11,21 +11,19 @@
   "academic_experience": [
     {
       "id": "exp_004",
-      "position": "Research Consultant",
-      "organization": "Kyung Hee University",
-      "logo": "assets/logos/organizations/kyung-hee-university-logo.png",
-      "icon": "fas fa-university",
-      "department": "Department of Architecture",
-      "duration": "September 2026 - Present",
-      "location": "Global Campus, Korea",
-      "website": "https://www.khu.ac.kr",
+      "position": "Researcher",
+      "organization": "buildingSMART Korea",
+      "logo": "assets/logos/organizations/buildingsmart-korea-logo.png",
+      "icon": "fas fa-building",
+      "duration": "September 2026 - October 2026",
+      "location": "Seoul, Korea",
+      "website": "https://www.buildingsmart.or.kr/",
       "primary_responsibilities": [
         "Research on human-robot interaction in the built environment",
         "Design and evaluation of interfaces for human-robot collaboration on site",
         "Integration of BIM and digital twin data into robotic workflows",
         "Manuscript preparation and review"
-      ],
-      "group": "khu"
+      ]
     },
     {
       "id": "exp_001",

@@ -18,6 +18,9 @@
       "quartile": "Q2",
       "category": "SCIE",
       "status": "Accepted",
+      "badges": [
+        "Corresponding author"
+      ],
       "featured": false
     },
     {
