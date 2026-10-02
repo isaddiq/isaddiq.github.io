@@ -3448,13 +3448,28 @@ function initializeVisitorMapPopup() {
     const mapHost = popup.querySelector(".visitor-map-container");
     let isOpen    = false;
     let mapLoaded = false;
+    let mapReady  = false;
 
+    // Loading the widget is what records the visit, so it has to load on
+    // every page view, not only when someone opens the popup. Until it has
+    // drawn, the popup is laid out invisibly off screen so the widget gets
+    // its real width; after that it can go back to display: none.
     function loadMap() {
         if (mapLoaded) return;
         mapLoaded = true;
 
+        if (!isOpen) {
+            popup.style.visibility = "hidden";
+            popup.style.left       = "-10000px";
+            popup.style.top        = "0";
+            popup.style.display    = "block";
+        }
+        const hideIfClosed = () => {
+            mapReady = true;
+            if (!isOpen) popup.style.display = "none";
+        };
+
         // The widget sizes itself once, from w=, so hand it the real width
-        // now that the popup is on screen.
         const script = document.createElement("script");
         script.id    = "mapmyvisitors";
         script.src   = VISITOR_MAP_SRC + "&w=" + Math.floor(mapHost.clientWidth);
@@ -3463,11 +3478,23 @@ function initializeVisitorMapPopup() {
             // the map as soon as it exists so the background is tidied at once
             let tries = 0;
             const poll = setInterval(() => {
-                if (getVisitorMapObject() || ++tries > 80) clearInterval(poll);
+                if (getVisitorMapObject() || ++tries > 80) {
+                    clearInterval(poll);
+                    hideIfClosed();
+                }
             }, 250);
         };
+        script.onerror = hideIfClosed;
         mapHost.appendChild(script);
     }
+
+    // Count the visit once the page itself has finished loading
+    const scheduleLoad = () => {
+        if ("requestIdleCallback" in window) requestIdleCallback(loadMap, { timeout: 3000 });
+        else setTimeout(loadMap, 1000);
+    };
+    if (document.readyState === "complete") scheduleLoad();
+    else window.addEventListener("load", scheduleLoad, { once: true });
 
     function positionPopup() {
         const gap  = 12;
@@ -3489,7 +3516,13 @@ function initializeVisitorMapPopup() {
     }
 
     function closePopup() {
-        popup.style.display = "none";
+        if (mapReady) {
+            popup.style.display = "none";
+        } else {
+            // Still drawing: keep it laid out, just out of sight
+            popup.style.visibility = "hidden";
+            popup.style.left       = "-10000px";
+        }
         icon.setAttribute("aria-expanded", "false");
         isOpen = false;
     }

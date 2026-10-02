@@ -193,7 +193,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-01"
+            "dateModified": "2026-10-02"
           },
           {
             "@type": "Person",
@@ -1527,8 +1527,9 @@
     <script src="assets/js/script.js"></script>
 
     <!-- ─── Hidden popup for the MapMyVisitors map ─── -->
-    <!-- The widget script is injected into .visitor-map-container on first
-         open (see initializeVisitorMapPopup), so it can size itself. -->
+    <!-- The widget script is injected into .visitor-map-container after page
+         load on every visit, so each visit is counted (see
+         initializeVisitorMapPopup). -->
     <div
       id="visitor-map-popup"
       class="visitor-map-popup"
