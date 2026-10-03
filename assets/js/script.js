@@ -3200,7 +3200,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initialize animations after a short delay
     setTimeout(initializeAnimations, 500);
 
-    initializeVisitorMapPopup();
+    initializeFlagCounterPopup();
 
     // Handle browser back/forward navigation
     window.addEventListener('hashchange', function() {
@@ -3307,194 +3307,16 @@ window.closeImageZoom = closeImageZoom;
 window.scrollToTop = scrollToTop;
 window.toggleMobileMenu = toggleMobileMenu;
 
-// VISITOR MAP JS
+// FLAG COUNTER JS
 
-const VISITOR_MAP_SRC =
-    "https://mapmyvisitors.com/map.js?d=dAcb2_BoXDEP42aMIh1ZNj-pstz0Q-KSFcWpECxil0E&cl=ffffff&t=tt";
-const VISITOR_MAP_ZOOM_STEP = 1.6;
-const VISITOR_MAP_ZOOM_MAX = 6; // times the widget's starting view
-const VISITOR_MAP_BG_MAX_WIDTH = 3600; // px, cap on the sharper backgrounds fetched while zooming
-// The background PNG has decorative +/- buttons baked into its bottom-left
-// corner, the same pixel size at every width; they are painted over
-const VISITOR_MAP_BG_BADGE = { w: 36, h: 61 };
-
-// The widget places its visitor dots with a bundled jVectorMap, built with
-// zoom and pan switched off, over a flat PNG of the world set as the
-// background of .mapmyvisitors-map. It exposes its jQuery as window.vmap_jq,
-// so we reach the map object through that, drive zoom and pan ourselves, and
-// move the PNG along with the dots.
-function getVisitorMapObject() {
-    const jq = window.vmap_jq;
-    if (!jq) return null;
-    const map = jq(".mapmyvisitors-map > .jvectormap-container").data("mapObject");
-    if (!map) return null;
-
-    if (!map.initialView) prepareVisitorMap(map);
-    return map;
-}
-
-function prepareVisitorMap(map) {
-    const bgEl = map.container.parent()[0];
-    const bg   = getComputedStyle(bgEl).backgroundImage.match(/url\("?(.+?)"?\)/);
-
-    // The widget's starting view, for reset, as the zoom floor, and as the
-    // view the background PNG lines up with at its natural size
-    map.initialView = {
-        scale:  map.scale,
-        transX: map.transX,
-        transY: map.transY,
-        bgEl:   bgEl,
-        bgW:    bgEl.clientWidth,
-        bgH:    bgEl.clientHeight,
-        bgUrl:  bg ? bg[1] : null,
-        bgNaturalW: bgEl.clientWidth,
-        ocean:  getComputedStyle(bgEl.parentElement).backgroundColor
-    };
-
-    // Every zoom and pan step (including setScale's animation) goes through
-    // applyTransform, so keep the background in step there
-    const applyTransform = map.applyTransform;
-    map.applyTransform = function () {
-        applyTransform.apply(this, arguments);
-        syncVisitorMapBackground(this);
-    };
-
-    syncVisitorMapBackground(map);
-}
-
-function syncVisitorMapBackground(map) {
-    const view = map.initialView;
-    if (!view.bgUrl) return;
-
-    const k = map.scale / view.scale;
-    const w = view.bgW * k;
-    const h = view.bgH * k;
-    const x = (map.transX - view.transX) * map.scale;
-    const y = (map.transY - view.transY) * map.scale;
-
-    const px     = w / view.bgNaturalW;
-    const badgeW = VISITOR_MAP_BG_BADGE.w * px;
-    const badgeH = VISITOR_MAP_BG_BADGE.h * px;
-
-    const style = view.bgEl.style;
-    style.backgroundImage =
-        "linear-gradient(" + view.ocean + ", " + view.ocean + "), " +
-        'url("' + view.bgUrl + '")';
-    style.backgroundRepeat   = "no-repeat";
-    style.backgroundSize     = badgeW + "px " + badgeH + "px, " + w + "px " + h + "px";
-    style.backgroundPosition = x + "px " + (y + h - badgeH) + "px, " + x + "px " + y + "px";
-}
-
-// The server renders the background at any width, so as the zoom deepens
-// fetch a sharper one in steps (2x, 4x, 6x) and swap it in once loaded
-function loadVisitorMapHiRes(map, scale) {
-    const view = map.initialView;
-    if (!view.bgUrl || !/w_\d+/.test(view.bgUrl)) return;
-
-    const k     = scale / view.scale;
-    const tier  = k <= 2 ? 2 : k <= 4 ? 4 : VISITOR_MAP_ZOOM_MAX;
-    const width = Math.round(Math.min(VISITOR_MAP_BG_MAX_WIDTH, view.bgW * tier));
-    if (width <= (view.bgRequestedW || view.bgW)) return;
-    view.bgRequestedW = width;
-
-    const url  = view.bgUrl.replace(/w_\d+/, "w_" + width);
-    const img  = new Image();
-    img.onload = () => {
-        if (img.naturalWidth <= view.bgNaturalW) return;
-        view.bgUrl      = url;
-        view.bgNaturalW = img.naturalWidth;
-        syncVisitorMapBackground(map);
-    };
-    img.src = url;
-}
-
-function zoomVisitorMap(factor, anchorX, anchorY, animate) {
-    const map = getVisitorMapObject();
-    if (!map) return;
-
-    const min   = map.initialView.scale;
-    const max   = min * VISITOR_MAP_ZOOM_MAX;
-    const scale = Math.min(max, Math.max(min, map.scale * factor));
-    if (scale === map.scale) return;
-
-    loadVisitorMapHiRes(map, scale);
-    const x = anchorX === undefined ? map.width / 2 : anchorX;
-    const y = anchorY === undefined ? map.height / 2 : anchorY;
-    map.setScale(scale, x, y, false, animate);
-}
-
-function resetVisitorMap() {
-    const map = getVisitorMapObject();
-    if (!map) return;
-    map.scale  = map.initialView.scale;
-    map.transX = map.initialView.transX;
-    map.transY = map.initialView.transY;
-    map.applyTransform();
-}
-
-function panVisitorMap(dx, dy) {
-    const map = getVisitorMapObject();
-    if (!map) return;
-    map.transX += dx / map.scale;
-    map.transY += dy / map.scale;
-    map.applyTransform();
-}
-
-function initializeVisitorMapPopup() {
-    const popup = document.getElementById("visitor-map-popup");
-    const icon  = document.querySelector(".social-icon.visitor-map-icon");
+// The counter image sits in the page's HTML, so it loads (and counts the
+// visit) on every page view; the popup only decides when it is shown.
+function initializeFlagCounterPopup() {
+    const popup = document.getElementById("flag-counter-popup");
+    const icon  = document.querySelector(".social-icon.flag-counter-icon");
     if (!popup || !icon) return;
 
-    const mapHost = popup.querySelector(".visitor-map-container");
-    let isOpen    = false;
-    let mapLoaded = false;
-    let mapReady  = false;
-
-    // Loading the widget is what records the visit, so it has to load on
-    // every page view, not only when someone opens the popup. Until it has
-    // drawn, the popup is laid out invisibly off screen so the widget gets
-    // its real width; after that it can go back to display: none.
-    function loadMap() {
-        if (mapLoaded) return;
-        mapLoaded = true;
-
-        if (!isOpen) {
-            popup.style.visibility = "hidden";
-            popup.style.left       = "-10000px";
-            popup.style.top        = "0";
-            popup.style.display    = "block";
-        }
-        const hideIfClosed = () => {
-            mapReady = true;
-            if (!isOpen) popup.style.display = "none";
-        };
-
-        // The widget sizes itself once, from w=, so hand it the real width
-        const script = document.createElement("script");
-        script.id    = "mapmyvisitors";
-        script.src   = VISITOR_MAP_SRC + "&w=" + Math.floor(mapHost.clientWidth);
-        script.onload = () => {
-            // The widget fetches its data and draws asynchronously; take over
-            // the map as soon as it exists so the background is tidied at once
-            let tries = 0;
-            const poll = setInterval(() => {
-                if (getVisitorMapObject() || ++tries > 80) {
-                    clearInterval(poll);
-                    hideIfClosed();
-                }
-            }, 250);
-        };
-        script.onerror = hideIfClosed;
-        mapHost.appendChild(script);
-    }
-
-    // Count the visit once the page itself has finished loading
-    const scheduleLoad = () => {
-        if ("requestIdleCallback" in window) requestIdleCallback(loadMap, { timeout: 3000 });
-        else setTimeout(loadMap, 1000);
-    };
-    if (document.readyState === "complete") scheduleLoad();
-    else window.addEventListener("load", scheduleLoad, { once: true });
+    let isOpen = false;
 
     function positionPopup() {
         const gap  = 12;
@@ -3516,13 +3338,7 @@ function initializeVisitorMapPopup() {
     }
 
     function closePopup() {
-        if (mapReady) {
-            popup.style.display = "none";
-        } else {
-            // Still drawing: keep it laid out, just out of sight
-            popup.style.visibility = "hidden";
-            popup.style.left       = "-10000px";
-        }
+        popup.style.display = "none";
         icon.setAttribute("aria-expanded", "false");
         isOpen = false;
     }
@@ -3531,7 +3347,6 @@ function initializeVisitorMapPopup() {
         // Render invisibly first so the popup can be measured and placed
         popup.style.visibility = "hidden";
         popup.style.display    = "block";
-        loadMap();
         positionPopup();
         popup.style.visibility = "";
         icon.setAttribute("aria-expanded", "true");
@@ -3547,7 +3362,7 @@ function initializeVisitorMapPopup() {
     // Close when clicking anywhere outside both the popup and the icon
     window.addEventListener("click", (evt) => {
         if (!isOpen || !(evt.target instanceof Element)) return;
-        if (!popup.contains(evt.target) && !evt.target.closest(".social-icon.visitor-map-icon")) {
+        if (!popup.contains(evt.target) && !evt.target.closest(".social-icon.flag-counter-icon")) {
             closePopup();
         }
     });
@@ -3560,7 +3375,7 @@ function initializeVisitorMapPopup() {
         if (isOpen) positionPopup();
     });
 
-    // The popup grows once the widget has drawn, so re-place it to stay on screen
+    // The popup grows once the counter image arrives, so re-place it to stay on screen
     if ("ResizeObserver" in window) {
         new ResizeObserver(() => {
             if (isOpen) positionPopup();
@@ -3571,89 +3386,6 @@ function initializeVisitorMapPopup() {
         evt.stopPropagation();
         closePopup();
     });
-
-    popup.querySelectorAll("[data-map-zoom]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-            const action = btn.dataset.mapZoom;
-            if (action === "in") zoomVisitorMap(VISITOR_MAP_ZOOM_STEP, undefined, undefined, true);
-            else if (action === "out") zoomVisitorMap(1 / VISITOR_MAP_ZOOM_STEP, undefined, undefined, true);
-            else resetVisitorMap();
-        });
-    });
-
-    // The whole widget is a link to mapmyvisitors.com; the footer carries
-    // that link instead, so clicks on the map stay for zooming and panning.
-    mapHost.addEventListener("click", (evt) => {
-        if (evt.target instanceof Element && evt.target.closest("#mapmyvisitors-widget")) {
-            evt.preventDefault();
-        }
-    });
-
-    // Stop the browser dragging the widget link away instead of panning
-    mapHost.addEventListener("dragstart", (evt) => evt.preventDefault());
-
-    // Point relative to the jVectorMap canvas, which setScale anchors on
-    function mapPoint(clientX, clientY) {
-        const canvas = mapHost.querySelector(".jvectormap-container") || mapHost;
-        const rect   = canvas.getBoundingClientRect();
-        return { x: clientX - rect.left, y: clientY - rect.top };
-    }
-
-    mapHost.addEventListener("wheel", (evt) => {
-        if (!getVisitorMapObject()) return;
-        evt.preventDefault();
-        const p = mapPoint(evt.clientX, evt.clientY);
-        zoomVisitorMap(evt.deltaY < 0 ? 1.2 : 1 / 1.2, p.x, p.y, false);
-    }, { passive: false });
-
-    mapHost.addEventListener("dblclick", (evt) => {
-        const p = mapPoint(evt.clientX, evt.clientY);
-        zoomVisitorMap(VISITOR_MAP_ZOOM_STEP, p.x, p.y, true);
-    });
-
-    // One pointer pans, two pointers pinch-zoom
-    const pointers = new Map();
-    let lastPinchDist = 0;
-
-    function pinchInfo() {
-        const [a, b] = [...pointers.values()];
-        return {
-            dist: Math.hypot(a.x - b.x, a.y - b.y),
-            mid:  mapPoint((a.x + b.x) / 2, (a.y + b.y) / 2)
-        };
-    }
-
-    mapHost.addEventListener("pointerdown", (evt) => {
-        if (evt.pointerType === "mouse" && evt.button !== 0) return;
-        mapHost.setPointerCapture(evt.pointerId);
-        pointers.set(evt.pointerId, { x: evt.clientX, y: evt.clientY });
-        if (pointers.size === 2) lastPinchDist = pinchInfo().dist;
-        mapHost.classList.add("is-dragging");
-    });
-
-    mapHost.addEventListener("pointermove", (evt) => {
-        const prev = pointers.get(evt.pointerId);
-        if (!prev) return;
-        const cur = { x: evt.clientX, y: evt.clientY };
-        pointers.set(evt.pointerId, cur);
-
-        if (pointers.size === 1) {
-            panVisitorMap(cur.x - prev.x, cur.y - prev.y);
-        } else if (pointers.size === 2) {
-            const { dist, mid } = pinchInfo();
-            if (lastPinchDist > 0) zoomVisitorMap(dist / lastPinchDist, mid.x, mid.y, false);
-            lastPinchDist = dist;
-        }
-    });
-
-    function endPointer(evt) {
-        pointers.delete(evt.pointerId);
-        lastPinchDist = 0;
-        if (pointers.size === 0) mapHost.classList.remove("is-dragging");
-    }
-
-    mapHost.addEventListener("pointerup", endPointer);
-    mapHost.addEventListener("pointercancel", endPointer);
 }
 
 // ==========================================================================

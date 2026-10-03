@@ -4693,10 +4693,10 @@ a.contact-value:hover {
   color: #1f2d16;
 }
 
-/* The visitor map has no brand colour, so it wears an ocean-to-land globe
+/* The flag counter has no brand colour, so it wears an ocean-to-land globe
    gradient. A gradient is not a valid border colour, so the border is set
    separately. */
-.social-icon.visitor-map-icon {
+.social-icon.flag-counter-icon {
   --brand-color: linear-gradient(135deg, #1e88e5, #43a047);
   border-color: #2b8f8a;
 }
@@ -4713,12 +4713,12 @@ a.contact-value:hover {
   font-weight: 800;
 }
 
-/* Visitor map popup (MapMyVisitors widget, zoom and pan added in script.js) */
-.visitor-map-popup {
+/* Flag Counter popup (opened from the social icon in script.js) */
+.flag-counter-popup {
   display: none;
   position: fixed;
   z-index: 950;
-  width: min(560px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -4727,30 +4727,21 @@ a.contact-value:hover {
   animation: smoothFadeIn 0.25s ease forwards;
 }
 
-.visitor-map-header,
-.visitor-map-footer {
+.flag-counter-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-}
-
-.visitor-map-header {
   margin-bottom: 8px;
 }
 
-.visitor-map-title {
+.flag-counter-title {
   font-size: 0.9rem;
   font-weight: 700;
   color: var(--text-primary);
 }
 
-.visitor-map-controls {
-  display: flex;
-  gap: 4px;
-}
-
-.visitor-map-controls button {
+.flag-counter-popup .close-popup {
   width: 30px;
   height: 30px;
   display: flex;
@@ -4765,49 +4756,21 @@ a.contact-value:hover {
   transition: var(--transition-interactive);
 }
 
-.visitor-map-controls button:hover,
-.visitor-map-controls button:focus-visible {
+.flag-counter-popup .close-popup:hover,
+.flag-counter-popup .close-popup:focus-visible {
   color: var(--text-primary);
   filter: brightness(0.94);
 }
 
-.visitor-map-container {
-  position: relative;
-  min-height: 140px;
-  overflow: hidden;
-  border-radius: var(--radius-sm);
-  /* Drag and pinch are handled in script.js */
-  touch-action: none;
-  cursor: grab;
-  user-select: none;
+.flag-counter-container {
+  display: flex;
+  justify-content: center;
 }
 
-.visitor-map-container.is-dragging {
-  cursor: grabbing;
-}
-
-/* The widget centres itself with auto margins; keep it flush */
-.visitor-map-container #mapmyvisitors-widget {
-  margin: 0;
-  cursor: inherit;
-  -webkit-user-drag: none;
-}
-
-.visitor-map-footer {
-  margin-top: 8px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-}
-
-.visitor-map-footer a {
-  color: var(--text-secondary);
-  font-weight: 600;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.visitor-map-footer a:hover {
-  color: var(--text-primary);
+.flag-counter-container img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* ==========================================================================
