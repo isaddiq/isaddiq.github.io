@@ -1,14 +1,16 @@
 #!/usr/bin/env node
 /**
- * Refresh data/scholar.json from the public Google Scholar profile.
+ * Refresh data/scholar.json from the public Google Scholar profile: the three
+ * headline metrics plus the "Cited by" count of every cited paper, which the
+ * Publications tab shows beside each matching entry.
  *
  * Run by .github/workflows/update-scholar.yml every 6 hours. Doing the scrape
  * here rather than in the browser means every visitor - incognito, a phone, a
  * first-time reader - is served the same numbers straight out of the repo,
  * instead of whatever happened to land in their own localStorage.
  *
- * The file is rewritten only when the metrics actually change, so the workflow
- * pushes a commit at most once per real citation update.
+ * The file is rewritten only when the metrics or a paper's count actually
+ * change, so the workflow pushes a commit at most once per real citation update.
  *
  * Usage: node scripts/update-scholar.mjs [--id <scholarId>]
  */
@@ -24,6 +26,8 @@ const idFlag = process.argv.indexOf('--id');
 const SCHOLAR_ID =
     (idFlag !== -1 && process.argv[idFlag + 1]) || process.env.SCHOLAR_ID || 'wMH9sSgAAAAJ';
 const PROFILE_URL = `https://scholar.google.com/citations?user=${SCHOLAR_ID}&hl=en`;
+// The profile lists 20 papers by default; ask for the full list in one page.
+const FETCH_URL = `${PROFILE_URL}&cstart=0&pagesize=100`;
 
 const FETCH_TIMEOUT_MS = 20000;
 const ROUNDS = 3; // full passes over the source list before giving up
@@ -36,20 +40,20 @@ const ROUND_DELAY_MS = 15000;
  * their own addresses.
  */
 const SOURCES = [
-    { name: 'scholar.google.com', url: () => PROFILE_URL },
+    { name: 'scholar.google.com', url: () => FETCH_URL },
     {
         name: 'codetabs',
-        url: () => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(PROFILE_URL)
+        url: () => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(FETCH_URL)
     },
     {
         name: 'allorigins',
-        url: () => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(PROFILE_URL)
+        url: () => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(FETCH_URL)
     },
     {
         name: 'corsproxy.io',
-        url: () => 'https://corsproxy.io/?url=' + encodeURIComponent(PROFILE_URL)
+        url: () => 'https://corsproxy.io/?url=' + encodeURIComponent(FETCH_URL)
     },
-    { name: 'cors.lol', url: () => 'https://api.cors.lol/?url=' + encodeURIComponent(PROFILE_URL) }
+    { name: 'cors.lol', url: () => 'https://api.cors.lol/?url=' + encodeURIComponent(FETCH_URL) }
 ];
 
 const BROWSER_HEADERS = {
@@ -77,6 +81,45 @@ function parseMetrics(html) {
 
     const metrics = { citations: cells[0], hIndex: cells[2], i10Index: cells[4] };
     return isValidMetrics(metrics) ? metrics : null;
+}
+
+const decodeEntities = (text) =>
+    text
+        .replace(/&#(\d+);/g, (_, code) => String.fromCodePoint(Number(code)))
+        .replace(/&#x([0-9a-f]+);/gi, (_, code) => String.fromCodePoint(parseInt(code, 16)))
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;|&apos;/g, "'")
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&amp;/g, '&');
+
+/**
+ * Pull every cited paper out of the profile's article table. Each row holds
+ * the title link (gsc_a_at) and a "Cited by" link (gsc_a_ac) whose text is the
+ * count - empty for papers nobody has cited yet, which are left out.
+ * Returns null when the table is missing, so a bad page never wipes the list.
+ */
+function parsePapers(html) {
+    const rows = [...html.matchAll(/<tr[^>]*class="gsc_a_tr"[^>]*>([\s\S]*?)<\/tr>/gi)];
+    if (!rows.length) return null;
+
+    const papers = [];
+    for (const [, row] of rows) {
+        const title = row.match(/class="gsc_a_at"[^>]*>([\s\S]*?)<\/a>/i);
+        const cited = row.match(/<a[^>]*href="([^"]*)"[^>]*class="gsc_a_ac[^"]*"[^>]*>([^<]*)<\/a>/i);
+        if (!title || !cited) continue;
+
+        const citations = parseInt(cited[2].replace(/[^\d]/g, ''), 10);
+        if (!Number.isInteger(citations) || citations <= 0) continue;
+
+        papers.push({
+            title: decodeEntities(title[1].replace(/<[^>]+>/g, '')).replace(/\s+/g, ' ').trim(),
+            citations,
+            citedByUrl: decodeEntities(cited[1])
+        });
+    }
+    return papers.sort((a, b) => b.citations - a.citations || a.title.localeCompare(b.title));
 }
 
 /**
@@ -111,10 +154,11 @@ async function fetchMetrics() {
                     continue;
                 }
 
-                const metrics = parseMetrics(await response.text());
+                const html = await response.text();
+                const metrics = parseMetrics(html);
                 if (metrics) {
                     console.log(`  ${source.name}: ok`);
-                    return metrics;
+                    return { metrics, papers: parsePapers(html) };
                 }
                 console.log(`  ${source.name}: no metrics table (captcha or layout change)`);
             } catch (error) {
@@ -150,9 +194,9 @@ async function summarize(line) {
 
 async function main() {
     console.log(`Reading Google Scholar profile ${SCHOLAR_ID}`);
-    const metrics = await fetchMetrics();
+    const result = await fetchMetrics();
 
-    if (!metrics) {
+    if (!result) {
         // Every source was blocked. Leave the committed numbers alone and warn
         // rather than fail: transient captchas are normal, and the next run in
         // 6 hours usually gets through.
@@ -161,11 +205,19 @@ async function main() {
         return;
     }
 
+    const { metrics } = result;
     const current = await readCurrent();
+    // A page with metrics but no readable article table keeps the last list.
+    const papers = result.papers ?? current.papers ?? [];
+    if (!result.papers) {
+        console.log('::warning::Could not read the article list; keeping the existing per-paper counts.');
+    }
+
     const unchanged =
         current.citations === metrics.citations &&
         current.hIndex === metrics.hIndex &&
-        current.i10Index === metrics.i10Index;
+        current.i10Index === metrics.i10Index &&
+        JSON.stringify(current.papers ?? []) === JSON.stringify(papers);
 
     if (unchanged) {
         console.log(
@@ -183,13 +235,14 @@ async function main() {
         i10Index: metrics.i10Index,
         scholarId: SCHOLAR_ID,
         profileUrl: PROFILE_URL,
-        updated: new Date().toISOString().slice(0, 10)
+        updated: new Date().toISOString().slice(0, 10),
+        papers
     };
 
     await writeFile(OUTPUT_FILE, `${JSON.stringify(updated, null, 2)}\n`, 'utf8');
     console.log(
         `Updated: ${current.citations ?? '-'} -> ${updated.citations} citations, ` +
-            `h-index ${updated.hIndex}, i10 ${updated.i10Index}`
+            `h-index ${updated.hIndex}, i10 ${updated.i10Index}, ${papers.length} cited papers`
     );
     await summarize(
         `Updated - ${current.citations ?? '-'} -> ${updated.citations} citations, ` +

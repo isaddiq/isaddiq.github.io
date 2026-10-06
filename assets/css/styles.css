@@ -2480,6 +2480,26 @@ a.role-unit:hover {
   color: var(--bg-primary);
 }
 
+/* Google Scholar citation count (logo + number), linking to the citing
+   papers. Accent text on the plain badge so it reads as a live figure. */
+.pub-badge.cited-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--secondary-color);
+  text-decoration: none;
+  transition: var(--transition-interactive-fast);
+}
+
+.pub-badge.cited-by i {
+  font-size: 0.8rem;
+}
+
+.pub-badge.cited-by:hover,
+.pub-badge.cited-by:focus-visible {
+  border-color: var(--secondary-color);
+}
+
 /* Editorial status keeps its own colour, because here the colour is the
    information rather than decoration. */
 .pub-badge.editor-choice {

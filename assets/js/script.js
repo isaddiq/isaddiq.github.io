@@ -895,6 +895,46 @@ const SCHOLAR_FETCH_TIMEOUT_MS = 12000;
 
 let scholarLastFetchAt = 0;
 let scholarFetchInFlight = false;
+let scholarCitationsByTitle = new Map();
+
+/**
+ * Title key shared by Scholar and publications.json, ignoring case, accents
+ * and punctuation (Scholar often re-cases titles or swaps curly quotes).
+ */
+function scholarTitleKey(title) {
+    return String(title || '')
+        .normalize('NFKD')
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, '');
+}
+
+/**
+ * Index the per-paper "Cited by" counts from scholarData by title.
+ */
+function indexScholarCitations() {
+    scholarCitationsByTitle = new Map();
+    const papers = (scholarData && Array.isArray(scholarData.papers)) ? scholarData.papers : [];
+    papers.forEach((paper) => {
+        if (Number.isInteger(paper.citations) && paper.citations > 0) {
+            scholarCitationsByTitle.set(scholarTitleKey(paper.title), paper);
+        }
+    });
+}
+
+/**
+ * Google Scholar logo + citation count for a publication, linking to its
+ * citing papers. Empty for papers Scholar has no citations for.
+ */
+function pubCitedByBadge(pub) {
+    const paper = scholarCitationsByTitle.get(scholarTitleKey(pub.title));
+    if (!paper) return '';
+    const url = /^https:\/\/scholar\.google\.com\//.test(paper.citedByUrl || '')
+        ? paper.citedByUrl
+        : SCHOLAR_PROFILE_URL;
+    const count = Number(paper.citations).toLocaleString();
+    const label = count + ' Google Scholar citation' + (paper.citations === 1 ? '' : 's');
+    return `<a href="${escapeHtml(url)}" class="pub-badge cited-by" target="_blank" rel="noopener" title="${label}" aria-label="${label}"><i class="fa-brands fa-google-scholar" aria-hidden="true"></i>${count}</a>`;
+}
 
 /**
  * Read the committed metrics file. Cache-busted and sent with no-store so a
@@ -936,6 +976,7 @@ async function loadScholarData() {
     if (data) {
         scholarData = data;
         scholarLastFetchAt = Date.now();
+        indexScholarCitations();
         console.log('✅ Scholar metrics loaded');
     } else {
         console.error('❌ Could not load scholar.json');
@@ -1009,10 +1050,16 @@ async function refreshScholarMetrics(force) {
         || scholarData.citations !== data.citations
         || scholarData.hIndex !== data.hIndex
         || scholarData.i10Index !== data.i10Index;
+    const papersChanged = !scholarData
+        || JSON.stringify(scholarData.papers || []) !== JSON.stringify(data.papers || []);
 
     scholarData = data;
     renderScholarMetrics();
-    if (changed) {
+    if (papersChanged) {
+        indexScholarCitations();
+        loadPublicationsContent();
+    }
+    if (changed || papersChanged) {
         console.log('✅ Scholar metrics refreshed');
     }
 }
@@ -2014,6 +2061,7 @@ function loadJournals() {
                 ${pub.category ? `<span class="pub-badge">${pub.category}${pub.quartile ? ', ' + pub.quartile : ''}</span>` : ''}
                 ${pub.badges ? pub.badges.map(badge => `<span class="pub-badge ${getBadgeClass(badge)}">${badge}</span>`).join('') : ''}
                 ${pub.doi && pub.doi !== '#' ? `<a href="${pub.doi}" class="doi-link" target="_blank" rel="noopener">DOI Link</a>` : (pub.status ? `<span class="pub-badge ${getBadgeClass(pub.status)}">${escapeHtml(pub.status)}</span>` : '')}
+                ${pubCitedByBadge(pub)}
             </div>
         </div>
     `);
@@ -2052,6 +2100,7 @@ function loadConferences() {
                 ${pub.pages ? `<span class="pub-badge">Pages: ${pub.pages}</span>` : ''}
                 ${pub.publisher ? `<span class="pub-badge">Publisher: ${pub.publisher}</span>` : ''}
                 ${pub.doi ? `<a href="${pub.doi}" class="doi-link" target="_blank" rel="noopener">DOI Link</a>` : ''}
+                ${pubCitedByBadge(pub)}
             </div>
         </div>
     `);
@@ -2088,6 +2137,7 @@ function loadKoreanConferences() {
             <div class="pub-journal">${pub.conference}${pub.volume ? `, ${pub.volume}` : ''}${pub.pages ? `, ${pub.pages}` : ''}</div>
             <div class="pub-details">
                 ${pub.badges ? pub.badges.map(badge => `<span class="pub-badge ${getBadgeClass(badge)}">${badge}</span>`).join('') : ''}
+                ${pubCitedByBadge(pub)}
             </div>
         </div>
     `);
@@ -2124,6 +2174,7 @@ function loadTechnicalReports() {
             <div class="pub-journal">${pub.journal}${pub.volume ? `, ${pub.volume}` : ''}${pub.pages ? `, pages ${pub.pages}` : ''}</div>
             <div class="pub-details">
                 ${pub.link ? `<a href="${pub.link}" class="doi-link" target="_blank" rel="noopener">${escapeHtml(pub.linkLabel || 'View Report')}</a>` : ''}
+                ${pubCitedByBadge(pub)}
             </div>
         </div>
     `);

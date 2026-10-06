@@ -1,7 +1,8 @@
 name: Update Google Scholar metrics
 
-# Refreshes data/scholar.json four times a day (every 6 hours) and pushes the
-# change, which republishes the GitHub Pages site. Because the numbers ship in
+# Refreshes data/scholar.json - the profile metrics and each paper's "Cited by"
+# count - four times a day (every 6 hours) and pushes the change, which
+# republishes the GitHub Pages site. Because the numbers ship in
 # the repo, every visitor sees the same up-to-date figures - no browser cache
 # or localStorage involved.
 #
