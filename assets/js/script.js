@@ -722,7 +722,6 @@ const CONFIG = {
     scrollOffset: 100,
     headerHeight: 80,
     staggerDelay: 60,
-    observerThreshold: 0.1,
     debounceDelay: 150
 };
 
@@ -1367,29 +1366,29 @@ function showTab(tabName) {
 }
 
 /**
- * Animate content elements when tab is shown using Intersection Observer
+ * Fade in the cards on screen when a tab is shown. Content is never hidden
+ * waiting for a scroll: the animation only plays from a faded start to the
+ * card's normal style, and cards below the fold are left as they are.
  * @param {HTMLElement} tabElement - The tab element to animate
  */
 function animateTabContent(tabElement) {
+    if (!tabElement.animate) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category, .research-card, .award-item, .activity-item, .seminar-item, .news-bullet-item, .news-card, .highlight-card');
-    
-    // Use Intersection Observer for better performance
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry, index) => {
-            if (entry.isIntersecting) {
-                const el = entry.target;
-                el.style.transition = `opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.05}s, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) ${index * 0.05}s`;
-                el.style.opacity = '1';
-                el.style.transform = 'translateY(0) scale(1)';
-                observer.unobserve(el);
-            }
+    let onScreen = 0;
+    animatableElements.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (!rect.height || rect.top >= window.innerHeight || rect.bottom <= 0) return;
+        el.animate([
+            { opacity: 0, transform: 'translateY(16px)' },
+            { opacity: 1, transform: 'none' }
+        ], {
+            duration: 400,
+            delay: Math.min(onScreen++, 8) * 40,
+            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+            fill: 'backwards'
         });
-    }, { threshold: CONFIG.observerThreshold, rootMargin: '0px 0px -50px 0px' });
-    
-    animatableElements.forEach((el, index) => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px) scale(0.98)';
-        observer.observe(el);
     });
 }
 
@@ -2841,35 +2840,6 @@ function initializeScrollToTop() {
 // ==========================================================================
 
 /**
- * Initialize intersection observer for animations
- */
-function initializeAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.transform = 'translateY(0)';
-                entry.target.style.opacity = '1';
-                entry.target.classList.add('animated');
-            }
-        });
-    }, observerOptions);
-
-    // Observe elements that should animate
-    const animateElements = '.experience-item, .publication-item, .project-card, .certificate-card, .award-item, .activity-item, .seminar-item, .news-item, .news-card, .highlight-card, .skill-item';
-    document.querySelectorAll(animateElements).forEach(el => {
-        el.style.transform = 'translateY(20px)';
-        el.style.opacity = '0';
-        el.style.transition = 'all 0.6s ease';
-        observer.observe(el);
-    });
-}
-
-/**
  * Add smooth scrolling to anchor links
  */
 function initializeSmoothScrolling() {
@@ -3197,9 +3167,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Add mobile menu click outside listener
     document.addEventListener('click', closeMobileMenuOnClickOutside);
     
-    // Initialize animations after a short delay
-    setTimeout(initializeAnimations, 500);
-
     initializeFlagCounterPopup();
 
     // Handle browser back/forward navigation
@@ -3317,6 +3284,33 @@ function initializeFlagCounterPopup() {
     if (!popup || !icon) return;
 
     let isOpen = false;
+
+    // Flag Counter's server is slow, so the image is often still on its way
+    // when the popup opens; the placeholder in the HTML stays until it lands
+    const counter = popup.querySelector(".flag-counter-container");
+    const img     = counter && counter.querySelector("img");
+    const status  = counter && counter.querySelector(".flag-counter-status");
+
+    function counterLoaded() {
+        counter.classList.remove("is-loading", "is-error");
+    }
+
+    function counterFailed() {
+        counter.classList.remove("is-loading");
+        counter.classList.add("is-error");
+        status.innerHTML = 'Visitor stats unavailable. ' +
+            '<a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener">View on Flag Counter</a>';
+    }
+
+    if (img && status) {
+        if (img.complete) {
+            if (img.naturalWidth) counterLoaded();
+            else counterFailed();
+        } else {
+            img.addEventListener("load", counterLoaded, { once: true });
+            img.addEventListener("error", counterFailed, { once: true });
+        }
+    }
 
     function positionPopup() {
         const gap  = 12;

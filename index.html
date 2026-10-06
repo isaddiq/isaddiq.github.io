@@ -193,7 +193,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-03"
+            "dateModified": "2026-10-06"
           },
           {
             "@type": "Person",
@@ -1133,6 +1133,12 @@
                 <strong>Artificial Intelligence Review</strong> - Reviewer
               </div>
             </div>
+            <div class="activity-item">
+              <i class="fas fa-edit activity-icon"></i>
+              <div class="activity-content">
+                <strong>Scientific Reports</strong> - Reviewer
+              </div>
+            </div>
           </div>
 
           <div class="activity-category seminars-category">
@@ -1528,7 +1534,9 @@
 
     <!-- ─── Hidden popup for the Flag Counter ─── -->
     <!-- The counter image loads with the page, so every visit is counted
-         whether or not the popup is opened (see initializeFlagCounterPopup). -->
+         whether or not the popup is opened (see initializeFlagCounterPopup).
+         Flag Counter's server is slow (often 5-15 s), so until the image
+         arrives the popup shows a placeholder of the same size. -->
     <div
       id="flag-counter-popup"
       class="flag-counter-popup"
@@ -1541,13 +1549,17 @@
           <i class="fas fa-xmark"></i>
         </button>
       </div>
-      <div class="flag-counter-container">
+      <div class="flag-counter-container is-loading">
         <a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener"
           ><img
             src="https://s01.flagcounter.com/count2/2Olz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_20/viewers_3/labels_0/pageviews_0/flags_0/percent_0/"
             alt="Flag Counter"
+            width="470"
+            height="47"
+            fetchpriority="high"
             border="0"
         /></a>
+        <span class="flag-counter-status" aria-live="polite">Loading visitor stats…</span>
       </div>
     </div>
 

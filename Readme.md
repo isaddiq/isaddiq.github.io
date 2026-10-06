@@ -1,18 +1,5 @@
-<img width="1200" height="630" alt="image" src="assets/images/meta/saddiq-ur-rehman-portfolio-thumbnail.png" />
-
+![1791268060419](image/Readme/1791268060419.png)
 <div align="center">
-
-# 🎓 Academic Portfolio Website
-
-### Saddiq Ur Rehman - PhD Student at Kyung Hee University
-
-<img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=800&color=3498DB&center=true&vCenter=true&width=500&lines=Building+Information+Modeling;Artificial+Intelligence;Construction+Technology;DfMA;LLM;Extended+Reality;Modular+Construction" alt="Typing SVG" />
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:saddiqurrehman@khu.ac.kr)
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/isaddiq)
-
-</div>
 
 ---
 
@@ -183,9 +170,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 <div align="center">
-
-### 🌟 If this portfolio helped you, please consider giving it a star! ⭐
-
-_Made with ❤️ for the academic and research community._
-
-</div>
