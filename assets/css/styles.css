@@ -3134,6 +3134,13 @@ a.role-unit:hover {
   color: var(--text-primary);
 }
 
+.activity-publisher {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
 /* Seminars & Presentations list (Activities tab) */
 
 .seminars-list {

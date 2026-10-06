@@ -2,11 +2,11 @@
   "awards": [
     {
       "id": "award_005",
-      "title": "Top Academic Excellence Award (최우수학술상)",
+      "title": "Academic Excellence Award (최우수학술상)",
       "issuer": "Graduate School of Kyung Hee University, Department of Architecture",
       "date": "2026",
       "type": "Academic Award",
-      "description": "Selected for the Top Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
+      "description": "Selected for the Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
       "icon": "fas fa-award",
       "featured": false
     },
@@ -52,6 +52,25 @@
     }
   ],
   "certifications": [
+    {
+      "id": "cert_030",
+      "title": "Springer Nature Reviewer Certificate",
+      "issuer": "Springer Nature",
+      "date": "2026-10-06",
+      "category": "Peer Review",
+      "description": "Reviewer certificate recognizing contribution to 1 manuscript in 2026 for Journal of Umm Al-Qura University for Engineering and Architecture.",
+      "image": "assets/images/certificates/springer-nature-reviewer-certificate-2026-10-06-umm-al-qura.jpg",
+      "skills": [
+        "Peer Review",
+        "Engineering and Architecture",
+        "Manuscript Review",
+        "Research Evaluation",
+        "Scholarly Service"
+      ],
+      "verification_url": "",
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06-UQU",
+      "featured": false
+    },
     {
       "id": "cert_029",
       "title": "Springer Nature Reviewer Certificate",

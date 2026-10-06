@@ -1,4 +1,4 @@
-![1791268060419](image/Readme/1791268060419.png)
+![Portfolio homepage screenshot](assets/images/readme/homepage-screenshot.png)
 <div align="center">
 
 ---
