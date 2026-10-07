@@ -60,6 +60,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -188,6 +194,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -299,6 +311,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -418,6 +436,14 @@
           "variant": "editor-choice"
         }
       ],
+      "actions": [
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
       "sections": [
         {
           "type": "info",
@@ -531,6 +557,14 @@
         {
           "label": "Meta Quest 3",
           "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -668,6 +702,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -802,6 +842,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [
@@ -927,6 +973,12 @@
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
           "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
         }
       ],
       "sections": [

@@ -528,7 +528,7 @@ function collectHighlights() {
 
     // 6) software.json
     (Array.isArray(softwareData) ? softwareData : []).filter(t => t.featured).forEach(t => {
-        const firstAction = (t.actions || []).find(a => a.variant !== 'sponsor-link');
+        const firstAction = (t.actions || []).find(a => a.variant !== 'sponsor-link' && a.variant !== 'coffee-link');
         cards.push({
             type: 'Software', date: t.highlightDate || '', icon: t.navIcon || 'fas fa-laptop-code',
             title: t.title, detail: t.description || '',
