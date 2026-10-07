@@ -4758,126 +4758,25 @@ a.contact-value:hover {
   font-weight: 800;
 }
 
-/* Flag Counter popup (opened from the social icon in script.js) */
+/* Flag Counter popup (opened from the social icon in script.js): just the
+   counter image, lifted off the page like a card. The image carries its own
+   white background and grey border, so the popup adds only the shadow. */
 .flag-counter-popup {
   display: none;
   position: fixed;
   z-index: 950;
   max-width: calc(100vw - 32px);
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 10px 12px 12px;
+  background: #ffffff;
+  border-radius: var(--radius-sm);
   box-shadow: var(--elev-3);
-  animation: smoothFadeIn 0.25s ease forwards;
-}
-
-.flag-counter-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.flag-counter-title {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--text-primary);
-}
-
-.flag-counter-popup .close-popup {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: var(--transition-interactive);
-}
-
-.flag-counter-popup .close-popup:hover,
-.flag-counter-popup .close-popup:focus-visible {
-  color: var(--text-primary);
-  filter: brightness(0.94);
-}
-
-.flag-counter-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  border-radius: var(--radius-sm);
   overflow: hidden;
+  animation: smoothFadeIn 0.2s ease forwards;
 }
 
-.flag-counter-container img {
+.flag-counter-popup img {
   display: block;
   max-width: 100%;
   height: auto;
-  transition: opacity 0.3s ease;
-}
-
-/* Until the counter image arrives the popup keeps its final size, with a
-   shimmer and a status line in place of the image */
-.flag-counter-status {
-  display: none;
-}
-
-.flag-counter-container.is-loading img,
-.flag-counter-container.is-error img {
-  opacity: 0;
-}
-
-.flag-counter-container.is-loading,
-.flag-counter-container.is-error {
-  background: var(--bg-tertiary);
-}
-
-.flag-counter-container.is-loading::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.35),
-    transparent
-  );
-  transform: translateX(-100%);
-  animation: flagCounterShimmer 1.4s ease-in-out infinite;
-}
-
-.flag-counter-container.is-loading .flag-counter-status,
-.flag-counter-container.is-error .flag-counter-status {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  pointer-events: none;
-}
-
-.flag-counter-container.is-error .flag-counter-status {
-  pointer-events: auto;
-}
-
-.flag-counter-status a {
-  margin-left: 4px;
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-
-@keyframes flagCounterShimmer {
-  to {
-    transform: translateX(100%);
-  }
 }
 
 /* ==========================================================================

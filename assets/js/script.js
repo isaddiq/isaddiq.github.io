@@ -3327,41 +3327,16 @@ window.toggleMobileMenu = toggleMobileMenu;
 
 // FLAG COUNTER JS
 
-// The counter image sits in the page's HTML, so it loads (and counts the
-// visit) on every page view; the popup only decides when it is shown.
+// The counter image is preloaded in <head> and sits in the page's HTML, so it
+// loads (and counts the visit) on every page view; the popup is just that
+// image and only decides when it is shown.
 function initializeFlagCounterPopup() {
     const popup = document.getElementById("flag-counter-popup");
     const icon  = document.querySelector(".social-icon.flag-counter-icon");
     if (!popup || !icon) return;
 
+    const img = popup.querySelector("img");
     let isOpen = false;
-
-    // Flag Counter's server is slow, so the image is often still on its way
-    // when the popup opens; the placeholder in the HTML stays until it lands
-    const counter = popup.querySelector(".flag-counter-container");
-    const img     = counter && counter.querySelector("img");
-    const status  = counter && counter.querySelector(".flag-counter-status");
-
-    function counterLoaded() {
-        counter.classList.remove("is-loading", "is-error");
-    }
-
-    function counterFailed() {
-        counter.classList.remove("is-loading");
-        counter.classList.add("is-error");
-        status.innerHTML = 'Visitor stats unavailable. ' +
-            '<a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener">View on Flag Counter</a>';
-    }
-
-    if (img && status) {
-        if (img.complete) {
-            if (img.naturalWidth) counterLoaded();
-            else counterFailed();
-        } else {
-            img.addEventListener("load", counterLoaded, { once: true });
-            img.addEventListener("error", counterFailed, { once: true });
-        }
-    }
 
     function positionPopup() {
         const gap  = 12;
@@ -3399,6 +3374,9 @@ function initializeFlagCounterPopup() {
     }
 
     icon.addEventListener("click", (evt) => {
+        // If the counter image failed to load there is nothing to pop up, so
+        // let the icon's link open Flag Counter's own page instead
+        if (img && img.complete && !img.naturalWidth) return;
         evt.preventDefault();
         if (isOpen) closePopup();
         else openPopup();
@@ -3420,17 +3398,12 @@ function initializeFlagCounterPopup() {
         if (isOpen) positionPopup();
     });
 
-    // The popup grows once the counter image arrives, so re-place it to stay on screen
+    // The popup can change size when the counter image arrives, so re-place it to stay on screen
     if ("ResizeObserver" in window) {
         new ResizeObserver(() => {
             if (isOpen) positionPopup();
         }).observe(popup);
     }
-
-    popup.querySelector(".close-popup").addEventListener("click", (evt) => {
-        evt.stopPropagation();
-        closePopup();
-    });
 }
 
 // ==========================================================================

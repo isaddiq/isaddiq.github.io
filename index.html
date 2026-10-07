@@ -57,6 +57,15 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+    <!-- Flag Counter's server is slow, so its image is requested first thing;
+         by the time the flag icon is clicked it is usually already here -->
+    <link rel="preconnect" href="https://s01.flagcounter.com" />
+    <link
+      rel="preload"
+      as="image"
+      href="https://s01.flagcounter.com/count2/2Olz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_20/viewers_3/labels_0/pageviews_0/flags_0/percent_0/"
+      fetchpriority="high"
+    />
     <link rel="canonical" href="https://isaddiq.github.io/" />
     <link
       rel="sitemap"
@@ -1459,8 +1468,10 @@
         <span class="scopus-letter">SC</span>
       </a>
       <a
-        href="#"
+        href="https://info.flagcounter.com/2Olz"
         class="social-icon flag-counter-icon"
+        target="_blank"
+        rel="noopener"
         title="Show visitors"
         aria-controls="flag-counter-popup"
         aria-expanded="false"
@@ -1545,39 +1556,22 @@
       <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Custom JavaScript -->
-    <script src="assets/js/script.js"></script>
-
-    <!-- ─── Hidden popup for the Flag Counter ─── -->
-    <!-- The counter image loads with the page, so every visit is counted
-         whether or not the popup is opened (see initializeFlagCounterPopup).
-         Flag Counter's server is slow (often 5-15 s), so until the image
-         arrives the popup shows a placeholder of the same size. -->
-    <div
-      id="flag-counter-popup"
-      class="flag-counter-popup"
-      role="dialog"
-      aria-label="Visitors"
-    >
-      <div class="flag-counter-header">
-        <span class="flag-counter-title">Visitors</span>
-        <button type="button" class="close-popup" title="Close" aria-label="Close">
-          <i class="fas fa-xmark"></i>
-        </button>
-      </div>
-      <div class="flag-counter-container is-loading">
-        <a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener"
-          ><img
-            src="https://s01.flagcounter.com/count2/2Olz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_20/viewers_3/labels_0/pageviews_0/flags_0/percent_0/"
-            alt="Flag Counter"
-            width="470"
-            height="47"
-            fetchpriority="high"
-            border="0"
-        /></a>
-        <span class="flag-counter-status" aria-live="polite">Loading visitor stats…</span>
-      </div>
+    <!-- ─── Flag Counter popup ─── -->
+    <!-- Just the counter image, shown as a popup by the floating flag icon.
+         The image (preloaded in <head>) loads with the page, so every visit
+         is counted whether or not the popup is opened. -->
+    <div id="flag-counter-popup" class="flag-counter-popup">
+      <a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener"
+        ><img
+          src="https://s01.flagcounter.com/count2/2Olz/bg_FFFFFF/txt_000000/border_CCCCCC/columns_6/maxflags_20/viewers_3/labels_0/pageviews_0/flags_0/percent_0/"
+          alt="Flag Counter: visitors by country"
+          width="470"
+          height="47"
+          fetchpriority="high"
+      /></a>
     </div>
 
+    <!-- Custom JavaScript -->
+    <script src="assets/js/script.js"></script>
   </body>
 </html>
