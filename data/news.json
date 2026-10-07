@@ -4,17 +4,17 @@
     "date": "2026/08",
     "icon": "fas fa-graduation-cap",
     "type": "PhD",
-    "title": "Graduated with a PhD in Architecture from Kyung Hee University and received the Top Academic Excellence Award on stage",
-    "summary": "Doctoral degree conferred at the 2025 academic year latter semester ceremony, with the Top Academic Excellence Award (최우수학술상).",
-    "details": "Received my Doctor of Philosophy in Architecture from Kyung Hee University at the 2025 academic year latter semester degree conferral ceremony (2025학년도 후기 학위수여식). The Top Academic Excellence Award (최우수학술상) was conferred on stage during the ceremony, recognizing outstanding research achievements in Architecture.",
+    "title": "Graduated with a PhD in Architecture from Kyung Hee University and received the Best Academic Award on stage",
+    "summary": "Doctoral degree conferred at the 2025 academic year latter semester ceremony, with the Best Academic Award (최우수학술상).",
+    "details": "Received my Doctor of Philosophy in Architecture from Kyung Hee University at the 2025 academic year latter semester degree conferral ceremony (2025학년도 후기 학위수여식). The Best Academic Award (최우수학술상) was conferred on stage during the ceremony, recognizing outstanding research achievements in Architecture.",
     "importance": "high",
     "link": "https://gskh.khu.ac.kr/gskh_kor/user/bbs/BMSR00040/view.do?menuNo=13100090&boardId=eyJjdCI6IjVBZVVSZ1l1Q29XM2pCUS9wQjhSUnc9PSIsIml2IjoiNGJiOWM4MGFlZjEyMzg1YjljNjE5NWY4ZDE2ZGNkZGUiLCJzIjoiZTM3MmU3MjY1YjMzMThkYiJ9",
     "linkLabel": "View Official Announcement",
     "images": [
       {
         "src": "assets/images/news/graduation.jpg",
-        "alt": "Saddiq Ur Rehman in doctoral regalia receiving the Top Academic Excellence Award (최우수학술상) on stage at the Kyung Hee University degree conferral ceremony",
-        "caption": "Kyung Hee University, 2025학년도 후기 학위수여식: Top Academic Excellence Award (우수학술상 수여)",
+        "alt": "Saddiq Ur Rehman in doctoral regalia receiving the Best Academic Award (최우수학술상) on stage at the Kyung Hee University degree conferral ceremony",
+        "caption": "Kyung Hee University, 2025학년도 후기 학위수여식: Best Academic Award (우수학술상 수여)",
         "fallback": "assets/images/covers/education-cover.webp"
       }
     ],
@@ -25,17 +25,17 @@
     "date": "2026/07",
     "icon": "fas fa-award",
     "type": "Award",
-    "title": "Selected for Kyung Hee University's Top Academic Excellence Award (최우수학술상) in Architecture",
-    "summary": "Top Academic Excellence Award (최우수학술상) from the Graduate School of Kyung Hee University.",
-    "details": "Selected as the recipient of the Top Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University, representing the Department of Architecture within the Arts & Physical Education (예체능) division, among the Fall 2025 (August 2026) graduate award recipients, in recognition of outstanding research achievements in Architecture.",
+    "title": "Selected for Kyung Hee University's Best Academic Award (최우수학술상) in Architecture",
+    "summary": "Best Academic Award (최우수학술상) from the Graduate School of Kyung Hee University.",
+    "details": "Selected as the recipient of the Best Academic Award (최우수학술상) by the Graduate School of Kyung Hee University, representing the Department of Architecture within the Arts & Physical Education (예체능) division, among the Fall 2025 (August 2026) graduate award recipients, in recognition of outstanding research achievements in Architecture.",
     "importance": "high",
     "link": "https://gskh.khu.ac.kr/gskh_kor/user/bbs/BMSR00040/view.do?menuNo=13100090&boardId=eyJjdCI6IjVBZVVSZ1l1Q29XM2pCUS9wQjhSUnc9PSIsIml2IjoiNGJiOWM4MGFlZjEyMzg1YjljNjE5NWY4ZDE2ZGNkZGUiLCJzIjoiZTM3MmU3MjY1YjMzMThkYiJ9",
     "linkLabel": "View Official Announcement",
     "images": [
       {
         "src": "assets/images/certificates/khu-academic-excellence-award-2026.png",
-        "alt": "Kyung Hee University Graduate School Top Academic Excellence Award (최우수학술상) announcement listing Saddiq Ur Rehman, Department of Architecture",
-        "caption": "Graduate School of Kyung Hee University: 2025 Fall Semester Academic Excellence Award announcement",
+        "alt": "Kyung Hee University Graduate School Best Academic Award (최우수학술상) announcement listing Saddiq Ur Rehman, Department of Architecture",
+        "caption": "Graduate School of Kyung Hee University: 2025 Fall Semester Best Academic Award announcement",
         "fallback": "assets/images/covers/certifications-awards-cover.webp"
       }
     ],

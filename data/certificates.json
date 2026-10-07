@@ -2,11 +2,11 @@
   "awards": [
     {
       "id": "award_005",
-      "title": "Academic Excellence Award (최우수학술상)",
+      "title": "Best Academic Award (최우수학술상)",
       "issuer": "Graduate School of Kyung Hee University, Department of Architecture",
       "date": "2026",
       "type": "Academic Award",
-      "description": "Selected for the Academic Excellence Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
+      "description": "Selected for the Best Academic Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
       "icon": "fas fa-award",
       "featured": false
     },
