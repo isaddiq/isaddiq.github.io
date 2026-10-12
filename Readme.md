@@ -1,5 +1,5 @@
 ![Portfolio homepage screenshot](assets/images/readme/homepage-screenshot.png)
-<div align="center">
+<div align="Left">
 
 ---
 
