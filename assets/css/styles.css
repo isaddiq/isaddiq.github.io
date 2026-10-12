@@ -3010,65 +3010,60 @@ a.role-unit:hover {
   margin-bottom: 40px;
 }
 
-/* One award per row, stacked as a list rather than a multi-column grid */
+/* Awards grouped by category in one card, matching the Activities lists */
 .awards-container {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--elev-1);
+}
+
+/* Each award is its own highlighted row with a gold icon, packed tightly */
+.award-list {
+  list-style: none;
+  margin: 0 0 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .award-item {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 20px;
   display: flex;
-  gap: 16px;
   align-items: center;
-  box-shadow: var(--elev-1);
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-left: 3px solid #f59e0b;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
   transition: var(--transition-interactive);
 }
 
-.award-item.clickable-award {
-  cursor: pointer;
-}
-
 .award-item:hover {
-  border-color: var(--border-glow);
-  box-shadow: var(--elev-2);
+  border-color: rgba(245, 158, 11, 0.5);
+  border-left-color: #f59e0b;
+  box-shadow: var(--elev-1);
 }
 
 .award-icon {
-  width: 48px;
-  height: 48px;
-  background: rgba(245, 158, 11, 0.1);
+  width: 32px;
+  height: 32px;
+  background: rgba(245, 158, 11, 0.12);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #f59e0b;
-  font-size: 1.25rem;
+  font-size: 0.95rem;
   flex-shrink: 0;
 }
 
 .award-content strong {
-  display: block;
-  font-family: var(--font-sans);
-  font-size: 1.05rem;
   color: var(--text-primary);
-  margin-bottom: 2px;
-}
-
-.award-content p {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-
-.award-actions {
-  font-size: 0.8rem;
-  color: var(--secondary-color);
-  font-weight: 600;
 }
 
 .certificates-grid {
@@ -3172,11 +3167,36 @@ a.role-unit:hover {
   color: var(--text-primary);
 }
 
-.activity-publisher {
-  display: block;
-  margin-top: 2px;
-  font-size: 0.82rem;
+/* Compact grouped bullet lists (Editorial & Review Activities, Awards) */
+.compact-list-heading {
+  margin: 16px 0 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-muted);
+}
+
+.compact-list-heading:first-of-type {
+  margin-top: 0;
+}
+
+.compact-list {
+  margin: 0;
+  padding-left: 1.4em;
+  list-style: disc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.compact-list li::marker {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.compact-list strong {
+  color: var(--text-primary);
 }
 
 /* Seminars & Presentations list (Activities tab) */

@@ -2641,19 +2641,25 @@ function loadCertificatesContent() {
     const certificatesContainer = document.getElementById('certificates-container');
     if (!certificatesContainer) return;
     
-    // Update awards section
+    // Update awards section, grouped by category in order of first appearance
     const awardsContainer = document.querySelector('.awards-container');
     if (awardsContainer && certificatesData.awards) {
-        awardsContainer.innerHTML = certificatesData.awards.map(award => `
-            <div class="award-item">
-                <div class="award-icon">
-                    <i class="${award.icon || 'fas fa-trophy'}"></i>
-                </div>
-                <div class="award-content">
-                    <strong>${award.title}</strong>
-                    <p>${award.issuer} (${award.date})</p>
-                </div>
-            </div>
+        const awardGroups = new Map();
+        certificatesData.awards.forEach(award => {
+            const category = award.category || 'Awards';
+            if (!awardGroups.has(category)) awardGroups.set(category, []);
+            awardGroups.get(category).push(award);
+        });
+        awardsContainer.innerHTML = [...awardGroups].map(([category, awards]) => `
+            <h4 class="compact-list-heading">${category}</h4>
+            <ul class="award-list">
+                ${awards.map(award => `
+                    <li class="award-item">
+                        <span class="award-icon"><i class="${award.icon || 'fas fa-trophy'}"></i></span>
+                        <span class="award-content"><strong>${award.title}</strong>, ${award.issuer} (${award.date})</span>
+                    </li>
+                `).join('')}
+            </ul>
         `).join('');
     }
     

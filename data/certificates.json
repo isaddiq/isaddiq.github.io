@@ -1,7 +1,19 @@
 {
   "awards": [
     {
+      "id": "award_006",
+      "category": "Honors & Recognition",
+      "title": "K-STAR Outstanding Science and Technology Talent Recognition",
+      "issuer": "Republic of Korea, selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements",
+      "date": "2026",
+      "type": "National Recognition",
+      "description": "Selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements.",
+      "icon": "fas fa-star",
+      "featured": false
+    },
+    {
       "id": "award_005",
+      "category": "Honors & Recognition",
       "title": "Best Academic Award (최우수학술상)",
       "issuer": "Graduate School of Kyung Hee University, Department of Architecture",
       "date": "2026",
@@ -12,6 +24,7 @@
     },
     {
       "id": "award_001",
+      "category": "Scholarships",
       "title": "Presidential Scholarship",
       "issuer": "Kyung Hee University, Korea",
       "date": "2021–2024",
@@ -22,6 +35,7 @@
     },
     {
       "id": "award_002",
+      "category": "Paper & Publication Awards",
       "title": "Best Paper Award",
       "issuer": "Korea CDE Society Winter Conference, (Paper Title: LDA-based topic modelling of client’s needs for residential building design)",
       "date": "2023",
@@ -32,6 +46,7 @@
     },
     {
       "id": "award_003",
+      "category": "Paper & Publication Awards",
       "title": "Editor's Choice",
       "issuer": "Journal of Computational Design and Engineering",
       "date": "2023",
@@ -42,6 +57,7 @@
     },
     {
       "id": "award_004",
+      "category": "Paper & Publication Awards",
       "title": "Best Paper Award",
       "issuer": "Korea CDE Society Summer Conference, (Paper Title: Proposal of 3D printing production manual for DfMA-based building prototypes)",
       "date": "2022",
