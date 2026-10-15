@@ -1,10 +1,10 @@
 {
-  "citations": 130,
+  "citations": 132,
   "hIndex": 5,
   "i10Index": 4,
   "scholarId": "wMH9sSgAAAAJ",
   "profileUrl": "https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en",
-  "updated": "2026-10-07",
+  "updated": "2026-10-14",
   "papers": [
     {
       "title": "Advancing BIM and game engine integration in the AEC industry: Innovations, challenges, and future directions",
@@ -18,7 +18,7 @@
     },
     {
       "title": "Client-centered detached modular housing: Natural language processing-enabled design recommender system",
-      "citations": 22,
+      "citations": 23,
       "citedByUrl": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=17542689973940571319"
     },
     {
@@ -28,7 +28,7 @@
     },
     {
       "title": "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform",
-      "citations": 7,
+      "citations": 8,
       "citedByUrl": "https://scholar.google.com/scholar?oi=bibs&hl=en&cites=16989541369909133627"
     },
     {
