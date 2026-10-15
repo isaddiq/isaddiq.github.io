@@ -1,5 +1,18 @@
 [
   {
+    "type": "Publication",
+    "date": "2026/10",
+    "icon": "fas fa-file-alt",
+    "title": "Implementation of an integrated DfX approach for modular high-rise residential construction",
+    "detail": "Published in the Journal of Civil Engineering and Management as corresponding author. A lifecycle DfX framework (DfMA, DfS, DfU, DfSu) applied to a 13-story modular residential project in South Korea.",
+    "image": "assets/images/news/jcem-dfx-modular-highrise-thumb.jpg",
+    "imageAlt": "Rendered view of the 13-story modular high-rise residential building with 106 modular housing units",
+    "fallbackImage": "assets/images/covers/publication-cover.webp",
+    "link": "https://doi.org/10.3846/jcem.2026.28640",
+    "linkLabel": "View Paper (DOI)",
+    "featured": true
+  },
+  {
     "type": "PhD",
     "date": "2026/08",
     "icon": "fas fa-graduation-cap",
@@ -60,6 +73,6 @@
     "fallbackImage": "assets/images/covers/software-cover.webp",
     "link": "https://apps.autodesk.com/RVT/en/Detail/Index?id=6622158299438821562&appLang=en&os=Win64",
     "linkLabel": "View on Autodesk App Store",
-    "featured": true
+    "featured": false
   }
 ]

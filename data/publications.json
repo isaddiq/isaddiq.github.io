@@ -2,7 +2,7 @@
   "journals": [
     {
       "id": "journal_2026_03",
-      "title": "Implementation of an Integrated DfX Approach for Modular High-Rise Residential Construction",
+      "title": "Implementation of an integrated DfX approach for modular high-rise residential construction",
       "topics": ["Modular & DfMA"],
       "authors": [
         "Hwale-Je Jang",
@@ -12,12 +12,12 @@
       ],
       "year": 2026,
       "journal": "Journal of Civil Engineering and Management",
-      "volume": "",
-      "pages": "",
+      "volume": "32(7)",
+      "pages": "939-972",
       "impactFactor": 3.0,
       "quartile": "Q2",
       "category": "SCIE",
-      "status": "Accepted",
+      "doi": "https://doi.org/10.3846/jcem.2026.28640",
       "badges": [
         "Corresponding author"
       ],

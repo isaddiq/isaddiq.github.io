@@ -1,5 +1,26 @@
 [
   {
+    "id": 12,
+    "date": "2026/10",
+    "icon": "fas fa-file-alt",
+    "type": "Publication",
+    "title": "'Implementation of an integrated DfX approach for modular high-rise residential construction' published in the Journal of Civil Engineering and Management",
+    "summary": "Published in the Journal of Civil Engineering and Management, 32(7), 939-972, as corresponding author.",
+    "details": "The paper 'Implementation of an integrated DfX approach for modular high-rise residential construction' is now published in the Journal of Civil Engineering and Management, 32(7), 939-972, where I am a corresponding author. It presents a lifecycle control framework that coordinates DfMA, DfS, DfU, and DfSu through rules, verification gates, and feedback loops, applied to a 13-story modular residential project in South Korea.",
+    "importance": "high",
+    "link": "https://doi.org/10.3846/jcem.2026.28640",
+    "linkLabel": "View Paper (DOI)",
+    "images": [
+      {
+        "src": "assets/images/news/jcem-dfx-modular-highrise.jpg",
+        "alt": "Rendered view of the 13-story modular high-rise residential building with 106 modular housing units, and a site map of its location in South Korea",
+        "caption": "Case project: rendered view and site of the modular high-rise residential building (Journal of Civil Engineering and Management, 32(7), 939-972)",
+        "fallback": "assets/images/covers/publication-cover.webp"
+      }
+    ],
+    "featured": false
+  },
+  {
     "id": 11,
     "date": "2026/08",
     "icon": "fas fa-graduation-cap",
