@@ -581,10 +581,6 @@ button:focus-visible,
   background-image: url("../images/covers/contact-cover.webp");
 }
 
-.news-cover {
-  background-image: url("../images/covers/news-cover.webp");
-}
-
 /*
   One navy wash across every cover. Light enough to read the photograph
   through, deep enough that the white title still clears contrast against a
@@ -1142,37 +1138,13 @@ button:focus-visible,
   color: var(--text-primary);
 }
 
-/* News section header (Home preview) */
+/* Home section header (Highlights, News) */
 .news-section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-}
-
-.news-viewall-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--secondary-color);
-  font-family: inherit;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 6px 14px;
-  border-radius: var(--radius-xs);
-  cursor: pointer;
-  transition:
-    border-color var(--transition-normal),
-    color var(--transition-normal),
-    transform var(--transition-normal);
-}
-
-.news-viewall-link:hover {
-  border-color: var(--border-glow);
-  transform: translateX(2px);
 }
 
 /* ==========================================================================
@@ -1297,14 +1269,8 @@ button:focus-visible,
 }
 
 /* ==========================================================================
-   News Tab - Accordion
+   Home News List - Accordion
    ========================================================================== */
-
-.news-tab-controls {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 18px;
-}
 
 .news-toggle-all {
   display: inline-flex;
@@ -1335,8 +1301,9 @@ button:focus-visible,
   gap: 16px;
 }
 
+/* Sits inside the .news-section panel, so it takes the highlight cards' tone */
 .news-card {
-  background: var(--bg-secondary);
+  background: var(--bg-tertiary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   overflow: hidden;

@@ -179,7 +179,7 @@ function initializeStaticEventHandlers() {
     }
 
     // Note: [data-tab] clicks are handled via delegation in handleDelegatedActionClick
-    // so dynamically rendered triggers (highlight cards, news links) work too.
+    // so dynamically rendered triggers (e.g. highlight cards) work too.
 
     document.querySelectorAll('[data-pub]').forEach(button => {
         button.addEventListener('click', () => {
@@ -310,26 +310,30 @@ function newsTypeClass(type) {
     return (type || '').toLowerCase().replace(/\s+/g, '-');
 }
 
+// The first HIGHLIGHT_COUNT entries of data/news.json (file order, newest at
+// the top) are the Home highlight cards; the rest are listed below them, so a
+// new entry added at the top pushes the oldest highlight down into the list.
+const HIGHLIGHT_COUNT = 4;
+
 /**
- * Render the full, collapsible News tab from newsData.
+ * Render the collapsible News list on Home: every news item after the
+ * highlights. The section hides itself when there is nothing left to list.
  */
-function renderNewsTab() {
+function renderNewsList() {
     const accordion = document.getElementById('news-accordion');
     if (!accordion) return;
 
-    if (!Array.isArray(newsData) || newsData.length === 0) {
-        accordion.innerHTML = `
-            <div class="news-loading">
-                <i class="fas fa-exclamation-circle"></i>
-                No news available right now.
-            </div>
-        `;
+    const section = document.getElementById('news-list-section');
+    const items = Array.isArray(newsData) ? newsData.slice(HIGHLIGHT_COUNT) : [];
+    if (section) section.hidden = items.length === 0;
+    if (items.length === 0) {
+        accordion.innerHTML = '';
         return;
     }
 
-    accordion.innerHTML = newsData.map((item, index) => {
+    accordion.innerHTML = items.map((item, index) => {
         const typeClass = newsTypeClass(item.type);
-        const panelId = `news-detail-${item.id ?? index}`;
+        const panelId = `news-detail-${item.id ?? index + HIGHLIGHT_COUNT}`;
         const summary = item.summary ? `<span class="news-card-summary">${escapeHtml(item.summary)}</span>` : '';
 
         // Software items can reuse the picture + description from the Software tab.
@@ -450,8 +454,9 @@ function getSoftwareInfo(id) {
 }
 
 /**
- * Build the href/target attributes and CTA label for a highlight/news link.
- * Supports external URLs (http...), internal tab links (#software), or none.
+ * Build the href/target attributes and CTA label for a highlight link.
+ * Supports external URLs (http...) and internal tab links (#software);
+ * returns null when the item has no link.
  */
 function resolveHighlightLink(item) {
     if (item.link && /^https?:/i.test(item.link)) {
@@ -461,105 +466,19 @@ function resolveHighlightLink(item) {
         const tab = item.link.slice(1);
         return { attrs: `href="${escapeHtml(item.link)}" data-tab="${escapeHtml(tab)}"`, cta: item.linkLabel || 'View' };
     }
-    return { attrs: `href="#news" data-tab="news"`, cta: 'See in News' };
+    return null;
 }
 
 /**
- * Aggregate everything that should appear in the home Highlights:
- *   1. the curated data/highlights.json list, plus
- *   2. any item flagged "featured": true across news, publications,
- *      certificates, projects, and software.
- * Returns a normalized array of card objects, de-duplicated by title.
- */
-function collectHighlights() {
-    const cards = [];
-
-    // 1) Curated highlights.json (already in card shape); featured unless explicitly false
-    (Array.isArray(highlightsData) ? highlightsData : [])
-        .filter(h => h.featured !== false)
-        .forEach(h => cards.push(h));
-
-    // 2) news.json
-    (Array.isArray(newsData) ? newsData : []).filter(i => i.featured).forEach(i => cards.push({
-        type: i.type, date: i.date, icon: i.icon || 'fas fa-newspaper',
-        title: i.title, detail: i.summary || i.details || '',
-        image: i.images && i.images[0] && i.images[0].src,
-        imageAlt: i.images && i.images[0] && i.images[0].alt,
-        fallbackImage: 'assets/images/covers/news-cover.webp',
-        link: i.link, linkLabel: i.linkLabel, softwareId: i.softwareId
-    }));
-
-    // 3) publications.json (all categories)
-    ['journals', 'conferences', 'korean_conferences', 'technical_reports'].forEach(cat => {
-        (publicationsData[cat] || []).filter(p => p.featured).forEach(p => {
-            const venue = p.journal || p.conference || '';
-            const detailBits = [venue];
-            if (p.impactFactor) detailBits.push('IF: ' + p.impactFactor);
-            cards.push({
-                type: 'Publication', date: String(p.year || ''), icon: 'fas fa-file-alt',
-                title: p.title, detail: p.detail || detailBits.filter(Boolean).join(' · '),
-                image: p.image, fallbackImage: 'assets/images/covers/publication-cover.webp',
-                link: p.doi || p.link, linkLabel: p.linkLabel || 'View Paper (DOI)'
-            });
-        });
-    });
-
-    // 4) certificates.json (awards + certifications)
-    ((certificatesData && certificatesData.awards) || []).filter(a => a.featured).forEach(a => cards.push({
-        type: 'Award', date: a.date, icon: a.icon || 'fas fa-trophy',
-        title: a.title, detail: a.description || a.issuer || '',
-        fallbackImage: 'assets/images/covers/certifications-awards-cover.webp',
-        link: '#certifications', linkLabel: 'View Awards'
-    }));
-    ((certificatesData && certificatesData.certifications) || []).filter(c => c.featured).forEach(c => cards.push({
-        type: 'Certificate', date: c.date, icon: 'fas fa-certificate',
-        title: c.title, detail: c.description || c.issuer || '',
-        image: c.image, fallbackImage: 'assets/images/covers/certifications-awards-cover.webp',
-        link: c.verification_url || '#certifications', linkLabel: c.verification_url ? 'Verify' : 'View Certificates'
-    }));
-
-    // 5) projects.json
-    (Array.isArray(projectsData) ? projectsData : []).filter(p => p.featured).forEach(p => cards.push({
-        type: 'Project', date: p.duration || p.status || '', icon: p.icon || 'fas fa-project-diagram',
-        title: p.title, detail: p.description || '',
-        image: p.image, fallbackImage: 'assets/images/covers/projects-cover.webp',
-        link: '#projects', linkLabel: 'View Projects'
-    }));
-
-    // 6) software.json
-    (Array.isArray(softwareData) ? softwareData : []).filter(t => t.featured).forEach(t => {
-        const firstAction = (t.actions || []).find(a => a.variant !== 'sponsor-link' && a.variant !== 'coffee-link');
-        cards.push({
-            type: 'Software', date: t.highlightDate || '', icon: t.navIcon || 'fas fa-laptop-code',
-            title: t.title, detail: t.description || '',
-            image: t.previewImage, fallbackImage: 'assets/images/covers/software-cover.webp',
-            link: t.highlightLink || (firstAction && firstAction.href) || '#software',
-            linkLabel: t.highlightLinkLabel || (firstAction && firstAction.label) || 'View in Software',
-            softwareId: t.id
-        });
-    });
-
-    // De-duplicate by title (case-insensitive); first occurrence wins.
-    const seen = new Set();
-    return cards.filter(c => {
-        const key = (c.title || '').trim().toLowerCase();
-        if (!key || seen.has(key)) return false;
-        seen.add(key);
-        return true;
-    });
-}
-
-/**
- * Render the home Highlights cards.
- * Sourced from data/highlights.json plus any "featured": true item across the
- * other data files. Software items (with a softwareId) reuse the picture and
- * description from data/software.json.
+ * Render the Home highlight cards from the first HIGHLIGHT_COUNT news items.
+ * A card's picture is the item's "thumbnail" when set (a crop that suits the
+ * short card), else its first news image, else its software tool's preview.
  */
 function renderHighlights() {
     const container = document.getElementById('highlights-container');
     if (!container) return;
 
-    const items = collectHighlights();
+    const items = Array.isArray(newsData) ? newsData.slice(0, HIGHLIGHT_COUNT) : [];
     if (items.length === 0) {
         container.innerHTML = '';
         return;
@@ -568,34 +487,36 @@ function renderHighlights() {
     container.innerHTML = items.map(item => {
         const typeClass = newsTypeClass(item.type);
         const software = item.softwareId ? getSoftwareInfo(item.softwareId) : { detail: '', image: null, alt: '' };
+        const firstImage = (Array.isArray(item.images) && item.images[0]) || {};
 
-        const detail = item.detail || software.detail || '';
-        // Image priority: explicit -> software-tab preview -> fallback cover.
-        const imgSrc = item.image || software.image || item.fallbackImage || '';
-        const imgAlt = item.imageAlt || software.alt || item.title || '';
-
-        const { attrs, cta } = resolveHighlightLink(item);
+        const detail = item.summary || item.details || software.detail || '';
+        const imgSrc = item.thumbnail || firstImage.src || software.image || firstImage.fallback || '';
+        const imgAlt = item.thumbnailAlt || firstImage.alt || software.alt || item.title || '';
+        const fallback = firstImage.fallback || '';
 
         const image = imgSrc
             ? `<span class="highlight-thumb">
                 <img src="${escapeHtml(imgSrc)}" alt="${escapeHtml(imgAlt)}" loading="lazy"
-                     ${item.fallbackImage ? `onerror="this.onerror=null;this.src='${escapeHtml(item.fallbackImage)}'"` : ''}>
+                     ${fallback ? `onerror="this.onerror=null;this.src='${escapeHtml(fallback)}'"` : ''}>
                </span>`
             : '';
 
+        const link = resolveHighlightLink(item);
+        const tag = link ? 'a' : 'div';
+
         return `
-            <a class="highlight-card news-type-${typeClass}" ${attrs}>
+            <${tag} class="highlight-card news-type-${typeClass}" ${link ? link.attrs : ''}>
                 ${image}
                 <span class="highlight-body">
                     <span class="highlight-type">
-                        <i class="${escapeHtml(item.icon)} news-icon"></i> ${escapeHtml(item.type)}
+                        <i class="${escapeHtml(item.icon || 'fas fa-newspaper')} news-icon"></i> ${escapeHtml(item.type)}
                         <span class="highlight-date">${escapeHtml(item.date)}</span>
                     </span>
                     <span class="highlight-card-title">${escapeHtml(item.title)}</span>
                     ${detail ? `<span class="highlight-card-detail">${escapeHtml(detail)}</span>` : ''}
-                    <span class="highlight-cta">${escapeHtml(cta)} <i class="fas fa-arrow-right"></i></span>
+                    ${link ? `<span class="highlight-cta">${escapeHtml(link.cta)} <i class="fas fa-arrow-right"></i></span>` : ''}
                 </span>
-            </a>
+            </${tag}>
         `;
     }).join('');
 }
@@ -725,7 +646,7 @@ const CONFIG = {
     debounceDelay: 150
 };
 
-const VALID_TABS = ['home', 'news', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
+const VALID_TABS = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
 
 // Measure the fixed header and expose it as --header-height so the page content
 // (tab covers) starts exactly where the header ends, with no gap in between.
@@ -804,7 +725,6 @@ let certificatesData = {};
 let seminarsData = [];
 let skillsData = {};
 let newsData = [];
-let highlightsData = [];
 let softwareData = [];
 let collaborationsData = null;
 let scholarData = null;
@@ -825,7 +745,6 @@ async function loadDataFromJSON() {
         loadCertificatesData(),
         loadSeminarsData(),
         loadNewsData(),
-        loadHighlightsData(),
         loadSoftwareData(),
         loadCollaborationsData(),
         loadScholarData()
@@ -1201,25 +1120,6 @@ async function loadNewsData() {
 }
 
 /**
- * Load home highlights data from JSON
- */
-async function loadHighlightsData() {
-    try {
-        const response = await fetch('data/highlights.json');
-        if (response.ok) {
-            highlightsData = await response.json();
-            console.log('✅ Highlights data loaded successfully');
-        } else {
-            console.error('❌ Could not load highlights.json');
-            highlightsData = [];
-        }
-    } catch (error) {
-        console.error('❌ Error loading highlights.json:', error);
-        highlightsData = [];
-    }
-}
-
-/**
  * Load software/tools data from JSON
  */
 async function loadSoftwareData() {
@@ -1247,10 +1147,6 @@ const PAGE_METADATA = {
     home: {
         title: 'Saddiq Ur Rehman - BIM, XR & Modular Construction Research',
         description: 'Official academic portfolio of Saddiq Ur Rehman, PhD in Architecture from Kyung Hee University, researching BIM, XR, DfMA, modular construction, digital twins, AI, and BIM-to-Unity workflows.'
-    },
-    news: {
-        title: 'News - Saddiq Ur Rehman',
-        description: 'Latest research news, journal and conference publications, software releases, and academic milestones from Saddiq Ur Rehman in BIM, XR, and modular construction.'
     },
     education: {
         title: 'Education - Saddiq Ur Rehman',
@@ -1373,7 +1269,6 @@ function showTab(tabName) {
     // Update document title and URL hash
     const titleMap = {
         home: 'Home',
-        news: 'News',
         education: 'Education',
         experience: 'Experience',
         publications: 'Publications',
@@ -1453,9 +1348,6 @@ function initializeTabFromHash() {
  */
 function loadTabContent(tabName) {
     switch (tabName) {
-        case 'news':
-            renderNewsTab();
-            break;
         case 'experience':
             loadExperienceContent();
             break;
@@ -3210,8 +3102,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Initialize tab from URL hash on page load
     initializeTabFromUrl();
     
-    // Render home highlights (featured items; data already loaded)
+    // Render the Home news: the first few items as highlight cards, the rest
+    // as a list below them (data already loaded)
     renderHighlights();
+    renderNewsList();
 
     // Populate the Google Scholar metrics card, then keep a long-lived tab in
     // step with the 6-hourly server-side refresh

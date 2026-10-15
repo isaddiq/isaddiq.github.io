@@ -428,16 +428,6 @@
           <button
             type="button"
             class="nav-btn"
-            data-tab="news"
-            aria-label="Navigate to News"
-            data-nav-label="News"
-          >
-            <i class="fas fa-newspaper"></i>
-            <span>News</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
             data-tab="education"
             aria-label="Navigate to Education"
             data-nav-label="Education"
@@ -772,48 +762,39 @@
             </div>
           </div>
 
-          <!-- Highlights Section -->
+          <!-- Highlights Section: the first 4 items of data/news.json -->
           <div class="news-section">
             <div class="news-section-header">
               <h3 class="section-title news-title">Highlights</h3>
-              <button type="button" class="news-viewall-link" data-tab="news">
-                View all news <i class="fas fa-arrow-right"></i>
-              </button>
             </div>
             <div
               class="highlights-grid"
               id="highlights-container"
               aria-label="Highlights"
             >
-              <!-- Featured highlight cards generated dynamically -->
+              <!-- Highlight cards generated dynamically -->
               <div class="news-loading">Loading highlights...</div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- News Tab -->
-      <div id="news" class="tab-content">
-        <div class="tab-cover news-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">News</h1>
+          <!-- News Section: the rest of data/news.json, below the highlights -->
+          <div class="news-section" id="news-list-section">
+            <div class="news-section-header">
+              <h3 class="section-title news-title">News</h3>
+              <button
+                type="button"
+                class="news-toggle-all"
+                data-news-toggle-all
+                aria-expanded="false"
+              >
+                <i class="fas fa-chevron-down"></i> Show all
+              </button>
+            </div>
+            <div id="news-accordion" class="news-accordion">
+              <!-- News items generated dynamically -->
+              <div class="news-loading">Loading news...</div>
+            </div>
           </div>
-        </div>
-
-        <div class="news-tab-controls">
-          <button
-            type="button"
-            class="news-toggle-all"
-            data-news-toggle-all
-            aria-expanded="false"
-          >
-            <i class="fas fa-chevron-down"></i> Show all
-          </button>
-        </div>
-
-        <div id="news-accordion" class="news-accordion">
-          <!-- News items will be dynamically loaded here -->
-          <div class="news-loading">Loading news...</div>
         </div>
       </div>
 

@@ -26,7 +26,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |-- data/                   # Dynamic JSON data repository
 |   |-- certificates.json   # Academic awards, scholarships, and reviewer certificates
 |   |-- experience.json     # Chronological academic and industry experience lists
-|   |-- news.json           # Timeline updates
+|   |-- news.json           # News; the first 4 are the Home highlights
 |   |-- projects.json       # Research projects
 |   |-- publications.json   # Journals, conferences, and reports
 |   |-- scholar.json        # Google Scholar metrics (refreshed automatically)
@@ -58,7 +58,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 
 ### 📋 Website Sections
 
-1. **🏠 Home**: Profile introduction, research interests, and dynamic news timeline
+1. **🏠 Home**: Profile introduction, research interests, highlights (the 4 latest news items), and the rest of the news below them
 2. **🎓 Education**: Academic background and credentials
 3. **💼 Experience**: Professional and research history timeline
 4. **📚 Publications**: Organized display of research papers with dynamic IF, quartile, and category badges
@@ -83,7 +83,7 @@ git clone https://github.com/isaddiq/isaddiq.github.io.git
 
 Customize the JSON files under the `data/` directory to update your profile data:
 
-- **`data/news.json`**: List timeline updates. Properties include `type` (e.g., Publication, PhD), `date`, `icon` (FontAwesome classes), `title`, `details`, and `importance` ("high" or "medium").
+- **`data/news.json`**: News, newest at the top. The first 4 entries are shown as the Home highlight cards and the rest are listed below them, so adding an item at the top pushes the oldest highlight into the list. Properties include `type` (e.g., Publication, PhD), `date`, `icon` (FontAwesome classes), `title`, `summary` (also the highlight card text), `details`, `link`/`linkLabel`, `images`, an optional `thumbnail`/`thumbnailAlt` for the highlight card, and `importance` ("high" or "medium").
 - **`data/publications.json`**: Group papers under `journals`, `conferences`, `korean_conferences`, or `technical_reports`. Define key details like `impactFactor`, `quartile` (e.g., Q1), `category` (SCIE, KCI), `doi` URL, and custom `badges`.
 - **`data/projects.json`**: List research projects with titles, durations, funding agencies, descriptions, and roles.
 - **`data/experience.json`**: Add your academic and professional history under `academic_experience` or `industry_experience`.

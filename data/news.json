@@ -4,12 +4,14 @@
     "date": "2026/10",
     "icon": "fas fa-file-alt",
     "type": "Publication",
-    "title": "'Implementation of an integrated DfX approach for modular high-rise residential construction' published in the Journal of Civil Engineering and Management",
+    "title": "Implementation of an integrated DfX approach for modular high-rise residential construction",
     "summary": "Published in the Journal of Civil Engineering and Management, 32(7), 939-972, as corresponding author.",
-    "details": "The paper 'Implementation of an integrated DfX approach for modular high-rise residential construction' is now published in the Journal of Civil Engineering and Management, 32(7), 939-972, where I am a corresponding author. It presents a lifecycle control framework that coordinates DfMA, DfS, DfU, and DfSu through rules, verification gates, and feedback loops, applied to a 13-story modular residential project in South Korea.",
+    "details": "The paper 'Implementation of an integrated DfX approach for modular high-rise residential construction', accepted in June 2026, is now published in the Journal of Civil Engineering and Management, 32(7), 939-972, where I am a corresponding author. It presents a lifecycle control framework that coordinates DfMA, DfS, DfU, and DfSu through rules, verification gates, and feedback loops, applied to a 13-story modular residential project in South Korea.",
     "importance": "high",
     "link": "https://doi.org/10.3846/jcem.2026.28640",
     "linkLabel": "View Paper (DOI)",
+    "thumbnail": "assets/images/news/jcem-dfx-modular-highrise-thumb.jpg",
+    "thumbnailAlt": "Rendered view of the 13-story modular high-rise residential building with 106 modular housing units",
     "images": [
       {
         "src": "assets/images/news/jcem-dfx-modular-highrise.jpg",
@@ -17,8 +19,7 @@
         "caption": "Case project: rendered view and site of the modular high-rise residential building (Journal of Civil Engineering and Management, 32(7), 939-972)",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 11,
@@ -38,8 +39,7 @@
         "caption": "Kyung Hee University, 2025학년도 후기 학위수여식: Best Academic Award (우수학술상 수여)",
         "fallback": "assets/images/covers/education-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 10,
@@ -59,37 +59,19 @@
         "caption": "Graduate School of Kyung Hee University: 2025 Fall Semester Best Academic Award announcement",
         "fallback": "assets/images/covers/certifications-awards-cover.webp"
       }
-    ],
-    "featured": false
-  },
-  {
-    "id": 9,
-    "date": "2026/06",
-    "icon": "fas fa-file-alt",
-    "type": "Publication",
-    "title": "Implementation of an Integrated DfX Approach for Modular High-Rise Residential Construction",
-    "summary": "Accepted in the Journal of Civil Engineering and Management.",
-    "details": "The paper 'Implementation of an Integrated DfX Approach for Modular High-Rise Residential Construction' has been accepted in the Journal of Civil Engineering and Management.",
-    "importance": "high",
-    "images": [
-      {
-        "src": "assets/images/covers/publication-cover.webp",
-        "alt": "Publication acceptance announcement",
-        "caption": "Journal of Civil Engineering and Management",
-        "fallback": "assets/images/covers/publication-cover.webp"
-      }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 1,
     "date": "2026/04",
     "icon": "fas fa-file-alt",
     "type": "Publication",
-    "title": "'Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics' accepted in Automation in Construction",
-    "summary": "New journal acceptance in Automation in Construction (IF: 12.6).",
-    "details": "A cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics has been accepted in Automation in Construction. The work extends the BIMUniXchange pipeline toward fully semantic, immersive AEC workflows across Revit, ArchiCAD, and Unity.",
+    "title": "Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics",
+    "summary": "Published in Automation in Construction (IF: 12.6).",
+    "details": "A cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics, accepted in April 2026, is published in Automation in Construction, 188, 106994. The work extends the BIMUniXchange pipeline toward fully semantic, immersive AEC workflows across Revit, ArchiCAD, and Unity.",
     "importance": "high",
+    "link": "https://doi.org/10.1016/j.autcon.2026.106994",
+    "linkLabel": "View Paper (DOI)",
     "images": [
       {
         "src": "assets/images/software/bimunixchange-aec-to-xr-pipeline.png",
@@ -97,8 +79,7 @@
         "caption": "Automation in Construction (IF: 12.6)",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 2,
@@ -116,8 +97,7 @@
         "caption": "Kyung Hee University, Department of Architecture",
         "fallback": "assets/images/covers/education-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 3,
@@ -134,8 +114,7 @@
         "alt": "BIM network graph and semantic data visualization",
         "caption": "Automation in Construction (IF: 12.6)"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 4,
@@ -155,8 +134,7 @@
         "caption": "ReUniXchange v1.2.0 - Revit to Unity",
         "fallback": "assets/images/covers/software-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 5,
@@ -174,8 +152,7 @@
         "caption": "ICCEPM 2025",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 6,
@@ -195,8 +172,7 @@
         "caption": "Automation in Construction (IF: 12.6)",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 7,
@@ -214,8 +190,7 @@
         "caption": "Creative Construction Conference 2025",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   },
   {
     "id": 8,
@@ -235,7 +210,6 @@
         "caption": "Journal of Computational Design and Engineering",
         "fallback": "assets/images/covers/publication-cover.webp"
       }
-    ],
-    "featured": false
+    ]
   }
 ]
