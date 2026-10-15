@@ -20,8 +20,7 @@
       "doi": "https://doi.org/10.3846/jcem.2026.28640",
       "badges": [
         "Corresponding author"
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "journal_2026_02",
@@ -39,8 +38,7 @@
       "impactFactor": 12.6,
       "quartile": "Q1",
       "category": "SCIE",
-      "doi": "https://doi.org/10.1016/j.autcon.2026.106994",
-      "featured": false
+      "doi": "https://doi.org/10.1016/j.autcon.2026.106994"
     },
     {
       "id": "journal_2025_01",
@@ -59,8 +57,7 @@
       "impactFactor": 12.6,
       "quartile": "Q1",
       "category": "SCIE",
-      "doi": "https://doi.org/10.1016/j.autcon.2025.106601",
-      "featured": false
+      "doi": "https://doi.org/10.1016/j.autcon.2025.106601"
     },
     {
       "id": "journal_2025_01",
@@ -78,8 +75,7 @@
       "impactFactor": 12.6,
       "quartile": "Q1",
       "category": "SCIE",
-      "doi": "https://doi.org/10.1016/j.autcon.2025.106409",
-      "featured": false
+      "doi": "https://doi.org/10.1016/j.autcon.2025.106409"
     },
     {
       "id": "journal_2025_02",
@@ -97,8 +93,7 @@
       "impactFactor": 6.8,
       "quartile": "Q1",
       "category": "SCIE",
-      "doi": "https://doi.org/10.1093/jcde/qwaf030",
-      "featured": false
+      "doi": "https://doi.org/10.1093/jcde/qwaf030"
     },
     {
       "id": "journal_2024_01",
@@ -120,8 +115,7 @@
       "doi": "https://doi.org/10.1093/jcde/qwae041",
       "badges": [
         "Corresponding author"
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "journal_2023_01",
@@ -142,8 +136,7 @@
       "doi": "https://doi.org/10.1093/jcde/qwad100",
       "badges": [
         "Editor's Choice"
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "journal_2020_01",
@@ -161,8 +154,7 @@
       "volume": "11",
       "pages": "1278-1283",
       "impactFactor": 1.1,
-      "doi": "https://www.researchgate.net/publication/339297221_Mechanical_Properties_of_Polyethylene-Sand_Blocks_Produced_from_Recycled_Plastic_Bags",
-      "featured": false
+      "doi": "https://www.researchgate.net/publication/339297221_Mechanical_Properties_of_Polyethylene-Sand_Blocks_Produced_from_Recycled_Plastic_Bags"
     }
   ],
   "conferences": [
@@ -182,8 +174,7 @@
       "date": "November 17-20, 2025",
       "doi": "https://www.kicem.or.kr/pages_publications/iccepm_journal.vm",
       "type": "Conference Paper",
-      "pages": "400-407",
-      "featured": false
+      "pages": "400-407"
     },
     {
       "id": "conf_2025_01",
@@ -200,8 +191,7 @@
       "date": "June. 14-June.17, 2025",
       "doi": "https://doi.org/10.22260/CCC2025/0054",
       "type": "Oral Presentation",
-      "pages": "446-454",
-      "featured": false
+      "pages": "446-454"
     },
     {
       "id": "conf_2024_02",
@@ -217,8 +207,7 @@
       "date": "Jul. 29-Aug.1, 2024",
       "doi": "https://doi.org/10.6106/ICCEPM.2024.0070",
       "type": "Oral Presentation",
-      "pages": "445-452",
-      "featured": false
+      "pages": "445-452"
     },
     {
       "id": "conf_2022_01",
@@ -235,8 +224,7 @@
       "date": "August 2022",
       "doi": "https://doi.org/10.1007/978-3-031-13588-0_65",
       "type": "Conference Proceedings",
-      "pages": "749-759",
-      "featured": false
+      "pages": "749-759"
     },
     {
       "id": "conf_2021_01",
@@ -254,8 +242,7 @@
       "date": "2021",
       "doi": "https://gamelab.us.edu.pl/wp-content/uploads/2022/01/1_AFGS-proceeding-v5-20211204.pdf",
       "type": "Conference Paper",
-      "pages": "122-132",
-      "featured": false
+      "pages": "122-132"
     },
     {
       "id": "conf_2019_01",
@@ -274,8 +261,7 @@
       "date": "October 29-31, 2019",
       "doi": "",
       "type": "Conference Presentation",
-      "pages": "",
-      "featured": false
+      "pages": ""
     },
     {
       "id": "conf_2019_02",
@@ -293,8 +279,7 @@
       "date": "August 01, 2019",
       "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
       "type": "Conference Presentation",
-      "pages": "227-232",
-      "featured": false
+      "pages": "227-232"
     },
     {
       "id": "conf_2019_03",
@@ -314,8 +299,7 @@
       "date": "August 01, 2019",
       "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
       "type": "Conference Presentation",
-      "pages": "398-404",
-      "featured": false
+      "pages": "398-404"
     },
     {
       "id": "conf_2019_04",
@@ -336,8 +320,7 @@
       "date": "August 01, 2019",
       "doi": "https://csce.cust.edu.pk/archive/1st%20Conference%20on%20Sustainability%20in%20Civil%20Engineering,%20August%2001,%202019%20(Proceeding%20Book).pdf",
       "type": "Conference Presentation",
-      "pages": "412-419",
-      "featured": false
+      "pages": "412-419"
     },
     {
       "id": "conf_2019_05",
@@ -356,8 +339,7 @@
       "doi": "https://uow.edu.pk/pakturk/content/2nd%20Pak-Turk%20International%20%20Conference%20Proceedings.pdf",
       "type": "Conference Presentation",
       "pages": "103-108",
-      "abstract": "Implementation strategy of BIM for modeling and construction planning of reinforced concrete sandwich panels.",
-      "featured": false
+      "abstract": "Implementation strategy of BIM for modeling and construction planning of reinforced concrete sandwich panels."
     },
     {
       "id": "conf_2019_06",
@@ -376,8 +358,7 @@
       "doi": "https://uow.edu.pk/pakturk/content/2nd%20Pak-Turk%20International%20%20Conference%20Proceedings.pdf",
       "type": "Conference Presentation",
       "pages": "55-62",
-      "abstract": "Presents finite element simulations to analyze behavior of traditional brick masonry under various loads.",
-      "featured": false
+      "abstract": "Presents finite element simulations to analyze behavior of traditional brick masonry under various loads."
     },
     {
       "id": "conf_2019_07",
@@ -398,8 +379,7 @@
       "doi": "https://www.researchgate.net/publication/332245688_Geotechnical_Sub_soil_Profiling_Using_Geographic_Information_System",
       "type": "Conference Presentation",
       "pages": "",
-      "abstract": "Geotechnical profiling integrated with GIS tools to support disaster resilience and site planning.",
-      "featured": false
+      "abstract": "Geotechnical profiling integrated with GIS tools to support disaster resilience and site planning."
     }
   ],
   "korean_conferences": [
@@ -416,8 +396,7 @@
       "volume": "Vol. 19 (S19-1)",
       "pages": "201-203",
       "language": "Korean",
-      "type": "Short Paper",
-      "featured": false
+      "type": "Short Paper"
     },
     {
       "id": "korean_2023_01",
@@ -432,8 +411,7 @@
       "volume": "Vol. 11 (S1-52)",
       "pages": "83-85",
       "language": "Korean",
-      "type": "Short Paper",
-      "featured": false
+      "type": "Short Paper"
     },
     {
       "id": "korean_2023_02",
@@ -449,8 +427,7 @@
       "volume": "",
       "pages": "230-232",
       "language": "Korean",
-      "type": "Conference Presentation",
-      "featured": false
+      "type": "Conference Presentation"
     },
     {
       "id": "korean_2023_03",
@@ -465,8 +442,7 @@
       "volume": "Vol. 2 (S2-2)",
       "pages": "13-15",
       "language": "Korean",
-      "type": "Short Paper (Best Paper Award)",
-      "featured": false
+      "type": "Short Paper (Best Paper Award)"
     },
     {
       "id": "korean_2022_01",
@@ -482,8 +458,7 @@
       "volume": "4(O-33)",
       "pages": "",
       "language": "Korean",
-      "type": "Student Conference Presentation",
-      "featured": false
+      "type": "Student Conference Presentation"
     },
     {
       "id": "korean_2022_02",
@@ -500,8 +475,7 @@
       "volume": "",
       "pages": "4-7",
       "language": "Korean",
-      "type": "Conference Presentation",
-      "featured": false
+      "type": "Conference Presentation"
     },
     {
       "id": "korean_2022_03",
@@ -518,8 +492,7 @@
       "volume": "Vol. 3 (S3-4)",
       "pages": "45-47",
       "language": "Korean",
-      "type": "Short Paper (Best Paper Award)",
-      "featured": false
+      "type": "Short Paper (Best Paper Award)"
     },
     {
       "id": "korean_2022_04",
@@ -536,8 +509,7 @@
       "volume": "Vol. 15 (S15-1)",
       "pages": "147-148",
       "language": "Korean",
-      "type": "Short Paper (Best Paper Award)",
-      "featured": false
+      "type": "Short Paper (Best Paper Award)"
     },
     {
       "id": "korean_2021_01",
@@ -553,8 +525,7 @@
       "volume": "",
       "pages": "",
       "language": "Korean",
-      "type": "Short Paper",
-      "featured": false
+      "type": "Short Paper"
     }
   ],
   "technical_reports": [
@@ -575,8 +546,7 @@
       "language": "Korean",
       "doi": "http://doi.org/10.13140/RG.2.2.15341.24808",
       "link": "https://www.buildingsmart.or.kr/Home/TheBIM?eYear=2025&eTypeNum=31",
-      "linkLabel": "View The BIM 31",
-      "featured": false
+      "linkLabel": "View The BIM 31"
     },
     {
       "id": "report_2024_01",
@@ -594,8 +564,7 @@
       "language": "Korean",
       "doi": "http://doi.org/10.13140/RG.2.2.16750.32327",
       "link": "https://www.buildingsmart.or.kr/Home/TheBIM?eYear=2024&eTypeNum=29",
-      "linkLabel": "View The BIM 29",
-      "featured": false
+      "linkLabel": "View The BIM 29"
     },
     {
       "id": "report_2023_01",
@@ -613,8 +582,7 @@
       "language": "Korean",
       "doi": "http://doi.org/10.13140/RG.2.2.33527.53927",
       "link": "https://www.buildingsmart.or.kr/Home/TheBIM?eYear=2023&eTypeNum=27",
-      "linkLabel": "View The BIM 27",
-      "featured": false
+      "linkLabel": "View The BIM 27"
     }
   ]
 }

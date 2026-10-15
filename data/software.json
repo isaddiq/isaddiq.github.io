@@ -7,8 +7,6 @@
       "title": "ReUniXchange",
       "description": "Data exchange platform for BIM interoperability and standardized information sharing across AEC workflows.",
       "previewImage": "assets/images/covers/software-cover.webp",
-      "highlightLink": "https://apps.autodesk.com/RVT/en/Detail/Index?id=6622158299438821562&appLang=en&os=Win64",
-      "highlightLinkLabel": "View on Autodesk App Store",
       "badges": [
         {
           "label": "Data Exchange",
@@ -143,8 +141,7 @@
           "src": "https://www.youtube.com/embed/CQp8Uhdefsk?start=39",
           "iframeTitle": "ReUnixchange Plugin Demo"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "ai-chatbot",
@@ -255,8 +252,7 @@
           "alt": "BIM Network Graph Visualization",
           "imageClass": "media-image-full"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "bimunixchange",
@@ -396,8 +392,7 @@
           "alt": "BIMUniXchange AEC-to-XR Pipeline",
           "imageClass": "media-image-contain"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "bim-vr-4d-simulation",
@@ -512,8 +507,7 @@
           "src": "https://www.youtube.com/embed/KIq9kNzj4Qk",
           "iframeTitle": "BIM-VR 4D Simulation Demo"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "bim-mr-modular-construction",
@@ -632,8 +626,7 @@
           "src": "https://www.youtube.com/embed/-vKk2hvBr80",
           "iframeTitle": "BIM-MR Modular Construction Demo"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "ifcexplorer",
@@ -781,8 +774,7 @@
           "alt": "IFCExplorer Web Viewer Screenshot",
           "imageClass": "media-image-contain"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "ifc2unity",
@@ -912,8 +904,7 @@
           "alt": "Ifc2Unity Unity Editor Window",
           "imageClass": "media-image-contain"
         }
-      ],
-      "featured": false
+      ]
     },
     {
       "id": "ifcusd",
@@ -1056,8 +1047,7 @@
           "alt": "IfcUSD IFC to OpenUSD converter preview",
           "imageClass": "media-image-contain"
         }
-      ],
-      "featured": false
+      ]
     }
   ]
 }

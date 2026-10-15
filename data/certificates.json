@@ -8,8 +8,7 @@
       "date": "2026",
       "type": "National Recognition",
       "description": "Selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements.",
-      "icon": "fas fa-star",
-      "featured": false
+      "icon": "fas fa-star"
     },
     {
       "id": "award_005",
@@ -19,8 +18,7 @@
       "date": "2026",
       "type": "Academic Award",
       "description": "Selected for the Best Academic Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
-      "icon": "fas fa-award",
-      "featured": false
+      "icon": "fas fa-award"
     },
     {
       "id": "award_001",
@@ -30,8 +28,7 @@
       "date": "2021–2024",
       "type": "Scholarship",
       "description": "Merit-based full scholarship covering tuition and research expenses for PhD studies",
-      "icon": "fas fa-trophy",
-      "featured": false
+      "icon": "fas fa-trophy"
     },
     {
       "id": "award_002",
@@ -41,8 +38,7 @@
       "date": "2023",
       "type": "Recognition",
       "description": "Outstanding research contribution in computational design and engineering",
-      "icon": "fas fa-medal",
-      "featured": false
+      "icon": "fas fa-medal"
     },
     {
       "id": "award_003",
@@ -52,8 +48,7 @@
       "date": "2023",
       "type": "Publication Award",
       "description": "Selected as Editor's Choice for exceptional research quality and impact",
-      "icon": "fas fa-star",
-      "featured": false
+      "icon": "fas fa-star"
     },
     {
       "id": "award_004",
@@ -63,8 +58,7 @@
       "date": "2022",
       "type": "Recognition",
       "description": "Outstanding research contribution in computational design and engineering",
-      "icon": "fas fa-medal",
-      "featured": false
+      "icon": "fas fa-medal"
     }
   ],
   "certifications": [
@@ -84,8 +78,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06-UQU",
-      "featured": false
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06-UQU"
     },
     {
       "id": "cert_029",
@@ -103,8 +96,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06",
-      "featured": false
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06"
     },
     {
       "id": "cert_028",
@@ -122,8 +114,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "SPRINGER-NATURE-REVIEW-2026-09-08",
-      "featured": false
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-09-08"
     },
     {
       "id": "cert_027",
@@ -141,8 +132,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "SPRINGER-NATURE-REVIEW-2026-05-08",
-      "featured": false
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-05-08"
     },
     {
       "id": "cert_026",
@@ -160,8 +150,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "SPRINGER-NATURE-REVIEW-2026-04-16",
-      "featured": false
+      "credential_id": "SPRINGER-NATURE-REVIEW-2026-04-16"
     },
     {
       "id": "cert_025",
@@ -179,8 +168,7 @@
         "Scholarly Service"
       ],
       "verification_url": "",
-      "credential_id": "ELSEVIER-REVIEW-2026",
-      "featured": false
+      "credential_id": "ELSEVIER-REVIEW-2026"
     },
     {
       "id": "cert_024",
@@ -198,8 +186,7 @@
         "Global Construction Research"
       ],
       "verification_url": "",
-      "credential_id": "ICCEPM-2025-001",
-      "featured": false
+      "credential_id": "ICCEPM-2025-001"
     },
     {
       "id": "cert_016",
@@ -217,8 +204,7 @@
         "Unity Engine"
       ],
       "verification_url": "https://www.credly.com/go/6oAHif40",
-      "credential_id": "UNITY-VR-2025-001",
-      "featured": false
+      "credential_id": "UNITY-VR-2025-001"
     },
     {
       "id": "cert_021",
@@ -236,8 +222,7 @@
         "Object-Oriented Programming"
       ],
       "verification_url": "https://www.credly.com/go/hw9k4M8co",
-      "credential_id": "UNITY-JP-2024-001",
-      "featured": false
+      "credential_id": "UNITY-JP-2024-001"
     },
     {
       "id": "cert_020",
@@ -255,8 +240,7 @@
         "Unity Creative Tools"
       ],
       "verification_url": "https://www.credly.com/go/oayJ8M5n",
-      "credential_id": "UNITY-CC-2024-001",
-      "featured": false
+      "credential_id": "UNITY-CC-2024-001"
     },
     {
       "id": "cert_018",
@@ -274,8 +258,7 @@
         "Technical Communication"
       ],
       "verification_url": "",
-      "credential_id": "ICCEPM-2024-001",
-      "featured": false
+      "credential_id": "ICCEPM-2024-001"
     },
     {
       "id": "cert_019",
@@ -293,8 +276,7 @@
         "Asset Management"
       ],
       "verification_url": "https://www.credly.com/go/e76t33q0",
-      "credential_id": "UNITY-ESS-2024-001",
-      "featured": false
+      "credential_id": "UNITY-ESS-2024-001"
     },
     {
       "id": "cert_023",
@@ -312,8 +294,7 @@
         "Computational Design"
       ],
       "verification_url": "",
-      "credential_id": "CDE-BEST-2023-001",
-      "featured": false
+      "credential_id": "CDE-BEST-2023-001"
     },
     {
       "id": "cert_022",
@@ -331,8 +312,7 @@
         "Computational Design"
       ],
       "verification_url": "",
-      "credential_id": "CDE-BEST-2022-001",
-      "featured": false
+      "credential_id": "CDE-BEST-2022-001"
     },
     {
       "id": "cert_013",
@@ -350,8 +330,7 @@
         "Data Processing"
       ],
       "verification_url": "https://coursera.org/verify/Q84XR3EEYFVB",
-      "credential_id": "Q84XR3EEYFVB",
-      "featured": false
+      "credential_id": "Q84XR3EEYFVB"
     },
     {
       "id": "cert_012",
@@ -369,8 +348,7 @@
         "Software Development"
       ],
       "verification_url": "https://coursera.org/verify/54A9MT7RGAH4",
-      "credential_id": "54A9MT7RGAH4",
-      "featured": false
+      "credential_id": "54A9MT7RGAH4"
     },
     {
       "id": "cert_014",
@@ -388,8 +366,7 @@
         "Software Fundamentals"
       ],
       "verification_url": "https://coursera.org/verify/ZVBF4P6XELXC",
-      "credential_id": "ZVBF4P6XELXC",
-      "featured": false
+      "credential_id": "ZVBF4P6XELXC"
     },
     {
       "id": "cert_009",
@@ -407,8 +384,7 @@
         "Research Publication"
       ],
       "verification_url": "https://www.ijser.org",
-      "credential_id": "IJSER-2020-001",
-      "featured": false
+      "credential_id": "IJSER-2020-001"
     },
     {
       "id": "cert_010",
@@ -426,8 +402,7 @@
         "Digital Project Coordination"
       ],
       "verification_url": "https://coursera.org/verify/LFNEGNCVEUK2",
-      "credential_id": "LFNEGNCVEUK2",
-      "featured": false
+      "credential_id": "LFNEGNCVEUK2"
     },
     {
       "id": "cert_017",
@@ -445,8 +420,7 @@
         "Civil Engineering"
       ],
       "verification_url": "",
-      "credential_id": "UET-SURVEY-2018",
-      "featured": false
+      "credential_id": "UET-SURVEY-2018"
     },
     {
       "id": "cert_011",
@@ -464,8 +438,7 @@
         "MS Office Suite"
       ],
       "verification_url": "https://verify.certiport.com",
-      "credential_id": "wdEKT-HaXp",
-      "featured": false
+      "credential_id": "wdEKT-HaXp"
     }
   ]
 }

@@ -23,7 +23,6 @@
         "Indoor Positioning Systems",
         "Multi-robot Orchestration"
       ],
-      "featured": false,
       "supervisor": "Professor Inhan Kim"
     },
     {
@@ -50,7 +49,6 @@
         "XR",
         "Game Engine"
       ],
-      "featured": false,
       "supervisor": "Professor Inhan Kim"
     },
     {
@@ -76,7 +74,6 @@
         "Revit Plugin",
         "Cloud Computing"
       ],
-      "featured": false,
       "supervisor": "Professor Inhan Kim"
     },
     {
@@ -101,7 +98,6 @@
         "Model Checking",
         "Automated Drawing Generation"
       ],
-      "featured": false,
       "supervisor": "Professor Inhan Kim"
     },
     {
@@ -174,7 +170,6 @@
         "Facade and floor plan design guidance",
         "Final architectural renderings and performance visualizations"
       ],
-      "featured": false,
       "supervisor": "Professor Dongil Kim"
     },
     {
@@ -248,7 +243,6 @@
         "Physical prototypes",
         "Installed bending-active architectural system"
       ],
-      "featured": false,
       "supervisor": "Professor Dongil Kim"
     }
   ],
