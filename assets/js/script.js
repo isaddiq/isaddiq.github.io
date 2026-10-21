@@ -155,13 +155,7 @@ function closeMobileMenuOnNavClick() {
  * Initialize tab from URL hash on page load
  */
 function initializeTabFromUrl() {
-    const hash = location.hash.replace('#', '') || 'home';
-    
-    if (VALID_TABS.includes(hash)) {
-        showTab(hash);
-    } else {
-        showTab('home');
-    }
+    showTab(resolveTabName(location.hash.replace('#', '')));
 }
 
 /**
@@ -455,7 +449,7 @@ function getSoftwareInfo(id) {
 
 /**
  * Build the href/target attributes and CTA label for a highlight link.
- * Supports external URLs (http...) and internal tab links (#software);
+ * Supports external URLs (http...) and internal tab links (#tools);
  * returns null when the item has no link.
  */
 function resolveHighlightLink(item) {
@@ -646,7 +640,19 @@ const CONFIG = {
     debounceDelay: 150
 };
 
-const VALID_TABS = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'software', 'certifications', 'activities', 'contact'];
+const VALID_TABS = ['home', 'education', 'experience', 'publications', 'projects', 'skills', 'tools', 'certifications', 'activities', 'contact'];
+
+// Old hashes that still resolve to their renamed tab (e.g. #software -> #tools).
+const TAB_ALIASES = { software: 'tools' };
+
+/**
+ * Map a URL hash to a valid tab name, honouring renamed-tab aliases.
+ * @param {string} hash - Hash without the leading '#'
+ */
+function resolveTabName(hash) {
+    const name = TAB_ALIASES[hash] || hash;
+    return VALID_TABS.includes(name) ? name : 'home';
+}
 
 // Measure the fixed header and expose it as --header-height so the page content
 // (tab covers) starts exactly where the header ends, with no gap in between.
@@ -1168,9 +1174,9 @@ const PAGE_METADATA = {
         title: 'Skills - Saddiq Ur Rehman',
         description: 'Technical skills in BIM software, Unity, Python, C#, AI, machine learning, Revit, Navisworks, IFC, XR, and construction informatics.'
     },
-    software: {
-        title: 'BIM Software - Saddiq Ur Rehman',
-        description: 'BIM and XR tools by Saddiq Ur Rehman, including RoboAccess BIM, ReUniXchange, BIMUniXchange, IFCExplorer, Ifc2Unity, BIM network graphs, and Unity BIM workflows.'
+    tools: {
+        title: 'Tools - Saddiq Ur Rehman',
+        description: 'BIM, robotics, and XR tools, web apps, and frameworks by Saddiq Ur Rehman, including BIM2Bot Lab, RoboAccess BIM, ReUniXchange, BIMUniXchange, IFCExplorer, Ifc2Unity, BIM network graphs, and Unity BIM workflows.'
     },
     certifications: {
         title: 'Certifications and Awards - Saddiq Ur Rehman',
@@ -1215,8 +1221,7 @@ function updatePageMetadata(tabName, fallbackSectionTitle) {
  * Get current tab from URL hash or default to 'home'
  */
 function getCurrentTab() {
-    const hash = window.location.hash.slice(1);
-    return VALID_TABS.includes(hash) ? hash : 'home';
+    return resolveTabName(window.location.hash.slice(1));
 }
 
 /**
@@ -1274,7 +1279,7 @@ function showTab(tabName) {
         publications: 'Publications',
         projects: 'Projects',
         skills: 'Skills',
-        software: 'Software',
+        tools: 'Tools',
         certifications: 'Certifications & Awards',
         activities: 'Activities',
         contact: 'Contact'
@@ -1364,7 +1369,7 @@ function loadTabContent(tabName) {
         case 'certifications':
             loadCertificatesContent();
             break;
-        case 'software':
+        case 'tools':
             initializeSoftwareTools();
             break;
         case 'activities':
@@ -3343,10 +3348,19 @@ function renderSoftwareTool(tool, active) {
 
     const sections = (tool.sections || []).map(renderSoftwareSection).join('');
 
+    // Optional wordmark, with a separate file for the dark theme.
+    const logo = tool.logo;
+    const logoAlt = escapeHtml((logo && logo.alt) || tool.title);
+    const logoHtml = logo && logo.light ? `<div class="tool-logo">
+                    <img src="${escapeHtml(logo.light)}" alt="${logoAlt}" class="tool-logo-light">
+                    ${logo.dark ? `<img src="${escapeHtml(logo.dark)}" alt="${logoAlt}" class="tool-logo-dark">` : ''}
+                </div>` : '';
+
     return `
         <div id="${escapeHtml(tool.id)}" class="tool-content${active ? ' active' : ''}">
             <div class="tool-header">
-                <h2 class="section-title">${escapeHtml(tool.title)}</h2>
+                ${logoHtml}
+                <h2 class="${logoHtml ? 'sr-only' : 'section-title'}">${escapeHtml(tool.title)}</h2>
                 <p class="tool-description">${escapeHtml(tool.description || '')}</p>
                 ${badgesHtml}
                 ${actionsHtml}

@@ -202,7 +202,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-10-15"
+            "dateModified": "2026-10-21"
           },
           {
             "@type": "Person",
@@ -328,12 +328,24 @@
           },
           {
             "@type": "ItemList",
-            "@id": "https://isaddiq.github.io/#software",
-            "name": "BIM and XR software tools by Saddiq Ur Rehman",
+            "@id": "https://isaddiq.github.io/#tools",
+            "name": "BIM, robotics, and XR tools by Saddiq Ur Rehman",
             "itemListElement": [
               {
                 "@type": "ListItem",
                 "position": 1,
+                "item": {
+                  "@type": "SoftwareSourceCode",
+                  "name": "BIM2Bot Lab",
+                  "url": "https://isaddiq.github.io/BIM2Bot-Lab/",
+                  "codeRepository": "https://github.com/isaddiq/BIM2Bot-Lab",
+                  "programmingLanguage": ["JavaScript"],
+                  "applicationCategory": "Browser-based IFC to robot navigation and fleet simulation"
+                }
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
                 "item": {
                   "@type": "SoftwareSourceCode",
                   "name": "BIMUniXchange",
@@ -344,7 +356,7 @@
               },
               {
                 "@type": "ListItem",
-                "position": 2,
+                "position": 3,
                 "item": {
                   "@type": "SoftwareSourceCode",
                   "name": "IFCExplorer",
@@ -356,7 +368,7 @@
               },
               {
                 "@type": "ListItem",
-                "position": 3,
+                "position": 4,
                 "item": {
                   "@type": "SoftwareSourceCode",
                   "name": "Ifc2Unity",
@@ -367,7 +379,7 @@
               },
               {
                 "@type": "ListItem",
-                "position": 4,
+                "position": 5,
                 "item": {
                   "@type": "SoftwareSourceCode",
                   "name": "IfcUSD",
@@ -378,7 +390,7 @@
               },
               {
                 "@type": "ListItem",
-                "position": 5,
+                "position": 6,
                 "item": {
                   "@type": "SoftwareSourceCode",
                   "name": "RoboAccess BIM",
@@ -478,12 +490,12 @@
           <button
             type="button"
             class="nav-btn"
-            data-tab="software"
-            aria-label="Navigate to Software"
-            data-nav-label="Software"
+            data-tab="tools"
+            aria-label="Navigate to Tools"
+            data-nav-label="Tools"
           >
-            <i class="fas fa-laptop-code"></i>
-            <span>Software</span>
+            <i class="fas fa-toolbox"></i>
+            <span>Tools</span>
           </button>
           <button
             type="button"
@@ -1183,11 +1195,11 @@
         </div>
       </div>
 
-      <!-- Software/Tools Tab -->
-      <div id="software" class="tab-content">
+      <!-- Tools Tab (software, web apps, frameworks, and systems) -->
+      <div id="tools" class="tab-content">
         <div class="tab-cover software-cover">
           <div class="cover-overlay">
-            <h1 class="cover-title">Software</h1>
+            <h1 class="cover-title">Tools</h1>
           </div>
         </div>
 

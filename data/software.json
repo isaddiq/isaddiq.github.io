@@ -1,6 +1,231 @@
 {
   "tools": [
     {
+      "id": "bim2bot-lab",
+      "navLabel": "BIM2Bot Lab",
+      "navIcon": "fas fa-route",
+      "title": "BIM2Bot Lab",
+      "logo": {
+        "light": "assets/logos/software/bim2bot-wordmark-light.svg",
+        "dark": "assets/logos/software/bim2bot-wordmark-dark.svg",
+        "alt": "BIM2Bot Lab logo"
+      },
+      "description": "From IFC model to robot route, entirely in the browser. A free construction informatics lab that explores IFC models, turns them into maps a robot can plan on, and simulates robot fleets moving through the building.",
+      "previewImage": "assets/images/software/bim2bot-lab-hero.webp",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Robot Navigation",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "IFC 2x3 · 4 · 4.3",
+          "variant": "corresponding"
+        },
+        {
+          "label": "web-ifc (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "React 18",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "MIT License",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Open the App",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/BIM2Bot-Lab/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/BIM2Bot-Lab"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "IFC to Robot Route in the Browser",
+          "paragraphs": [
+            "BIM2Bot Lab is a free construction informatics lab that runs in the browser. Open an IFC model to explore its geometry and semantics, turn it into maps a robot can plan on, and simulate robot fleets moving through the building. Every navigation result can be traced back to the IFC elements and processing steps that produced it.",
+            "Nothing is uploaded: IFC2x3, IFC4 and IFC4.3 files are parsed on your device with <strong>web-ifc</strong> (WebAssembly). A <strong>room graph</strong> (S1–S5) links storeys, rooms, doors, stairs, ramps and lifts, while <strong>occupancy grids</strong> (G1–G6) rasterise floors and obstacles, carve doors, inflate for the robot's size, and run multi-level A* path search. Each map cell and graph edge records the IFC element that produced it."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Key Features",
+          "items": [
+            {
+              "icon": "fas fa-compass",
+              "html": "<strong>Explore:</strong> 3D and 2D IFC viewer with model browser, IFC schema browser, inspector, search, and model checks"
+            },
+            {
+              "icon": "fas fa-route",
+              "html": "<strong>Navigate:</strong> occupancy grids and a room graph derived from IFC, with multi-level A* routes"
+            },
+            {
+              "icon": "fas fa-robot",
+              "html": "Configurable robot profiles: width, height, clearance, and stair or lift use"
+            },
+            {
+              "icon": "fas fa-ban",
+              "html": "What-if analysis with user-placed obstacles, blocked doors, and lifts added to stair cores"
+            },
+            {
+              "icon": "fas fa-search-location",
+              "html": "Cell-level traceability: see which IFC element and pipeline step made a cell free, blocked, or too narrow"
+            },
+            {
+              "icon": "fas fa-users",
+              "html": "<strong>Simulate:</strong> deterministic, seeded fleets with lift scheduling, congestion handling, and human–robot interaction"
+            },
+            {
+              "icon": "fas fa-chart-bar",
+              "html": "Results with makespan, throughput, congestion heatmaps, lift waits, and JSON export"
+            },
+            {
+              "icon": "fas fa-user-shield",
+              "html": "Privacy by design: files stay on your device, hosted as a static site on GitHub Pages"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-compass",
+              "title": "Explore (Version 1)",
+              "subtitle": "IFC viewer and semantic inspection",
+              "duration": "3D, 3D + 2D, and 2D floor-plan layouts",
+              "capabilities": [
+                {
+                  "icon": "fas fa-cube",
+                  "label": "Shaded, X-ray and wireframe modes"
+                },
+                {
+                  "icon": "fas fa-layer-group",
+                  "label": "Storey isolation and plan cuts"
+                },
+                {
+                  "icon": "fas fa-ruler-combined",
+                  "label": "Section box and measure"
+                },
+                {
+                  "icon": "fas fa-sitemap",
+                  "label": "IFC schema browser"
+                },
+                {
+                  "icon": "fas fa-info-circle",
+                  "label": "Navigation semantics inspector"
+                },
+                {
+                  "icon": "fas fa-tachometer-alt",
+                  "label": "Building intelligence dashboard"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-route",
+              "title": "Navigate (Version 2)",
+              "subtitle": "Room graph and occupancy-grid planning",
+              "duration": "Plan on the room graph or the occupancy grid",
+              "capabilities": [
+                {
+                  "icon": "fas fa-robot",
+                  "label": "Robot profiles"
+                },
+                {
+                  "icon": "fas fa-project-diagram",
+                  "label": "Multi-level A* routes"
+                },
+                {
+                  "icon": "fas fa-door-closed",
+                  "label": "Blocked doors and obstacles"
+                },
+                {
+                  "icon": "fas fa-search-location",
+                  "label": "Cell traceability"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-robot",
+              "title": "Simulate (Version 3)",
+              "subtitle": "Multi-robot fleet simulation",
+              "duration": "Deterministic and seeded, with a fixed time step",
+              "capabilities": [
+                {
+                  "icon": "fas fa-truck",
+                  "label": "Up to 8 robots and custom missions"
+                },
+                {
+                  "icon": "fas fa-arrows-alt-v",
+                  "label": "Lift scheduling"
+                },
+                {
+                  "icon": "fas fa-traffic-light",
+                  "label": "Congestion and deadlocks"
+                },
+                {
+                  "icon": "fas fa-walking",
+                  "label": "Human–robot interaction"
+                },
+                {
+                  "icon": "fas fa-file-export",
+                  "label": "Metrics and JSON export"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/BIM2Bot-Lab/\" target=\"_blank\" rel=\"noopener\">live app</a>, or serve it locally (a local HTTP server is needed because <code>file://</code> URLs block WASM):"
+          ],
+          "code": "git clone https://github.com/isaddiq/BIM2Bot-Lab.git\ncd BIM2Bot-Lab\nnpx serve .            # or: python -m http.server 8080"
+        },
+        {
+          "type": "media",
+          "title": "BIM2Bot Lab Preview",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2bot-lab-hero.webp",
+          "alt": "BIM2Bot Lab simulating a robot mission on an office model, with the 3D view, the 2D floor plan and the IFC inspector side by side",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
       "id": "reunixchange",
       "navLabel": "ReUnixchange",
       "navIcon": "fas fa-exchange-alt",

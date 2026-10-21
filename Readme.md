@@ -47,12 +47,13 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   |   |-- meta/           # SEO/Open Graph preview images
 |   |   |-- profile/        # Profile photos and favicon source
 |   |   |-- projects/       # Research project thumbnails
-|   |   `-- software/       # Software tool screenshots/previews
+|   |   `-- software/       # Tools tab screenshots/previews
 |   |-- icons/
 |   |   |-- skills/         # Skill and software logo assets
 |   |   `-- social/         # Social/research profile logo assets
 |   `-- logos/
-|       `-- organizations/  # University, lab, and employer logos
+|       |-- organizations/  # University, lab, and employer logos
+|       `-- software/       # Tool wordmarks (light/dark)
 `-- Readme.md              # Documentation
 ```
 
@@ -64,7 +65,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 4. **📚 Publications**: Organized display of research papers with dynamic IF, quartile, and category badges
 5. **🚀 Projects**: Technical research projects with details modal
 6. **🛠️ Skills**: Categorized skills with interactive progress loading animations
-7. **💻 Software**: Detailed overview of custom AEC digital solutions
+7. **🧰 Tools**: Software, web apps, frameworks, and systems for AEC (BIM2Bot Lab, ReUniXchange, IfcUSD, ...)
 8. **🏆 Awards**: Academic awards and certs with zoom viewer
 9. **👥 Activities**: Professional memberships, editorial/reviewer roles, and academic collaborations
 10. **📞 Contact**: Interactive EmailJS form and live Leaflet location map
@@ -107,7 +108,7 @@ Open `index.html` to configure:
 
 - **Personal Details**: Update your name, email addresses, and bio description in the Home tab.
 - **Social Links**: Customize links in the navigation header, Google Scholar, ORCID, and ResearchGate in the profile block.
-- **Software Tools**: The detailed descriptions of software tools (like ReUniXchange, BIM Network Graph Maker) are defined statically in `index.html` under the `#software` container. Customize their descriptions, badges, and action links there.
+- **Tools**: Each entry in the Tools tab (`#tools`; the old `#software` link still works) comes from `data/software.json`. An entry sets its nav label, description, badges, action links, and content sections, plus an optional `logo` with `light` and `dark` wordmark files.
 
 ### 4. Setup Email Service
 

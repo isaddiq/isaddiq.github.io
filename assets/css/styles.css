@@ -3921,6 +3921,26 @@ a.role-unit:hover {
   margin-bottom: 8px;
 }
 
+.tool-logo {
+  margin-bottom: 12px;
+}
+
+.tool-logo img {
+  display: block;
+  width: auto;
+  height: 56px;
+  max-width: 100%;
+}
+
+.tool-logo .tool-logo-dark,
+[data-theme="dark"] .tool-logo .tool-logo-light {
+  display: none;
+}
+
+[data-theme="dark"] .tool-logo .tool-logo-dark {
+  display: block;
+}
+
 /* .tool-description is styled with .bio-text in the shared prose rule above. */
 
 .tool-badges {
