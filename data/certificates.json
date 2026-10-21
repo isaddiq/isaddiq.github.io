@@ -99,6 +99,24 @@
       "credential_id": "SPRINGER-NATURE-REVIEW-2026-10-06"
     },
     {
+      "id": "cert_031",
+      "title": "Certificate of Reviewing",
+      "issuer": "Elsevier",
+      "date": "2026-09",
+      "category": "Peer Review",
+      "description": "Recognition from Elsevier for 1 review contributed in September 2026 to Advanced Engineering Informatics.",
+      "image": "assets/images/certificates/elsevier-certificate-of-reviewing-2026-09-aei.jpg",
+      "skills": [
+        "Peer Review",
+        "Engineering Informatics",
+        "Manuscript Review",
+        "Research Evaluation",
+        "Scholarly Service"
+      ],
+      "verification_url": "",
+      "credential_id": "ELSEVIER-REVIEW-2026-09-AEI"
+    },
+    {
       "id": "cert_028",
       "title": "Springer Nature Reviewer Certificate",
       "issuer": "Springer Nature",
