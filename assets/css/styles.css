@@ -435,6 +435,68 @@ button:focus-visible,
   padding: 6px;
 }
 
+/* 3D Portfolio Museum link: same 28px pill box as the theme toggle
+   beside it, so the two read as a pair. */
+.museum-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 28px;
+  min-width: 58px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  /* Blue-tinted box (vs. the toggle's grey) and a few soft pulses on load,
+     so the link gets noticed without shouting. */
+  background: color-mix(in srgb, var(--secondary-color) 14%, var(--bg-secondary));
+  border: 1px solid color-mix(in srgb, var(--secondary-color) 55%, transparent);
+  border-radius: 20px;
+  color: var(--secondary-color);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: var(--transition-interactive);
+  animation: museum-pulse 2.4s ease-out 1s 3;
+}
+
+.museum-btn i {
+  font-size: 11px;
+}
+
+.museum-btn:hover {
+  background: var(--secondary-color);
+  border-color: var(--secondary-color);
+  color: var(--bg-secondary);
+  box-shadow: 0 0 0 3px rgba(var(--secondary-color-rgb), 0.18);
+}
+
+@keyframes museum-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--secondary-color-rgb), 0.45);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 8px rgba(var(--secondary-color-rgb), 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .museum-btn {
+    animation: none;
+  }
+}
+
+/* Where the nav row is crowded, and on small phones, keep only the icon
+   (the toggle-sized 58px box stays). */
+@media (min-width: 769px) and (max-width: 1180px), (max-width: 480px) {
+  .museum-btn span {
+    display: none;
+  }
+}
+
 /* Theme Toggle Button */
 .theme-toggle {
   display: flex;
@@ -5059,8 +5121,12 @@ a.contact-value:hover {
     letter-spacing: 0.03em;
   }
 
-  .theme-toggle {
+  .museum-btn {
     order: 3;
+  }
+
+  .theme-toggle {
+    order: 4;
   }
 
   .nav-menu {
