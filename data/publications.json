@@ -3,9 +3,11 @@
     {
       "id": "journal_2026_03",
       "title": "Implementation of an integrated DfX approach for modular high-rise residential construction",
-      "topics": ["Modular & DfMA"],
+      "topics": [
+        "Modular & DfMA"
+      ],
       "authors": [
-        "Hwale-Je Jang",
+        "Hwal-Je Jang",
         "Saddiq Ur Rehman",
         "Jiyoung Kim",
         "Yong Han Ahn"
@@ -25,7 +27,10 @@
     {
       "id": "journal_2026_02",
       "title": "Cross-platform framework for semantic BIM-to-XR data exchange in immersive construction informatics",
-      "topics": ["BIM & Interoperability", "XR & Game Engines"],
+      "topics": [
+        "BIM & Interoperability",
+        "XR & Game Engines"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Kyung-Eun Hwang",
@@ -43,7 +48,11 @@
     {
       "id": "journal_2025_01",
       "title": "Transformer-based framework for mapping client requirements to BIM",
-      "topics": ["AI & NLP", "BIM & Interoperability", "Client-Centered Design"],
+      "topics": [
+        "AI & NLP",
+        "BIM & Interoperability",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Syed Haseeb Shah",
         "Saddiq Ur Rehman",
@@ -62,7 +71,10 @@
     {
       "id": "journal_2025_01",
       "title": "Semantic-enriched framework for asynchronous bidirectional BIM data exchange with immersive visualization platform",
-      "topics": ["BIM & Interoperability", "XR & Game Engines"],
+      "topics": [
+        "BIM & Interoperability",
+        "XR & Game Engines"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Kyung-Eun Hwang",
@@ -80,7 +92,10 @@
     {
       "id": "journal_2025_02",
       "title": "Advancing BIM and game engine integration in the AEC industry: innovations, challenges, and future directions",
-      "topics": ["BIM & Interoperability", "XR & Game Engines"],
+      "topics": [
+        "BIM & Interoperability",
+        "XR & Game Engines"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim",
@@ -98,7 +113,11 @@
     {
       "id": "journal_2024_01",
       "title": "Client-centered detached modular housing: Natural language processing-enabled design recommender system",
-      "topics": ["AI & NLP", "Modular & DfMA", "Client-Centered Design"],
+      "topics": [
+        "AI & NLP",
+        "Modular & DfMA",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Inhan Kim",
         "Jihye Shin",
@@ -120,7 +139,11 @@
     {
       "id": "journal_2023_01",
       "title": "Data-driven integration framework for four-dimensional building information modeling simulation in modular construction: a case study approach",
-      "topics": ["4D Simulation & Digital Twins", "BIM & Interoperability", "Modular & DfMA"],
+      "topics": [
+        "4D Simulation & Digital Twins",
+        "BIM & Interoperability",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim",
@@ -141,7 +164,9 @@
     {
       "id": "journal_2020_01",
       "title": "Mechanical properties of polyethylene-sand blocks produced from recycled plastic bags",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Murad Ali",
         "Naveed Iqbal",
@@ -161,7 +186,11 @@
     {
       "id": "conf_2025_02",
       "title": "BIM-Based Mixed Reality System for Real-Time Inspection of Factory-Built Modular Units",
-      "topics": ["BIM & Interoperability", "XR & Game Engines", "Modular & DfMA"],
+      "topics": [
+        "BIM & Interoperability",
+        "XR & Game Engines",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Jiyoung Kim",
@@ -179,7 +208,12 @@
     {
       "id": "conf_2025_01",
       "title": "Integration Of 4D BIM And VR For Interactive Modular Building Manufacturing Simulations In A Factory-Controlled Environment",
-      "topics": ["4D Simulation & Digital Twins", "XR & Game Engines", "BIM & Interoperability", "Modular & DfMA"],
+      "topics": [
+        "4D Simulation & Digital Twins",
+        "XR & Game Engines",
+        "BIM & Interoperability",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Kyung-Eun Hwang",
@@ -196,7 +230,11 @@
     {
       "id": "conf_2024_02",
       "title": "Shape Grammar-Driven BIM Model Database for a Modular Building Design Recommender System",
-      "topics": ["BIM & Interoperability", "Modular & DfMA", "Client-Centered Design"],
+      "topics": [
+        "BIM & Interoperability",
+        "Modular & DfMA",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim"
@@ -212,7 +250,9 @@
     {
       "id": "conf_2022_01",
       "title": "An Analysis and Consolidation of DfMA Based Construction Guidelines and Its Validation Through a Korean Case Study",
-      "topics": ["Modular & DfMA"],
+      "topics": [
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Soyeong Ryu",
@@ -229,7 +269,9 @@
     {
       "id": "conf_2021_01",
       "title": "Analysis of development of open BIM-based automated rule checking system in KBIM project",
-      "topics": ["BIM & Interoperability"],
+      "topics": [
+        "BIM & Interoperability"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Sejin Lee",
@@ -247,7 +289,9 @@
     {
       "id": "conf_2019_01",
       "title": "EXPERIMENTAL DETERMINATION OF ROTATIONAL STIFFNESS OF PARTIAL FIXITY JOINTS IN POST TENSIONED PRE-CAST STRUCTURE",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Murad Ali",
         "Naveed Iqbal",
@@ -266,7 +310,10 @@
     {
       "id": "conf_2019_02",
       "title": "4D BIM modeling of Insulated Concrete Sandwich Panel Building",
-      "topics": ["4D Simulation & Digital Twins", "BIM & Interoperability"],
+      "topics": [
+        "4D Simulation & Digital Twins",
+        "BIM & Interoperability"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Zeeshan Altaf",
@@ -284,7 +331,9 @@
     {
       "id": "conf_2019_03",
       "title": "Experimental Determination of Capacity of Pile Group and Pile Raft Foundation",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Irfan Jamil",
         "Muhammad Mahmood Ul Hassan",
@@ -304,7 +353,9 @@
     {
       "id": "conf_2019_04",
       "title": "Experimental Study of Comparison of Settlement Behavior of Pile Raft Foundation with Batter and Vertical Piles",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Irfan Jamil",
         "Zeeshan Altaf",
@@ -325,7 +376,9 @@
     {
       "id": "conf_2019_05",
       "title": "BIM Implementation of Reinforced Concrete Sandwich Panels",
-      "topics": ["BIM & Interoperability"],
+      "topics": [
+        "BIM & Interoperability"
+      ],
       "authors": [
         "Shahid Ali Khan",
         "Saddiq Ur Rehman",
@@ -344,7 +397,9 @@
     {
       "id": "conf_2019_06",
       "title": "Finite Element Analysis of Brick Masonry",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Faisal Rehman",
         "Shahid Ali Khan",
@@ -363,7 +418,9 @@
     {
       "id": "conf_2019_07",
       "title": "Geotechnical Sub soil Profiling Using Geographic Information System",
-      "topics": ["Structures & Geotechnics"],
+      "topics": [
+        "Structures & Geotechnics"
+      ],
       "authors": [
         "Hizbullah Khan",
         "Muhammad Shoaib Khan",
@@ -386,7 +443,11 @@
     {
       "id": "korean_2024_01",
       "title": "A tentative framework for discrete event simulation of modular building production using game engines",
-      "topics": ["4D Simulation & Digital Twins", "XR & Game Engines", "Modular & DfMA"],
+      "topics": [
+        "4D Simulation & Digital Twins",
+        "XR & Game Engines",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim"
@@ -401,7 +462,10 @@
     {
       "id": "korean_2023_01",
       "title": "Digital Twins in Manufacturing Sector and Their Promising Applications in the Modular Construction Industry",
-      "topics": ["4D Simulation & Digital Twins", "Modular & DfMA"],
+      "topics": [
+        "4D Simulation & Digital Twins",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim"
@@ -416,7 +480,10 @@
     {
       "id": "korean_2023_02",
       "title": "Office building design recommendations systems tailored to client needs",
-      "topics": ["AI & NLP", "Client-Centered Design"],
+      "topics": [
+        "AI & NLP",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Syed Haseeb Shah",
         "Saddiq Ur Rehman",
@@ -432,7 +499,10 @@
     {
       "id": "korean_2023_03",
       "title": "LDA-based topic modelling of client’s needs for residential building design",
-      "topics": ["AI & NLP", "Client-Centered Design"],
+      "topics": [
+        "AI & NLP",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim"
@@ -447,7 +517,9 @@
     {
       "id": "korean_2022_01",
       "title": "Proposition Of Tentative Framework For The Development Of DfMA-Oriented Construction Policies",
-      "topics": ["Modular & DfMA"],
+      "topics": [
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim",
@@ -463,7 +535,10 @@
     {
       "id": "korean_2022_02",
       "title": "BIM-based visualization of downstream activities in DfMA-oriented modern methods of construction",
-      "topics": ["BIM & Interoperability", "Modular & DfMA"],
+      "topics": [
+        "BIM & Interoperability",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim",
@@ -480,7 +555,9 @@
     {
       "id": "korean_2022_03",
       "title": "Proposal of 3D printing production manual for DfMA-based building prototypes",
-      "topics": ["Modular & DfMA"],
+      "topics": [
+        "Modular & DfMA"
+      ],
       "authors": [
         "Jina Park",
         "Saddiq Ur Rehman",
@@ -497,7 +574,9 @@
     {
       "id": "korean_2022_04",
       "title": "General Overview of DfMA implementation in Korean Construction Industry",
-      "topics": ["Modular & DfMA"],
+      "topics": [
+        "Modular & DfMA"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Soyeong Ryu",
@@ -514,7 +593,10 @@
     {
       "id": "korean_2021_01",
       "title": "Machine Learning Based Checking of attributes of exterior exposure in external walls",
-      "topics": ["AI & NLP", "BIM & Interoperability"],
+      "topics": [
+        "AI & NLP",
+        "BIM & Interoperability"
+      ],
       "authors": [
         "Saddiq Ur Rehman",
         "Inhan Kim",
@@ -532,7 +614,11 @@
     {
       "id": "report_2025_01",
       "title": "DfMA-Oriented BIM Workflow Using ArchiCAD and XR Technologies for Modular Construction",
-      "topics": ["BIM & Interoperability", "XR & Game Engines", "Modular & DfMA"],
+      "topics": [
+        "BIM & Interoperability",
+        "XR & Game Engines",
+        "Modular & DfMA"
+      ],
       "authors": [
         "Inhan Kim",
         "Jiyeong Kim",
@@ -551,7 +637,11 @@
     {
       "id": "report_2024_01",
       "title": "Synergy of AI and BIM in addressing client needs for building design",
-      "topics": ["AI & NLP", "BIM & Interoperability", "Client-Centered Design"],
+      "topics": [
+        "AI & NLP",
+        "BIM & Interoperability",
+        "Client-Centered Design"
+      ],
       "authors": [
         "Kyung Eun Hwang",
         "Saddiq Ur Rehman"
@@ -569,7 +659,11 @@
     {
       "id": "report_2023_01",
       "title": "Client-Enabled Office Modular Design: Embracing Data-Driven Recommendations",
-      "topics": ["Client-Centered Design", "Modular & DfMA", "AI & NLP"],
+      "topics": [
+        "Client-Centered Design",
+        "Modular & DfMA",
+        "AI & NLP"
+      ],
       "authors": [
         "Inhan Kim",
         "Saddiq Ur Rehman"
