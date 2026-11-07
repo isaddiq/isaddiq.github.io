@@ -4,7 +4,7 @@
  * headline metrics plus the "Cited by" count of every cited paper, which the
  * Publications tab shows beside each matching entry.
  *
- * Run by .github/workflows/update-scholar.yml every 6 hours. Doing the scrape
+ * Run by .github/workflows/update-scholar.yml every 4 hours. Doing the scrape
  * here rather than in the browser means every visitor - incognito, a phone, a
  * first-time reader - is served the same numbers straight out of the repo,
  * instead of whatever happened to land in their own localStorage.
@@ -199,7 +199,7 @@ async function main() {
     if (!result) {
         // Every source was blocked. Leave the committed numbers alone and warn
         // rather than fail: transient captchas are normal, and the next run in
-        // 6 hours usually gets through.
+        // 4 hours usually gets through.
         console.log('::warning::Could not read Google Scholar; keeping the existing metrics.');
         await summarize('Google Scholar unreachable this run - metrics left unchanged.');
         return;

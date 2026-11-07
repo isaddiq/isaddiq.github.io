@@ -35,7 +35,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   `-- update-scholar.mjs  # Reads the live Scholar profile, rewrites scholar.json
 |-- .github/
 |   `-- workflows/
-|       `-- update-scholar.yml  # Runs that script every 6 hours
+|       `-- update-scholar.yml  # Runs that script every 4 hours
 |-- assets/
 |   |-- css/
 |   |   `-- styles.css      # CSS variables, layouts, and animations
@@ -94,7 +94,7 @@ Customize the JSON files under the `data/` directory to update your profile data
 
 #### Google Scholar Metrics (automated)
 
-`.github/workflows/update-scholar.yml` runs `scripts/update-scholar.mjs` every 6 hours (00:17, 06:17, 12:17, and 18:17 UTC). The script reads the public profile, and commits `data/scholar.json` only when a number actually changes - which republishes the Pages site, so every visitor gets the new figures on their next load.
+`.github/workflows/update-scholar.yml` runs `scripts/update-scholar.mjs` every 4 hours (00:17, 04:17, 08:17, 12:17, 16:17, and 20:17 UTC). The script reads the public profile, and commits `data/scholar.json` only when a number actually changes - which republishes the Pages site, so every visitor gets the new figures on their next load.
 
 - Point it at a different profile by editing `SCHOLAR_ID` in the script (and the `scholarId` in `data/scholar.json`).
 - Run it on demand from **Actions → Update Google Scholar metrics → Run workflow**.
