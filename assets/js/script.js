@@ -18,21 +18,11 @@ function updateThemeToggle(theme) {
         themeButton.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
         themeButton.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
     }
-}
 
-/**
- * Keep the fixed header styling in sync with the current theme and scroll state
- */
-function updateHeaderThemeStyle() {
-    const header = document.querySelector('.header-wrapper');
-    if (!header) return;
-
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-    if (scrollTop > 50) {
-        header.classList.add('scrolled');
-    } else {
-        header.classList.remove('scrolled');
+    // Browser chrome follows the page background of the active theme
+    const themeColor = document.querySelector('meta[name="theme-color"]');
+    if (themeColor) {
+        themeColor.setAttribute('content', theme === 'dark' ? '#0d1830' : '#f2f4f6');
     }
 }
 
@@ -45,7 +35,6 @@ function toggleTheme() {
 
     document.documentElement.setAttribute('data-theme', newTheme);
     updateThemeToggle(newTheme);
-    updateHeaderThemeStyle();
 
     // Save theme preference
     localStorage.setItem('preferred-theme', newTheme);
@@ -63,11 +52,8 @@ function initializeTheme() {
     // Always default to light mode unless user has explicitly saved a preference
     const theme = savedTheme || 'light';
 
-    // Apply theme with smooth transition
-    document.documentElement.style.transition = 'background-color 0.3s ease, color 0.3s ease';
     document.documentElement.setAttribute('data-theme', theme);
     updateThemeToggle(theme);
-    updateHeaderThemeStyle();
 
     // Listen for system theme changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
@@ -75,7 +61,6 @@ function initializeTheme() {
             const newTheme = e.matches ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', newTheme);
             updateThemeToggle(newTheme);
-            updateHeaderThemeStyle();
         }
     });
 }
@@ -85,46 +70,43 @@ function initializeTheme() {
 // ==========================================================================
 
 /**
+ * Open or close the menu sheet (the header's panel on narrow screens).
+ * @param {boolean} open
+ */
+function setMobileMenu(open) {
+    const header = document.getElementById('site-header');
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    if (!header || !menuToggle) return;
+    if (header.classList.contains('is-open') === open) return;
+
+    header.classList.toggle('is-open', open);
+    menuToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    menuToggle.setAttribute('aria-label', open ? 'Close the menu' : 'Open the menu');
+
+    const icon = menuToggle.querySelector('i');
+    if (icon) {
+        icon.className = open ? 'fas fa-times' : 'fas fa-bars';
+    }
+
+    // Prevent body scroll while the sheet covers the page
+    document.body.style.overflow = open ? 'hidden' : '';
+}
+
+/**
  * Toggle mobile navigation menu
  */
 function toggleMobileMenu() {
-    const navMenu = document.querySelector('.nav-menu');
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    
-    if (navMenu && menuToggle) {
-        navMenu.classList.toggle('active');
-        const isOpen = navMenu.classList.contains('active');
-        menuToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-        
-        // Update icon
-        const icon = menuToggle.querySelector('i');
-        if (icon) {
-            icon.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
-        }
-        
-        // Prevent body scroll when menu is open
-        document.body.style.overflow = isOpen ? 'hidden' : '';
-    }
+    const header = document.getElementById('site-header');
+    setMobileMenu(!(header && header.classList.contains('is-open')));
 }
 
 /**
  * Close mobile menu when clicking outside
  */
 function closeMobileMenuOnClickOutside(event) {
-    const navMenu = document.querySelector('.nav-menu');
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    
-    if (navMenu && menuToggle && navMenu.classList.contains('active')) {
-        if (!navMenu.contains(event.target) && !menuToggle.contains(event.target)) {
-            navMenu.classList.remove('active');
-            menuToggle.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
-            
-            const icon = menuToggle.querySelector('i');
-            if (icon) {
-                icon.className = 'fas fa-bars';
-            }
-        }
+    const header = document.getElementById('site-header');
+    if (header && header.classList.contains('is-open') && !header.contains(event.target)) {
+        setMobileMenu(false);
     }
 }
 
@@ -132,19 +114,7 @@ function closeMobileMenuOnClickOutside(event) {
  * Close mobile menu when a nav button is clicked
  */
 function closeMobileMenuOnNavClick() {
-    const navMenu = document.querySelector('.nav-menu');
-    const menuToggle = document.querySelector('.mobile-menu-toggle');
-    
-    if (navMenu && menuToggle && navMenu.classList.contains('active')) {
-        navMenu.classList.remove('active');
-        menuToggle.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-        
-        const icon = menuToggle.querySelector('i');
-        if (icon) {
-            icon.className = 'fas fa-bars';
-        }
-    }
+    setMobileMenu(false);
 }
 
 // ==========================================================================
@@ -193,6 +163,18 @@ function initializeStaticEventHandlers() {
 
 function handleDelegatedActionClick(event) {
     if (!(event.target instanceof Element)) return;
+
+    // The skip link moves focus to the page content without touching the
+    // URL hash, which belongs to the tab router.
+    if (event.target.closest('.skip-link')) {
+        event.preventDefault();
+        const main = document.getElementById('main');
+        if (main) {
+            main.setAttribute('tabindex', '-1');
+            main.focus();
+        }
+        return;
+    }
 
     const newsToggleAll = event.target.closest('[data-news-toggle-all]');
     if (newsToggleAll) {
@@ -508,7 +490,7 @@ function renderHighlights() {
                     </span>
                     <span class="highlight-card-title">${escapeHtml(item.title)}</span>
                     ${detail ? `<span class="highlight-card-detail">${escapeHtml(detail)}</span>` : ''}
-                    ${link ? `<span class="highlight-cta">${escapeHtml(link.cta)} <i class="fas fa-arrow-right"></i></span>` : ''}
+                    ${link ? `<span class="highlight-cta">${escapeHtml(link.cta)}</span>` : ''}
                 </span>
             </${tag}>
         `;
@@ -526,7 +508,7 @@ function renderHighlights() {
 function openAwardCertificate(awardId) {
     const modal = document.getElementById('awardCertificateModal');
     const content = document.getElementById('awardCertificateModalContent');
-    
+
     // Award certificate data
     const awardCertificates = {
         'best-paper-award': {
@@ -544,88 +526,37 @@ function openAwardCertificate(awardId) {
             verification: 'Certificate verified by Korea CDE Society'
         }
     };
-    
+
     const award = awardCertificates[awardId];
     if (!award) return;
-    
+
     content.innerHTML = `
-        <h2 style="color: var(--text-primary); margin-bottom: 20px; text-align: center;">
-            <i class="fas fa-medal" style="color: #f39c12; margin-right: 10px;"></i>
-            ${award.title}
-        </h2>
-        
-        <div style="text-align: center; margin: 30px 0;">
-            <div class="award-certificate-image-frame" style="position: relative; display: inline-block;">
-                <img src="${award.image}" alt="${award.title}" class="modal-award-image"
-                     data-image-zoom-src="${award.image}" data-image-zoom-alt="${award.title}"
-                     data-fallback-icon="fas fa-scroll">
-                <div style="position: absolute; bottom: -10px; right: -10px; 
-                           background: var(--secondary-color); color: white; border-radius: 50%; 
-                           width: 40px; height: 40px; display: flex; align-items: center; 
-                           justify-content: center; box-shadow: 0 4px 12px rgba(var(--secondary-color-rgb),0.4);">
-                    <i class="fas fa-search-plus"></i>
-                </div>
-            </div>
-            <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 15px; font-style: italic;">
-                <i class="fas fa-mouse-pointer"></i> Click image to view full size
-            </p>
-        </div>
-        
-        <div style="background: var(--bg-tertiary); 
-                    padding: 25px; border-radius: var(--radius-md); margin: 25px 0; 
-                    border: 1px solid var(--border-color);">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
-                        gap: 15px; margin-bottom: 15px;">
-                <div>
-                    <strong style="color: var(--text-primary);">Issued by:</strong><br>
-                    <span style="color: var(--text-secondary);">${award.issuer}</span>
-                </div>
-                <div>
-                    <strong style="color: var(--text-primary);">Event:</strong><br>
-                    <span style="color: var(--text-secondary);">${award.event}</span>
-                </div>
-                <div>
-                    <strong style="color: var(--text-primary);">Years:</strong><br>
-                    <span style="color: var(--text-secondary);">${award.years.join(', ')}</span>
-                </div>
-            </div>
-            <div>
-                <strong style="color: var(--text-primary);">Description:</strong><br>
-                <p style="margin: 10px 0 0 0; color: var(--text-secondary); line-height: 1.6;">${award.description}</p>
-            </div>
-        </div>
-        
+        <h2 class="modal-title">${award.title}</h2>
+        <figure class="modal-figure award-certificate-image-frame">
+            <img src="${award.image}" alt="${award.title}" class="modal-award-image"
+                 data-image-zoom-src="${award.image}" data-image-zoom-alt="${award.title}"
+                 data-fallback-icon="fas fa-scroll">
+            <figcaption class="modal-hint">Click image to enlarge</figcaption>
+        </figure>
+        <dl class="modal-facts">
+            <div><dt>Issued by</dt><dd>${award.issuer}</dd></div>
+            <div><dt>Event</dt><dd>${award.event}</dd></div>
+            <div><dt>Years</dt><dd>${award.years.join(', ')}</dd></div>
+            <div><dt>Description</dt><dd>${award.description}</dd></div>
+        </dl>
         ${award.details ? `
-            <div style="margin: 25px 0;">
-                <h4 style="color: var(--text-primary); margin-bottom: 15px; font-size: 1.2em;">
-                    <i class="fas fa-star"></i> Achievement Highlights
-                </h4>
-                <ul style="list-style: none; padding: 0;">
-                    ${award.details.map(detail => `
-                        <li style="margin-bottom: 12px; padding: 12px 15px; 
-                                   background: var(--bg-tertiary); 
-                                   border-left: 4px solid var(--secondary-color); border-radius: var(--radius-xs);">
-                            <i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 10px;"></i>
-                            ${detail}
-                        </li>
-                    `).join('')}
-                </ul>
-            </div>
+            <h3 class="modal-section-title">Achievement Highlights</h3>
+            <ul class="modal-list">
+                ${award.details.map(detail => `<li>${detail}</li>`).join('')}
+            </ul>
         ` : ''}
-        
-        <div style="text-align: center; margin-top: 30px; padding: 20px; 
-                    background: var(--bg-tertiary); border-radius: var(--radius-md); 
-                    border: 1px solid var(--success-color);">
-            <i class="fas fa-shield-alt" style="color: var(--success-color); font-size: 1.5em; margin-bottom: 10px;"></i>
-            <p style="margin: 0; color: var(--success-color); font-weight: 600;">
-                ${award.verification}
-            </p>
+        <div class="modal-callout">
+            <p>${award.verification}</p>
         </div>
     `;
     attachImageFallbacks(content);
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+
+    showModal(modal);
 }
 
 // ==========================================================================
@@ -654,10 +585,10 @@ function resolveTabName(hash) {
     return VALID_TABS.includes(name) ? name : 'home';
 }
 
-// Measure the fixed header and expose it as --header-height so the page content
-// (tab covers) starts exactly where the header ends, with no gap in between.
+// Measure the sticky top bar and expose it as --header-height, so sticky
+// panels and anchor scrolling clear it.
 function syncHeaderHeight() {
-    const header = document.querySelector('.header-wrapper');
+    const header = document.getElementById('site-header');
     if (!header) return;
 
     const height = header.offsetHeight;
@@ -1232,6 +1163,15 @@ function setCurrentTab(tabName) {
     window.location.hash = tabName;
 }
 
+// False until the first tab has been shown, so the initial render neither
+// fades in nor moves keyboard focus.
+let tabShownOnce = false;
+
+// The tab showTab() was last asked for. showTab() sets the URL hash itself,
+// so the hashchange listener checks this to tell whether a hash change has
+// already been handled.
+let requestedTab = null;
+
 /**
  * Show specific tab and hide others
  * @param {string} tabName - Name of the tab to show
@@ -1239,38 +1179,12 @@ function setCurrentTab(tabName) {
 function showTab(tabName) {
     // Close mobile menu when switching tabs
     closeMobileMenuOnNavClick();
-    
-    // Remove active class from all tabs first
-    const tabs = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-    });
-    
-    // Remove active class and aria-current from all nav buttons
-    const navBtns = document.querySelectorAll('.nav-btn');
-    navBtns.forEach(btn => {
-        btn.classList.remove('active');
-        btn.removeAttribute('aria-current');
-    });
-    
-    // Show selected tab immediately for smooth transition
+
+    requestedTab = tabName;
     const selectedTab = document.getElementById(tabName);
-    if (selectedTab) {
-        // Use requestAnimationFrame for smooth rendering
-        requestAnimationFrame(() => {
-            selectedTab.classList.add('active');
-            // Trigger animations for elements in the tab
-            animateTabContent(selectedTab);
-        });
-    }
-    
-    // Add active class and aria-current to corresponding nav button
-    const navBtn = document.querySelector(`.nav-btn[data-tab="${tabName}"]`);
-    if (navBtn) {
-        navBtn.classList.add('active');
-        navBtn.setAttribute('aria-current', 'page');
-    }
-    
+    const previousTab = document.querySelector('.tab-content.active');
+    const changed = Boolean(selectedTab) && previousTab !== selectedTab;
+
     // Update document title and URL hash
     const titleMap = {
         home: 'Home',
@@ -1284,19 +1198,30 @@ function showTab(tabName) {
         activities: 'Activities',
         contact: 'Contact'
     };
-    
+
     const sectionTitle = titleMap[tabName] || 'Portfolio';
     updatePageMetadata(tabName, sectionTitle);
-    
+
     // Update URL hash for persistence
     setCurrentTab(tabName);
     if (location.hash !== `#${tabName}`) {
         history.replaceState(null, '', `#${tabName}`);
     }
-    
+
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.toggle('active', tab === selectedTab);
+    });
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+        const on = btn.dataset.tab === tabName;
+        btn.classList.toggle('active', on);
+        if (on) btn.setAttribute('aria-current', 'page');
+        else btn.removeAttribute('aria-current');
+    });
+
     // Load dynamic content if needed
     loadTabContent(tabName);
-    
+
     // Reinitialize map when contact tab is shown
     if (tabName === 'contact' && mapInstance) {
         setTimeout(() => {
@@ -1304,39 +1229,19 @@ function showTab(tabName) {
             mapInstance.setView([37.2464, 127.0809], 18);
         }, 100);
     }
-    
-    // Smooth scroll to top
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-}
 
-/**
- * Fade in the cards on screen when a tab is shown. Content is never hidden
- * waiting for a scroll: the animation only plays from a faded start to the
- * card's normal style, and cards below the fold are left as they are.
- * @param {HTMLElement} tabElement - The tab element to animate
- */
-function animateTabContent(tabElement) {
-    if (!tabElement.animate) return;
-    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    window.scrollTo({ top: 0, behavior: 'instant' });
 
-    const animatableElements = tabElement.querySelectorAll('.publication-item, .project-card, .experience-item, .certificate-card, .skill-category, .research-card, .award-item, .activity-item, .seminar-item, .news-bullet-item, .news-card, .highlight-card');
-    let onScreen = 0;
-    animatableElements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (!rect.height || rect.top >= window.innerHeight || rect.bottom <= 0) return;
-        el.animate([
-            { opacity: 0, transform: 'translateY(16px)' },
-            { opacity: 1, transform: 'none' }
-        ], {
-            duration: 400,
-            delay: Math.min(onScreen++, 8) * 40,
-            easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-            fill: 'backwards'
-        });
-    });
+    if (changed && tabShownOnce) {
+        // A tab the visitor switches to fades in (CSS, .tabs-ready); the
+        // first tab shown on load does not
+        document.body.classList.add('tabs-ready');
+
+        // Keyboard and screen-reader users land on the new tab's heading
+        const heading = selectedTab.querySelector('.tab-title, h1');
+        if (heading) heading.focus({ preventScroll: true });
+    }
+    tabShownOnce = true;
 }
 
 /**
@@ -1377,16 +1282,7 @@ function loadTabContent(tabName) {
             initCollaborationNetwork();
             break;
         case 'contact':
-            initializeEmailJS();
             initializeMap();
-            initializeContactAnimations();
-            initializeActionButtons();
-            
-            // Add form submission handler
-            const contactForm = document.getElementById('contactForm');
-            if (contactForm) {
-                contactForm.addEventListener('submit', handleFormSubmission);
-            }
 
             // Wire the copy buttons on the contact cards and address panel
             initializeCopyButtons();
@@ -1451,8 +1347,7 @@ function loadSkillsContent() {
     
     if (Object.keys(skillsData).length === 0) {
         skillsContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-exclamation-triangle" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>Skills data not available</h3>
                 <p>Please ensure skills.json file is present in the data folder.</p>
             </div>
@@ -1500,7 +1395,7 @@ function loadSkillsContent() {
 function loadPublicationStats() {
     const statsContainer = document.getElementById('publication-stats');
     if (!statsContainer) return;
-    
+
     const journalCount = (publicationsData.journals || []).length;
     const conferenceCount = (publicationsData.conferences || []).length;
     const koreanCount = (publicationsData.korean_conferences || publicationsData.korean || []).length;
@@ -1511,38 +1406,49 @@ function loadPublicationStats() {
         .reduce((sum, p) => sum + (Number(p.impactFactor) || 0), 0);
     const cumulativeIFText = (Math.round(cumulativeIF * 10) / 10).toFixed(1);
 
-    // Update main stats display
+    // Publications per year, across every type
+    const perYear = new Map();
+    PUB_TYPES.flatMap(pubTypeList).forEach(pub => {
+        const year = Number(pub.year);
+        if (year) perYear.set(year, (perYear.get(year) || 0) + 1);
+    });
+    const years = [...perYear.keys()];
+    const firstYear = Math.min(...years);
+    const lastYear = Math.max(...years);
+    const peak = Math.max(...perYear.values());
+    let bars = '';
+    for (let year = firstYear; years.length && year <= lastYear; year++) {
+        const n = perYear.get(year) || 0;
+        const label = `${n} publication${n === 1 ? '' : 's'} in ${year}`;
+        bars += `
+            <li class="pub-year" title="${label}" aria-label="${label}">
+                <span class="pub-year-count" aria-hidden="true">${n || ''}</span>
+                <span class="pub-year-bar" style="height: ${(n / peak * 100).toFixed(1)}%" aria-hidden="true"></span>
+                <span class="pub-year-label" aria-hidden="true">${year}</span>
+            </li>`;
+    }
+
+    const stat = (value, label, title) => `
+        <div class="stat-item"${title ? ` title="${title}"` : ''}>
+            <span class="stat-number">${value}</span>
+            <span class="stat-label">${label}</span>
+        </div>`;
+
     statsContainer.innerHTML = `
-        <h3>Publication Overview</h3>
         <div class="stats-grid">
-            <div class="stat-item">
-                <span class="stat-number">${totalCount}</span>
-                <span class="stat-label">Total Publications</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${journalCount}</span>
-                <span class="stat-label">Journal Articles</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${conferenceCount}</span>
-                <span class="stat-label">International Conferences</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${koreanCount}</span>
-                <span class="stat-label">Korean Conferences</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-number">${reportCount}</span>
-                <span class="stat-label">Technical Reports</span>
-            </div>
+            ${stat(totalCount, 'Total publications')}
+            ${stat(journalCount, 'Journal articles')}
+            ${stat(conferenceCount, 'International conferences')}
+            ${stat(koreanCount, 'Korean conferences')}
+            ${stat(reportCount, 'Technical reports')}
+            ${stat(cumulativeIFText, 'Cumulative impact factor', `Sum of the impact factors of all ${journalCount} journal articles`)}
         </div>
-        <p class="stat-summary" title="Sum of the impact factors of all journal articles">
-            <i class="fas fa-chart-line" aria-hidden="true"></i>
-            Cumulative journal impact factor: <strong>${cumulativeIFText}</strong>
-            <span class="stat-summary-note">across ${journalCount} journal articles</span>
-        </p>
+        <figure class="pub-years">
+            <figcaption>Publications per year</figcaption>
+            <ol class="pub-years-chart">${bars}</ol>
+        </figure>
     `;
-    
+
     // Update navigation button counts
     updatePublicationNavCounts();
 }
@@ -1859,7 +1765,7 @@ function showPublications(pubType) {
 function scrollToPublicationListTop() {
     const list = document.getElementById('publications-list');
     if (!list) return;
-    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 66;
+    const header = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
     // On narrow screens the selector is a strip stuck under the header
     const sidebar = document.querySelector('.publications-sidebar');
     const strip = sidebar && getComputedStyle(sidebar).position === 'sticky' &&
@@ -1938,8 +1844,7 @@ function loadJournals() {
     
     if (journals.length === 0) {
         journalsContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-book" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No journal publications found</h3>
                 <p>Please check the publications.json file.</p>
             </div>
@@ -1978,8 +1883,7 @@ function loadConferences() {
     
     if (conferences.length === 0) {
         conferencesContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-users" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No conference publications found</h3>
                 <p>Please check the publications.json file.</p>
             </div>
@@ -2017,8 +1921,7 @@ function loadKoreanConferences() {
     
     if (korean.length === 0) {
         koreanContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-flag" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No Korean conference publications found</h3>
                 <p>Please check the publications.json file.</p>
             </div>
@@ -2054,8 +1957,7 @@ function loadTechnicalReports() {
     
     if (reports.length === 0) {
         reportsContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-file-alt" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No technical reports found</h3>
                 <p>Please check the publications.json file.</p>
             </div>
@@ -2122,8 +2024,7 @@ function loadExperienceContent() {
     
     if (experienceData.length === 0) {
         experienceContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-briefcase" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No experience data found</h3>
                 <p>Please check the experience.json file.</p>
             </div>
@@ -2164,8 +2065,8 @@ function groupExperienceByOrganization(items) {
 }
 
 /**
- * One card per organization. Details shared by every role (department) are
- * hoisted into the card header instead of repeating on each role.
+ * One block per organization. Details shared by every role (department) are
+ * hoisted into the block header instead of repeating on each role.
  */
 function renderExperienceGroup({ org, roles }) {
     const lead = roles[0];
@@ -2178,33 +2079,32 @@ function renderExperienceGroup({ org, roles }) {
         : null;
 
     return `
-        <div class="experience-item">
-            <div class="exp-header">
-                <div class="company-logo">
-                    ${logo ?
-                        `<img src="${logo}" alt="${name}" data-fallback-icon="${icon}">` :
-                        `<i class="${icon}"></i>`
+        <article class="experience-item">
+            <div class="company-logo">
+                ${logo ?
+                    `<img src="${logo}" alt="${name}" loading="lazy" data-fallback-icon="${icon}">` :
+                    `<i class="${icon}"></i>`
+                }
+            </div>
+            <div class="exp-details">
+                <h3>
+                    ${website === '#'
+                        ? name
+                        : `<a href="${website}" class="company-name" target="_blank" rel="noopener">${name}</a>`
                     }
-                </div>
-                <div class="exp-details">
-                    <h3>
-                        ${website === '#'
-                            ? name
-                            : `<a href="${website}" class="company-name" target="_blank" rel="noopener">${name}</a>`
-                        }
-                    </h3>
-                    ${sharedDepartment ? `<p class="exp-department">${sharedDepartment}</p>` : ''}
-                    <div class="role-timeline">
-                        ${roles.map(role => renderExperienceRole(role, sharedDepartment)).join('')}
-                    </div>
+                </h3>
+                ${sharedDepartment ? `<p class="exp-department">${sharedDepartment}</p>` : ''}
+                <div class="role-timeline">
+                    ${roles.map(role => renderExperienceRole(role, sharedDepartment)).join('')}
                 </div>
             </div>
-        </div>
+        </article>
     `;
 }
 
 /**
- * A single role inside an organization card.
+ * A single role inside an organization block: dates in the left column,
+ * the role and its details beside them.
  */
 function renderExperienceRole(exp, sharedDepartment) {
     const unit = exp.unit
@@ -2218,9 +2118,9 @@ function renderExperienceRole(exp, sharedDepartment) {
 
     return `
         <div class="role-entry${isCurrent ? ' role-current' : ''}">
-            <h4 class="role-title">${exp.position || exp.title}</h4>
+            <p class="exp-duration">${duration}</p>
             <div class="role-details">
-                <p class="exp-duration">${duration}</p>
+                <h4 class="role-title">${exp.position || exp.title}</h4>
                 ${unit}
                 ${!sharedDepartment && exp.department ? `<p><strong>Department:</strong> ${exp.department}</p>` : ''}
                 ${exp.course ? `<p><strong>Course:</strong> ${exp.course}</p>` : ''}
@@ -2242,47 +2142,68 @@ function renderExperienceRole(exp, sharedDepartment) {
 function loadProjectsContent() {
     const projectsContainer = document.getElementById('projects-container');
     if (!projectsContainer) return;
-    
+
     // Clear existing content
     projectsContainer.innerHTML = '';
-    
+
     if (projectsData.length === 0) {
         projectsContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-project-diagram" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No projects found</h3>
                 <p>Please check the projects.json file.</p>
             </div>
         `;
         return;
     }
-    
-    // Newest first, so the timeline reads from current work downwards.
+
+    const isOngoing = project => /ongoing|progress|current/i.test(project.status || '');
+
+    const lede = document.getElementById('projects-lede');
+    if (lede) {
+        const ongoing = projectsData.filter(isOngoing).length;
+        lede.textContent = `${projectsData.length} research projects${ongoing ? `, ${ongoing} ongoing` : ''}. ` +
+            'Select a project for its objectives, technologies and outcomes.';
+    }
+
+    // Newest first, so the list reads from current work downwards.
     const ordered = [...projectsData].sort(
         (a, b) => projectTimelineSortKey(b) - projectTimelineSortKey(a)
     );
 
-    projectsContainer.innerHTML = ordered.map((project, index) => `
-        <div class="project-entry ${index % 2 === 0 ? 'is-left' : 'is-right'}">
-            <span class="project-marker" aria-hidden="true">${projectMarkerLabel(project)}</span>
-            <div class="project-card" data-project-id="${project.id}" role="button" tabindex="0">
-                <div class="project-image">
-                    ${project.image ? `
-                        <img src="${project.image}" alt="${project.title}" class="project-card-image"
-                             onerror="this.outerHTML='&lt;i class=\\'${project.icon || 'fas fa-project-diagram'}\\'&gt;&lt;/i&gt;'" />
-                    ` : `
-                        <i class="${project.icon || 'fas fa-project-diagram'}"></i>
-                    `}
-                </div>
-                <div class="project-info">
-                    <div class="project-title">${project.title}</div>
-                    <div class="project-role">${project.role}</div>
-                    <div class="project-duration">${project.duration}</div>
-                    ${project.status ? `<span class="project-status">${project.status}</span>` : ''}
-                </div>
+    projectsContainer.innerHTML = ordered.map(project => {
+        const funding = project.funding || project.funding_source;
+        const technologies = Array.isArray(project.technologies) ? project.technologies : [];
+        const description = project.description || project.detailed_description;
+
+        return `
+        <article class="project-card" data-project-id="${project.id}" role="button" tabindex="0">
+            <div class="project-image">
+                ${project.image ? `
+                    <img src="${project.image}" alt="" class="project-card-image" loading="lazy"
+                         onerror="this.outerHTML='&lt;i class=\\'${project.icon || 'fas fa-project-diagram'}\\'&gt;&lt;/i&gt;'" />
+                ` : `
+                    <i class="${project.icon || 'fas fa-project-diagram'}"></i>
+                `}
             </div>
-        </div>
-    `).join('');
+            <div class="project-info">
+                <div class="project-meta">
+                    <span class="project-duration">${project.duration}</span>
+                    ${project.status ? `<span class="project-status${isOngoing(project) ? ' is-ongoing' : ''}">${project.status}</span>` : ''}
+                </div>
+                <h3 class="project-title">${project.title}</h3>
+                <div class="project-role">${project.role}</div>
+                ${funding ? `<div class="project-funding">${funding}</div>` : ''}
+                ${description ? `<p class="project-description">${description}</p>` : ''}
+                ${technologies.length ? `
+                    <div class="chip-list">
+                        ${technologies.slice(0, 6).map(tech => `<span class="chip">${tech}</span>`).join('')}
+                    </div>
+                ` : ''}
+                <span class="project-more">View details</span>
+            </div>
+        </article>
+        `;
+    }).join('');
 }
 
 const PROJECT_MONTHS = {
@@ -2319,103 +2240,81 @@ function projectTimelineSortKey(project) {
 }
 
 /**
- * Label for the marker sitting on the rail: "2021–25" for a span,
- * a bare year for a project that starts and ends in the same one.
- */
-function projectMarkerLabel(project) {
-    const parts = String(project.duration || '').split(/[–—-]/);
-    const start = Math.floor(parseProjectDatePart(parts[0] || '') / 100);
-    const end = parts.length > 1 ? Math.floor(parseProjectDatePart(parts[1]) / 100) : 0;
-
-    if (!start) return '';
-    if (!end || end === start) return String(start);
-    return `${start}–${String(end).slice(-2)}`;
-}
-
-/**
  * Open project modal with detailed information
  * @param {string} projectId - ID of the project
  */
 function openProjectModal(projectId) {
     const modal = document.getElementById('projectModal');
     const content = document.getElementById('projectModalContent');
-    
+
     const project = projectsData.find(p => p.id === projectId);
     if (!project) return;
-    
+
+    const facts = [
+        ['Duration', project.duration],
+        ['Role', project.role],
+        ['Supervisor', project.supervisor],
+        ['Funding', project.funding || project.funding_source],
+        ['Collaborators', Array.isArray(project.collaborators) ? project.collaborators.join(', ') : project.collaborators],
+        ['Status', project.status]
+    ].filter(([, value]) => value);
+
+    const listSection = (title, items) => items ? `
+        <h3 class="modal-section-title">${title}</h3>
+        <ul class="modal-list">
+            ${items.map(item => `<li>${item}</li>`).join('')}
+        </ul>
+    ` : '';
+
+    const calloutSection = (title, items) => items ? `
+        <h3 class="modal-section-title">${title}</h3>
+        <div class="modal-callout">
+            ${Array.isArray(items) ? items.map(item => `<p>${item}</p>`).join('') : `<p>${items}</p>`}
+        </div>
+    ` : '';
+
     content.innerHTML = `
+        <h2 class="modal-title">${project.title}</h2>
         ${project.image ? `
             <div class="project-modal-image-frame">
                 <img src="${project.image}" alt="${project.title}" class="project-modal-image"
                      onerror="this.closest('.project-modal-image-frame').style.display='none'" />
             </div>
         ` : ''}
-        <h2 style="color: var(--text-primary); margin-bottom: 20px;">${project.title}</h2>
-        <div style="margin-bottom: 15px; color: var(--text-secondary);">
-            <strong>Duration:</strong> ${project.duration}<br>
-            <strong>Role:</strong> ${project.role}<br>
-            ${project.supervisor ? `<strong>Supervisor:</strong> ${project.supervisor}<br>` : ''}
-            ${project.funding || project.funding_source ? `<strong>Funding:</strong> ${project.funding || project.funding_source}<br>` : ''}
-            ${project.collaborators ? `<strong>Collaborators:</strong> ${Array.isArray(project.collaborators) ? project.collaborators.join(', ') : project.collaborators}<br>` : ''}
-            ${project.status ? `<strong>Status:</strong> ${project.status}<br>` : ''}
-        </div>
-        <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Project Description</h3>
-        <p style="margin-bottom: 20px; line-height: 1.7; max-width: 72ch; color: var(--text-secondary);">${project.description || project.detailed_description}</p>
-        ${project.problem ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Problem &amp; Challenges</h3>
-            <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
-                ${project.problem.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
-            </ul>
-        ` : ''}
-        ${project.objectives ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Objectives</h3>
-            <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
-                ${project.objectives.map(obj => `<li style="margin-bottom: 8px; line-height: 1.5;">${obj}</li>`).join('')}
-            </ul>
-        ` : ''}
-        ${project.methodology ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Methodology</h3>
-            <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
-                ${project.methodology.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
-            </ul>
-        ` : ''}
+        <dl class="modal-facts">
+            ${facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('')}
+        </dl>
+        <h3 class="modal-section-title">Project Description</h3>
+        <p class="modal-text">${project.description || project.detailed_description}</p>
+        ${listSection('Problem &amp; Challenges', project.problem)}
+        ${listSection('Objectives', project.objectives)}
+        ${listSection('Methodology', project.methodology)}
         ${project.workflow_stages ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Workflow</h3>
-            <div style="margin-bottom: 20px;">
+            <h3 class="modal-section-title">Workflow</h3>
+            <div class="modal-steps">
                 ${project.workflow_stages.map(s => `
-                    <div style="margin-bottom: 14px; padding: 12px 15px; background: var(--bg-tertiary); border-left: 4px solid var(--secondary-color); border-radius: var(--radius-xs);">
-                        <strong style="color: var(--text-primary);">${s.stage}</strong>
-                        <p style="margin: 6px 0 0 0; line-height: 1.5; color: var(--text-secondary);">${s.description}</p>
+                    <div>
+                        <div>
+                            <strong>${s.stage}</strong>
+                            <p>${s.description}</p>
+                        </div>
                     </div>
                 `).join('')}
             </div>
         ` : ''}
-        ${project.contribution ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Contribution</h3>
-            <ul style="margin-bottom: 20px; padding-left: 20px; color: var(--text-secondary);">
-                ${project.contribution.map(item => `<li style="margin-bottom: 8px; line-height: 1.5;">${item}</li>`).join('')}
-            </ul>
-        ` : ''}
+        ${listSection('Contribution', project.contribution)}
         ${project.technologies ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Technologies Used</h3>
-            <p style="margin-bottom: 20px; background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-color); padding: 15px; border-radius: var(--radius-md); font-family: monospace;">${Array.isArray(project.technologies) ? project.technologies.join(', ') : project.technologies}</p>
-        ` : ''}
-        ${project.outcomes ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Key Outcomes</h3>
-            <div style="background: var(--bg-tertiary); padding: 15px; border-radius: var(--radius-md); border-left: 4px solid var(--success-color); color: var(--text-primary);">
-                ${Array.isArray(project.outcomes) ? project.outcomes.map(outcome => `<p style="margin-bottom: 10px;">${outcome}</p>`).join('') : `<p>${project.outcomes}</p>`}
+            <h3 class="modal-section-title">Technologies Used</h3>
+            <div class="chip-list">
+                ${(Array.isArray(project.technologies) ? project.technologies : [project.technologies])
+                    .map(tech => `<span class="chip">${tech}</span>`).join('')}
             </div>
         ` : ''}
-        ${project.outputs ? `
-            <h3 style="color: var(--text-primary); margin: 20px 0 10px 0;">Outputs</h3>
-            <div style="background: var(--bg-tertiary); padding: 15px; border-radius: var(--radius-md); border-left: 4px solid var(--success-color); color: var(--text-primary);">
-                ${Array.isArray(project.outputs) ? project.outputs.map(out => `<p style="margin-bottom: 10px;">${out}</p>`).join('') : `<p>${project.outputs}</p>`}
-            </div>
-        ` : ''}
+        ${calloutSection('Key Outcomes', project.outcomes)}
+        ${calloutSection('Outputs', project.outputs)}
     `;
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+
+    showModal(modal);
 }
 
 // ==========================================================================
@@ -2485,46 +2384,40 @@ function openSeminarModal(seminarId) {
     if (!seminar) return;
 
     const title = escapeHtml(seminar.title);
+    const facts = [
+        ['Organized by', seminar.organizer],
+        ['Date', seminar.date],
+        ['Location', seminar.location],
+        ['Role', seminar.role],
+        ['Description', seminar.description]
+    ].filter(([, value]) => value);
 
     content.innerHTML = `
-        <h2 style="color: var(--text-primary); margin-bottom: 20px; text-align: center;">${title}</h2>
+        <h2 class="modal-title">${title}</h2>
         ${seminar.image ? `
-            <div class="modal-certificate-image" style="text-align: center;">
+            <figure class="modal-figure modal-certificate-image">
                 <img src="${escapeHtml(seminar.image)}" alt="${title} certificate" class="modal-certificate-preview" data-image-zoom-src="${escapeHtml(seminar.image)}" data-image-zoom-alt="${title}" data-fallback-icon="fas fa-chalkboard-user">
-                <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 10px; text-align: center;">Click image to enlarge</p>
-            </div>
+                <figcaption class="modal-hint">Click image to enlarge</figcaption>
+            </figure>
         ` : ''}
-        <div style="text-align: center; background: var(--bg-tertiary); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin: 20px 0; color: var(--text-secondary);">
-            ${seminar.organizer ? `<p style="margin-bottom: 10px;"><strong>Organized by:</strong> ${escapeHtml(seminar.organizer)}</p>` : ''}
-            ${seminar.date ? `<p style="margin-bottom: 10px;"><strong>Date:</strong> ${escapeHtml(seminar.date)}</p>` : ''}
-            ${seminar.location ? `<p style="margin-bottom: 10px;"><strong>Location:</strong> ${escapeHtml(seminar.location)}</p>` : ''}
-            ${seminar.role ? `<p style="margin-bottom: 10px;"><strong>Role:</strong> ${escapeHtml(seminar.role)}</p>` : ''}
-            ${seminar.description ? `<p style="margin-bottom: 0;"><strong>Description:</strong> ${escapeHtml(seminar.description)}</p>` : ''}
-        </div>
+        <dl class="modal-facts">
+            ${facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${escapeHtml(value)}</dd></div>`).join('')}
+        </dl>
         ${(seminar.topics && seminar.topics.length) ? `
-            <div style="margin-top: 20px;">
-                <h4 style="color: var(--text-primary); margin-bottom: 10px;">Topics:</h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    ${seminar.topics.map(topic => `
-                        <span style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%);
-                                     color: white; padding: 5px 12px; border-radius: 15px;
-                                     font-size: 0.8em; font-weight: 500;">${escapeHtml(topic)}</span>
-                    `).join('')}
-                </div>
+            <h3 class="modal-section-title">Topics</h3>
+            <div class="chip-list">
+                ${seminar.topics.map(topic => `<span class="chip">${escapeHtml(topic)}</span>`).join('')}
             </div>
         ` : ''}
         ${seminar.verification_url ? `
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="${escapeHtml(seminar.verification_url)}" target="_blank" rel="noopener" style="color: var(--secondary-color); text-decoration: none; font-weight: 500;">
-                    <i class="fas fa-external-link-alt"></i> More Information
-                </a>
-            </div>
+            <a class="modal-link" href="${escapeHtml(seminar.verification_url)}" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> More Information
+            </a>
         ` : ''}
     `;
     attachImageFallbacks(content);
 
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+    showModal(modal);
 }
 
 // ==========================================================================
@@ -2537,50 +2430,59 @@ function openSeminarModal(seminarId) {
 function loadCertificatesContent() {
     const certificatesContainer = document.getElementById('certificates-container');
     if (!certificatesContainer) return;
-    
-    // Update awards section, grouped by category in order of first appearance
+
+    const awards = certificatesData.awards || [];
+    const certifications = certificatesData.certifications || [];
+
+    const lede = document.getElementById('certifications-lede');
+    if (lede) {
+        lede.textContent = `${awards.length} awards and scholarships, and ${certifications.length} certificates. ` +
+            'Select a certificate to see it in full.';
+    }
+
+    // Awards as a dated ledger, grouped by category in order of first appearance
     const awardsContainer = document.querySelector('.awards-container');
     if (awardsContainer && certificatesData.awards) {
         const awardGroups = new Map();
-        certificatesData.awards.forEach(award => {
+        awards.forEach(award => {
             const category = award.category || 'Awards';
             if (!awardGroups.has(category)) awardGroups.set(category, []);
             awardGroups.get(category).push(award);
         });
-        awardsContainer.innerHTML = [...awardGroups].map(([category, awards]) => `
+        awardsContainer.innerHTML = [...awardGroups].map(([category, items]) => `
             <h4 class="compact-list-heading">${category}</h4>
             <ul class="award-list">
-                ${awards.map(award => `
+                ${items.map(award => `
                     <li class="award-item">
-                        <span class="award-icon"><i class="${award.icon || 'fas fa-trophy'}"></i></span>
-                        <span class="award-content"><strong>${award.title}</strong>, ${award.issuer} (${award.date})</span>
+                        <span class="award-date">${award.date}</span>
+                        <span class="award-content">
+                            <strong>${award.title}</strong>
+                            <span class="award-issuer">${award.issuer}</span>
+                        </span>
                     </li>
                 `).join('')}
             </ul>
         `).join('');
     }
-    
+
     // Clear existing content
     certificatesContainer.innerHTML = '';
-    
-    const certifications = certificatesData.certifications || [];
-    
+
     if (certifications.length === 0) {
         certificatesContainer.innerHTML = `
-            <div style="text-align: center; padding: 40px; color: #6c757d;">
-                <i class="fas fa-certificate" style="font-size: 3em; margin-bottom: 20px;"></i>
+            <div class="pub-filter-empty">
                 <h3>No certifications found</h3>
                 <p>Please check the certificates.json file.</p>
             </div>
         `;
         return;
     }
-    
+
     certificatesContainer.innerHTML = certifications.map(cert => `
         <div class="certificate-card" data-certificate-id="${cert.id}" role="button" tabindex="0">
             <div class="certificate-image">
-                ${cert.image ? 
-                    `<img src="${cert.image}" alt="${cert.title}" data-fallback-icon="fas fa-certificate">` :
+                ${cert.image ?
+                    `<img src="${cert.image}" alt="" loading="lazy" data-fallback-icon="fas fa-certificate">` :
                     `<i class="fas fa-certificate"></i>`
                 }
             </div>
@@ -2597,58 +2499,49 @@ function loadCertificatesContent() {
 function openCertificateModal(certId) {
     const modal = document.getElementById('certificateModal');
     const content = document.getElementById('certificateModalContent');
-    
+
     const certifications = certificatesData.certifications || [];
     const cert = certifications.find(c => c.id === certId);
     if (!cert) return;
-    
+
+    const facts = [
+        ['Issued by', cert.issuer],
+        ['Date', cert.date],
+        ['Category', cert.category],
+        ['Credential ID', cert.credential_id],
+        ['Description', cert.description]
+    ].filter(([, value]) => value);
+
     content.innerHTML = `
-        <h2 style="color: var(--text-primary); margin-bottom: 20px; text-align: center;">${cert.title}</h2>
+        <h2 class="modal-title">${cert.title}</h2>
         ${cert.image ? `
-            <div class="modal-certificate-image" style="text-align: center;">
+            <figure class="modal-figure modal-certificate-image">
                 <img src="${cert.image}" alt="${cert.title}" class="modal-certificate-preview" data-image-zoom-src="${cert.image}" data-image-zoom-alt="${cert.title}">
-                <p style="font-size: 0.9em; color: var(--text-muted); margin-top: 10px; text-align: center;">Click image to enlarge</p>
-            </div>
+                <figcaption class="modal-hint">Click image to enlarge</figcaption>
+            </figure>
         ` : `
-            <div style="text-align: center; margin: 30px 0;">
-                <div style="width: 300px; height: 200px; background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%); 
-                            border-radius: var(--radius-lg); margin: 0 auto; display: flex; align-items: center; justify-content: center; 
-                            color: white; font-size: 3em; box-shadow: 0 10px 30px rgba(0,0,0,0.2);">
-                    <i class="fas fa-certificate"></i>
-                </div>
+            <div class="modal-figure modal-placeholder">
+                <i class="fas fa-certificate"></i>
             </div>
         `}
-        <div style="text-align: center; background: var(--bg-tertiary); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border-color); margin: 20px 0; color: var(--text-secondary);">
-            <p style="margin-bottom: 10px;"><strong>Issued by:</strong> ${cert.issuer}</p>
-            <p style="margin-bottom: 10px;"><strong>Date:</strong> ${cert.date}</p>
-            ${cert.category ? `<p style="margin-bottom: 10px;"><strong>Category:</strong> ${cert.category}</p>` : ''}
-            ${cert.credential_id ? `<p style="margin-bottom: 10px;"><strong>Credential ID:</strong> ${cert.credential_id}</p>` : ''}
-            <p style="margin-bottom: 0;"><strong>Description:</strong> ${cert.description}</p>
-        </div>
+        <dl class="modal-facts">
+            ${facts.map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`).join('')}
+        </dl>
         ${cert.skills ? `
-            <div style="margin-top: 20px;">
-                <h4 style="color: var(--text-primary); margin-bottom: 10px;">Skills Acquired:</h4>
-                <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    ${cert.skills.map(skill => `
-                        <span style="background: linear-gradient(135deg, var(--secondary-color) 0%, var(--accent-color) 100%); 
-                                     color: white; padding: 5px 12px; border-radius: 15px; 
-                                     font-size: 0.8em; font-weight: 500;">${skill}</span>
-                    `).join('')}
-                </div>
+            <h3 class="modal-section-title">Skills Acquired</h3>
+            <div class="chip-list">
+                ${cert.skills.map(skill => `<span class="chip">${skill}</span>`).join('')}
             </div>
         ` : ''}
         ${cert.verification_url ? `
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="${cert.verification_url}" target="_blank" rel="noopener" style="color: var(--secondary-color); text-decoration: none; font-weight: 500;">
-                    <i class="fas fa-external-link-alt"></i> Verify Certificate
-                </a>
-            </div>
+            <a class="modal-link" href="${cert.verification_url}" target="_blank" rel="noopener">
+                <i class="fas fa-external-link-alt"></i> Verify Certificate
+            </a>
         ` : ''}
     `;
     attachImageFallbacks(content);
-    
-    modal.style.display = 'block';
-    document.body.style.overflow = 'hidden';
+
+    showModal(modal);
 }
 
 // ==========================================================================
@@ -2663,12 +2556,11 @@ function openCertificateModal(certId) {
 function openImageZoom(imageSrc, altText) {
     const overlay = document.getElementById('imageZoomOverlay');
     const zoomedImage = document.getElementById('zoomedImage');
-    
+
     if (overlay && zoomedImage) {
         zoomedImage.src = imageSrc;
         zoomedImage.alt = altText;
-        overlay.style.display = 'block';
-        document.body.style.overflow = 'hidden';
+        showModal(overlay);
     }
 }
 
@@ -2676,27 +2568,99 @@ function openImageZoom(imageSrc, altText) {
  * Close image zoom overlay
  */
 function closeImageZoom() {
-    const overlay = document.getElementById('imageZoomOverlay');
-    if (overlay) {
-        overlay.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+    hideModal(document.getElementById('imageZoomOverlay'));
 }
 
 // ==========================================================================
 // Modal Functions
 // ==========================================================================
 
+// Elements that had focus when each open dialog was opened, innermost last,
+// so closing a dialog hands focus back to whatever opened it.
+const modalFocusStack = [];
+
+const MODAL_SELECTOR = '.modal, .image-zoom-overlay';
+
+function isModalOpen(modal) {
+    return Boolean(modal) && modal.style.display === 'block';
+}
+
+/**
+ * The dialog on top: the image zoom when it is open, else any open modal.
+ */
+function topOpenModal() {
+    const zoom = document.getElementById('imageZoomOverlay');
+    if (isModalOpen(zoom)) return zoom;
+    return Array.from(document.querySelectorAll('.modal')).find(isModalOpen) || null;
+}
+
+/**
+ * Show a dialog (modal or image zoom) and move focus into it.
+ * @param {HTMLElement} modal
+ */
+function showModal(modal) {
+    if (!modal || isModalOpen(modal)) return;
+
+    modalFocusStack.push(document.activeElement);
+    modal.style.display = 'block';
+    modal.scrollTop = 0;
+    document.body.style.overflow = 'hidden';
+
+    const closeButton = modal.querySelector('.close, .close-zoom');
+    if (closeButton) closeButton.focus({ preventScroll: true });
+}
+
+/**
+ * Hide a dialog and return focus to the element that opened it.
+ * @param {HTMLElement} modal
+ */
+function hideModal(modal) {
+    if (!isModalOpen(modal)) return;
+
+    modal.style.display = 'none';
+    // The page stays locked while another dialog (or the menu sheet) is open
+    const header = document.getElementById('site-header');
+    const stillCovered = Boolean(topOpenModal()) || Boolean(header && header.classList.contains('is-open'));
+    document.body.style.overflow = stillCovered ? 'hidden' : '';
+
+    const opener = modalFocusStack.pop();
+    if (opener && document.contains(opener) && typeof opener.focus === 'function') {
+        opener.focus({ preventScroll: true });
+    }
+}
+
+/**
+ * Keep Tab inside the open dialog.
+ */
+function trapModalFocus(event) {
+    if (event.key !== 'Tab') return;
+    const modal = topOpenModal();
+    if (!modal) return;
+
+    const focusable = Array.from(modal.querySelectorAll(
+        'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )).filter(el => el.offsetParent !== null);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    const inside = modal.contains(document.activeElement);
+
+    if (event.shiftKey && (!inside || document.activeElement === first)) {
+        event.preventDefault();
+        last.focus();
+    } else if (!event.shiftKey && (!inside || document.activeElement === last)) {
+        event.preventDefault();
+        first.focus();
+    }
+}
+
 /**
  * Close modal
  * @param {string} modalId - ID of the modal to close
  */
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
-    }
+    hideModal(document.getElementById(modalId));
 }
 
 /**
@@ -2727,66 +2691,26 @@ function handleModalClick(event) {
 // ==========================================================================
 
 /**
- * Scroll smoothly to the top of the page with animation
+ * Scroll to the top of the page
  */
 function scrollToTop() {
-    const scrollButton = document.getElementById('scrollToTop');
-    
-    // Add clicked animation
-    if (scrollButton) {
-        scrollButton.style.transform = 'scale(0.85) translateY(-3px)';
-        setTimeout(() => {
-            scrollButton.style.transform = '';
-        }, 200);
-    }
-    
-    // Use native smooth scroll for better performance
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
+    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduced ? 'instant' : 'smooth' });
 }
 
 /**
- * Initialize scroll to top button functionality with enhanced effects
+ * Show the scroll-to-top button once the page has been scrolled
  */
 function initializeScrollToTop() {
     const scrollButton = document.getElementById('scrollToTop');
     if (!scrollButton) return;
-    
-    let isVisible = false;
-    
+
     const handleScroll = throttle(() => {
         const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        const shouldShow = scrollTop > 400;
-        
-        if (shouldShow !== isVisible) {
-            isVisible = shouldShow;
-            if (shouldShow) {
-                scrollButton.classList.add('visible');
-            } else {
-                scrollButton.classList.remove('visible');
-            }
-        }
-        
-        // Progress indicator effect
-        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = Math.min((scrollTop / maxScroll) * 100, 100);
-        scrollButton.style.setProperty('--scroll-progress', `${progress}%`);
+        scrollButton.classList.toggle('visible', scrollTop > 400);
     }, 50);
-    
+
     window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    // Enhanced hover effects
-    scrollButton.addEventListener('mouseenter', () => {
-        scrollButton.style.transform = 'translateY(-8px) scale(1.1)';
-        scrollButton.style.boxShadow = '0 12px 35px rgba(var(--primary-color-rgb), 0.4)';
-    });
-    
-    scrollButton.addEventListener('mouseleave', () => {
-        scrollButton.style.transform = 'translateY(0) scale(1)';
-        scrollButton.style.boxShadow = '';
-    });
 }
 
 // ==========================================================================
@@ -2794,384 +2718,340 @@ function initializeScrollToTop() {
 // ==========================================================================
 
 /**
- * Add smooth scrolling to anchor links
- */
-function initializeSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            if (this.dataset.tab) return;
-
-            e.preventDefault();
-            const href = this.getAttribute('href');
-            if (href === '#') return;
-            const target = document.querySelector(href);
-            if (target) {
-                const headerHeight = CONFIG.headerHeight;
-                const elementPosition = target.offsetTop - headerHeight;
-                window.scrollTo({
-                    top: elementPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
-}
-
-/**
  * Initialize keyboard navigation
  */
 function initializeKeyboardNavigation() {
     document.addEventListener('keydown', function(e) {
-        // Close modals with Escape key
+        // Escape closes the top-most layer: image zoom, then a modal, then the menu
         if (e.key === 'Escape') {
-            closeModal('projectModal');
-            closeModal('certificateModal');
-            closeModal('awardCertificateModal');
-            closeImageZoom();
+            const zoom = document.getElementById('imageZoomOverlay');
+            if (isModalOpen(zoom)) {
+                closeImageZoom();
+            } else if (topOpenModal()) {
+                closeModal('projectModal');
+                closeModal('certificateModal');
+                closeModal('awardCertificateModal');
+            } else {
+                setMobileMenu(false);
+            }
         }
-        
-        // Navigate tabs with arrow keys (when focused on nav buttons)
+
+        trapModalFocus(e);
+
+        // Move between sections with the arrow keys (when focused on the nav)
         if (e.target instanceof Element && e.target.classList.contains('nav-btn')) {
             const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
             const currentIndex = navButtons.indexOf(e.target);
-            
-            if (e.key === 'ArrowRight' && currentIndex < navButtons.length - 1) {
+            const step = (e.key === 'ArrowDown' || e.key === 'ArrowRight') ? 1
+                : (e.key === 'ArrowUp' || e.key === 'ArrowLeft') ? -1
+                : 0;
+            const next = navButtons[currentIndex + step];
+
+            if (step && next) {
                 e.preventDefault();
-                navButtons[currentIndex + 1].focus();
-                navButtons[currentIndex + 1].click();
-            } else if (e.key === 'ArrowLeft' && currentIndex > 0) {
-                e.preventDefault();
-                navButtons[currentIndex - 1].focus();
-                navButtons[currentIndex - 1].click();
+                next.focus();
             }
         }
     });
-}
-
-/**
- * Initialize header effects with enhanced scroll behavior
- */
-function initializeHeaderEffects() {
-    const header = document.querySelector('.header-wrapper');
-    if (!header) return;
-
-    const handleScroll = throttle(updateHeaderThemeStyle, 16);
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Initial call
-    handleScroll();
 }
 
 // ==========================================================================
 // Event Listeners and Initialization
 // ==========================================================================
 
+// ==========================================================================
+// Research model (Home hero)
+// ==========================================================================
+
 /**
- * Static glass-block background drawn once behind all page content.
- *
- * An isometric drafting grid is tiled with small glossy glass cubes, one
- * grid cell on a side. Each cube is lit from above: a pale glass top face, a
- * lightly tinted left wall and a deeper right wall, so the three faces read
- * as solid 3D blocks. Every face carries its own white gloss streak, crisp
- * blue grid lines separate each cell, and a soft reflection band sweeps
- * diagonally across the whole sheet. It is redrawn
- * only on resize and theme change, with separate light and dark palettes.
+ * Number of publications tagged with a topic (every publication for '').
+ * @param {string} topic - a publications.json topic
  */
-function initializeGridBackground() {
-    const background = document.querySelector('.grid-background');
-    if (!background || background.querySelector('canvas')) return;
+function countPublicationsForTopic(topic) {
+    const everything = PUB_TYPES.flatMap(pubTypeList);
+    if (!topic) return everything.length;
+    return everything.filter(pub => (pub.topics || []).includes(topic)).length;
+}
 
-    background.setAttribute('aria-hidden', 'true');
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d');
-    if (!context) return;
-    background.appendChild(canvas);
+/**
+ * Draw the research model: an isometric modular building with one module per
+ * research interest, read from the links in #research-interests (which stay
+ * the keyboard route to the same destinations).
+ *
+ * Modules sit in a single row three wide, stacked three storeys high with
+ * the top storey one module short, so every module shows its long facade.
+ * The selected module slides out of the stack towards the viewer and its
+ * entry in the list beside the model opens to show its details. On the first
+ * visit of a session the modules are placed one by one (CSS, .is-building).
+ */
+function initializeResearchModel() {
+    const stage = document.getElementById('model-stage');
+    const links = Array.from(document.querySelectorAll('#research-interests .research-card'));
+    if (!stage || !links.length || stage.firstChild) return;
 
-    let width = 0;
-    let height = 0;
-    let ink = '';
-    let inkScale = 1;
-    let glass = null;
+    const NS = 'http://www.w3.org/2000/svg';
+    const UNIT = 46;                       // pixels per model unit
+    const COS = Math.cos(Math.PI / 6);
+    const W = 4.4, D = 1.8, H = 1.75;       // module length, depth, height
+    const COLUMNS = 3;
+    const SLIDE = 0.55;                    // how far a selected module is pulled out
 
-    /* Isometric drafting paper: a triangular lattice of vertical lines and
-       lines at +/-30 degrees, the ruling used for isometric building
-       drawings. EDGE is the length of one lattice edge, which is also the
-       side of each glass cube shaded behind the lines; every line is drawn
-       at the same weight and colour so every cell stands apart. LINE_ALPHA
-       and LINE_WIDTH are the knobs worth touching: raise them for crisper
-       cell borders, lower them to keep the grid clear of the content. */
-    const EDGE = 56;
-    const LINE_ALPHA = 0.16;
-    const LINE_WIDTH = 0.5;
-    const SLOPE = Math.tan(Math.PI / 6);       // 30 degrees
-    const COLUMN = EDGE * Math.cos(Math.PI / 6); // spacing of the verticals
+    // Isometric projection: x runs down-right, y down-left, z up.
+    const project = (x, y, z) => [(x - y) * COS * UNIT, (x + y) * 0.5 * UNIT - z * UNIT];
+    const toPoints = corners => corners
+        .map(corner => project(...corner).map(n => n.toFixed(1)).join(','))
+        .join(' ');
+    const make = (name, attrs, parent) => {
+        const el = document.createElementNS(NS, name);
+        Object.keys(attrs).forEach(key => el.setAttribute(key, attrs[key]));
+        parent.appendChild(el);
+        return el;
+    };
 
-    function updateInk() {
-        const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-        ink = dark ? '105, 190, 235' : '36, 112, 164';
-        // Light ink on a dark ground reads stronger at equal alpha; ease off.
-        inkScale = dark ? 0.72 : 1;
+    const topics = links.map(link => {
+        const isProjects = link.dataset.tab === 'projects';
+        const topic = link.dataset.researchTopic || '';
+        const count = isProjects ? projectsData.length : countPublicationsForTopic(topic);
+        const noun = isProjects ? 'project' : 'publication';
+        const name = (link.querySelector('.research-name') || link).textContent.trim();
+        return {
+            link,
+            name,
+            desc: (link.querySelector('.research-desc') || {}).textContent || '',
+            label: (link.dataset.label || name).split('|'),
+            image: link.dataset.image || '',
+            accent: link.style.getPropertyValue('--accent'),
+            isProjects,
+            topic,
+            countText: `${count} ${noun}${count === 1 ? '' : 's'}`
+        };
+    });
 
-        /* Glass panes behind the lines: each hexagon is read as a cube lit
-           from above. All three faces are tinted glass, never bare white:
-           the top is the palest, the walls deeper, the right one most of
-           all. Tints are
-           [rgb, alpha at top-left, alpha at bottom-right]; the fade across the
-           screen keeps it from looking like flat paint. GLOSS is the white
-           shine painted into every face and SHEEN a soft reflection band laid
-           over the whole sheet. */
-        glass = dark
-            ? {
-                top: [ink, 0.04, 0.022],
-                left: [ink, 0.06, 0.035],
-                right: ['0, 0, 0', 0.24, 0.15],
-                gloss: 0.08,
-                sheen: 0.025
+    topics.forEach(topic => {
+        const countEl = topic.link.querySelector('.research-count');
+        if (countEl) countEl.textContent = topic.countText;
+
+        if (topic.image && !topic.link.querySelector('.research-thumb')) {
+            const thumb = document.createElement('img');
+            thumb.className = 'research-thumb';
+            thumb.src = topic.image;
+            thumb.alt = '';
+            thumb.loading = 'lazy';
+            thumb.width = 724;
+            thumb.height = 543;
+            topic.link.appendChild(thumb);
+        }
+        if (!topic.link.querySelector('.research-go')) {
+            const go = document.createElement('span');
+            go.className = 'research-go';
+            go.textContent = topic.isProjects ? 'Show projects' : 'Show publications';
+            topic.link.appendChild(go);
+        }
+    });
+
+    const svg = document.createElementNS(NS, 'svg');
+    svg.setAttribute('class', 'model-svg');
+    svg.setAttribute('viewBox', '-112 -280 672 675');
+    svg.setAttribute('focusable', 'false');
+
+    // Ground: an isometric grid that fades out around the building
+    const defs = make('defs', {}, svg);
+    const fade = make('radialGradient', {
+        id: 'model-fade-gradient', gradientUnits: 'userSpaceOnUse', cx: 227, cy: 60, r: 400
+    }, defs);
+    make('stop', { offset: 0.25, 'stop-color': '#fff', 'stop-opacity': 1 }, fade);
+    make('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, fade);
+    const mask = make('mask', {
+        id: 'model-fade', maskUnits: 'userSpaceOnUse', x: -112, y: -280, width: 672, height: 675
+    }, defs);
+    make('rect', { x: -112, y: -280, width: 672, height: 675, fill: 'url(#model-fade-gradient)' }, mask);
+
+    const line = (a, b) => `M${project(...a).map(n => n.toFixed(1)).join(' ')}L${project(...b).map(n => n.toFixed(1)).join(' ')}`;
+    let grid = '';
+    for (let y = -1.8; y <= 3.61; y += 0.9) grid += line([-1.5, y, 0], [15, y, 0]);
+    for (let x = -1.5; x <= 15.01; x += 1.5) grid += line([x, -1.8, 0], [x, 3.6, 0]);
+    make('path', { class: 'model-grid-lines', d: grid, mask: 'url(#model-fade)' }, svg);
+
+    // Shadow on the ground in front of the facade
+    make('polygon', {
+        class: 'model-footprint',
+        points: toPoints([[0.3, D, 0], [COLUMNS * W, D, 0], [COLUMNS * W + 0.3, D + 0.8, 0], [0.6, D + 0.8, 0]])
+    }, svg);
+
+    const modules = topics.map((topic, i) => {
+        const x0 = (i % COLUMNS) * W;
+        const x1 = x0 + W;
+        const z0 = Math.floor(i / COLUMNS) * H;
+        const z1 = z0 + H;
+
+        const group = make('g', { class: 'module', 'data-index': i }, svg);
+        group.style.setProperty('--i', i);
+        group.style.setProperty('--accent', topic.accent);
+        group.style.setProperty('--slide-x', `${(-SLIDE * COS * UNIT).toFixed(1)}px`);
+        group.style.setProperty('--slide-y', `${(SLIDE * 0.5 * UNIT).toFixed(1)}px`);
+
+        make('polygon', {
+            class: 'module-face module-top',
+            points: toPoints([[x0, 0, z1], [x1, 0, z1], [x1, D, z1], [x0, D, z1]])
+        }, group);
+        make('polygon', {
+            class: 'module-face module-end',
+            points: toPoints([[x1, 0, z0], [x1, D, z0], [x1, D, z1], [x1, 0, z1]])
+        }, group);
+        make('polygon', {
+            class: 'module-face module-front',
+            points: toPoints([[x0, D, z0], [x1, D, z0], [x1, D, z1], [x0, D, z1]])
+        }, group);
+
+        // A strip window with two mullions across the upper part of the facade
+        const wx0 = x0 + 0.28, wx1 = x1 - 0.28, wz0 = z0 + 1.2, wz1 = z1 - 0.17;
+        make('polygon', {
+            class: 'module-window',
+            points: toPoints([[wx0, D, wz0], [wx1, D, wz0], [wx1, D, wz1], [wx0, D, wz1]])
+        }, group);
+        const third = (wx1 - wx0) / 3;
+        make('path', {
+            class: 'module-window',
+            d: line([wx0 + third, D, wz0], [wx0 + third, D, wz1]) + line([wx0 + 2 * third, D, wz0], [wx0 + 2 * third, D, wz1])
+        }, group);
+
+        // The name lies on the facade plane, sheared to follow the x axis,
+        // on up to two lines under the window
+        topic.label.slice(0, 2).forEach((text, lineIndex, all) => {
+            const baseline = z0 + 0.22 + (all.length - 1 - lineIndex) * 0.44;
+            const [lx, ly] = project(x0 + 0.28, D, baseline);
+            const label = make('text', {
+                class: 'module-label',
+                transform: `matrix(${COS.toFixed(4)} 0.5 0 1 ${lx.toFixed(1)} ${ly.toFixed(1)})`
+            }, group);
+            label.textContent = text;
+        });
+
+        return group;
+    });
+
+    stage.appendChild(svg);
+
+    let active = -1;
+
+    function select(index) {
+        if (index === active || !topics[index]) return;
+        active = index;
+
+        modules.forEach((group, i) => group.classList.toggle('is-active', i === index));
+        topics.forEach((t, i) => t.link.classList.toggle('is-active', i === index));
+    }
+
+    modules.forEach((group, i) => {
+        // With a mouse the module is already selected by hover when it is
+        // pressed, so a click opens it. On touch the first tap selects and
+        // the second opens.
+        let wasActive = false;
+        group.addEventListener('pointerdown', () => { wasActive = i === active; });
+        group.addEventListener('mouseenter', () => select(i));
+        group.addEventListener('click', () => {
+            if (!wasActive) {
+                select(i);
+                return;
             }
-            : {
-                top: [ink, 0.028, 0.018],
-                left: [ink, 0.055, 0.035],
-                right: [ink, 0.1, 0.065],
-                gloss: 0.6,
-                sheen: 0.3
-            };
-    }
-
-    function wash([rgb, from, to]) {
-        const gradient = context.createLinearGradient(0, 0, width, height);
-        gradient.addColorStop(0, `rgba(${rgb}, ${from})`);
-        gradient.addColorStop(1, `rgba(${rgb}, ${to})`);
-        return gradient;
-    }
-
-    /* A white gradient from (x0, y0) to (x1, y1), with stops given as
-       [offset, share of the gloss alpha]. */
-    function shine(x0, y0, x1, y1, stops) {
-        const gradient = context.createLinearGradient(x0, y0, x1, y1);
-        stops.forEach(([offset, share]) => {
-            gradient.addColorStop(offset, `rgba(255, 255, 255, ${(glass.gloss * share).toFixed(4)})`);
+            topics[i].link.click();
         });
-        return gradient;
+    });
+
+    links.forEach((link, i) => {
+        link.addEventListener('mouseenter', () => select(i));
+        link.addEventListener('focus', () => select(i));
+    });
+
+    select(0);
+
+    // Place the modules one by one, once per session
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let alreadyBuilt = false;
+    try {
+        alreadyBuilt = sessionStorage.getItem('research-model-built') === '1';
+    } catch (err) {
+        /* storage unavailable: play the sequence */
     }
 
-    /* Fill the lattice as isometric cubes, one lattice edge on a side. Cube
-       centres are the lattice points (k, j) with k + 2j divisible by 3;
-       every hexagon around one splits into top, left and right rhombi whose
-       edges all run along grid lines, so the panes sit exactly inside the
-       existing ruling. */
-    function drawGlass() {
-        const side = EDGE;     // cube edge length
-        const reach = COLUMN;  // half a hexagon's width
-
-        // The three faces of one cube, centred on the origin.
-        const faces = {
-            top: [[0, 0], [-reach, -side / 2], [0, -side], [reach, -side / 2]],
-            left: [[0, 0], [-reach, -side / 2], [-reach, side / 2], [0, side]],
-            right: [[0, 0], [0, side], [reach, side / 2], [reach, -side / 2]]
-        };
-        const facePath = (points, x = 0, y = 0, path = new Path2D()) => {
-            points.forEach(([px, py], i) => path[i ? 'lineTo' : 'moveTo'](x + px, y + py));
-            path.closePath();
-            return path;
-        };
-
-        const centres = [];
-        for (let k = -1; k * reach <= width + reach; k++) {
-            const shift = k * side / 2;
-            const jStart = Math.floor((-side - shift) / side) - 1;
-            const jEnd = Math.ceil((height + side - shift) / side) + 1;
-            for (let j = jStart; j <= jEnd; j++) {
-                if ((((k + 2 * j) % 3) + 3) % 3 !== 0) continue;
-                centres.push([k * reach, j * side + shift]);
+    if (!reducedMotion && !alreadyBuilt) {
+        svg.classList.add('is-building');
+        modules[modules.length - 1].addEventListener('animationend', () => {
+            svg.classList.remove('is-building');
+            try {
+                sessionStorage.setItem('research-model-built', '1');
+            } catch (err) {
+                /* nothing to remember */
             }
-        }
-
-        // Tint: one screen-wide path per face so the fade runs across the sheet.
-        Object.keys(faces).forEach(name => {
-            const path = new Path2D();
-            centres.forEach(([x, y]) => facePath(faces[name], x, y, path));
-            context.fillStyle = wash(glass[name]);
-            context.fill(path);
-        });
-
-        /* Gloss: gradients in cube-local space, so every face gets the same
-           shine however far across the screen it sits. The top catches a
-           diagonal streak; the left wall is bright at its upper edge and
-           picks up a faint reflection at the foot; the right wall carries a
-           narrow vertical streak near its front edge. */
-        const gloss = {
-            top: shine(-reach, -side, reach, 0,
-                [[0.2, 0], [0.42, 1], [0.6, 0]]),
-            left: shine(-reach, -side / 2, 0, side,
-                [[0, 0.9], [0.4, 0], [0.85, 0], [1, 0.35]]),
-            right: shine(0, 0, reach, 0,
-                [[0.08, 0], [0.22, 0.8], [0.4, 0], [0.9, 0], [1, 0.3]])
-        };
-        Object.keys(faces).forEach(name => {
-            const local = facePath(faces[name]);
-            context.fillStyle = gloss[name];
-            centres.forEach(([x, y]) => {
-                context.save();
-                context.translate(x, y);
-                context.fill(local);
-                context.restore();
-            });
-        });
-
-        const sheen = context.createLinearGradient(0, 0, width, height);
-        sheen.addColorStop(0, 'rgba(255, 255, 255, 0)');
-        sheen.addColorStop(0.3, `rgba(255, 255, 255, ${glass.sheen})`);
-        sheen.addColorStop(0.55, 'rgba(255, 255, 255, 0)');
-        context.fillStyle = sheen;
-        context.fillRect(0, 0, width, height);
+        }, { once: true });
     }
-
-    function draw() {
-        context.clearRect(0, 0, width, height);
-        drawGlass();
-
-        // One path keeps this to a single stroke however large the screen.
-        const lines = new Path2D();
-
-        // Verticals.
-        for (let k = 0; k * COLUMN <= width; k++) {
-            lines.moveTo(k * COLUMN, 0);
-            lines.lineTo(k * COLUMN, height);
-        }
-
-        // Diagonals y = c + x·tan30 and y = c - x·tan30, with intercepts c on
-        // multiples of EDGE so they cross the verticals on the lattice points.
-        const run = width * SLOPE;
-        for (let m = Math.floor(-run / EDGE); m * EDGE <= height; m++) {
-            lines.moveTo(0, m * EDGE);
-            lines.lineTo(width, m * EDGE + run);
-        }
-        for (let n = 0; n * EDGE <= height + run; n++) {
-            lines.moveTo(0, n * EDGE);
-            lines.lineTo(width, n * EDGE - run);
-        }
-
-        context.lineWidth = LINE_WIDTH;
-        context.strokeStyle = `rgba(${ink}, ${(LINE_ALPHA * inkScale).toFixed(4)})`;
-        context.stroke(lines);
-    }
-
-    function resize() {
-        width = background.clientWidth;
-        height = background.clientHeight;
-        const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-        canvas.width = Math.round(width * ratio);
-        canvas.height = Math.round(height * ratio);
-        context.setTransform(ratio, 0, 0, ratio, 0, 0);
-        draw();
-    }
-
-    window.addEventListener('resize', throttle(resize, 150), { passive: true });
-
-    new MutationObserver(() => {
-        updateInk();
-        draw();
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-
-    updateInk();
-    resize();
 }
 
 /**
  * Initialize the application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', async function() {
-    console.log('🚀 Academic Portfolio initializing - Enhanced UI/UX with Performance Optimizations');
-
-    // Reveal the page (body starts at opacity:0 via CSS and fades in once loaded)
-    document.body.classList.add('loaded');
-
-    // Load all data from JSON files first with loading indicator
+    // Load all data from JSON files
     const dataPromise = loadDataFromJSON();
-    
+
     // Initialize critical components immediately
-    initializeTheme(); // Initialize theme toggle functionality first
-    initializeGridBackground();
+    initializeTheme();
     initializeStaticEventHandlers();
-    
+    syncHeaderHeight();
+
     // Wait for data to load
     await dataPromise;
-    
-    // Initialize various components
-    initializeSmoothScrolling();
+
     initializeKeyboardNavigation();
-    initializeHeaderEffects();
     initializeScrollToTop();
-    
+    initializeResearchModel();
+
     // Initialize tab from URL hash on page load
     initializeTabFromUrl();
-    
+
     // Render the Home news: the first few items as highlight cards, the rest
     // as a list below them (data already loaded)
     renderHighlights();
     renderNewsList();
 
-    // Populate the Google Scholar metrics card, then keep a long-lived tab in
-    // step with the 6-hourly server-side refresh
+    // Populate the Google Scholar metrics, then keep a long-lived tab in
+    // step with the server-side refresh
     renderScholarMetrics();
     initializeScholarAutoRefresh();
 
     // Set up modal click handlers
     window.addEventListener('click', handleModalClick);
-    
+
     // Add mobile menu click outside listener
     document.addEventListener('click', closeMobileMenuOnClickOutside);
-    
+
     initializeFlagCounterPopup();
 
-    // Handle browser back/forward navigation
+    // Handle browser back/forward navigation. showTab() sets the hash itself,
+    // so a change to the tab already on screen needs nothing more.
     window.addEventListener('hashchange', function() {
         const currentTab = getCurrentTab();
+        if (currentTab === requestedTab) return;
         showTab(currentTab);
     });
-    
+
     // Add resize handler for responsive adjustments with debounce
     const handleResize = debounce(() => {
         syncHeaderHeight();
 
-        // Close mobile menu on desktop view
-        if (window.innerWidth > 768) {
-            const navMenu = document.querySelector('.nav-menu');
-            const menuToggle = document.querySelector('.mobile-menu-toggle');
-            if (navMenu && navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
-                if (menuToggle) {
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                }
-                document.body.style.overflow = '';
-            }
+        // The menu sheet only exists below the width where the tabs fold
+        if (window.innerWidth >= 1180) {
+            setMobileMenu(false);
         }
     }, 250);
-    
+
     window.addEventListener('resize', handleResize);
-    
-    // Initial header height calculation (re-run after webfonts settle)
-    syncHeaderHeight();
+
+    // Re-measure the top bar once the webfont has settled
     setTimeout(syncHeaderHeight, 100);
     if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(syncHeaderHeight);
     }
-    
-    // Add performance monitoring
-    if (window.performance && window.performance.timing) {
-        window.addEventListener('load', () => {
-            const loadTime = window.performance.timing.loadEventEnd - window.performance.timing.navigationStart;
-            console.log(`📊 Page loaded in ${loadTime}ms`);
-        });
-    }
-    
-    // Preload critical images
-    preloadImages([
-        'assets/images/profile/Profile_1.png',
-        'assets/images/profile/Profile_2.jpg',
-        'assets/images/profile/Profile_3.jpg'
-    ]);
 
     // Alternate the hover portrait: Profile_3 on one hover, Profile_1 on the
     // next. Flipping on leave lets the current one fade out before switching.
@@ -3181,20 +3061,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             profileFrame.dataset.hover = profileFrame.dataset.hover === '1' ? '2' : '1';
         });
     }
-
-    console.log('✅ Portfolio initialization complete with enhanced features');
 });
-
-/**
- * Preload images for better performance
- * @param {Array} imageUrls - Array of image URLs to preload
- */
-function preloadImages(imageUrls) {
-    imageUrls.forEach(url => {
-        const img = new Image();
-        img.src = url;
-    });
-}
 
 // ==========================================================================
 // Error Handling
@@ -3251,12 +3118,20 @@ function initializeFlagCounterPopup() {
         const w    = popup.offsetWidth;
         const h    = popup.offsetHeight;
 
-        // Open to the left of the floating icon; where there is no room
-        // (the icons sit in the page flow on mobile) centre it instead.
-        let x = rect.left - gap - w;
-        if (x < gap) x = (vw - w) / 2;
-
-        const y = Math.max(gap, Math.min(rect.top, vh - h - gap));
+        let x;
+        let y;
+        if (getComputedStyle(icon.parentElement).position === "fixed") {
+            // Floating toolbar on the right edge: open to the left of the icon
+            x = rect.left - gap - w;
+            if (x < gap) x = (vw - w) / 2;
+            y = Math.max(gap, Math.min(rect.top, vh - h - gap));
+        } else {
+            // Row in the footer (narrow screens): open above the icon, or
+            // below it when there is no room above
+            x = Math.max(gap, Math.min(rect.left, vw - w - gap));
+            y = rect.top - gap - h;
+            if (y < gap) y = Math.min(rect.bottom + gap, vh - h - gap);
+        }
 
         popup.style.left = x + "px";
         popup.style.top  = y + "px";
@@ -3360,7 +3235,7 @@ function renderSoftwareTool(tool, active) {
         <div id="${escapeHtml(tool.id)}" class="tool-content${active ? ' active' : ''}">
             <div class="tool-header">
                 ${logoHtml}
-                <h2 class="${logoHtml ? 'sr-only' : 'section-title'}">${escapeHtml(tool.title)}</h2>
+                <h3 class="${logoHtml ? 'sr-only' : 'section-title'}">${escapeHtml(tool.title)}</h3>
                 <p class="tool-description">${escapeHtml(tool.description || '')}</p>
                 ${badgesHtml}
                 ${actionsHtml}
@@ -3377,12 +3252,12 @@ function renderSoftwareSection(section) {
         case 'info':
             // Paragraphs may contain trusted inline HTML (<strong>, <code>).
             return `<div class="tool-info-section">
-                <h3 class="info-title">${escapeHtml(section.title)}</h3>
+                <h4 class="info-title">${escapeHtml(section.title)}</h4>
                 ${(section.paragraphs || []).map(p => `<p class="bio-text">${p}</p>`).join('')}
             </div>`;
         case 'features':
             return `<div class="tool-info-section">
-                <h3 class="info-title">${escapeHtml(section.title)}</h3>
+                <h4 class="info-title">${escapeHtml(section.title)}</h4>
                 <ul class="software-features-list">
                     ${(section.items || []).map(it => `<li><i class="${escapeHtml(it.icon || 'fas fa-check')}"></i>${it.html}</li>`).join('')}
                 </ul>
@@ -3393,7 +3268,7 @@ function renderSoftwareSection(section) {
             </div>`;
         case 'code':
             return `<div class="tool-info-section">
-                <h3 class="info-title">${escapeHtml(section.title)}</h3>
+                <h4 class="info-title">${escapeHtml(section.title)}</h4>
                 ${(section.paragraphs || []).map(p => `<p class="bio-text">${p}</p>`).join('')}
                 <pre class="install-code-block"><code>${escapeHtml(section.code || '')}</code></pre>
             </div>`;
@@ -3412,7 +3287,7 @@ function renderSoftwareFeatureCard(card) {
         <div class="exp-header">
             <div class="company-logo"><i class="${escapeHtml(card.icon || 'fas fa-cube')}"></i></div>
             <div class="exp-details">
-                <h3>${escapeHtml(card.title)}</h3>
+                <h4>${escapeHtml(card.title)}</h4>
                 <p class="company-name">${escapeHtml(card.subtitle || '')}</p>
                 <p class="exp-duration">${escapeHtml(card.duration || '')}</p>
             </div>
@@ -3428,7 +3303,7 @@ function renderSoftwareMedia(section) {
         ? `<iframe src="${escapeHtml(section.src)}" title="${escapeHtml(section.iframeTitle || section.title || '')}" allowfullscreen></iframe>`
         : `<img src="${escapeHtml(section.src)}" alt="${escapeHtml(section.alt || '')}" class="${escapeHtml(section.imageClass || 'media-image-contain')}">`;
     return `<div class="${sectionClass}">
-        <h3 class="info-title">${escapeHtml(section.title)}</h3>
+        <h4 class="info-title">${escapeHtml(section.title)}</h4>
         <div class="${wrapClass}">
             ${inner}
         </div>
@@ -3440,35 +3315,15 @@ function renderSoftwareMedia(section) {
  * @param {string} toolId - ID of the tool to show
  */
 function showTool(toolId) {
-    // Hide all tool contents
-    const toolContents = document.querySelectorAll('.tool-content');
-    toolContents.forEach(content => {
-        content.classList.remove('active');
+    document.querySelectorAll('.tool-content').forEach(content => {
+        content.classList.toggle('active', content.id === toolId);
     });
 
-    // Remove active class from all nav buttons
-    const navButtons = document.querySelectorAll('.tool-nav-btn');
-    navButtons.forEach(btn => {
-        btn.classList.remove('active');
+    document.querySelectorAll('.tool-nav-btn').forEach(btn => {
+        const on = btn.dataset.tool === toolId;
+        btn.classList.toggle('active', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
-
-    // Show selected tool content
-    const selectedTool = document.getElementById(toolId);
-    if (selectedTool) {
-        selectedTool.classList.add('active');
-    }
-
-    // Add active class to selected nav button
-    const selectedBtn = document.querySelector(`[data-tool="${toolId}"]`);
-    if (selectedBtn) {
-        selectedBtn.classList.add('active');
-    }
-
-    // Scroll to top of content area
-    const contentContainer = document.querySelector('.tools-content-container');
-    if (contentContainer) {
-        contentContainer.scrollTo({ top: 0, behavior: 'smooth' });
-    }
 }
 
 /**
@@ -3477,6 +3332,11 @@ function showTool(toolId) {
 function initializeSoftwareTools() {
     // Build the tab from data/software.json first, then wire up the nav.
     renderSoftwareContent();
+
+    const lede = document.getElementById('tools-lede');
+    if (lede && softwareData.length) {
+        lede.textContent = `${softwareData.length} pieces of software, web apps, frameworks and systems for AEC.`;
+    }
 
     const navButtons = document.querySelectorAll('.tool-nav-btn');
 
@@ -3643,9 +3503,11 @@ function initializeMap() {
     const marker = L.marker([lat, lng]).addTo(mapInstance);
 
     // Add a circle to highlight the area
+    const accent = getComputedStyle(document.documentElement)
+        .getPropertyValue('--secondary-color').trim() || '#2148c0';
     L.circle([lat, lng], {
-        color: '#3498db',
-        fillColor: '#3498db',
+        color: accent,
+        fillColor: accent,
         fillOpacity: 0.2,
         radius: 100
     }).addTo(mapInstance);
@@ -3725,43 +3587,6 @@ function initializeCopyButtons() {
                 btn.setAttribute('aria-label', label);
             }, 1800);
         });
-    });
-}
-
-/**
- * Stagger the contact cards into view. The reveal runs through a CSS class
- * rather than inline styles, which would otherwise out-specify the
- * stylesheet's :hover rules and leave the cards unable to lift.
- */
-function initializeContactAnimations() {
-    document.querySelectorAll('.contact-item').forEach((item, index) => {
-        item.classList.remove('is-revealed');
-        item.classList.add('is-revealing');
-        // Consumed only by the reveal rule, so it never delays :hover.
-        item.style.setProperty('--reveal-delay', `${index * 90}ms`);
-
-        // Next frame, so the browser registers the pre-reveal state first.
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => item.classList.add('is-revealed'));
-        });
-    });
-}
-
-/**
- * Initialize action buttons
- */
-function initializeActionButtons() {
-    const actionButtons = document.querySelectorAll('.action-btn');
-    actionButtons.forEach(button => {
-        if (button) {
-            button.addEventListener('mouseenter', function () {
-                this.style.transform = 'translateY(-2px) scale(1.05)';
-            });
-
-            button.addEventListener('mouseleave', function () {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        }
     });
 }
 
@@ -4865,7 +4690,7 @@ function collabDrawNode(ctx, node, theme, alpha, color) {
             ? words[0][0] + words[words.length - 1][0]
             : (words[0] || '').slice(0, 2);
         ctx.fillStyle = theme.bg;
-        ctx.font = `600 ${(r * 0.72).toFixed(1)}px "Source Serif 4", Georgia, serif`;
+        ctx.font = `600 ${(r * 0.72).toFixed(1)}px Archivo, sans-serif`;
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
         ctx.fillText(initials, node.sx, node.sy + r * 0.04);
@@ -4887,7 +4712,7 @@ function collabDrawLabel(ctx, node, theme, alpha, strong) {
     const maxW = (is3D ? 140 : (layout.labelMax || 128)) * zs;
 
     ctx.globalAlpha = alpha;
-    ctx.font = `${strong ? 600 : 500} ${fs.toFixed(1)}px Inter, sans-serif`;
+    ctx.font = `${strong ? 600 : 500} ${fs.toFixed(1)}px Archivo, sans-serif`;
     const text = collabTruncate(ctx, node.label, maxW);
     ctx.lineJoin = 'round';
     ctx.lineWidth = 3.5;
@@ -4918,7 +4743,7 @@ function collabDrawLabel(ctx, node, theme, alpha, strong) {
         ctx.fillText(text, x, node.sy - 1);
         // Second line: the tie strength, in the node's colour
         const sub = `${node.papers} joint publication${node.papers === 1 ? '' : 's'}`;
-        ctx.font = `500 ${(fs * 0.88).toFixed(1)}px Inter, sans-serif`;
+        ctx.font = `500 ${(fs * 0.88).toFixed(1)}px Archivo, sans-serif`;
         ctx.textBaseline = 'top';
         ctx.fillStyle = theme.muted;
         ctx.strokeText(sub, x, node.sy + 3);
@@ -4935,7 +4760,7 @@ function collabDrawLabel(ctx, node, theme, alpha, strong) {
 function collabDrawCenterLabel(ctx, center, theme, alpha) {
     const zs = Math.max(0.85, Math.min(1.35, collabNet.zoom * (collabNet.is3D ? center.scale : 1)));
     ctx.globalAlpha = alpha;
-    ctx.font = `600 ${(12.5 * zs).toFixed(1)}px Inter, sans-serif`;
+    ctx.font = `600 ${(12.5 * zs).toFixed(1)}px Archivo, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'top';
     ctx.lineJoin = 'round';
@@ -4953,7 +4778,7 @@ function collabDrawCenterLabel(ctx, center, theme, alpha) {
  */
 function collabDrawEdgeLabel(ctx, label, mx, my, color, scale, alpha) {
     const fs = Math.max(9, 11 * scale);
-    ctx.font = '700 ' + fs.toFixed(1) + 'px Inter, sans-serif';
+    ctx.font = '700 ' + fs.toFixed(1) + 'px Archivo, sans-serif';
     const tw = ctx.measureText(label).width;
     const padX = 7 * scale, h = 19 * scale;
     ctx.globalAlpha = alpha;

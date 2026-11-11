@@ -21,7 +21,7 @@
       name="application-name"
       content="Saddiq Ur Rehman Academic Portfolio"
     />
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#f2f4f6" />
     <meta name="format-detection" content="telephone=no" />
 
     <!-- Verification -->
@@ -52,10 +52,7 @@
     <link rel="manifest" href="site.webmanifest" />
 
     <!-- Performance Optimizations -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
     <!-- Flag Counter's server is slow, so its image is requested first thing;
          by the time the flag icon is clicked it is usually already here -->
@@ -74,11 +71,13 @@
       href="https://isaddiq.github.io/sitemap.xml"
     />
 
-    <!-- Preload critical fonts -->
+    <!-- Preload the one webfont (self-hosted Archivo, variable weight and width) -->
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
-      as="style"
+      href="assets/fonts/archivo-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
     />
 
     <!-- External Libraries -->
@@ -90,24 +89,12 @@
       referrerpolicy="no-referrer"
     />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
       integrity="sha512-h9FcoyWjHcOcmEVkxOfTLnmZFWIH0iZhZT1H2TbOq55xssQGEJHEaIm+PgoUaZbRvQTNTluNOEfb1ZRy6D3BOw=="
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
-    />
-    <script
-      defer
-      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"
-    ></script>
     <script
       defer
       src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"
@@ -115,6 +102,14 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
+
+    <!-- Apply a saved theme before first paint, so a dark-mode visit never flashes light -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem("preferred-theme");
+        if (savedTheme) document.documentElement.setAttribute("data-theme", savedTheme);
+      } catch (e) {}
+    </script>
 
     <!-- Custom Styles -->
     <link rel="stylesheet" href="assets/css/styles.css" />
@@ -202,7 +197,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-11-07"
+            "dateModified": "2026-11-11"
           },
           {
             "@type": "Person",
@@ -406,441 +401,347 @@
   </head>
 
   <body>
-    <!-- Decorative glass-block background: glossy isometric cubes drawn on a canvas by script.js -->
-    <div class="grid-background"></div>
+    <a class="skip-link" href="#main">Skip to content</a>
 
-    <!-- Full Width Header Navigation -->
-    <div class="header-wrapper">
-      <div class="header">
-        <!-- Site Logo with Name -->
+    <!-- Top bar: name, the section tabs, 3D Museum, theme toggle. On narrow
+         screens the tabs fold into a menu sheet opened by the menu button;
+         script.js toggles .is-open on the header. -->
+    <header class="site-header" id="site-header">
+      <div class="header-inner">
         <a href="#home" class="site-logo" data-tab="home">
           <span class="logo-name">Saddiq Ur Rehman</span>
         </a>
 
-        <button
-          type="button"
-          class="mobile-menu-toggle"
-          aria-label="Toggle navigation menu"
-          aria-expanded="false"
-        >
-          <i class="fas fa-bars"></i>
-        </button>
-        <nav class="nav-menu">
-          <button
-            type="button"
-            class="nav-btn active"
-            data-tab="home"
-            aria-current="page"
-            aria-label="Navigate to Home"
-            data-nav-label="Home"
-          >
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="education"
-            aria-label="Navigate to Education"
-            data-nav-label="Education"
-          >
-            <i class="fas fa-graduation-cap"></i>
-            <span>Education</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="experience"
-            aria-label="Navigate to Experience"
-            data-nav-label="Experience"
-          >
-            <i class="fas fa-briefcase"></i>
-            <span>Experience</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="publications"
-            aria-label="Navigate to Publications"
-            data-nav-label="Publications"
-          >
-            <i class="fas fa-book"></i>
-            <span>Publications</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="projects"
-            aria-label="Navigate to Projects"
-            data-nav-label="Projects"
-          >
-            <i class="fas fa-project-diagram"></i>
-            <span>Projects</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="skills"
-            aria-label="Navigate to Skills"
-            data-nav-label="Skills"
-          >
-            <i class="fas fa-cogs"></i>
-            <span>Skills</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="tools"
-            aria-label="Navigate to Tools"
-            data-nav-label="Tools"
-          >
-            <i class="fas fa-toolbox"></i>
-            <span>Tools</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="certifications"
-            aria-label="Navigate to Certifications"
-            data-nav-label="Awards"
-          >
-            <i class="fas fa-award"></i>
-            <span>Awards</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="activities"
-            aria-label="Navigate to Activities"
-            data-nav-label="Activities"
-          >
-            <i class="fas fa-users"></i>
-            <span>Activities</span>
-          </button>
-          <button
-            type="button"
-            class="nav-btn"
-            data-tab="contact"
-            aria-label="Navigate to Contact"
-            data-nav-label="Contact"
-          >
-            <i class="fas fa-envelope"></i>
-            <span>Contact</span>
-          </button>
-        </nav>
-        <!-- Walk-through 3D museum of the portfolio (separate repo/page) -->
-        <a
-          href="https://isaddiq.github.io/PortfolioMuseum/"
-          class="museum-btn"
-          target="_blank"
-          rel="noopener"
-          title="Walk through my portfolio in a 3D museum"
-          aria-label="Open the 3D Portfolio Museum in a new tab"
-        >
-          <i class="fas fa-vr-cardboard" aria-hidden="true"></i>
-          <span>3D Museum</span>
-        </a>
-        <div class="theme-toggle">
-          <button
-            type="button"
-            id="theme-toggle-btn"
-            class="theme-btn"
-            title="Toggle light/dark mode"
-            aria-label="Toggle light and dark mode"
-            aria-pressed="false"
-          >
-            <span class="theme-option theme-option-light" aria-hidden="true">
-              <i class="fas fa-sun"></i>
-            </span>
-            <span class="theme-option theme-option-dark" aria-hidden="true">
-              <i class="fas fa-moon"></i>
-            </span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <main class="container">
-      <!-- Content Area -->
-      <div class="content">
-        <!-- Home Tab -->
-        <div id="home" class="tab-content active">
-          <div class="tab-cover home-cover">
-            <div class="cover-overlay">
-              <h1 class="cover-title">Home</h1>
-            </div>
-          </div>
-
-          <div class="home-content">
-            <div class="profile-section">
-              <!-- Profile_2 is the default; hovering reveals Profile_3, the
-                   next hover Profile_1, and so on alternately; script.js flips
-                   data-hover on mouseleave. -->
-              <div class="profile-image-container" data-hover="1">
-                <img
-                  src="assets/images/profile/Profile_2.jpg"
-                  alt="Saddiq Ur Rehman"
-                  class="profile-image main"
-                  id="profileMain"
-                  width="320"
-                  height="320"
-                />
-                <img
-                  src="assets/images/profile/Profile_3.jpg"
-                  alt=""
-                  class="profile-image hover hover-1"
-                  loading="lazy"
-                  width="320"
-                  height="320"
-                />
-                <img
-                  src="assets/images/profile/Profile_1.png"
-                  alt=""
-                  class="profile-image hover hover-2"
-                  loading="lazy"
-                  width="320"
-                  height="320"
-                />
-              </div>
-
-              <!-- Identity sits directly under the portrait -->
-              <div class="profile-identity">
-                <h1>Saddiq Ur Rehman</h1>
-                <p class="title">
-                  Researcher, buildingSMART Korea
-                </p>
-              </div>
-
-              <!--
-                Google Scholar metrics. Values are filled in by script.js from
-                data/scholar.json, which the "Update Google Scholar metrics"
-                GitHub Action refreshes from the live profile every 4 hours.
-              -->
-              <a
-                class="scholar-metrics"
-                id="scholar-metrics"
-                href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
-                target="_blank"
-                rel="noopener me"
-                aria-label="Google Scholar citation metrics, opens profile in a new tab"
-              >
-                <div class="scholar-metrics-header">
-                  <i class="fas fa-graduation-cap"></i>
-                  <span>Google Scholar</span>
-                </div>
-                <div class="scholar-metrics-grid">
-                  <div class="scholar-stat">
-                    <span class="scholar-stat-value" data-scholar="citations"
-                      >-</span
-                    >
-                    <span class="scholar-stat-label">Citations</span>
-                  </div>
-                  <div class="scholar-stat">
-                    <span class="scholar-stat-value" data-scholar="hIndex"
-                      >-</span
-                    >
-                    <span class="scholar-stat-label">h-index</span>
-                  </div>
-                  <div class="scholar-stat">
-                    <span class="scholar-stat-value" data-scholar="i10Index"
-                      >-</span
-                    >
-                    <span class="scholar-stat-label">i10-index</span>
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="about-section">
-              <div class="about-intro">
-                <h3>About Me</h3>
-                <p class="bio-text">
-                  I am a researcher at buildingSMART Korea, where I work on the
-                  Human and Robot collaboration for using elevators in hospital
-                  buildings. I received my PhD in Architecture from the
-                  Department of Architecture at Kyung Hee University, South
-                  Korea in August 2026, and was
-                  awarded the Graduate School’s Best Academic Award
-                  for the Department of Architecture. I hold a
-                  Bachelor’s degree in Civil Engineering from the University of
-                  Engineering and Technology, Peshawar, Pakistan.
-                </p>
-                <p class="bio-text">
-                  My research lies at the intersection of construction
-                  informatics, Building Information Modeling (BIM), extended
-                  reality, AI, digital twins, and construction automation. I
-                  develop semantic and interoperable workflows that connect BIM
-                  with game engines, immersive interfaces, robotic systems, and
-                  real-time decision-support tools for modular and industrialised
-                  construction.
-                </p>
-                <p class="bio-text">
-                  My selected work includes BIM-to-Unity semantic data exchange,
-                  Ifc2Unity and IFCExplorer, ReUniXchange, BIM-linked mixed
-                  reality inspection and reporting, conversational LLM interfaces
-                  for BIM querying, 4D BIM simulation, and digital-twin workflows
-                  for immersive AEC applications.
-                </p>
-              </div>
-
-              <h3 class="section-title">Research Interests</h3>
-              <!-- Each card opens the publications filtered to its topic
-                   (Robotics opens Projects). Pictures live in
-                   assets/images/Keywords/. -->
-              <div class="research-interests-grid">
-              <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" style="--accent: var(--collab-c0)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-cube" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Building Information Modeling (BIM)</h4>
-                  <p>Semantic model data and open standards such as IFC</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/bim.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="" style="--accent: var(--collab-c2)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-chart-column" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Construction Informatics</h4>
-                  <p>Data-driven methods supporting decisions across the project lifecycle</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/informatics.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="XR &amp; Game Engines" style="--accent: var(--collab-c3)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-vr-cardboard" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Extended Reality (XR)</h4>
-                  <p>Immersive VR and mixed reality for design review and site inspection</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/xr.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#projects" data-tab="projects" style="--accent: var(--collab-c1)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-robot" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Construction Robotics</h4>
-                  <p>Building models linked to robotic fabrication and on-site operations</p>
-                  <span class="research-go" title="See related projects"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related projects</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/robotics.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="Modular &amp; DfMA" style="--accent: var(--collab-c7)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-industry" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Design for Manufacturing and Assembly (DfMA)</h4>
-                  <p>Modular, off-site production workflows for building delivery</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/dfma.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="AI &amp; NLP" style="--accent: var(--collab-c6)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-brain" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>AI for Construction</h4>
-                  <p>Language and multimodal interfaces for querying building data</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/ai.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="4D Simulation &amp; Digital Twins" style="--accent: var(--collab-c5)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-clone" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>Digital Twin</h4>
-                  <p>Schedule and sensor streams linked to live building models</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/twin.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-
-              <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" style="--accent: var(--collab-c4)">
-                <div class="research-card-body">
-                  <div class="research-card-head">
-                    <span class="research-icon"><i class="fas fa-exchange-alt" aria-hidden="true"></i></span>
-                  </div>
-                  <h4>BIM Data Interoperability</h4>
-                  <p>Semantic mappings that preserve meaning between platforms</p>
-                  <span class="research-go" title="See related publications"><i class="fas fa-arrow-right" aria-hidden="true"></i><span class="sr-only">See related publications</span></span>
-                </div>
-                <div class="research-art"><img src="assets/images/Keywords/interop.webp" alt="" loading="lazy" decoding="async" width="724" height="543" /></div>
-              </a>
-              </div>
-            </div>
-          </div>
-
-          <!-- Highlights Section: the first 4 items of data/news.json -->
-          <div class="news-section">
-            <div class="news-section-header">
-              <h3 class="section-title news-title">Highlights</h3>
-            </div>
-            <div
-              class="highlights-grid"
-              id="highlights-container"
-              aria-label="Highlights"
+        <div class="header-panel" id="header-panel">
+          <nav class="nav-menu" aria-label="Sections">
+            <a
+              href="#home"
+              class="nav-btn active"
+              data-tab="home"
+              aria-current="page"
+              data-nav-label="Home"
+              ><span>Home</span></a
             >
-              <!-- Highlight cards generated dynamically -->
-              <div class="news-loading">Loading highlights...</div>
+
+            <div class="nav-group" role="group" aria-labelledby="nav-group-research">
+              <span class="nav-group-label" id="nav-group-research">Research</span>
+              <a href="#publications" class="nav-btn" data-tab="publications" data-nav-label="Publications"><span>Publications</span></a>
+              <a href="#projects" class="nav-btn" data-tab="projects" data-nav-label="Projects"><span>Projects</span></a>
+              <a href="#tools" class="nav-btn" data-tab="tools" data-nav-label="Tools"><span>Tools</span></a>
             </div>
+
+            <div class="nav-group" role="group" aria-labelledby="nav-group-background">
+              <span class="nav-group-label" id="nav-group-background">Background</span>
+              <a href="#education" class="nav-btn" data-tab="education" data-nav-label="Education"><span>Education</span></a>
+              <a href="#experience" class="nav-btn" data-tab="experience" data-nav-label="Experience"><span>Experience</span></a>
+              <a href="#skills" class="nav-btn" data-tab="skills" data-nav-label="Skills"><span>Skills</span></a>
+              <a href="#certifications" class="nav-btn" data-tab="certifications" data-nav-label="Awards"><span>Awards</span></a>
+            </div>
+
+            <div class="nav-group" role="group" aria-labelledby="nav-group-community">
+              <span class="nav-group-label" id="nav-group-community">Community</span>
+              <a href="#activities" class="nav-btn" data-tab="activities" data-nav-label="Activities"><span>Activities</span></a>
+              <a href="#contact" class="nav-btn" data-tab="contact" data-nav-label="Contact"><span>Contact</span></a>
+            </div>
+          </nav>
+
+          <!-- Walk-through 3D museum of the portfolio (separate repo/page) -->
+          <a
+            href="https://isaddiq.github.io/PortfolioMuseum/"
+            class="museum-btn"
+            target="_blank"
+            rel="noopener"
+            title="Walk through my portfolio in a 3D museum"
+            aria-label="Open the 3D Portfolio Museum in a new tab"
+          >
+            <i class="fas fa-vr-cardboard" aria-hidden="true"></i>
+            <span>3D Museum</span>
+          </a>
+        </div>
+
+        <div class="header-actions">
+          <div class="theme-toggle">
+            <button
+              type="button"
+              id="theme-toggle-btn"
+              class="theme-btn"
+              title="Switch to dark mode"
+              aria-label="Switch to dark mode"
+              aria-pressed="false"
+            >
+              <span class="theme-option theme-option-light" aria-hidden="true">
+                <i class="fas fa-sun"></i>
+              </span>
+              <span class="theme-option theme-option-dark" aria-hidden="true">
+                <i class="fas fa-moon"></i>
+              </span>
+            </button>
+          </div>
+          <button
+            type="button"
+            class="mobile-menu-toggle"
+            aria-label="Open the menu"
+            aria-expanded="false"
+            aria-controls="header-panel"
+          >
+            <i class="fas fa-bars" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="container" id="main">
+      <noscript>
+        <p class="noscript-note">
+          Publications, projects, tools and other lists on this site are loaded
+          with JavaScript. Please enable it to see them.
+        </p>
+      </noscript>
+
+      <!-- Home Tab -->
+      <section id="home" class="tab-content active" aria-labelledby="home-title">
+        <!-- Profile first: portrait and Scholar metrics beside the name and bio -->
+        <div class="hero">
+          <div class="hero-side">
+            <!-- Profile_2 is the default; hovering reveals Profile_3, the
+                 next hover Profile_1, and so on alternately; script.js flips
+                 data-hover on mouseleave. -->
+            <div class="profile-image-container" data-hover="1">
+              <img
+                src="assets/images/profile/Profile_2-960.jpg"
+                srcset="assets/images/profile/Profile_2-960.jpg 960w, assets/images/profile/Profile_2-480.jpg 480w"
+                sizes="(max-width: 700px) 90vw, 340px"
+                alt="Saddiq Ur Rehman"
+                class="profile-image main"
+                id="profileMain"
+                width="960"
+                height="1280"
+                fetchpriority="high"
+              />
+              <img
+                src="assets/images/profile/Profile_3.jpg"
+                alt=""
+                class="profile-image hover hover-1"
+                loading="lazy"
+                width="1080"
+                height="1080"
+              />
+              <img
+                src="assets/images/profile/Profile_1.png"
+                alt=""
+                class="profile-image hover hover-2"
+                loading="lazy"
+                width="1102"
+                height="1427"
+              />
+            </div>
+
+            <!--
+              Google Scholar metrics. Values are filled in by script.js from
+              data/scholar.json, which the "Update Google Scholar metrics"
+              GitHub Action refreshes from the live profile every 4 hours.
+            -->
+            <a
+              class="scholar-metrics"
+              id="scholar-metrics"
+              href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
+              target="_blank"
+              rel="noopener me"
+              aria-label="Google Scholar citation metrics, opens profile in a new tab"
+            >
+              <div class="scholar-metrics-grid">
+                <div class="scholar-stat">
+                  <span class="scholar-stat-value" data-scholar="citations"
+                    >-</span
+                  >
+                  <span class="scholar-stat-label">Citations</span>
+                </div>
+                <div class="scholar-stat">
+                  <span class="scholar-stat-value" data-scholar="hIndex"
+                    >-</span
+                  >
+                  <span class="scholar-stat-label">h-index</span>
+                </div>
+                <div class="scholar-stat">
+                  <span class="scholar-stat-value" data-scholar="i10Index"
+                    >-</span
+                  >
+                  <span class="scholar-stat-label">i10-index</span>
+                </div>
+              </div>
+              <div class="scholar-metrics-header">
+                <span>Google Scholar</span>
+                <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+              </div>
+            </a>
           </div>
 
-          <!-- News Section: the rest of data/news.json, below the highlights -->
-          <div class="news-section" id="news-list-section">
-            <div class="news-section-header">
-              <h3 class="section-title news-title">News</h3>
-              <button
-                type="button"
-                class="news-toggle-all"
-                data-news-toggle-all
-                aria-expanded="false"
-              >
-                <i class="fas fa-chevron-down"></i> Show all
-              </button>
+          <div class="hero-intro">
+            <div class="profile-identity">
+              <h1 id="home-title" tabindex="-1">Saddiq Ur Rehman</h1>
+              <p class="title">Researcher, buildingSMART Korea</p>
             </div>
-            <div id="news-accordion" class="news-accordion">
-              <!-- News items generated dynamically -->
-              <div class="news-loading">Loading news...</div>
+
+            <div class="about-intro">
+              <h2 class="sr-only" id="about-title">About Me</h2>
+              <p class="bio-text">
+                I am a researcher at buildingSMART Korea, where I work on the
+                Human and Robot collaboration for using elevators in hospital
+                buildings. I received my PhD in Architecture from the
+                Department of Architecture at Kyung Hee University, South
+                Korea in August 2026, and was
+                awarded the Graduate School’s Best Academic Award
+                for the Department of Architecture. I hold a
+                Bachelor’s degree in Civil Engineering from the University of
+                Engineering and Technology, Peshawar, Pakistan.
+              </p>
+              <p class="bio-text">
+                My research lies at the intersection of construction
+                informatics, Building Information Modeling (BIM), extended
+                reality, AI, digital twins, and construction automation. I
+                develop semantic and interoperable workflows that connect BIM
+                with game engines, immersive interfaces, robotic systems, and
+                real-time decision-support tools for modular and industrialised
+                construction.
+              </p>
+              <p class="bio-text">
+                My selected work includes BIM-to-Unity semantic data exchange,
+                Ifc2Unity and IFCExplorer, ReUniXchange, BIM-linked mixed
+                reality inspection and reporting, conversational LLM interfaces
+                for BIM querying, 4D BIM simulation, and digital-twin workflows
+                for immersive AEC applications.
+              </p>
             </div>
           </div>
         </div>
-      </div>
+
+        <section class="home-block interests" aria-labelledby="interests-title">
+          <h2 class="section-title" id="interests-title">Research Interests</h2>
+          <!-- Left: the interests, each opening the publications filtered to its
+               topic (Robotics opens Projects); the one in focus shows its
+               details. Right: the research model, an isometric modular
+               building with one module per interest, drawn by
+               initializeResearchModel() in script.js from these links.
+               Pictures live in assets/images/Keywords/. -->
+          <div class="interests-layout">
+            <ul class="research-interests-grid" id="research-interests">
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="Building Information|Modeling (BIM)" data-image="assets/images/Keywords/bim.webp" style="--accent: var(--collab-c0)">
+                  <span class="research-name">Building Information Modeling (BIM)</span>
+                  <span class="research-desc">Semantic model data and open standards such as IFC</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="" data-label="Construction|Informatics" data-image="assets/images/Keywords/informatics.webp" style="--accent: var(--collab-c2)">
+                  <span class="research-name">Construction Informatics</span>
+                  <span class="research-desc">Data-driven methods supporting decisions across the project lifecycle</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="XR &amp; Game Engines" data-label="Extended Reality|(XR)" data-image="assets/images/Keywords/xr.webp" style="--accent: var(--collab-c3)">
+                  <span class="research-name">Extended Reality (XR)</span>
+                  <span class="research-desc">Immersive VR and mixed reality for design review and site inspection</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#projects" data-tab="projects" data-label="Construction|Robotics" data-image="assets/images/Keywords/robotics.webp" style="--accent: var(--collab-c1)">
+                  <span class="research-name">Construction Robotics</span>
+                  <span class="research-desc">Building models linked to robotic fabrication and on-site operations</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="Modular &amp; DfMA" data-label="Design for Manufacturing|and Assembly (DfMA)" data-image="assets/images/Keywords/dfma.webp" style="--accent: var(--collab-c7)">
+                  <span class="research-name">Design for Manufacturing and Assembly (DfMA)</span>
+                  <span class="research-desc">Modular, off-site production workflows for building delivery</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="AI &amp; NLP" data-label="AI for|Construction" data-image="assets/images/Keywords/ai.webp" style="--accent: var(--collab-c6)">
+                  <span class="research-name">AI for Construction</span>
+                  <span class="research-desc">Language and multimodal interfaces for querying building data</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="4D Simulation &amp; Digital Twins" data-label="Digital|Twin" data-image="assets/images/Keywords/twin.webp" style="--accent: var(--collab-c5)">
+                  <span class="research-name">Digital Twin</span>
+                  <span class="research-desc">Schedule and sensor streams linked to live building models</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+              <li>
+                <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="BIM Data|Interoperability" data-image="assets/images/Keywords/interop.webp" style="--accent: var(--collab-c4)">
+                  <span class="research-name">BIM Data Interoperability</span>
+                  <span class="research-desc">Semantic mappings that preserve meaning between platforms</span>
+                  <span class="research-count"></span>
+                </a>
+              </li>
+            </ul>
+            <div class="research-model" id="research-model">
+              <div class="model-stage" id="model-stage" aria-hidden="true"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Highlights Section: the first 4 items of data/news.json -->
+        <section class="home-block news-section" aria-labelledby="highlights-title">
+          <div class="news-section-header">
+            <h2 class="section-title news-title" id="highlights-title">Highlights</h2>
+          </div>
+          <div
+            class="highlights-grid"
+            id="highlights-container"
+            aria-label="Highlights"
+          >
+            <!-- Highlight cards generated dynamically -->
+            <div class="news-loading">Loading highlights...</div>
+          </div>
+        </section>
+
+        <!-- News Section: the rest of data/news.json, below the highlights -->
+        <section class="home-block news-section" id="news-list-section" aria-labelledby="news-title">
+          <div class="news-section-header">
+            <h2 class="section-title news-title" id="news-title">News</h2>
+            <button
+              type="button"
+              class="news-toggle-all"
+              data-news-toggle-all
+              aria-expanded="false"
+            >
+              <i class="fas fa-chevron-down"></i> Show all
+            </button>
+          </div>
+          <div id="news-accordion" class="news-accordion">
+            <!-- News items generated dynamically -->
+            <div class="news-loading">Loading news...</div>
+          </div>
+        </section>
+      </section>
 
       <!-- Education Tab -->
-      <div id="education" class="tab-content">
-        <div class="tab-cover education-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Education</h1>
+      <section id="education" class="tab-content" aria-labelledby="education-title">
+        <header class="tab-head">
+          <div class="tab-cover education-cover">
+            <h2 class="tab-title" id="education-title" tabindex="-1">Education</h2>
           </div>
-        </div>
+        </header>
 
-        <div class="education-container">
-          <div class="experience-item">
-            <div class="exp-header">
-              <div class="company-logo">
-                <img
-                  src="assets/logos/organizations/kyung-hee-university-logo.png"
-                  alt="Kyung Hee University Logo"
-                />
-              </div>
-              <div class="exp-details">
-                <h3>Integrated M.S-Ph.D in Architecture</h3>
+        <div class="education-container timeline">
+          <article class="experience-item">
+            <div class="company-logo">
+              <img
+                src="assets/logos/organizations/kyung-hee-university-logo.png"
+                alt="Kyung Hee University Logo"
+                loading="lazy"
+              />
+            </div>
+            <div class="exp-details">
+              <h3>
                 <a
                   href="https://www.khu.ac.kr"
                   class="company-name"
@@ -848,42 +749,61 @@
                   rel="noopener"
                   >Kyung Hee University, Global Campus, Korea</a
                 >
-                <p class="exp-duration">
-                  March 2021 - August 2026 | GPA: 4.15/4.3
-                </p>
-                <p>
-                  <strong>Advisor: </strong
-                  ><a
-                    href="https://khu.elsevierpure.com/en/persons/inhan-kim/"
-                    target="_blank"
-                    rel="noopener"
-                    >Professor Inhan Kim</a
-                  >
-                </p>
-                <p>
-                  <strong>Thesis: </strong>A Semantically Enriched BIM to XR
-                  data exchange Framework with Conversational LLM for Immersive
-                  Construction Informatics
-                </p>
-                <p>
-                  <strong>Award: </strong>Best Academic Award
-                  (최우수학술상), Graduate School of Kyung Hee University,
-                  Department of Architecture, 2026
-                </p>
+              </h3>
+              <div class="role-timeline">
+                <div class="role-entry">
+                  <p class="exp-duration">March 2021 - August 2026</p>
+                  <div class="role-details">
+                    <h4 class="role-title">Integrated M.S-Ph.D in Architecture</h4>
+                    <dl class="fact-list">
+                      <div>
+                        <dt>GPA</dt>
+                        <dd>4.15/4.3</dd>
+                      </div>
+                      <div>
+                        <dt>Advisor</dt>
+                        <dd>
+                          <a
+                            href="https://khu.elsevierpure.com/en/persons/inhan-kim/"
+                            target="_blank"
+                            rel="noopener"
+                            >Professor Inhan Kim</a
+                          >
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Thesis</dt>
+                        <dd>
+                          A Semantically Enriched BIM to XR data exchange
+                          Framework with Conversational LLM for Immersive
+                          Construction Informatics
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Award</dt>
+                        <dd>
+                          Best Academic Award (<span lang="ko">최우수학술상</span>),
+                          Graduate School of Kyung Hee University, Department
+                          of Architecture, 2026
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </article>
 
-          <div class="experience-item">
-            <div class="exp-header">
-              <div class="company-logo">
-                <img
-                  src="assets/logos/organizations/uet-peshawar-logo.png"
-                  alt="University of Engineering and Technology Peshawar Logo"
-                />
-              </div>
-              <div class="exp-details">
-                <h3>B.Sc. in Civil Engineering</h3>
+          <article class="experience-item">
+            <div class="company-logo">
+              <img
+                src="assets/logos/organizations/uet-peshawar-logo.png"
+                alt="University of Engineering and Technology Peshawar Logo"
+                loading="lazy"
+              />
+            </div>
+            <div class="exp-details">
+              <h3>
                 <a
                   href="https://www.uetpeshawar.edu.pk"
                   class="company-name"
@@ -891,60 +811,80 @@
                   rel="noopener"
                   >University of Engineering and Technology, Peshawar</a
                 >
-                <p class="exp-duration">
-                  September 2015 - September 2019 | GPA: 3.39/4.0
-                </p>
-                <p><strong>Advisor: </strong>Professor Irshad Khan</p>
-                <p>
-                  <strong>Thesis:</strong> Experimental Determination of
-                  Capacity of Pile Group and Pile Raft Foundation
-                </p>
+              </h3>
+              <div class="role-timeline">
+                <div class="role-entry">
+                  <p class="exp-duration">September 2015 - September 2019</p>
+                  <div class="role-details">
+                    <h4 class="role-title">B.Sc. in Civil Engineering</h4>
+                    <dl class="fact-list">
+                      <div>
+                        <dt>GPA</dt>
+                        <dd>3.39/4.0</dd>
+                      </div>
+                      <div>
+                        <dt>Advisor</dt>
+                        <dd>Professor Irshad Khan</dd>
+                      </div>
+                      <div>
+                        <dt>Thesis</dt>
+                        <dd>
+                          Experimental Determination of Capacity of Pile Group
+                          and Pile Raft Foundation
+                        </dd>
+                      </div>
+                    </dl>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </article>
         </div>
-      </div>
+      </section>
 
       <!-- Experience Tab -->
-      <div id="experience" class="tab-content">
-        <div class="tab-cover experience-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Experience</h1>
+      <section id="experience" class="tab-content" aria-labelledby="experience-title">
+        <header class="tab-head">
+          <div class="tab-cover experience-cover">
+            <h2 class="tab-title" id="experience-title" tabindex="-1">Experience</h2>
           </div>
-        </div>
+        </header>
 
-        <div id="experience-container">
+        <div id="experience-container" class="timeline">
           <!-- Experience items will be dynamically loaded here -->
         </div>
-      </div>
+      </section>
 
       <!-- Skills Tab -->
-      <div id="skills" class="tab-content">
-        <div class="tab-cover skills-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Skills</h1>
+      <section id="skills" class="tab-content" aria-labelledby="skills-title">
+        <header class="tab-head">
+          <div class="tab-cover skills-cover">
+            <h2 class="tab-title" id="skills-title" tabindex="-1">Skills</h2>
           </div>
-        </div>
+          <p class="tab-lede">
+            Each skill is rated on four levels: Basic, Intermediate, Advanced
+            and Expert.
+          </p>
+        </header>
 
         <div class="skills-container">
           <div id="skills-content">
             <!-- Skills will be dynamically loaded here -->
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- Publications Tab -->
-      <div id="publications" class="tab-content">
-        <div class="tab-cover publications-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Publications</h1>
+      <section id="publications" class="tab-content" aria-labelledby="publications-title">
+        <header class="tab-head">
+          <div class="tab-cover publications-cover">
+            <h2 class="tab-title" id="publications-title" tabindex="-1">Publications</h2>
           </div>
-        </div>
-
-        <!-- Publication Statistics Section -->
-        <div id="publication-stats" class="publication-stats">
-          <!-- Publication stats will be dynamically loaded here -->
-        </div>
+          <!-- Publication Statistics Section -->
+          <div id="publication-stats" class="publication-stats tab-lede">
+            <!-- Publication stats will be dynamically loaded here -->
+          </div>
+        </header>
 
         <!-- Type selector in a sidebar that stays in view beside the list -->
         <div class="publications-layout">
@@ -1024,31 +964,33 @@
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- Projects Tab -->
-      <div id="projects" class="tab-content">
-        <div class="tab-cover projects-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Projects</h1>
+      <section id="projects" class="tab-content" aria-labelledby="projects-title">
+        <header class="tab-head">
+          <div class="tab-cover projects-cover">
+            <h2 class="tab-title" id="projects-title" tabindex="-1">Projects</h2>
           </div>
-        </div>
+          <p class="tab-lede" id="projects-lede"></p>
+        </header>
 
-        <div class="project-timeline" id="projects-container">
+        <div class="project-list" id="projects-container">
           <!-- Projects will be dynamically loaded here -->
         </div>
-      </div>
+      </section>
 
       <!-- Certifications & Awards Tab -->
-      <div id="certifications" class="tab-content">
-        <div class="tab-cover certifications-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Certifications & Awards</h1>
+      <section id="certifications" class="tab-content" aria-labelledby="certifications-title">
+        <header class="tab-head">
+          <div class="tab-cover certifications-cover">
+            <h2 class="tab-title" id="certifications-title" tabindex="-1">Certifications &amp; Awards</h2>
           </div>
-        </div>
+          <p class="tab-lede" id="certifications-lede"></p>
+        </header>
 
         <div class="awards-section">
-          <h3 class="section-title">Awards & Scholarships</h3>
+          <h3 class="section-title">Awards &amp; Scholarships</h3>
 
           <div class="awards-container">
             <!-- Awards will be dynamically loaded here, grouped by category -->
@@ -1061,54 +1003,80 @@
         <div class="certificates-grid" id="certificates-container">
           <!-- Certificates will be dynamically loaded here -->
         </div>
-      </div>
+      </section>
 
       <!-- Activities Tab -->
-      <div id="activities" class="tab-content">
-        <div class="tab-cover activities-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Activities</h1>
+      <section id="activities" class="tab-content" aria-labelledby="activities-title">
+        <header class="tab-head">
+          <div class="tab-cover activities-cover">
+            <h2 class="tab-title" id="activities-title" tabindex="-1">Activities</h2>
           </div>
-        </div>
+          <p class="tab-lede">
+            Peer review for journals and conferences, seminars, and the
+            co-author network behind the publications.
+          </p>
+        </header>
 
         <div class="activities-container">
-          <div class="activity-category">
-            <h3>Editorial & Review Activities</h3>
-            <h4 class="compact-list-heading">Springer Nature</h4>
-            <ul class="compact-list">
-              <li><strong>npj Heritage Science</strong> - Reviewer</li>
-              <li><strong>Artificial Intelligence Review</strong> - Reviewer</li>
-              <li><strong>Scientific Reports</strong> - Reviewer</li>
-              <li><strong>Journal of Umm Al-Qura University for Engineering and Architecture</strong> - Reviewer</li>
-            </ul>
-            <h4 class="compact-list-heading">Elsevier</h4>
-            <ul class="compact-list">
-              <li><strong>Expert Systems with Applications</strong> - Reviewer</li>
-              <li><strong>Advanced Engineering Informatics</strong> - Reviewer</li>
-            </ul>
-            <h4 class="compact-list-heading">Taylor &amp; Francis</h4>
-            <ul class="compact-list">
-              <li><strong>Journal of Asian Architecture and Building Engineering</strong> - Reviewer</li>
-            </ul>
-            <h4 class="compact-list-heading">Open Access Journals</h4>
-            <ul class="compact-list">
-              <li><strong>Journal of Information Technology in Construction (ITcon)</strong> - Reviewer</li>
-            </ul>
-            <h4 class="compact-list-heading">Conferences</h4>
-            <ul class="compact-list">
-              <li><strong>Creative Construction Conference, CCC 2025</strong> - Reviewer</li>
-            </ul>
-          </div>
+          <section class="activity-category">
+            <h3 class="section-title">Editorial &amp; Review Activities</h3>
+            <dl class="review-ledger">
+              <div class="review-group">
+                <dt class="compact-list-heading">Springer Nature</dt>
+                <dd>
+                  <ul class="compact-list">
+                    <li><strong>npj Heritage Science</strong> <span class="review-role">Reviewer</span></li>
+                    <li><strong>Artificial Intelligence Review</strong> <span class="review-role">Reviewer</span></li>
+                    <li><strong>Scientific Reports</strong> <span class="review-role">Reviewer</span></li>
+                    <li><strong>Journal of Umm Al-Qura University for Engineering and Architecture</strong> <span class="review-role">Reviewer</span></li>
+                  </ul>
+                </dd>
+              </div>
+              <div class="review-group">
+                <dt class="compact-list-heading">Elsevier</dt>
+                <dd>
+                  <ul class="compact-list">
+                    <li><strong>Expert Systems with Applications</strong> <span class="review-role">Reviewer</span></li>
+                    <li><strong>Advanced Engineering Informatics</strong> <span class="review-role">Reviewer</span></li>
+                  </ul>
+                </dd>
+              </div>
+              <div class="review-group">
+                <dt class="compact-list-heading">Taylor &amp; Francis</dt>
+                <dd>
+                  <ul class="compact-list">
+                    <li><strong>Journal of Asian Architecture and Building Engineering</strong> <span class="review-role">Reviewer</span></li>
+                  </ul>
+                </dd>
+              </div>
+              <div class="review-group">
+                <dt class="compact-list-heading">Open Access Journals</dt>
+                <dd>
+                  <ul class="compact-list">
+                    <li><strong>Journal of Information Technology in Construction (ITcon)</strong> <span class="review-role">Reviewer</span></li>
+                  </ul>
+                </dd>
+              </div>
+              <div class="review-group">
+                <dt class="compact-list-heading">Conferences</dt>
+                <dd>
+                  <ul class="compact-list">
+                    <li><strong>Creative Construction Conference, CCC 2025</strong> <span class="review-role">Reviewer</span></li>
+                  </ul>
+                </dd>
+              </div>
+            </dl>
+          </section>
 
-          <div class="activity-category seminars-category">
-            <h3>Seminars &amp; Presentations</h3>
+          <section class="activity-category seminars-category">
+            <h3 class="section-title">Seminars &amp; Presentations</h3>
             <div class="seminars-list" id="seminars-container">
               <!-- Seminars will be dynamically loaded here -->
             </div>
-          </div>
+          </section>
 
-          <div class="activity-category collab-category">
-            <h3>Collaborations/Network</h3>
+          <section class="activity-category collab-category">
+            <h3 class="section-title">Collaborations/Network</h3>
             <div
               class="collab-network"
               id="collab-network"
@@ -1207,22 +1175,23 @@
                 with each other.
               </p>
             </div>
-          </div>
+          </section>
         </div>
-      </div>
+      </section>
 
       <!-- Tools Tab (software, web apps, frameworks, and systems) -->
-      <div id="tools" class="tab-content">
-        <div class="tab-cover software-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Tools</h1>
+      <section id="tools" class="tab-content" aria-labelledby="tools-title">
+        <header class="tab-head">
+          <div class="tab-cover software-cover">
+            <h2 class="tab-title" id="tools-title" tabindex="-1">Tools</h2>
           </div>
-        </div>
+          <p class="tab-lede" id="tools-lede"></p>
+        </header>
 
         <div class="software-container">
           <!-- Tools Navigation -->
           <div class="tools-nav-container">
-            <div class="tools-nav">
+            <div class="tools-nav" role="group" aria-label="Tools">
               <!-- Tool nav buttons generated dynamically from data/software.json -->
             </div>
           </div>
@@ -1232,27 +1201,27 @@
             <!-- Tool sections generated dynamically from data/software.json -->
           </div>
         </div>
-      </div>
+      </section>
 
       <!-- Contact Tab -->
-      <div id="contact" class="tab-content">
-        <div class="tab-cover contact-cover">
-          <div class="cover-overlay">
-            <h1 class="cover-title">Contact</h1>
+      <section id="contact" class="tab-content" aria-labelledby="contact-title">
+        <header class="tab-head">
+          <div class="tab-cover contact-cover">
+            <h2 class="tab-title" id="contact-title" tabindex="-1">Contact</h2>
           </div>
-        </div>
+          <p class="tab-lede contact-lead">
+            I welcome collaborations, research inquiries, and academic
+            discussions related to AEC industry digitalization, BIM
+            technologies, and construction innovation. Feel free to reach out
+            for potential partnerships, publication opportunities, or
+            technical consultations.
+          </p>
+        </header>
 
         <div class="contact-container">
           <!-- Contact Information -->
           <section class="contact-block">
             <h3 class="section-title">Contact Information</h3>
-            <p class="bio-text contact-lead">
-              I welcome collaborations, research inquiries, and academic
-              discussions related to AEC industry digitalization, BIM
-              technologies, and construction innovation. Feel free to reach out
-              for potential partnerships, publication opportunities, or
-              technical consultations.
-            </p>
 
             <div class="contact-methods">
               <div class="contact-item">
@@ -1355,100 +1324,107 @@
             </div>
           </section>
         </div>
-      </div>
+      </section>
+
     </main>
 
     <!-- Site Footer -->
     <footer class="site-footer">
-      <div class="footer-inner">
-        <div class="footer-bottom">
-          <p class="footer-copyright">
-            &copy; 2026 Saddiq Ur Rehman. All rights reserved.
-          </p>
+        <div class="footer-inner">
+          <!-- Profile icons: floats on the right edge on wide screens (CSS) -->
+          <div class="social-floating" aria-label="Profiles">
+            <a
+              href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/"
+              class="social-icon linkedin"
+              target="_blank"
+              title="LinkedIn"
+              aria-label="LinkedIn"
+              rel="noopener me"
+            >
+              <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://github.com/isaddiq"
+              class="social-icon github"
+              target="_blank"
+              title="GitHub"
+              aria-label="GitHub"
+              rel="noopener me"
+            >
+              <i class="fab fa-github" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
+              class="social-icon scholar"
+              target="_blank"
+              title="Google Scholar"
+              aria-label="Google Scholar"
+              rel="noopener me"
+            >
+              <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://orcid.org/0000-0002-8098-0939"
+              class="social-icon orcid"
+              target="_blank"
+              title="ORCID"
+              aria-label="ORCID"
+              rel="noopener me"
+            >
+              <i class="fab fa-orcid" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf"
+              class="social-icon researchgate"
+              target="_blank"
+              title="ResearchGate"
+              aria-label="ResearchGate"
+              rel="noopener me"
+            >
+              <i class="fab fa-researchgate" aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://www.scopus.com/authid/detail.uri?authorId=57203204041"
+              class="social-icon scopus"
+              target="_blank"
+              title="Scopus"
+              aria-label="Scopus"
+              rel="noopener me"
+            >
+              <span class="scopus-letter" aria-hidden="true">SC</span>
+            </a>
+            <a
+              href="https://info.flagcounter.com/2Olz"
+              class="social-icon flag-counter-icon"
+              target="_blank"
+              rel="noopener"
+              title="Show visitors"
+              aria-label="Show visitors by country"
+              aria-controls="flag-counter-popup"
+              aria-expanded="false"
+            >
+              <i class="fas fa-flag" aria-hidden="true"></i>
+            </a>
+          </div>
+          <div class="footer-bottom">
+            <p class="footer-copyright">
+              &copy; 2026 Saddiq Ur Rehman. All rights reserved.
+            </p>
+          </div>
         </div>
-      </div>
     </footer>
 
-    <!-- Social Media Floating Icons -->
-    <div class="social-floating">
-      <a
-        href="https://www.linkedin.com/in/saddiq-ur-rehman-b79212138/"
-        class="social-icon linkedin"
-        target="_blank"
-        title="LinkedIn"
-        rel="noopener me"
-      >
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-      <a
-        href="https://github.com/isaddiq"
-        class="social-icon github"
-        target="_blank"
-        title="GitHub"
-        rel="noopener me"
-      >
-        <i class="fab fa-github"></i>
-      </a>
-      <a
-        href="https://scholar.google.com/citations?user=wMH9sSgAAAAJ&hl=en"
-        class="social-icon scholar"
-        target="_blank"
-        title="Google Scholar"
-        rel="noopener me"
-      >
-        <i class="fas fa-graduation-cap"></i>
-      </a>
-      <a
-        href="https://orcid.org/0000-0002-8098-0939"
-        class="social-icon orcid"
-        target="_blank"
-        title="ORCID"
-        rel="noopener me"
-      >
-        <i class="fab fa-orcid"></i>
-      </a>
-      <a
-        href="https://www.researchgate.net/profile/Saddiq-Ur-Rehman?ev=hdr_xprf"
-        class="social-icon researchgate"
-        target="_blank"
-        title="ResearchGate"
-        rel="noopener me"
-      >
-        <i class="fab fa-researchgate"></i>
-      </a>
-      <a
-        href="https://www.scopus.com/authid/detail.uri?authorId=57203204041"
-        class="social-icon scopus"
-        target="_blank"
-        title="Scopus"
-        rel="noopener me"
-      >
-        <span class="scopus-letter">SC</span>
-      </a>
-      <a
-        href="https://info.flagcounter.com/2Olz"
-        class="social-icon flag-counter-icon"
-        target="_blank"
-        rel="noopener"
-        title="Show visitors"
-        aria-controls="flag-counter-popup"
-        aria-expanded="false"
-      >
-        <i class="fas fa-flag"></i>
-      </a>
-    </div>
-
     <!-- Project Modal -->
-    <div id="projectModal" class="modal">
+    <div id="projectModal" class="modal" role="dialog" aria-modal="true" aria-label="Project details">
       <div class="modal-content">
-        <span
+        <button
+          type="button"
           class="close"
           data-close-modal="projectModal"
-          role="button"
-          tabindex="0"
-          aria-label="Close project modal"
-          >&times;</span
+          aria-label="Close project details"
         >
+          &times;
+        </button>
         <div id="projectModalContent">
           <!-- Project details will be inserted here -->
         </div>
@@ -1456,16 +1432,16 @@
     </div>
 
     <!-- Certificate Modal -->
-    <div id="certificateModal" class="modal">
+    <div id="certificateModal" class="modal" role="dialog" aria-modal="true" aria-label="Certificate details">
       <div class="modal-content">
-        <span
+        <button
+          type="button"
           class="close"
           data-close-modal="certificateModal"
-          role="button"
-          tabindex="0"
-          aria-label="Close certificate modal"
-          >&times;</span
+          aria-label="Close certificate details"
         >
+          &times;
+        </button>
         <div id="certificateModalContent">
           <!-- Certificate details will be inserted here -->
         </div>
@@ -1473,31 +1449,31 @@
     </div>
 
     <!-- Image Zoom Overlay -->
-    <div id="imageZoomOverlay" class="image-zoom-overlay">
+    <div id="imageZoomOverlay" class="image-zoom-overlay" role="dialog" aria-modal="true" aria-label="Enlarged image">
       <div class="image-zoom-container">
         <img id="zoomedImage" src="" alt="" class="zoomed-image" />
-        <span
+        <button
+          type="button"
           class="close-zoom"
           data-close-zoom
-          role="button"
-          tabindex="0"
-          aria-label="Close image zoom"
-          >&times;</span
+          aria-label="Close enlarged image"
         >
+          &times;
+        </button>
       </div>
     </div>
 
     <!-- Award Certificate Modal -->
-    <div id="awardCertificateModal" class="modal">
+    <div id="awardCertificateModal" class="modal" role="dialog" aria-modal="true" aria-label="Award certificate">
       <div class="modal-content">
-        <span
+        <button
+          type="button"
           class="close"
           data-close-modal="awardCertificateModal"
-          role="button"
-          tabindex="0"
-          aria-label="Close award certificate modal"
-          >&times;</span
+          aria-label="Close award certificate"
         >
+          &times;
+        </button>
         <div id="awardCertificateModalContent">
           <!-- Award certificate details will be inserted here -->
         </div>
@@ -1511,13 +1487,13 @@
       class="scroll-to-top"
       aria-label="Scroll to top"
     >
-      <i class="fas fa-arrow-up"></i>
+      <i class="fas fa-arrow-up" aria-hidden="true"></i>
     </button>
 
     <!-- ─── Flag Counter popup ─── -->
-    <!-- Just the counter image, shown as a popup by the floating flag icon.
-         The image (preloaded in <head>) loads with the page, so every visit
-         is counted whether or not the popup is opened. -->
+    <!-- Just the counter image, shown as a popup by the flag icon in the
+         floating profile toolbar. The image (preloaded in <head>) loads with the page, so every
+         visit is counted whether or not the popup is opened. -->
     <div id="flag-counter-popup" class="flag-counter-popup">
       <a href="https://info.flagcounter.com/2Olz" target="_blank" rel="noopener"
         ><img

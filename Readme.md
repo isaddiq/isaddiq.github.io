@@ -9,7 +9,8 @@ A modern, responsive academic portfolio website showcasing the research, publica
 
 ## ✨ Features
 
-- **📱 Responsive Layout & Modern UI**: Built with a clean, responsive layout system using Outfit and Inter typography, CSS custom properties, and fluid grids.
+- **📱 Responsive Layout & Modern UI**: A "model space" design: white-print light theme and blueprint dark theme, one self-hosted variable typeface (Archivo, using its width axis for titles, text and metadata), CSS custom properties, and fluid grids. A sticky top bar carries the section tabs (a menu button on small screens) and the profile links float on the right edge.
+- **🏢 Interactive Research Model**: The Home page opens with an isometric modular building drawn in SVG, one module per research interest. Selecting a module shows its details and opens the publications filtered to that topic.
 - **🌙 Persistent Dark/Light Mode**: Smooth theme toggler with persistent states stored via browser `localStorage`.
 - **📊 Decoupled Data Store**: Fully dynamic content populated via client-side JSON feeds, separating page markup from portfolio data.
 - **🚀 Single Page Application (SPA)**: Custom hash-based router (`#home`, `#education`, `#publications`, etc.) with browser history integration (`history.replaceState`) and page metadata/SEO updates.
@@ -37,13 +38,14 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   `-- workflows/
 |       `-- update-scholar.yml  # Runs that script every 4 hours
 |-- assets/
+|   |-- fonts/              # Archivo variable webfont (self-hosted)
 |   |-- css/
 |   |   `-- styles.css      # CSS variables, layouts, and animations
 |   |-- js/
 |   |   `-- script.js       # JSON fetching, tab routing, modals, and theme toggles
 |   |-- images/
 |   |   |-- certificates/   # Certificate and award image scans
-|   |   |-- covers/         # Section cover backgrounds
+|   |   |-- covers/         # Former section cover backgrounds (no longer used by the page)
 |   |   |-- meta/           # SEO/Open Graph preview images
 |   |   |-- profile/        # Profile photos and favicon source
 |   |   |-- projects/       # Research project thumbnails
@@ -142,8 +144,9 @@ On each commit it stamps today's date into the footer `<time>` element, the JSON
 - **Vanilla Stack**: Pure HTML5, CSS3, and ES6 JavaScript. No framework overhead.
 - **Hash-based Routing**: A client-side router matches the URL hash (e.g., `#publications`) to render the correct view, enabling link sharing for specific sections.
 - **Centralized Metadata Engine**: Synchronized page titles and meta description updates on tab switch to boost SEO rankings across different content sections.
-- **Intersection Observer Animations**: Scroll-linked fade and slide animations utilizing lightweight browser Intersection Observers, avoiding CPU-heavy scroll listeners.
-- **Performance Tweaks**: DNS prefetching of third-party domains (fonts, Leaflet, FontAwesome) and font preloading to reduce First Contentful Paint (FCP).
+- **Restrained Motion**: One load sequence (the research model assembling, once per session) and a short fade between tabs; everything else responds to the visitor. `prefers-reduced-motion` is respected.
+- **Accessibility**: Skip link, one `<h1>`, focus moved to the tab heading on navigation, dialogs that trap and return focus, and text colours that meet WCAG AA in both themes.
+- **Performance Tweaks**: One self-hosted, preloaded webfont; no cover images or background canvas; lazy-loaded images; DNS prefetching of the remaining third-party domains (Leaflet, FontAwesome).
 - **Responsive Layout**: Designed with CSS Flexbox & Grid using container-fluid breakpoints for mobile (320px+), tablet (768px+), laptop (1024px+), and large desktop.
 - **Mapbox/Leaflet Integration**: Renders a lightweight, interactive map for office location without standard Google Maps API overhead.
 
