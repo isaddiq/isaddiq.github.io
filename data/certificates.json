@@ -1,36 +1,6 @@
 {
   "awards": [
     {
-      "id": "award_006",
-      "category": "Honors & Recognition",
-      "title": "K-STAR Outstanding Science and Technology Talent Recognition",
-      "issuer": "Republic of Korea, selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements",
-      "date": "2026",
-      "type": "National Recognition",
-      "description": "Selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements.",
-      "icon": "fas fa-star"
-    },
-    {
-      "id": "award_005",
-      "category": "Honors & Recognition",
-      "title": "Best Academic Award (최우수학술상)",
-      "issuer": "Graduate School of Kyung Hee University, Department of Architecture",
-      "date": "2026",
-      "type": "Academic Award",
-      "description": "Selected for the Best Academic Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
-      "icon": "fas fa-award"
-    },
-    {
-      "id": "award_001",
-      "category": "Scholarships",
-      "title": "Presidential Scholarship",
-      "issuer": "Kyung Hee University, Korea",
-      "date": "2021–2024",
-      "type": "Scholarship",
-      "description": "Merit-based full scholarship covering tuition and research expenses for PhD studies",
-      "icon": "fas fa-trophy"
-    },
-    {
       "id": "award_002",
       "category": "Paper & Publication Awards",
       "title": "Best Paper Award",
@@ -59,6 +29,36 @@
       "type": "Recognition",
       "description": "Outstanding research contribution in computational design and engineering",
       "icon": "fas fa-medal"
+    },
+    {
+      "id": "award_006",
+      "category": "Honors & Recognition",
+      "title": "K-STAR Outstanding Science and Technology Talent Recognition",
+      "issuer": "Republic of Korea, selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements",
+      "date": "2026",
+      "type": "National Recognition",
+      "description": "Selected for the K-STAR Visa Track (F-2-7S) through university recommendation in recognition of academic and research achievements.",
+      "icon": "fas fa-star"
+    },
+    {
+      "id": "award_005",
+      "category": "Honors & Recognition",
+      "title": "Best Academic Award (최우수학술상)",
+      "issuer": "Graduate School of Kyung Hee University, Department of Architecture",
+      "date": "2026",
+      "type": "Academic Award",
+      "description": "Selected for the Best Academic Award (최우수학술상) by the Graduate School of Kyung Hee University in recognition of outstanding research achievements in Architecture, among the August 2026 graduate award recipients.",
+      "icon": "fas fa-award"
+    },
+    {
+      "id": "award_001",
+      "category": "Scholarships",
+      "title": "Presidential Scholarship",
+      "issuer": "Kyung Hee University, Korea",
+      "date": "2021–2026",
+      "type": "Scholarship",
+      "description": "Merit-based scholarship covering the full tuition fee for the entire duration of PhD studies",
+      "icon": "fas fa-trophy"
     }
   ],
   "certifications": [

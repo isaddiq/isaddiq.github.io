@@ -613,7 +613,7 @@ dd,
   gap: 8px;
   min-height: 36px;
   padding: 6px 12px;
-  border: 1px solid var(--border-strong);
+  border: none;
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   font-size: var(--text-sm);
@@ -1072,6 +1072,8 @@ body {
 }
 
 .research-interests-grid {
+  /* Sit right under the heading; the taller model stays centred beside it */
+  align-self: start;
   border-top: 1px solid var(--border-strong);
 }
 
@@ -2704,6 +2706,12 @@ a.pub-badge.cited-by:hover {
 
 .award-issuer {
   color: var(--text-secondary);
+}
+
+.award-desc {
+  margin-top: 2px;
+  color: var(--text-secondary);
+  font-size: var(--text-sm);
 }
 
 .certificates-grid {

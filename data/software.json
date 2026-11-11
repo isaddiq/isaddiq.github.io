@@ -528,6 +528,11 @@
           "href": "https://github.com/isaddiq/BIMUniXchange"
         },
         {
+          "label": "Listed on OpenConstruction",
+          "icon": "fas fa-database",
+          "href": "https://www.openconstruction.org/models/details.html?id=BIMUniXchange"
+        },
+        {
           "label": "Sponsor",
           "icon": "fas fa-heart",
           "href": "https://github.com/sponsors/isaddiq",
@@ -1169,6 +1174,11 @@
           "label": "View on GitHub",
           "icon": "fab fa-github",
           "href": "https://github.com/isaddiq/ifcusd"
+        },
+        {
+          "label": "Indexed on XERJ Hub",
+          "icon": "fas fa-cubes",
+          "href": "https://hub.xerj.org/contributors/isaddiq"
         },
         {
           "label": "Sponsor",

@@ -2158,12 +2158,6 @@ function loadProjectsContent() {
 
     const isOngoing = project => /ongoing|progress|current/i.test(project.status || '');
 
-    const lede = document.getElementById('projects-lede');
-    if (lede) {
-        const ongoing = projectsData.filter(isOngoing).length;
-        lede.textContent = `${projectsData.length} research projects${ongoing ? `, ${ongoing} ongoing` : ''}. ` +
-            'Select a project for its objectives, technologies and outcomes.';
-    }
 
     // Newest first, so the list reads from current work downwards.
     const ordered = [...projectsData].sort(
@@ -2434,12 +2428,6 @@ function loadCertificatesContent() {
     const awards = certificatesData.awards || [];
     const certifications = certificatesData.certifications || [];
 
-    const lede = document.getElementById('certifications-lede');
-    if (lede) {
-        lede.textContent = `${awards.length} awards and scholarships, and ${certifications.length} certificates. ` +
-            'Select a certificate to see it in full.';
-    }
-
     // Awards as a dated ledger, grouped by category in order of first appearance
     const awardsContainer = document.querySelector('.awards-container');
     if (awardsContainer && certificatesData.awards) {
@@ -2458,6 +2446,7 @@ function loadCertificatesContent() {
                         <span class="award-content">
                             <strong>${award.title}</strong>
                             <span class="award-issuer">${award.issuer}</span>
+                            ${award.description ? `<span class="award-desc">${award.description}</span>` : ''}
                         </span>
                     </li>
                 `).join('')}
@@ -3390,10 +3379,6 @@ function initializeSoftwareTools() {
     // Build the tab from data/software.json first, then wire up the nav.
     renderSoftwareContent();
 
-    const lede = document.getElementById('tools-lede');
-    if (lede && softwareData.length) {
-        lede.textContent = `${softwareData.length} pieces of software, web apps, frameworks and systems for AEC.`;
-    }
 
     const navButtons = document.querySelectorAll('.tool-nav-btn');
 
