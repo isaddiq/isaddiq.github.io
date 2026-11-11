@@ -248,24 +248,19 @@ body {
 }
 
 /* Background: fine contour rings, like the level lines of a site survey,
-   spreading from the top-right and bottom-left corners and fading out before
-   they reach the middle of the page, over two soft washes (cobalt and a trace
-   of the hi-vis orange). Fixed, so it stays put while the page scrolls. */
+   spreading from the top-right corner across the whole page. They are a
+   little lighter behind the middle of the page so text stays easy to read.
+   Under them sit two soft washes (cobalt and a trace of the hi-vis orange).
+   Fixed, so it stays put while the page scrolls. */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background:
-    repeating-radial-gradient(ellipse 120% 100% at 100% 0%, transparent 0 37px, var(--bg-line) 37px 38px),
-    repeating-radial-gradient(ellipse 110% 100% at 0% 100%, transparent 0 45px, var(--bg-line) 45px 46px);
-  -webkit-mask-image:
-    radial-gradient(ellipse 75% 80% at 100% 0%, #000 10%, transparent 70%),
-    radial-gradient(ellipse 65% 70% at 0% 100%, #000 10%, transparent 70%);
-  mask-image:
-    radial-gradient(ellipse 75% 80% at 100% 0%, #000 10%, transparent 70%),
-    radial-gradient(ellipse 65% 70% at 0% 100%, #000 10%, transparent 70%);
+  background: repeating-radial-gradient(ellipse 120% 100% at 100% 0%, transparent 0 39px, var(--bg-line) 39px 40px);
+  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0, 0, 0, 0.55), #000 100%);
+  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, rgba(0, 0, 0, 0.55), #000 100%);
 }
 
 body::after {
