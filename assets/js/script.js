@@ -2179,7 +2179,7 @@ function loadProjectsContent() {
         <article class="project-card" data-project-id="${project.id}" role="button" tabindex="0">
             <div class="project-image">
                 ${project.image ? `
-                    <img src="${project.image}" alt="" class="project-card-image" loading="lazy"
+                    <img src="${project.image}" alt="${escapeHtml(project.title)}" class="project-card-image" loading="lazy"
                          onerror="this.outerHTML='&lt;i class=\\'${project.icon || 'fas fa-project-diagram'}\\'&gt;&lt;/i&gt;'" />
                 ` : `
                     <i class="${project.icon || 'fas fa-project-diagram'}"></i>
@@ -2482,7 +2482,7 @@ function loadCertificatesContent() {
         <div class="certificate-card" data-certificate-id="${cert.id}" role="button" tabindex="0">
             <div class="certificate-image">
                 ${cert.image ?
-                    `<img src="${cert.image}" alt="" loading="lazy" data-fallback-icon="fas fa-certificate">` :
+                    `<img src="${cert.image}" alt="${escapeHtml(cert.title)} (${escapeHtml(cert.issuer || '')})" loading="lazy" data-fallback-icon="fas fa-certificate">` :
                     `<i class="fas fa-certificate"></i>`
                 }
             </div>
@@ -2988,6 +2988,62 @@ function initializeResearchModel() {
 }
 
 /**
+ * Describe every publication to search engines as schema.org structured data
+ * (JSON-LD), built from data/publications.json so it never drifts from the
+ * list on the page. index.html carries a short static list for crawlers
+ * that do not run scripts; this adds the complete one.
+ */
+function injectPublicationsStructuredData() {
+    if (document.getElementById('publications-jsonld')) return;
+
+    const person = { '@id': 'https://isaddiq.github.io/#person' };
+    const items = [];
+
+    PUB_TYPES.forEach(type => {
+        pubTypeList(type).forEach(pub => {
+            if (!pub.title) return;
+            const venue = pub.journal || pub.conference;
+            const url = [pub.doi, pub.link].find(u => /^https?:/i.test(u || ''));
+            const article = {
+                '@type': type.tab === 'reports' ? 'Report' : 'ScholarlyArticle',
+                headline: pub.title,
+                name: pub.title,
+                author: (pub.authors || []).map(name =>
+                    name.includes(PUB_SELF) ? person : { '@type': 'Person', name })
+            };
+            if (pub.year) article.datePublished = String(pub.year);
+            if (venue) {
+                article.isPartOf = {
+                    '@type': type.tab === 'journals' ? 'Periodical' : 'PublicationEvent',
+                    name: venue
+                };
+            }
+            if (url) {
+                article.url = url;
+                article.sameAs = url;
+            }
+            if (Array.isArray(pub.topics) && pub.topics.length) article.keywords = pub.topics.join(', ');
+            if (pub.pages) article.pagination = String(pub.pages);
+            items.push(article);
+        });
+    });
+    if (!items.length) return;
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.id = 'publications-jsonld';
+    script.textContent = JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'ItemList',
+        '@id': 'https://isaddiq.github.io/#publications-list',
+        name: 'Publications by Saddiq Ur Rehman',
+        numberOfItems: items.length,
+        itemListElement: items.map((item, index) => ({ '@type': 'ListItem', position: index + 1, item }))
+    });
+    document.head.appendChild(script);
+}
+
+/**
  * Initialize the application when DOM is loaded
  */
 document.addEventListener('DOMContentLoaded', async function() {
@@ -3005,6 +3061,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     initializeKeyboardNavigation();
     initializeScrollToTop();
     initializeResearchModel();
+    injectPublicationsStructuredData();
 
     // Initialize tab from URL hash on page load
     initializeTabFromUrl();
