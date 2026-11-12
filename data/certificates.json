@@ -2,7 +2,7 @@
   "awards": [
     {
       "id": "award_002",
-      "category": "Paper & Publication Awards",
+      "category": "Publication Awards",
       "title": "Best Paper Award",
       "issuer": "Korea CDE Society Winter Conference, (Paper Title: LDA-based topic modelling of client’s needs for residential building design)",
       "date": "2023",
@@ -12,7 +12,7 @@
     },
     {
       "id": "award_003",
-      "category": "Paper & Publication Awards",
+      "category": "Publication Awards",
       "title": "Editor's Choice",
       "issuer": "Journal of Computational Design and Engineering",
       "date": "2023",
@@ -22,7 +22,7 @@
     },
     {
       "id": "award_004",
-      "category": "Paper & Publication Awards",
+      "category": "Publication Awards",
       "title": "Best Paper Award",
       "issuer": "Korea CDE Society Summer Conference, (Paper Title: Proposal of 3D printing production manual for DfMA-based building prototypes)",
       "date": "2022",
