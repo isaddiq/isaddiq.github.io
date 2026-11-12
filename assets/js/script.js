@@ -2763,12 +2763,35 @@ function countPublicationsForTopic(topic) {
 }
 
 /**
+ * Storeys in each bay of the research model: a tower on the left stepping
+ * down to the right (nine modules over three bays stack 4, 3 and 2 high).
+ * @param {number} count - modules to place
+ * @param {number} bays - bays along the building
+ * @returns {number[]} storeys per bay, tallest first
+ */
+function storeysPerBay(count, bays) {
+    const base = Math.floor(count / bays);
+    const storeys = new Array(bays).fill(base);
+    for (let spare = count - base * bays, bay = 0; spare > 0; spare--, bay++) storeys[bay]++;
+    // Move a storey from the last bay to the first to make the step
+    if (bays > 1 && storeys[bays - 1] > 1) {
+        storeys[0]++;
+        storeys[bays - 1]--;
+    }
+    return storeys.sort((a, b) => b - a);
+}
+
+/**
  * Draw the research model: an isometric modular building with one module per
  * research interest, read from the links in #research-interests (which stay
  * the keyboard route to the same destinations).
  *
- * Modules sit in a single row three wide, stacked three storeys high (nine
- * modules fill the building), so every module shows its long facade.
+ * The building is three bays long and one module deep, so every module shows
+ * its long facade, with the interest's name under a ribbon window. The bays
+ * step down from a tower (see storeysPerBay) and each roof carries something
+ * different; a lawn, a paved plinth, an entrance and planting set it on a
+ * site. Materials and light are CSS tokens (--model-*): daylight in the light
+ * theme, lit windows at night in the dark one.
  * The selected module slides out of the stack towards the viewer and its
  * entry in the list beside the model opens to show its details. On the first
  * visit of a session the modules are placed one by one (CSS, .is-building).
@@ -2781,7 +2804,9 @@ function initializeResearchModel() {
     const NS = 'http://www.w3.org/2000/svg';
     const UNIT = 46;                       // pixels per model unit
     const COS = Math.cos(Math.PI / 6);
-    const W = 4.4, D = 1.8, H = 1.75;       // module length, depth, height
+    const W = 4.4, D = 2.4, H = 1.75;       // module length, depth, height
+    const PLINTH = 0.14;                   // thickness of the slab the building stands on
+    const VIEW = { x: -205, y: -345, width: 823, height: 810 };
     const COLUMNS = 3;
     const SLIDE = 0.55;                    // how far a selected module is pulled out
 
@@ -2840,37 +2865,200 @@ function initializeResearchModel() {
 
     const svg = document.createElementNS(NS, 'svg');
     svg.setAttribute('class', 'model-svg');
-    svg.setAttribute('viewBox', '-112 -280 672 675');
+    svg.setAttribute('viewBox', `${VIEW.x} ${VIEW.y} ${VIEW.width} ${VIEW.height}`);
     svg.setAttribute('focusable', 'false');
 
-    // Ground: an isometric grid that fades out around the building
+    const at = (x, y, z) => project(x, y, z).map(n => n.toFixed(1));
+    const line = (a, b) => `M${at(...a).join(' ')}L${at(...b).join(' ')}`;
+    const poly = (className, corners, parent, attrs) => make('polygon', Object.assign({
+        class: className, points: toPoints(corners)
+    }, attrs), parent);
+    const lines = (className, segments, parent) => make('path', {
+        class: className, d: segments.map(segment => line(...segment)).join('')
+    }, parent);
+    // The three faces of a box that can be seen: top, right end and front
+    const box = (prefix, parent, x0, y0, z0, x1, y1, z1) => {
+        poly(`${prefix}-face ${prefix}-top`, [[x0, y0, z1], [x1, y0, z1], [x1, y1, z1], [x0, y1, z1]], parent);
+        poly(`${prefix}-face ${prefix}-end`, [[x1, y0, z0], [x1, y1, z0], [x1, y1, z1], [x1, y0, z1]], parent);
+        poly(`${prefix}-face ${prefix}-front`, [[x0, y1, z0], [x1, y1, z0], [x1, y1, z1], [x0, y1, z1]], parent);
+    };
+
+    // Paint servers: their colours are CSS tokens, so they follow the theme
     const defs = make('defs', {}, svg);
+    const gradient = (id, stops) => {
+        const el = make('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs);
+        stops.forEach((name, n) => make('stop', { offset: n / (stops.length - 1), class: `model-stop-${name}` }, el));
+    };
+    gradient('model-glass', ['glass-a', 'glass-b']);
+    gradient('model-glass-end', ['glass-end-a', 'glass-end-b']);
+    gradient('model-glass-lit', ['lit-a', 'lit-b']);
+    gradient('model-glass-lit-end', ['lit-end-a', 'lit-end-b']);
+    const foliage = make('radialGradient', { id: 'model-foliage', cx: 0.36, cy: 0.3, r: 0.8 }, defs);
+    ['leaf-a', 'leaf-b', 'leaf-c'].forEach((name, n) => make('stop', { offset: n / 2, class: `model-stop-${name}` }, foliage));
+
+    const conifer = make('linearGradient', { id: 'model-conifer', x1: 0, y1: 0, x2: 1, y2: 0 }, defs);
+    [['leaf-a', 0], ['leaf-b', 0.45], ['leaf-c', 1]].forEach(([name, offset]) => make('stop', { offset, class: `model-stop-${name}` }, conifer));
+    // Night only: the bloom around lit glazing and the pool under a lamp
+    const glow = make('filter', { id: 'model-glow', x: '-30%', y: '-90%', width: '160%', height: '280%' }, defs);
+    make('feGaussianBlur', { stdDeviation: 6 }, glow);
+    const pool = make('radialGradient', { id: 'model-pool' }, defs);
+    make('stop', { offset: 0, class: 'model-stop-pool', 'stop-opacity': 0.75 }, pool);
+    make('stop', { offset: 1, class: 'model-stop-pool', 'stop-opacity': 0 }, pool);
+
+    // Light falls from the front left, so shadows lie to the right.
+    const px = n => n.toFixed(1);
+    const groundShadow = (parent, tx, ty, size, reach) => make('ellipse', {
+        class: 'model-shadow', cx: px(tx + reach * 0.7 * size), cy: px(ty + 1.5 * size),
+        rx: px(reach * size), ry: px(reach * 0.36 * size)
+    }, parent);
+    const blobs = (parent, tx, ty, size, className, list) => list.forEach(([dx, dy, r]) => make('circle', {
+        class: className, fill: 'url(#model-foliage)',
+        cx: px(tx + dx * size), cy: px(ty + dy * size), r: px(r * size)
+    }, parent));
+    // A broadleaf tree: a forked trunk under a canopy built from a shaded
+    // underside, a body of rounded masses and a few sunlit tips
+    const tree = (parent, x, y, z, size) => {
+        const [tx, ty] = project(x, y, z);
+        const s = size;
+        groundShadow(parent, tx, ty, s, 19);
+        make('path', {
+            class: 'tree-trunk',
+            d: `M${px(tx - 2.6 * s)} ${px(ty)}L${px(tx - 1.6 * s)} ${px(ty - 22 * s)}L${px(tx - 7 * s)} ${px(ty - 31 * s)}`
+                + `L${px(tx - 5.6 * s)} ${px(ty - 32.5 * s)}L${px(tx)} ${px(ty - 26 * s)}L${px(tx + 6 * s)} ${px(ty - 33 * s)}`
+                + `L${px(tx + 7.2 * s)} ${px(ty - 31.4 * s)}L${px(tx + 1.8 * s)} ${px(ty - 22 * s)}L${px(tx + 2.6 * s)} ${px(ty)}z`
+        }, parent);
+        blobs(parent, tx, ty, s, 'tree-under', [[-13, -30, 10.5], [13, -29, 10.5], [0, -27, 12]]);
+        blobs(parent, tx, ty, s, 'tree-foliage', [[-11, -39, 12.5], [11, -38, 12.5], [-1, -35, 12], [7, -48, 11], [-4, -51, 14]]);
+        blobs(parent, tx, ty, s, 'tree-light', [[-8, -58, 5], [-16, -43, 4.5], [4, -44, 4.5], [9, -54, 4]]);
+    };
+    // A conifer: three tiers, lit on the left
+    const fir = (parent, x, y, z, size) => {
+        const [tx, ty] = project(x, y, z);
+        const s = size;
+        groundShadow(parent, tx, ty, s, 15);
+        make('path', { class: 'tree-trunk', d: `M${px(tx - 2 * s)} ${px(ty)}v${px(-11 * s)}h${px(4 * s)}v${px(11 * s)}z` }, parent);
+        [[-8, 17, -37], [-24, 13.5, -53], [-40, 10, -70]].forEach(([foot, half, tip]) => make('path', {
+            class: 'tree-fir', fill: 'url(#model-conifer)',
+            d: `M${px(tx - half * s)} ${px(ty + foot * s)}Q${px(tx)} ${px(ty + (foot + 5) * s)} ${px(tx + half * s)} ${px(ty + foot * s)}L${px(tx)} ${px(ty + tip * s)}z`
+        }, parent));
+    };
+    // A shrub: no trunk, and in flower when asked
+    const shrub = (parent, x, y, z, size, flowers) => {
+        const [tx, ty] = project(x, y, z);
+        groundShadow(parent, tx, ty, size, 11);
+        blobs(parent, tx, ty, size, 'tree-under', [[-7, -3, 6], [7, -3, 6]]);
+        blobs(parent, tx, ty, size, 'tree-foliage', [[-5, -7, 7], [5, -6, 6.5], [0, -11, 7]]);
+        blobs(parent, tx, ty, size, 'tree-light', [[-3, -14, 3]]);
+        if (flowers) {
+            [[-8, -7], [-2, -15], [4, -9], [9, -4], [-3, -4], [1, -1]].forEach(([dx, dy], n) => make('circle', {
+                class: `flower flower-${n % 3}`, cx: px(tx + dx * size), cy: px(ty + dy * size), r: 1.5
+            }, parent));
+        }
+    };
+    // A street lamp leaning over the forecourt; at night it glows and
+    // throws a pool of light on the ground
+    const lamp = (parent, x, y, z) => {
+        const [bx, by] = project(x, y, z);
+        const [kx, ky] = project(x, y, z + 1.12);
+        const [hx, hy] = project(x, y - 0.32, z + 1.2);
+        const [gx, gy] = project(x, y - 0.5, z);
+        make('ellipse', { class: 'model-night', cx: px(gx), cy: px(gy), rx: 46, ry: 21, fill: 'url(#model-pool)' }, parent);
+        make('path', { class: 'lamp-post', d: `M${px(bx)} ${px(by)}L${px(kx)} ${px(ky)}Q${px(kx)} ${px(ky - 6)} ${px(hx)} ${px(hy)}` }, parent);
+        make('circle', { class: 'model-night', cx: px(hx), cy: px(hy + 2), r: 13, fill: 'url(#model-pool)' }, parent);
+        make('ellipse', { class: 'lamp-head', cx: px(hx), cy: px(hy + 1), rx: 5, ry: 2.6 }, parent);
+    };
+    // A small delivery robot on its way along the path
+    const robot = (parent, x, y, z) => {
+        poly('model-shadow', [[x + 0.42, y, z], [x + 0.42, y + 0.28, z], [x + 0.6, y + 0.2, z], [x + 0.6, y - 0.08, z]], parent);
+        box('robot', parent, x, y, z + 0.07, x + 0.42, y + 0.28, z + 0.36);
+        poly('robot-visor', [[x + 0.42, y + 0.04, z + 0.2], [x + 0.42, y + 0.24, z + 0.2], [x + 0.42, y + 0.24, z + 0.31], [x + 0.42, y + 0.04, z + 0.31]], parent);
+        lines('robot-stripe', [[[x, y + 0.28, z + 0.17], [x + 0.42, y + 0.28, z + 0.17]]], parent);
+        [0.09, 0.33].forEach(dx => {
+            const [wx, wy] = project(x + dx, y + 0.28, z + 0.07);
+            make('circle', { class: 'robot-wheel', cx: px(wx), cy: px(wy), r: 3.2 }, parent);
+        });
+        const [fx, fy] = project(x + 0.07, y + 0.14, z + 0.36);
+        make('path', { class: 'lamp-post', d: `M${px(fx)} ${px(fy)}v-13` }, parent);
+        make('path', { class: 'robot-flag', d: `M${px(fx)} ${px(fy - 13)}l7 2.5l-7 2.5z` }, parent);
+    };
+
+    // Ground: an isometric grid that fades out around the site
+    const BASE = 0.3;                       // thickness of the block of ground
+    const GROUND = -PLINTH;                 // level of the lawn
     const fade = make('radialGradient', {
-        id: 'model-fade-gradient', gradientUnits: 'userSpaceOnUse', cx: 227, cy: 60, r: 400
+        id: 'model-fade-gradient', gradientUnits: 'userSpaceOnUse', cx: 205, cy: 80, r: 460
     }, defs);
     make('stop', { offset: 0.25, 'stop-color': '#fff', 'stop-opacity': 1 }, fade);
     make('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, fade);
     const mask = make('mask', {
-        id: 'model-fade', maskUnits: 'userSpaceOnUse', x: -112, y: -280, width: 672, height: 675
+        id: 'model-fade', maskUnits: 'userSpaceOnUse', x: VIEW.x, y: VIEW.y, width: VIEW.width, height: VIEW.height
     }, defs);
-    make('rect', { x: -112, y: -280, width: 672, height: 675, fill: 'url(#model-fade-gradient)' }, mask);
+    make('rect', { x: VIEW.x, y: VIEW.y, width: VIEW.width, height: VIEW.height, fill: 'url(#model-fade-gradient)' }, mask);
 
-    const line = (a, b) => `M${project(...a).map(n => n.toFixed(1)).join(' ')}L${project(...b).map(n => n.toFixed(1)).join(' ')}`;
     let grid = '';
-    for (let y = -1.8; y <= 3.61; y += 0.9) grid += line([-1.5, y, 0], [15, y, 0]);
-    for (let x = -1.5; x <= 15.01; x += 1.5) grid += line([x, -1.8, 0], [x, 3.6, 0]);
+    for (let y = -2.7; y <= 5.41; y += 0.9) grid += line([-3, y, GROUND - BASE], [16.5, y, GROUND - BASE]);
+    for (let x = -3; x <= 16.51; x += 1.5) grid += line([x, -2.7, GROUND - BASE], [x, 5.4, GROUND - BASE]);
     make('path', { class: 'model-grid-lines', d: grid, mask: 'url(#model-fade)' }, svg);
 
-    // Shadow on the ground in front of the facade
-    make('polygon', {
-        class: 'model-footprint',
-        points: toPoints([[0.3, D, 0], [COLUMNS * W, D, 0], [COLUMNS * W + 0.3, D + 0.8, 0], [0.6, D + 0.8, 0]])
-    }, svg);
+    // The site: a block of lawn, a paved plinth with a forecourt, and the
+    // path and step up to the entrance in the end wall
+    const LENGTH = COLUMNS * W;
+    const DOOR_Y0 = (D - 0.9) / 2, DOOR_Y1 = DOOR_Y0 + 0.9;
+    const SITE = { x0: -0.8, y0: -0.6, x1: LENGTH + 1.5, y1: D + 1.75 };
+    const site = make('g', { class: 'model-site' }, svg);
+    box('ground', site, SITE.x0, SITE.y0, GROUND - BASE, SITE.x1, SITE.y1, GROUND);
+    // Turf along the top of the cut edges, and mowing stripes on the lawn
+    poly('ground-turf', [[SITE.x0, SITE.y1, GROUND], [SITE.x1, SITE.y1, GROUND], [SITE.x1, SITE.y1, GROUND - 0.06], [SITE.x0, SITE.y1, GROUND - 0.06]], site);
+    poly('ground-turf ground-turf-end', [[SITE.x1, SITE.y0, GROUND], [SITE.x1, SITE.y1, GROUND], [SITE.x1, SITE.y1, GROUND - 0.06], [SITE.x1, SITE.y0, GROUND - 0.06]], site);
+    for (let x = SITE.x0 + 0.55; x < SITE.x1; x += 1.1) {
+        const end = Math.min(x + 0.55, SITE.x1);
+        poly('ground-stripe', [[x, SITE.y0, GROUND], [end, SITE.y0, GROUND], [end, SITE.y1, GROUND], [x, SITE.y1, GROUND]], site);
+    }
+    // The path from the edge of the site to the step
+    const pathY0 = DOOR_Y0 - 0.25, pathY1 = DOOR_Y1 + 0.25;
+    poly('paving-face paving-top', [
+        [LENGTH + 0.5, pathY0, GROUND], [SITE.x1, pathY0, GROUND], [SITE.x1, pathY1, GROUND], [LENGTH + 0.5, pathY1, GROUND]
+    ], site);
+    lines('paving-joint', [
+        [[LENGTH + 1.0, pathY0, GROUND], [LENGTH + 1.0, pathY1, GROUND]],
+        [[LENGTH + 1.25, pathY0, GROUND], [LENGTH + 1.25, pathY1, GROUND]],
+        [[LENGTH + 0.74, (pathY0 + pathY1) / 2, GROUND], [SITE.x1, (pathY0 + pathY1) / 2, GROUND]]
+    ], site);
+    fir(site, -0.55, 2.2, GROUND, 1.05);
+    // The plinth, paved in slabs
+    const PAVE = { x0: -0.3, y0: -0.3, x1: LENGTH + 0.5, y1: D + 0.85 };
+    box('paving', site, PAVE.x0, PAVE.y0, GROUND, PAVE.x1, PAVE.y1, 0);
+    const joints = [];
+    for (let x = 0.25; x < PAVE.x1; x += 0.55) joints.push([[x, D, 0], [x, PAVE.y1, 0]]);
+    for (let y = D + 0.28; y < PAVE.y1; y += 0.28) joints.push([[PAVE.x0, y, 0], [PAVE.x1, y, 0]]);
+    for (let y = 0.4; y < D; y += 0.4) joints.push([[LENGTH, y, 0], [PAVE.x1, y, 0]]);
+    lines('paving-joint', joints, site);
+    box('paving', site, LENGTH + 0.5, pathY0, GROUND, LENGTH + 0.74, pathY1, GROUND + 0.07);
+    // Night only: light from the windows spilling across the forecourt
+    poly('model-night model-spill', [[0.3, D, 0], [LENGTH - 0.3, D, 0], [LENGTH - 0.3, D + 0.55, 0], [0.3, D + 0.55, 0]], site, { filter: 'url(#model-glow)' });
+    // The building's shadow, across the plinth and then the lawn
+    poly('model-shadow', [[LENGTH, 0, 0], [LENGTH, D, 0], [LENGTH + 0.5, D - 0.2, 0], [LENGTH + 0.5, -0.2, 0]], site);
+    poly('model-shadow', [
+        [LENGTH + 0.5, -0.2, GROUND], [LENGTH + 0.5, D - 0.2, GROUND],
+        [SITE.x1, D - 0.6, GROUND], [SITE.x1, SITE.y0, GROUND]
+    ], site);
+
+    // The building steps down from a tower on the left. Each bay is a stack
+    // of modules, filled storey by storey, so the drawing order (low to
+    // high, back to front) is also the order the modules are placed in.
+    const storeys = storeysPerBay(topics.length, COLUMNS);
+    const slots = [];
+    for (let storey = 0; storey < storeys[0]; storey++) {
+        for (let bay = 0; bay < COLUMNS; bay++) {
+            if (storeys[bay] > storey) slots.push({ bay, storey, isRoof: storeys[bay] === storey + 1 });
+        }
+    }
 
     const modules = topics.map((topic, i) => {
-        const x0 = (i % COLUMNS) * W;
+        const { bay, storey, isRoof } = slots[i];
+        const x0 = bay * W;
         const x1 = x0 + W;
-        const z0 = Math.floor(i / COLUMNS) * H;
+        const z0 = storey * H;
         const z1 = z0 + H;
 
         const group = make('g', { class: 'module', 'data-index': i }, svg);
@@ -2879,35 +3067,68 @@ function initializeResearchModel() {
         group.style.setProperty('--slide-x', `${(-SLIDE * COS * UNIT).toFixed(1)}px`);
         group.style.setProperty('--slide-y', `${(SLIDE * 0.5 * UNIT).toFixed(1)}px`);
 
-        make('polygon', {
-            class: 'module-face module-top',
-            points: toPoints([[x0, 0, z1], [x1, 0, z1], [x1, D, z1], [x0, D, z1]])
-        }, group);
-        make('polygon', {
-            class: 'module-face module-end',
-            points: toPoints([[x1, 0, z0], [x1, D, z0], [x1, D, z1], [x1, 0, z1]])
-        }, group);
-        make('polygon', {
-            class: 'module-face module-front',
-            points: toPoints([[x0, D, z0], [x1, D, z0], [x1, D, z1], [x0, D, z1]])
-        }, group);
+        // Cladding in a tint of the interest's colour, with a fascia in the
+        // full colour along the floor plate
+        box('module', group, x0, 0, z0, x1, D, z1);
+        poly('module-plate', [[x0, D, z0], [x1, D, z0], [x1, D, z0 + 0.1], [x0, D, z0 + 0.1]], group);
+        poly('module-plate module-plate-end', [[x1, 0, z0], [x1, D, z0], [x1, D, z0 + 0.1], [x1, 0, z0 + 0.1]], group);
 
-        // A strip window with two mullions across the upper part of the facade
-        const wx0 = x0 + 0.28, wx1 = x1 - 0.28, wz0 = z0 + 1.2, wz1 = z1 - 0.17;
-        make('polygon', {
-            class: 'module-window',
-            points: toPoints([[wx0, D, wz0], [wx1, D, wz0], [wx1, D, wz1], [wx0, D, wz1]])
-        }, group);
-        const third = (wx1 - wx0) / 3;
-        make('path', {
-            class: 'module-window',
-            d: line([wx0 + third, D, wz0], [wx0 + third, D, wz1]) + line([wx0 + 2 * third, D, wz0], [wx0 + 2 * third, D, wz1])
-        }, group);
+        // Glazing. Most panes are lit, which shows at night (dark theme);
+        // by day every pane reflects the sky.
+        const isLit = (n, onEnd) => (i * 3 + n * 5 + (onEnd ? 2 : 0)) % 4 !== 0;
+        const pane = (corners, n, onEnd) => {
+            const lit = isLit(n, onEnd);
+            poly(lit ? 'pane pane-lit' : 'pane', corners, group, {
+                fill: `url(#model-glass${lit ? '-lit' : ''}${onEnd ? '-end' : ''})`
+            });
+        };
+
+        // A ribbon window that wraps the corner: six panes on the long
+        // facade, three on the end, each with a sill and a shaded reveal
+        const wz0 = z0 + 1.12, wz1 = z1 - 0.15;
+        const wx0 = x0 + 0.28, wx1 = x1 - 0.28, paneX = (wx1 - wx0) / 6;
+        const wy0 = 0.3, wy1 = D - 0.3, paneY = (wy1 - wy0) / 3;
+        // Night only: the bloom of the lit rooms on the wall around them
+        poly('model-night pane-glow', [[wx0, D, wz0], [wx1, D, wz0], [wx1, D, wz1], [wx0, D, wz1]], group, { filter: 'url(#model-glow)' });
+        poly('model-night pane-glow', [[x1, wy0, wz0], [x1, wy1, wz0], [x1, wy1, wz1], [x1, wy0, wz1]], group, { filter: 'url(#model-glow)' });
+        for (let n = 0; n < 6; n++) {
+            const a = wx0 + n * paneX, b = a + paneX;
+            pane([[a, D, wz0], [b, D, wz0], [b, D, wz1], [a, D, wz1]], n, false);
+            if (n % 3 === 1) {
+                poly('pane-glint', [[a + 0.36, D, wz1], [a + 0.5, D, wz1], [a + 0.24, D, wz0], [a + 0.1, D, wz0]], group);
+            }
+        }
+        poly('pane-reveal', [[wx0, D, wz1], [wx1, D, wz1], [wx1, D, wz1 - 0.06], [wx0, D, wz1 - 0.06]], group);
+        poly('module-sill', [[wx0 - 0.07, D, wz0 - 0.07], [wx1 + 0.07, D, wz0 - 0.07], [wx1 + 0.07, D, wz0], [wx0 - 0.07, D, wz0]], group);
+
+        for (let n = 0; n < 3; n++) {
+            const a = wy0 + n * paneY, b = a + paneY;
+            pane([[x1, a, wz0], [x1, b, wz0], [x1, b, wz1], [x1, a, wz1]], n, true);
+        }
+        poly('pane-reveal', [[x1, wy0, wz1], [x1, wy1, wz1], [x1, wy1, wz1 - 0.06], [x1, wy0, wz1 - 0.06]], group);
+        poly('module-sill module-sill-end', [[x1, wy0 - 0.07, wz0 - 0.07], [x1, wy1 + 0.07, wz0 - 0.07], [x1, wy1 + 0.07, wz0], [x1, wy0 - 0.07, wz0]], group);
+
+        // The entrance: glazed double doors under a canopy, in the end wall
+        if (storey === 0 && bay === COLUMNS - 1) {
+            const doorTop = z0 + 0.98, mid = (DOOR_Y0 + DOOR_Y1) / 2;
+            poly('door-frame', [[x1, DOOR_Y0 - 0.06, z0], [x1, DOOR_Y1 + 0.06, z0], [x1, DOOR_Y1 + 0.06, doorTop], [x1, DOOR_Y0 - 0.06, doorTop]], group);
+            pane([[x1, DOOR_Y0, z0 + 0.04], [x1, mid - 0.02, z0 + 0.04], [x1, mid - 0.02, doorTop - 0.05], [x1, DOOR_Y0, doorTop - 0.05]], 1, true);
+            pane([[x1, mid + 0.02, z0 + 0.04], [x1, DOOR_Y1, z0 + 0.04], [x1, DOOR_Y1, doorTop - 0.05], [x1, mid + 0.02, doorTop - 0.05]], 2, true);
+            lines('door-handle', [
+                [[x1, mid - 0.09, z0 + 0.38], [x1, mid - 0.09, z0 + 0.6]],
+                [[x1, mid + 0.09, z0 + 0.38], [x1, mid + 0.09, z0 + 0.6]]
+            ], group);
+            poly('model-shadow', [
+                [x1, DOOR_Y0 - 0.2, doorTop + 0.02], [x1, DOOR_Y1 + 0.2, doorTop + 0.02],
+                [x1, DOOR_Y1 + 0.1, doorTop - 0.14], [x1, DOOR_Y0 - 0.3, doorTop - 0.14]
+            ], group);
+            box('canopy', group, x1, DOOR_Y0 - 0.2, doorTop + 0.02, x1 + 0.55, DOOR_Y1 + 0.2, doorTop + 0.09);
+        }
 
         // The name lies on the facade plane, sheared to follow the x axis,
         // on up to two lines under the window
         topic.label.slice(0, 2).forEach((text, lineIndex, all) => {
-            const baseline = z0 + 0.22 + (all.length - 1 - lineIndex) * 0.44;
+            const baseline = z0 + 0.24 + (all.length - 1 - lineIndex) * 0.42;
             const [lx, ly] = project(x0 + 0.28, D, baseline);
             const label = make('text', {
                 class: 'module-label',
@@ -2916,8 +3137,102 @@ function initializeResearchModel() {
             label.textContent = text;
         });
 
+        // Roofs: a deck sunk inside the parapet, in the shadow of the taller
+        // bay beside it, and something different on each bay: a stair core
+        // with plant and a mast, solar panels, a roof garden
+        if (isRoof) {
+            const rim = 0.14, deck = z1 - 0.12;
+            const rx0 = x0 + rim, rx1 = x1 - rim, ry0 = rim, ry1 = D - rim;
+            const opening = [[rx0, ry0, z1], [rx1, ry0, z1], [rx1, ry1, z1], [rx0, ry1, z1]];
+            poly('', opening, make('clipPath', { id: `model-roof-clip-${i}` }, defs));
+            poly('roof-deck', opening, group);
+            // What lies flat on the deck is cut off by the parapet in front
+            const flat = make('g', { 'clip-path': `url(#model-roof-clip-${i})` }, group);
+            const variant = bay % 3;
+
+            if (variant === 2) {
+                poly('roof-lawn', [[x0 + 0.45, 0.4, deck], [x0 + 2.55, 0.4, deck], [x0 + 2.55, D - 0.45, deck], [x0 + 0.45, D - 0.45, deck]], flat);
+                const tx0 = x0 + 2.7, tx1 = x1 - 0.4, ty0 = 0.4, ty1 = D - 0.45;
+                poly('roof-timber', [[tx0, ty0, deck], [tx1, ty0, deck], [tx1, ty1, deck], [tx0, ty1, deck]], flat);
+                const planks = [];
+                for (let y = ty0 + 0.2; y < ty1 - 0.05; y += 0.2) planks.push([[tx0, y, deck], [tx1, y, deck]]);
+                lines('roof-timber-line', planks, flat);
+            }
+            if (bay > 0 && storeys[bay - 1] > storeys[bay]) {
+                poly('model-shadow', [[rx0, ry0, deck], [rx0 + 0.85, ry0, deck], [rx0 + 0.85, ry1 - 0.35, deck], [rx0, ry1 + 0.2, deck]], flat);
+            }
+            // Inner faces of the parapet
+            poly('roof-wall', [[rx0, ry0, z1], [rx1, ry0, z1], [rx1, ry0, deck], [rx0, ry0, deck]], group);
+            poly('roof-wall roof-wall-side', [[rx0, ry0, z1], [rx0, ry1, z1], [rx0, ry1, deck], [rx0, ry0, deck]], group);
+
+            if (variant === 0) {
+                // Stair core with its door, a plant unit with a fan, a mast
+                const cx0 = x0 + 0.55, cx1 = x0 + 1.95, cy1 = 1.5, top = deck + 0.8;
+                poly('model-shadow', [[cx1, 0.45, deck], [cx1, cy1, deck], [cx1 + 0.4, cy1 - 0.16, deck], [cx1 + 0.4, 0.3, deck]], flat);
+                box('core', group, cx0, 0.45, deck, cx1, cy1, top);
+                poly('roof-door', [[cx0 + 0.3, cy1, deck], [cx0 + 0.75, cy1, deck], [cx0 + 0.75, cy1, deck + 0.6], [cx0 + 0.3, cy1, deck + 0.6]], group);
+
+                const ux0 = x0 + 2.45, ux1 = x0 + 3.35, uy0 = 0.5, uy1 = 1.2, utop = deck + 0.38;
+                poly('model-shadow', [[ux1, uy0, deck], [ux1, uy1, deck], [ux1 + 0.2, uy1 - 0.08, deck], [ux1 + 0.2, uy0 - 0.08, deck]], flat);
+                box('unit', group, ux0, uy0, deck, ux1, uy1, utop);
+                lines('unit-grille', [0.1, 0.19, 0.28].map(dz => [[ux0 + 0.08, uy1, deck + dz], [ux1 - 0.08, uy1, deck + dz]]), group);
+                const [fx, fy] = project((ux0 + ux1) / 2, (uy0 + uy1) / 2, utop);
+                make('ellipse', { class: 'unit-fan', cx: fx.toFixed(1), cy: fy.toFixed(1), rx: (0.26 * 1.2247 * UNIT).toFixed(1), ry: (0.26 * 0.7071 * UNIT).toFixed(1) }, group);
+
+                const mx = x0 + 3.85, my = 0.6;
+                lines('roof-mast', [
+                    [[mx, my, deck], [mx, my, deck + 1.15]],
+                    [[mx - 0.2, my, deck + 0.9], [mx + 0.2, my, deck + 0.9]],
+                    [[mx - 0.13, my, deck + 0.72], [mx + 0.13, my, deck + 0.72]]
+                ], group);
+                const [bx, by] = project(mx, my, deck + 1.15);
+                make('circle', { class: 'roof-beacon', cx: bx.toFixed(1), cy: by.toFixed(1), r: 3 }, group);
+            } else if (variant === 1) {
+                // Three framed solar panels tilted towards the facade
+                const py0 = 0.55, py1 = D - 0.6, high = deck + 0.36, low = deck + 0.07;
+                [0.6, 1.8, 3.0].forEach(offset => {
+                    const px0 = x0 + offset, px1 = px0 + 0.95;
+                    poly('model-shadow', [[px1, py0, deck], [px1, py1, deck], [px1 + 0.2, py1 - 0.08, deck], [px1 + 0.2, py0 - 0.08, deck]], flat);
+                    poly('unit-face unit-end', [[px1, py0, deck], [px1, py1, deck], [px1, py1, low], [px1, py0, high]], group);
+                    poly('unit-face unit-front', [[px0, py1, deck], [px1, py1, deck], [px1, py1, low], [px0, py1, low]], group);
+                    poly('roof-panel', [[px0, py0, high], [px1, py0, high], [px1, py1, low], [px0, py1, low]], group);
+                    const on = t => [py0 + (py1 - py0) * t, high + (low - high) * t];
+                    const cells = [1, 2, 3].map(n => [[px0 + n * 0.2375, py0, high], [px0 + n * 0.2375, py1, low]]);
+                    [0.25, 0.5, 0.75].forEach(t => cells.push([[px0, ...on(t)], [px1, ...on(t)]]));
+                    lines('roof-panel-line', cells, group);
+                    poly('pane-glint', [[px0 + 0.5, ...on(0)], [px0 + 0.72, ...on(0)], [px0 + 0.42, ...on(1)], [px0 + 0.2, ...on(1)]], group);
+                });
+            } else {
+                // Roof garden: trees on the lawn, a planter and a bench on the timber
+                tree(group, x0 + 1.05, 0.95, deck, 0.5);
+                tree(group, x0 + 1.95, 1.55, deck, 0.42);
+                box('planter', group, x0 + 2.95, 0.5, deck, x0 + 3.85, 0.82, deck + 0.2);
+                shrub(group, x0 + 3.2, 0.66, deck + 0.2, 0.75, true);
+                shrub(group, x0 + 3.62, 0.66, deck + 0.2, 0.7, false);
+                box('planter', group, x0 + 3.0, 1.45, deck + 0.14, x0 + 3.75, 1.68, deck + 0.2);
+                lines('roof-timber-line', [
+                    [[x0 + 3.06, 1.68, deck], [x0 + 3.06, 1.68, deck + 0.14]],
+                    [[x0 + 3.69, 1.68, deck], [x0 + 3.69, 1.68, deck + 0.14]]
+                ], group);
+            }
+        }
+
         return group;
     });
+
+    // In front of the building: a tree either side of the entrance path, a
+    // robot on it, and a row of planting and lamps along the lawn. The row
+    // is kept low so it never covers a name, even on a module pulled out.
+    const planting = make('g', { class: 'model-site' }, svg);
+    fir(planting, LENGTH + 1.05, -0.2, GROUND, 0.9);
+    robot(planting, LENGTH + 0.9, (DOOR_Y0 + DOOR_Y1) / 2 - 0.02, GROUND);
+    const rowY = D + 1.3;
+    [
+        [shrub, 0.2, 1, true], [tree, 1.4, 0.6], [shrub, 2.6, 0.9, false], [shrub, 3.3, 1, true],
+        [lamp, 4.4], [shrub, 5.5, 0.9, false], [tree, 6.6, 0.6], [shrub, 7.7, 1, true],
+        [lamp, 8.8], [shrub, 9.9, 1, true], [tree, 11.0, 0.6], [shrub, 12.2, 0.9, false]
+    ].forEach(([draw, x, size, flowers]) => draw(planting, x, rowY, GROUND, size, flowers));
+    tree(planting, LENGTH + 0.95, D + 1.15, GROUND, 1.05);
 
     stage.appendChild(svg);
 

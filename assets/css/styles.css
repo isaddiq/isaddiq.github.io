@@ -100,12 +100,37 @@
   --bg-wash: rgba(33, 72, 192, 0.1);
   --bg-wash-warm: rgba(232, 89, 12, 0.06);
 
-  /* Research model faces */
-  --model-top: #ffffff;
-  --model-front: #f7f9fb;
-  --model-end: #dbe1e8;
-  --model-line: #101b2b;
+  /* Research model: materials in daylight */
   --model-grid: #c5ccd5;
+  --model-edge: rgba(16, 27, 43, 0.62);
+  --model-wall: #f4f1ea;
+  --model-wall-shade: #c9c5bc;
+  --model-coping: #fcfbf8;
+  --model-roof: #b4b8bd;
+  --model-metal: #cfd4d9;
+  --model-frame: #2f3946;
+  --model-glass-a: #c9e9fa;
+  --model-glass-b: #5a9ccb;
+  --model-glass-end-a: #86b9da;
+  --model-glass-end-b: #2f688f;
+  --model-lit-a: #c9e9fa;
+  --model-lit-b: #5a9ccb;
+  --model-lit-end-a: #86b9da;
+  --model-lit-end-b: #2f688f;
+  --model-night: hidden;
+  --model-lamp: #f3f0e6;
+  --model-robot: #ffffff;
+  --model-glint: 0.4;
+  --model-shadow: 0.17;
+  --model-solar: #1d3a63;
+  --model-timber: #c49a6c;
+  --model-grass: #93c26b;
+  --model-soil: #9b7650;
+  --model-paving: #dedad2;
+  --model-trunk: #7b5638;
+  --model-leaf-a: #a5d46f;
+  --model-leaf-b: #5fa648;
+  --model-leaf-c: #2f7436;
 
   /* Depth: flat by default, a real shadow only for overlays */
   --elev-1: none;
@@ -206,11 +231,37 @@
   --bg-wash: rgba(143, 180, 255, 0.12);
   --bg-wash-warm: rgba(255, 138, 61, 0.06);
 
-  --model-top: #1f3460;
-  --model-front: #152649;
-  --model-end: #0d1830;
-  --model-line: #a9c3f2;
+  /* Research model: the same materials at night, with the lights on */
   --model-grid: #2a3d63;
+  --model-edge: rgba(6, 11, 24, 0.85);
+  --model-wall: #3a4868;
+  --model-wall-shade: #26314c;
+  --model-coping: #4d5d82;
+  --model-roof: #222c45;
+  --model-metal: #55627f;
+  --model-frame: #0b1222;
+  --model-glass-a: #2c4168;
+  --model-glass-b: #15223d;
+  --model-glass-end-a: #223452;
+  --model-glass-end-b: #0f1a30;
+  --model-lit-a: #fff0c2;
+  --model-lit-b: #f5b651;
+  --model-lit-end-a: #f6d58f;
+  --model-lit-end-b: #d98f33;
+  --model-night: visible;
+  --model-lamp: #fff3c4;
+  --model-robot: #b9c4d8;
+  --model-glint: 0.1;
+  --model-shadow: 0.38;
+  --model-solar: #0e1e3a;
+  --model-timber: #6b5540;
+  --model-grass: #2c5236;
+  --model-soil: #4a3b2f;
+  --model-paving: #47536f;
+  --model-trunk: #4a3829;
+  --model-leaf-a: #4f8f55;
+  --model-leaf-b: #2f6a40;
+  --model-leaf-c: #1a4229;
 
   --elev-2: 0 1px 0 var(--border-color);
   --elev-3: 0 24px 60px var(--shadow-lg), 0 4px 12px var(--shadow-color);
@@ -968,9 +1019,182 @@ body {
   stroke-width: 1;
 }
 
-.model-footprint {
-  fill: var(--model-grid);
+/* Paint servers for the glazing and the foliage (see the <defs> built in
+   initializeResearchModel) */
+.model-stop-glass-a { stop-color: var(--model-glass-a); }
+.model-stop-glass-b { stop-color: var(--model-glass-b); }
+.model-stop-glass-end-a { stop-color: var(--model-glass-end-a); }
+.model-stop-glass-end-b { stop-color: var(--model-glass-end-b); }
+.model-stop-lit-a { stop-color: var(--model-lit-a); }
+.model-stop-lit-b { stop-color: var(--model-lit-b); }
+.model-stop-lit-end-a { stop-color: var(--model-lit-end-a); }
+.model-stop-lit-end-b { stop-color: var(--model-lit-end-b); }
+.model-stop-leaf-a { stop-color: var(--model-leaf-a); }
+.model-stop-leaf-b { stop-color: var(--model-leaf-b); }
+.model-stop-leaf-c { stop-color: var(--model-leaf-c); }
+
+/* Cast shadows: on the ground, the roofs and under the canopy */
+.model-shadow {
+  fill: #000;
+  opacity: var(--model-shadow);
+}
+
+/* The site: a block of lawn, the paved plinth and path, the planting */
+.model-site {
+  pointer-events: none;
+}
+
+.ground-face,
+.paving-face {
+  stroke: var(--model-edge);
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+
+.ground-top {
+  fill: var(--model-grass);
+}
+
+.ground-front {
+  fill: var(--model-soil);
+}
+
+.ground-end {
+  fill: color-mix(in srgb, var(--model-soil) 76%, #000);
+}
+
+.paving-top {
+  fill: var(--model-paving);
+}
+
+.paving-front {
+  fill: color-mix(in srgb, var(--model-paving) 86%, #000);
+}
+
+.paving-end {
+  fill: color-mix(in srgb, var(--model-paving) 72%, #000);
+}
+
+.paving-joint {
+  fill: none;
+  stroke: var(--model-edge);
+  stroke-width: 0.8;
   opacity: 0.35;
+}
+
+.ground-turf {
+  fill: color-mix(in srgb, var(--model-grass) 78%, #000);
+}
+
+.ground-turf-end {
+  fill: color-mix(in srgb, var(--model-grass) 60%, #000);
+}
+
+.ground-stripe {
+  fill: #fff;
+  opacity: 0.09;
+}
+
+/* Trees: a shaded underside, a body of foliage, sunlit tips */
+.tree-trunk {
+  fill: var(--model-trunk);
+  stroke: color-mix(in srgb, var(--model-trunk) 60%, #000);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.tree-under {
+  fill: var(--model-leaf-c);
+}
+
+.tree-light {
+  fill: var(--model-leaf-a);
+  opacity: 0.6;
+}
+
+.tree-fir {
+  stroke: var(--model-leaf-c);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.flower-0 {
+  fill: #ffd166;
+}
+
+.flower-1 {
+  fill: #ef6f9a;
+}
+
+.flower-2 {
+  fill: #fff;
+}
+
+.lamp-post {
+  fill: none;
+  stroke: var(--model-frame);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+}
+
+.lamp-head {
+  fill: var(--model-lamp);
+  stroke: var(--model-frame);
+  stroke-width: 0.8;
+}
+
+/* What only shows at night: the bloom around lit windows, the light they
+   spill on the forecourt, the pools under the lamps */
+.model-night {
+  visibility: var(--model-night);
+  pointer-events: none;
+}
+
+.model-stop-pool {
+  stop-color: var(--model-lit-a);
+}
+
+.pane-glow {
+  fill: var(--model-lit-b);
+  opacity: 0.85;
+}
+
+.model-spill {
+  fill: var(--model-lit-b);
+  opacity: 0.4;
+}
+
+.robot-face {
+  stroke: var(--model-edge);
+  stroke-width: 0.8;
+  stroke-linejoin: round;
+}
+
+.robot-top {
+  fill: var(--model-robot);
+}
+
+.robot-front {
+  fill: color-mix(in srgb, var(--model-robot) 93%, #000);
+}
+
+.robot-end {
+  fill: color-mix(in srgb, var(--model-robot) 76%, #000);
+}
+
+.robot-visor,
+.robot-wheel {
+  fill: var(--model-frame);
+}
+
+.robot-stripe {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 2;
+}
+
+.robot-flag {
+  fill: var(--signal);
 }
 
 .module {
@@ -978,31 +1202,200 @@ body {
   transition: transform var(--transition-slow);
 }
 
-.module-face {
-  stroke: var(--model-line);
-  stroke-width: 1.4;
-  stroke-linejoin: round;
-  transition: fill var(--transition-normal);
-}
-
-.module-top {
-  fill: var(--model-top);
-}
-
-.module-front {
-  fill: var(--model-front);
-}
-
-.module-end {
-  fill: var(--model-end);
-}
-
-.module-window {
-  fill: color-mix(in srgb, var(--accent) 26%, var(--model-front));
-  stroke: var(--model-line);
+/* Walls: cladding in a tint of the interest's colour, lit on the long
+   facade and in shade on the end, under a pale coping */
+.module-face,
+.core-face,
+.unit-face,
+.canopy-face,
+.planter-face {
+  stroke: var(--model-edge);
   stroke-width: 1;
   stroke-linejoin: round;
   transition: fill var(--transition-normal);
+}
+
+.module-top,
+.canopy-top {
+  fill: var(--model-coping);
+}
+
+.module-front {
+  fill: color-mix(in srgb, var(--accent) 14%, var(--model-wall));
+}
+
+.module-end {
+  fill: color-mix(in srgb, var(--accent) 14%, var(--model-wall-shade));
+}
+
+.canopy-front {
+  fill: var(--model-wall);
+}
+
+.canopy-end {
+  fill: var(--model-wall-shade);
+}
+
+/* Fascia along the floor plate, in the interest's full colour */
+.module-plate {
+  fill: var(--accent);
+  stroke: var(--model-edge);
+  stroke-width: 0.6;
+  transition: fill var(--transition-normal);
+}
+
+.module-plate-end {
+  fill: color-mix(in srgb, var(--accent) 68%, #000);
+}
+
+/* Glazing: framed panes, a shaded reveal at the head, a sill at the foot
+   and the odd streak of reflected sky */
+.pane {
+  stroke: var(--model-frame);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.pane-reveal {
+  fill: #000;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.pane-glint {
+  fill: #fff;
+  opacity: var(--model-glint);
+  pointer-events: none;
+}
+
+.module-sill {
+  fill: var(--model-coping);
+  stroke: var(--model-edge);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.module-sill-end {
+  fill: var(--model-wall);
+}
+
+.door-frame {
+  fill: var(--model-frame);
+}
+
+.door-handle {
+  fill: none;
+  stroke: var(--model-coping);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+/* Roofs: a deck sunk inside the parapet, and what stands on it */
+.roof-deck {
+  fill: var(--model-roof);
+}
+
+.roof-wall {
+  fill: var(--model-wall);
+  stroke: var(--model-edge);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.roof-wall-side {
+  fill: var(--model-wall-shade);
+}
+
+.core-top {
+  fill: var(--model-coping);
+}
+
+.core-front {
+  fill: var(--model-wall);
+}
+
+.core-end {
+  fill: var(--model-wall-shade);
+}
+
+.roof-door {
+  fill: var(--model-frame);
+  stroke: var(--model-edge);
+  stroke-width: 0.6;
+}
+
+.unit-top {
+  fill: var(--model-metal);
+}
+
+.unit-front {
+  fill: color-mix(in srgb, var(--model-metal) 86%, #000);
+}
+
+.unit-end {
+  fill: color-mix(in srgb, var(--model-metal) 66%, #000);
+}
+
+.unit-fan {
+  fill: var(--model-frame);
+  stroke: var(--model-edge);
+  stroke-width: 0.8;
+}
+
+.unit-grille,
+.roof-panel-line {
+  fill: none;
+  stroke: var(--model-edge);
+  stroke-width: 0.7;
+  opacity: 0.55;
+}
+
+.roof-mast {
+  fill: none;
+  stroke: var(--model-frame);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+}
+
+.roof-beacon {
+  fill: #e5383b;
+  stroke: var(--model-edge);
+  stroke-width: 0.6;
+}
+
+.roof-panel {
+  fill: var(--model-solar);
+  stroke: var(--model-metal);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.roof-panel-line {
+  stroke: #9db7d6;
+  opacity: 0.5;
+}
+
+.roof-lawn {
+  fill: var(--model-grass);
+}
+
+.roof-timber,
+.planter-top {
+  fill: var(--model-timber);
+}
+
+.planter-front {
+  fill: color-mix(in srgb, var(--model-timber) 82%, #000);
+}
+
+.planter-end {
+  fill: color-mix(in srgb, var(--model-timber) 62%, #000);
+}
+
+.roof-timber-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--model-timber) 55%, #000);
+  stroke-width: 0.8;
 }
 
 .module-label {
@@ -1025,15 +1418,19 @@ body {
 }
 
 .module.is-active .module-top {
-  fill: color-mix(in srgb, var(--signal) 55%, var(--model-top));
+  fill: color-mix(in srgb, var(--signal) 45%, var(--model-coping));
 }
 
 .module.is-active .module-end {
   fill: color-mix(in srgb, var(--signal) 70%, #000);
 }
 
-.module.is-active .module-window {
-  fill: color-mix(in srgb, var(--signal) 55%, #fff);
+.module.is-active .module-plate {
+  fill: color-mix(in srgb, var(--signal) 62%, #000);
+}
+
+.module.is-active .module-plate-end {
+  fill: color-mix(in srgb, var(--signal) 45%, #000);
 }
 
 .module.is-active .module-label {
