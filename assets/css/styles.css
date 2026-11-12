@@ -93,6 +93,7 @@
   --collab-c5: #4d7397;
   --collab-c6: #6f7f24;
   --collab-c7: #a3557a;
+  --collab-c8: #0a7ea4;
 
   /* Page background: contour rings and soft washes */
   --bg-line: rgba(16, 27, 43, 0.11);
@@ -199,6 +200,7 @@
   --collab-c5: #9bb8d6;
   --collab-c6: #bccb66;
   --collab-c7: #e09cbb;
+  --collab-c8: #5fc4e0;
 
   --bg-line: rgba(169, 195, 242, 0.13);
   --bg-wash: rgba(143, 180, 255, 0.12);

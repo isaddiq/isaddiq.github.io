@@ -2767,8 +2767,8 @@ function countPublicationsForTopic(topic) {
  * research interest, read from the links in #research-interests (which stay
  * the keyboard route to the same destinations).
  *
- * Modules sit in a single row three wide, stacked three storeys high with
- * the top storey one module short, so every module shows its long facade.
+ * Modules sit in a single row three wide, stacked three storeys high (nine
+ * modules fill the building), so every module shows its long facade.
  * The selected module slides out of the stack towards the viewer and its
  * entry in the list beside the model opens to show its details. On the first
  * visit of a session the modules are placed one by one (CSS, .is-building).
