@@ -389,18 +389,19 @@ function polyline(k, parent, material, count) {
 // ---- 1. Building Information Modeling -------------------------------------------
 
 /**
- * A nine-storey mixed-use building, assembled level by level: a glazed podium
- * behind a colonnade, a curtain-walled tower with fins, floor fascias and a
- * stack of balconies, and a set-back penthouse under a floating roof. It is
- * modelled at full size and shown at the scale set in SCENES.bim.
+ * A nine-storey mixed-use building, built up as the models of its
+ * disciplines: the structure rises level by level, the building services
+ * run through the open frame, the envelope closes over them, and then single
+ * elements are picked out with their IFC data. At the end it comes apart in
+ * the reverse order. Modelled at full size, shown at SCENES.bim.scale.
  */
 function bim(k) {
     // Towards the front of the grid, which leaves the height of the stage to the tower
     const g = k.group(null, 5.6, 0, 5.2);
-    const flying = k.standard('accent', { roughness: 0.5 });
-    const items = [], tags = [];
+    const fresh = k.standard('accent', { roughness: 0.5 });      // a part on its way into place
     const TOP = 33;
-    let clock = 0.4;                       // when the next level starts
+    const STRUCTURE = 0.3, SERVICES = 5.4, ENVELOPE = 8.7, INSPECT = 13.6, CLEAR = 17.8;
+    const levels = [], items = [], services = [];
 
     const lit = n => ((n * 7 + 3) % 5 > 1 ? 'glassLit' : 'glass');
     const part = (x, y, z, turn = 0) => {
@@ -408,27 +409,11 @@ function bim(k) {
         group.rotation.y = turn;
         return group;
     };
-    const add = (objects, start, step = 0) => objects.forEach((object, n) => {
-        const meshes = [];
-        object.traverse(o => o.isMesh && meshes.push([o, o.material]));
-        items.push({ object, start: start + n * step, home: object.position.clone(), size: object.scale.clone(), meshes, flying: -1 });
-    });
-    const tag = (object, dx, dy, dz, start, title, text) => {
-        k.root.updateMatrixWorld(true);
-        object.getWorldPosition(v0);
-        // One tag at a time
-        const a = Math.max(start, tags.length ? tags[tags.length - 1].z + 0.05 : 0);
-        tags.push({ label: k.label(title, text).at(v0.x + dx, v0.y + dy, v0.z + dz), a, z: a + 1 });
-    };
-    /** Schedule one level: slab, then frame, then facade, then trim. */
-    const level = l => {
-        add(l.slab, clock);
-        add(l.frame, clock + 0.22, 0.03);
-        add(l.facade, clock + 0.5, 0.035);
-        add(l.trim, clock + 0.78, 0.06);
-        const at = clock;
-        clock += 1.1;
-        return at;
+    /** A level: its slab, its frame, the facade units that slide on, and what is set down last. */
+    const level = y => {
+        const l = { y, slab: [], frame: [], facade: [], trim: [], slide: [] };
+        levels.push(l);
+        return l;
     };
 
     // Site
@@ -443,10 +428,13 @@ function bim(k) {
 
     // ---- Podium, level 1: a colonnade with the glazing set back behind it
     const PX = 6.5, PZ = 4.75;
+    let door, cornerColumn;
     {
         const y = 0.45, h = 3.75;
-        const l = { slab: [k.box(g, 'concrete', 13, 0.15, 9.5, 0, 0.3, 0)], frame: [], facade: [], trim: [] };
+        const l = level(y);
+        l.slab.push(k.box(g, 'concrete', 13, 0.15, 9.5, 0, 0.3, 0));
         [-6.15, -3.075, 0, 3.075, 6.15].forEach(x => l.frame.push(k.box(g, 'coping', 0.5, h, 0.5, x, y, PZ - 0.35)));
+        cornerColumn = l.frame[4];
         [1.47, -1.47, -4.4].forEach(z => l.frame.push(k.box(g, 'coping', 0.5, h, 0.5, PX - 0.35, y, z)));
         l.frame.push(k.box(g, 'wall', 13, h, 0.3, 0, y, -PZ + 0.15), k.box(g, 'wall', 0.3, h, 9.2, -PX + 0.15, y, 0.15));
         const shopfront = (x, z, turn, width, n) => {
@@ -455,8 +443,10 @@ function bim(k) {
             k.box(bay, 'dark', width, 0.75, 0.16, 0, 3, 0);
             [-1, 1].forEach(side => k.box(bay, 'dark', 0.1, 3, 0.16, side * (width / 2 - 0.05), 0, 0));
             if (n === 3) {
-                k.box(bay, 'dark', 1.9, 2.45, 0.2, 0, 0, 0.02);
-                [-0.45, 0.45].forEach(dx => k.box(bay, 'glassLit', 0.82, 2.3, 0.24, dx, 0.05, 0.02));
+                door = k.group(bay);
+                k.box(door, 'dark', 1.9, 2.45, 0.2, 0, 0, 0.02);
+                [-0.45, 0.45].forEach(dx => k.box(door, 'glassLit', 0.82, 2.3, 0.24, dx, 0.05, 0.02));
+                [-0.07, 0.07].forEach(dx => k.box(door, 'metal', 0.04, 0.6, 0.05, dx, 0.9, 0.16));
             }
             l.facade.push(bay);
         };
@@ -464,18 +454,18 @@ function bim(k) {
         for (let j = 0; j < 3; j++) shopfront(PX - 1, 2.935 - j * 2.935, Math.PI / 2, 2.935, j + 5);
         const canopy = part(4.6125, 3.15, PZ + 0.75);
         k.box(canopy, 'coping', 3.5, 0.16, 2.7);
-        k.box(canopy, 'accent', 3.54, 0.2, 0.08, 0, -0.02, 1.36);
-        l.trim.push(canopy);
+        k.box(canopy, 'dark', 3.54, 0.2, 0.08, 0, -0.02, 1.36);
         k.glow(canopy, 0, -0.9, 0.2, 3.2);
-        const at = level(l);
-        tag(l.frame[4], 0, h, 0, at + 0.2, 'IfcColumn', 'Podium · 500 × 500');
+        l.slide.push([canopy, 0, 1]);
     }
 
     // ---- Podium, level 2: cladding panels, ribbon windows behind louvres
     {
         const y = 4.5, h = 3.3;
-        const l = { slab: [k.box(g, 'concrete', 13.5, 0.3, 10, 0, 4.2, 0)], frame: [], facade: [], trim: [] };
+        const l = level(y);
+        l.slab.push(k.box(g, 'concrete', 13.5, 0.3, 10, 0, 4.2, 0));
         l.frame.push(k.box(g, 'wall', 13, h, 0.3, 0, y, -PZ + 0.15), k.box(g, 'wall', 0.3, h, 9.2, -PX + 0.15, y, 0.15));
+        [[-3.25, 2.4], [3.25, 2.4], [3.25, -2.4], [0, 2.4]].forEach(([x, z]) => l.frame.push(k.box(g, 'concrete', 0.45, h, 0.45, x, y, z)));
         const panel = (x, z, turn, width, n) => {
             const bay = part(x, y, z, turn);
             k.box(bay, 'wall', width, h, 0.25, 0, 0, -0.125);
@@ -490,19 +480,19 @@ function bim(k) {
             slats.push([-6.4, sy, PZ + 0.24, 6.4, sy, PZ + 0.24], [PX + 0.24, sy, 4.65, PX + 0.24, sy, -4.65]);
         });
         l.trim.push(k.bars(g, 'coping', 0.09, slats));
-        const at = level(l);
-        tag(l.facade[1], 0, h, 0, at + 0.5, 'IfcWall', 'Cladding panel · U 0.22');
     }
 
     // ---- Tower: five storeys of curtain wall above the podium roof terrace
     const TX0 = -6.3, TX1 = 1.7, TZ0 = -4.55, TZ1 = 1.45;
+    const QX1 = TX1 - 2, QZ1 = TZ1 - 1.6;                  // the penthouse is set back to here
     const fascia = (slab, x0, x1, z0, z1, y) => {
         k.box(slab, 'coping', x1 - x0 + 0.4, 0.42, 0.22, (x0 + x1) / 2 + 0.1, y - 0.06, z1 + 0.09);
         k.box(slab, 'coping', 0.22, 0.42, z1 - z0 + 0.2, x1 + 0.09, y - 0.06, (z0 + z1) / 2);
     };
     const frameOf = (l, y, x1, z1) => {
         l.frame.push(k.box(g, 'concrete', 2.6, 2.9, 2.6, TX0 + 1.5, y, TZ0 + 1.5));
-        [[x1 - 0.3, z1 - 0.3], [TX0 + 0.3, z1 - 0.3], [x1 - 0.3, TZ0 + 0.3]].forEach(([x, z]) => l.frame.push(k.box(g, 'concrete', 0.4, 2.9, 0.4, x, y, z)));
+        [[x1 - 0.3, z1 - 0.3], [TX0 + 0.3, z1 - 0.3], [x1 - 0.3, TZ0 + 0.3], [(TX0 + x1) / 2, z1 - 0.3]]
+            .forEach(([x, z]) => l.frame.push(k.box(g, 'concrete', 0.4, 2.9, 0.4, x, y, z)));
         l.frame.push(k.box(g, 'wall', x1 - TX0, 2.9, 0.25, (TX0 + x1) / 2, y, TZ0 + 0.125), k.box(g, 'wall', 0.25, 2.9, z1 - TZ0, TX0 + 0.125, y, (TZ0 + z1) / 2));
     };
     const glazing = (l, x, y, z, turn, width, n) => {
@@ -513,9 +503,10 @@ function bim(k) {
         return unit;
     };
 
+    let curtainWall, balconyPick;
     for (let n = 0; n < 5; n++) {
         const y = 8.1 + n * 3.2;
-        const l = { slab: [], frame: [], facade: [], trim: [] };
+        const l = level(y);
         const slab = part(0, 0, 0);
         if (n === 0) {
             // The podium roof is a terrace: paving, a parapet, planting
@@ -537,7 +528,10 @@ function bim(k) {
         }
         l.slab.push(slab);
         frameOf(l, y, TX1, TZ1);
-        for (let i = 0; i < 4; i++) glazing(l, TX0 + 1 + i * 2, y, TZ1 - 0.06, 0, 2, n * 3 + i);
+        for (let i = 0; i < 4; i++) {
+            const unit = glazing(l, TX0 + 1 + i * 2, y, TZ1 - 0.06, 0, 2, n * 3 + i);
+            if (n === 2 && i === 2) curtainWall = unit;
+        }
         for (let j = 0; j < 2; j++) glazing(l, TX1 - 0.06, y, TZ1 - 1 - j * 2, Math.PI / 2, 2, n * 2 + j + 1);
         // The rear bay of the end wall is solid, with a slot window
         const solid = part(TX1, y, TZ1 - 5, Math.PI / 2);
@@ -545,30 +539,23 @@ function bim(k) {
         k.box(solid, 'dark', 0.62, 2.2, 0.06, 0.3, 0.4, 0.01);
         k.box(solid, lit(n + 2), 0.5, 2.08, 0.08, 0.3, 0.46, 0.01);
         l.facade.push(solid);
-        // Fins along the front, one on each floor in the colour of the interest
+        // Fins along the front, every other one in timber
         const fins = part(0, y - 0.1, TZ1 + 0.22);
-        for (let i = 0; i <= 4; i++) k.box(fins, i === (n * 2 + 1) % 5 ? 'accent' : 'coping', 0.13, 3.05, 0.42, TX0 + i * 2, 0, 0);
-        l.trim.push(fins);
+        for (let i = 0; i <= 4; i++) k.box(fins, i === (n * 2 + 1) % 5 ? 'timber' : 'coping', 0.13, 3.05, 0.42, TX0 + i * 2, 0, 0);
+        l.slide.push([fins, 0, 1]);
         const balcony = part(TX1, y, TZ1 - 2);
         k.box(balcony, 'coping', 1.45, 0.2, 4.1, 0.72, -0.2, 0);
         k.box(balcony, 'glass', 0.05, 1, 4.1, 1.42, 0, 0);
         [-2.03, 2.03].forEach(z => k.box(balcony, 'glass', 1.4, 1, 0.05, 0.72, 0, z));
         k.box(balcony, 'dark', 0.08, 0.05, 4.14, 1.42, 1, 0);
-        l.trim.push(balcony);
-
-        const at = level(l);
-        if (n === 0) tag(slab, 4.6, 8.1, 3.2, at, 'IfcSlab', 'Podium roof terrace');
-        if (n === 1) tag(l.facade[2], 0, 2.9, 0, at + 0.5, 'IfcCurtainWall', 'Unitised · 2.0 × 2.9 m');
-        if (n === 2) tag(fins, TX0 + 2, 3, 0, at + 0.78, 'IfcMember', 'Sun-shading fin');
-        if (n === 3) tag(balcony, 1.4, 1, 0, at + 0.8, 'IfcRailing', 'Glass balustrade');
-        if (n === 4) tag(l.frame[1], 0, 2.9, 0, at + 0.2, 'IfcBuildingStorey', 'Level 7 · +20.9 m');
+        l.slide.push([balcony, 1, 0]);
+        if (n === 3) balconyPick = balcony;
     }
 
     // ---- Penthouse: two storeys set back behind a terrace, in a portal frame
-    const QX1 = TX1 - 2, QZ1 = TZ1 - 1.6;
     for (let n = 5; n < 7; n++) {
         const y = 8.1 + n * 3.2;
-        const l = { slab: [], frame: [], facade: [], trim: [] };
+        const l = level(y);
         const slab = part(0, 0, 0);
         const [x1, z1] = n === 5 ? [TX1, TZ1] : [QX1, QZ1];
         k.box(slab, 'concrete', x1 - TX0, 0.3, z1 - TZ0, (TX0 + x1) / 2, y - 0.3, (TZ0 + z1) / 2);
@@ -591,55 +578,169 @@ function bim(k) {
                 [TX0, top, fz, fx + 0.15, top, fz], [fx, top, fz, fx, top, TZ0]
             ]));
         }
-        const at = level(l);
-        if (n === 5) tag(l.facade[1], 0, 2.9, 0, at + 0.5, 'IfcWindow', 'Triple glazed · g 0.35');
     }
 
-    // ---- Roof: a floating slab, plant behind a screen, a mast
+    // ---- Roof: a floating slab, plant, a lift overrun with a beacon
+    const ROOF = 8.1 + 7 * 3.2;
     {
-        const y = 8.1 + 7 * 3.2;
-        const roof = part((TX0 + QX1) / 2 + 0.3, y - 0.3, (TZ0 + QZ1) / 2 + 0.3);
+        const l = level(ROOF);
+        const roof = part((TX0 + QX1) / 2 + 0.3, ROOF - 0.3, (TZ0 + QZ1) / 2 + 0.3);
         k.box(roof, 'coping', QX1 - TX0 + 1.5, 0.3, QZ1 - TZ0 + 1.5);
         k.box(roof, 'roof', QX1 - TX0 + 0.9, 0.04, QZ1 - TZ0 + 0.9, 0, 0.3, 0);
-        const plant = part(-2, y, -1.5);
+        l.slab.push(roof);
+        const plant = part(-2, ROOF, -1.5);
         k.box(plant, 'metal', 2.6, 1.2, 1.7);
         k.cyl(plant, 'dark', 0.5, 0.06, -0.55, 1.2, 0);
         k.cyl(plant, 'dark', 0.5, 0.06, 0.6, 1.2, 0);
-        const overrun = part(TX0 + 1.5, y, TZ0 + 1.5);
+        const overrun = part(TX0 + 1.5, ROOF, TZ0 + 1.5);
         k.box(overrun, 'concrete', 2.6, 1.9, 2.6);
         k.box(overrun, 'coping', 2.8, 0.14, 2.8, 0, 1.9, 0);
         k.box(overrun, 'dark', 0.09, 1.7, 0.09, 0.9, 2, 0.9);
         k.sphere(overrun, k.basic(['#e5383b', '#ff5a5c']), 0.14, 0.9, 3.75, 0.9);
         k.glow(overrun, 0.9, 3.75, 0.9, 2.2, '#ff5a5c', 0.8);
-        add([roof], clock);
-        add([plant, overrun], clock + 0.45, 0.2);
-        tag(roof, 0, 0.4, 0, clock + 0.1, 'IfcRoof', 'Flat · warm deck');
-        clock += 1.1;
+        l.frame.push(overrun);
+        l.trim.push(plant);
     }
 
-    const DONE = clock, CLEAR = 14.1;
+    // ---- Building services: risers through every floor, ducts and pipes branching off
+    const RX = QX1 - 0.7, RZ = QZ1 - 0.7;
+    // In the colours of a coordination model: air, cable trays, chilled water, sprinklers
+    const air = k.standard(['#2f9e8f', '#49bfae']), tray = k.standard(['#e0a030', '#f0b84c']);
+    const chilled = k.standard(['#3f7fd9', '#6aa0ee']), sprinkler = k.standard(['#d9534a', '#ee7168']);
+    const run = (material, axis, w, h, x, y, z, from, length, sign, start) => {
+        const mesh = k.box(g, material, w, h, w, x, y, z);
+        services.push({ mesh, axis, from, length, sign, start, y });
+    };
+    [[air, 0.7, 0, 0], [chilled, 0.2, 0.55, 0.2], [sprinkler, 0.2, -0.55, 0.2], [tray, 0.3, 0.1, -0.55]]
+        .forEach(([material, w, dx, dz]) => run(material, 'y', w, 1, RX + dx, 0.45, RZ + dz, 0.45, ROOF - 0.75, 1, SERVICES));
+    levels.slice(0, 9).forEach((l, n) => {
+        const y = l.y + (n === 0 ? 3.2 : n === 1 ? 2.85 : 2.5), start = SERVICES + 0.9 + n * 0.18;
+        const [x0, x1, z0, z1] = n < 2 ? [-6, 6, -4.3, 4.2] : n < 7 ? [TX0 + 0.5, TX1 - 0.5, TZ0 + 0.5, TZ1 - 0.5] : [TX0 + 0.5, QX1 - 0.4, TZ0 + 0.5, QZ1 - 0.4];
+        run(air, 'x', 0.7, 0.4, 0, y - 0.1, RZ, RX - 0.35, RX - 0.35 - x0, -1, start);
+        run(tray, 'z', 0.5, 0.12, RX, y + 0.15, 0, RZ - 0.35, RZ - 0.35 - z0, -1, start + 0.1);
+        if (x1 - RX > 1.2) run(air, 'x', 0.7, 0.4, 0, y - 0.1, RZ, RX + 0.35, x1 - RX - 0.35, 1, start + 0.05);
+        if (z1 - RZ > 1.2) run(tray, 'z', 0.5, 0.12, RX, y + 0.15, 0, RZ + 0.35, z1 - RZ - 0.35, 1, start + 0.15);
+        run(chilled, 'x', 0.18, 0.18, 0, y + 0.05, RZ + 0.62, RX, RX - x0, -1, start + 0.2);
+        run(sprinkler, 'z', 0.18, 0.18, RX + 0.62, y + 0.05, 0, RZ, RZ - z0, -1, start + 0.25);
+    });
+
+    // ---- The programme: structure, then services (above), then the envelope.
+    // The structure has materials of its own, which turn to glass while the
+    // services are laid: seen from above, the slabs would hide them.
+    const solid = new Map(['concrete', 'coping', 'wall', 'roof', 'paving', 'dark'].map(name => [k.mat(name), name]));
+    const ghosts = {};
+    const arrive = (objects, start, step, stage, height, slide) => objects.forEach((entry, n) => {
+        const [object, dx, dz] = Array.isArray(entry) ? entry : [entry, 0, 0];
+        const out = slide === 'out';
+        const meshes = [];
+        object.traverse(o => {
+            if (!o.isMesh) return;
+            if (stage === 0 && solid.has(o.material)) {
+                const name = solid.get(o.material);
+                o.material = ghosts[name] || (ghosts[name] = k.mat(name, { transparent: true }));
+                o.castShadow = true;
+            }
+            meshes.push([o, o.material]);
+        });
+        items.push({
+            object, meshes, stage, height, tinted: -1, start: start + n * step, home: object.position.clone(),
+            dx: out ? Math.sin(object.rotation.y) : dx, dz: out ? Math.cos(object.rotation.y) : dz
+        });
+    });
+    levels.forEach((l, n) => {
+        const rise = STRUCTURE + n * 0.5, close = ENVELOPE + n * 0.4;
+        arrive(l.slab, rise, 0, 0, l.y);
+        arrive(l.frame, rise + 0.14, 0.02, 0, l.y);
+        arrive(l.facade, close, 0.03, 2, l.y, 'out');
+        arrive(l.slide, close + 0.2, 0.05, 2, l.y);
+        arrive(l.trim, close + 0.26, 0.06, 2, l.y);
+    });
+
+    // ---- Inspection: four elements picked out in turn, each with its data
     k.root.updateMatrixWorld(true);
+    const bounds = new THREE.Box3(), size = new THREE.Vector3();
+    const picks = [
+        [cornerColumn, 'IfcColumn · C-105', 'Level 1 · C40/50 · 500 × 500'],
+        [curtainWall, 'IfcCurtainWall · CW-5-03', 'Level 5 · unitised · U 1.1 W/m²K'],
+        [balconyPick, 'IfcSlab · B-6-01', 'Balcony · 200 mm · cantilever 1.45 m'],
+        [door, 'IfcDoor · D-001', 'Entrance · 1.9 × 2.45 m · FD30']
+    ].map(([object, title, text]) => {
+        bounds.setFromObject(object);
+        bounds.getSize(size);
+        return {
+            title, text,
+            position: new THREE.Vector3((bounds.min.x + bounds.max.x) / 2, bounds.min.y - 0.1, (bounds.min.z + bounds.max.z) / 2),
+            scale: size.clone().addScalar(0.3)
+        };
+    });
+    const pickMaterial = k.lineMaterial('signal', { transparent: true });
+    const outline = new THREE.LineSegments(k.GEO.edges, pickMaterial);
+    const shade = new THREE.Mesh(k.GEO.box, k.basic('signal', { transparent: true, opacity: 0.2, depthWrite: false }));
+    k.root.add(outline, shade);
+    const pickTag = k.label().tone('signal');
+
     g.getWorldPosition(v0);
-    const summary = k.label(`IfcBuilding · 9 storeys · ${items.length} elements`, '', 'mini').at(v0.x + 9.4, 0, v0.z + 7.7);
+    const GXW = v0.x, GZW = v0.z;
+    const stageTag = k.label('', '', 'mini').at(GXW + 9.4, 0, GZW + 7.7);
+    const levelTag = k.label('', '', 'mini');
+    const STAGES = [
+        'Structural model · IfcSlab · IfcColumn · IfcWall',
+        'Services model · IfcDuctSegment · IfcPipeSegment',
+        'Architectural model · IfcCurtainWall · IfcWindow · IfcDoor',
+        `Coordinated model · 9 storeys · ${items.length + services.length} elements`
+    ];
 
     return t => {
+        // Structure and envelope: each part drops or slides into place, and leaves the way it came
         items.forEach(item => {
-            const { object } = item;
-            const p = seg(t, item.start, item.start + 0.45);
-            const leave = CLEAR + (1 - item.home.y / TOP) * 0.8;
-            const q = smooth(seg(t, leave, leave + 0.6));
-            object.visible = p > 0 && q < 1;
+            const { object, home } = item;
+            const p = seg(t, item.start, item.start + 0.4);
+            // Each level leaves as one, the top one first
+            const leave = CLEAR + (2 - item.stage) * 0.35 + (1 - item.height / TOP) * 0.6;
+            const v = easeOut(p) * (1 - smooth(seg(t, leave, leave + 0.5)));
+            object.visible = v > 0.001;
             if (!object.visible) return;
-            object.position.y = item.home.y + (1 - easeOut(p)) * 8 + q * 6;
-            object.scale.copy(item.size).multiplyScalar(1 - q);
-            const inFlight = p < 1 ? 1 : 0;
-            if (inFlight !== item.flying) {
-                item.flying = inFlight;
-                item.meshes.forEach(([mesh, material]) => { mesh.material = inFlight ? flying : material; });
+            if (item.dx || item.dz) object.position.set(home.x + item.dx * (1 - v) * 3, home.y, home.z + item.dz * (1 - v) * 3);
+            else object.position.y = home.y + (1 - v) * 2.4;
+            const tinted = p < 1 ? 1 : 0;
+            if (tinted !== item.tinted) {
+                item.tinted = tinted;
+                item.meshes.forEach(([mesh, material]) => { mesh.material = tinted ? fresh : material; });
             }
         });
-        tags.forEach(entry => entry.label.show(pulse(t, entry.a, entry.z, 0.2)));
-        summary.show(pulse(t, DONE + 0.1, CLEAR, 0.25));
+        const xray = pulse(t, SERVICES - 0.2, ENVELOPE + 0.8, 0.6);
+        Object.values(ghosts).forEach(material => {
+            material.opacity = lerp(1, 0.2, xray);
+            material.depthWrite = xray < 0.02;
+        });
+        // Services: each run grows from the riser
+        services.forEach(s => {
+            const leave = CLEAR + 0.35 + (1 - s.y / TOP) * 0.6;
+            const v = easeOut(seg(t, s.start, s.start + (s.axis === 'y' ? 1.2 : 0.6))) * (1 - smooth(seg(t, leave, leave + 0.5)));
+            const length = Math.max(0.001, s.length * v);
+            s.mesh.visible = v > 0.001;
+            s.mesh.scale[s.axis] = length;
+            if (s.axis !== 'y') s.mesh.position[s.axis] = s.from + (s.sign * length) / 2;
+        });
+
+        // Inspection
+        const n = Math.min(picks.length - 1, Math.max(0, Math.floor((t - INSPECT) / 1.05)));
+        const pick = picks[n], shown = pulse(t, INSPECT + n * 1.05, INSPECT + (n + 1) * 1.05, 0.15);
+        outline.visible = shade.visible = shown > 0.01;
+        outline.position.copy(pick.position);
+        outline.scale.copy(pick.scale);
+        shade.position.copy(pick.position);
+        shade.scale.copy(pick.scale);
+        pickMaterial.opacity = shown;
+        shade.material.opacity = 0.2 * shown;
+        pickTag.set(pick.title, pick.text).at(pick.position.x, pick.position.y + pick.scale.y, pick.position.z).show(shown);
+
+        const stage = t < SERVICES ? 0 : t < ENVELOPE ? 1 : t < INSPECT - 0.3 ? 2 : 3;
+        stageTag.set(STAGES[stage]).show(pulse(t, 0.2, CLEAR + 0.4, 0.3));
+        const rising = Math.min(levels.length - 2, Math.max(0, Math.floor((t - STRUCTURE) / 0.5)));
+        levelTag.set(`Level ${rising + 1} · +${(levels[rising].y - 0.45).toFixed(1)} m`)
+            .at(GXW + (rising < 2 ? -PX : TX0) - 2.2, levels[rising].y + 1.4, GZW + (rising < 2 ? PZ : TZ1) + 2.2)
+            .show(pulse(t, STRUCTURE, SERVICES - 0.3, 0.2));
     };
 }
 
@@ -2096,10 +2197,10 @@ function navigation(k) {
 
 export const SCENES = {
     bim: {
-        duration: 16,
-        poster: 13.4,
+        duration: 20,
+        poster: 14.9,
         scale: 0.45,
-        alt: 'A nine-storey building assembles floor by floor: slabs, columns, curtain wall, fins and balconies arrive in turn, each tagged with its IFC class.',
+        alt: 'A nine-storey building is built up as its discipline models: the structure rises floor by floor, ducts and pipes run through the frame, the facade closes over them, and single elements are then picked out with their IFC data.',
         build: bim
     },
     informatics: {
