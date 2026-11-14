@@ -10,7 +10,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 ## ✨ Features
 
 - **📱 Responsive Layout & Modern UI**: A "model space" design: white-print light theme and blueprint dark theme, one self-hosted variable typeface (Archivo, using its width axis for titles, text and metadata), CSS custom properties, and fluid grids. A sticky top bar carries the section tabs (a menu button on small screens) and the profile links float on the right edge.
-- **🏢 Interactive Research Model**: The Home page opens with an isometric modular building drawn in SVG, one module per research interest. Selecting a module shows its details and opens the publications filtered to that topic.
+- **🏢 Interactive Research Simulations**: Beside the list of research interests, one WebGL viewer (Three.js) plays a small isometric 3D simulation of the interest in focus: a tower assembling with its IFC classes, a construction site reporting live data, a robot arm placing blocks, a robot replanning its route, and so on. The canvas is transparent, so the models stand on a fading floor grid over the page itself, in daylight in the light theme and at night with lit windows in the dark one. Selecting an interest shows its details and opens the publications filtered to that topic.
 - **🌙 Persistent Dark/Light Mode**: Smooth theme toggler with persistent states stored via browser `localStorage`.
 - **📊 Decoupled Data Store**: Fully dynamic content populated via client-side JSON feeds, separating page markup from portfolio data.
 - **🚀 Single Page Application (SPA)**: Custom hash-based router (`#home`, `#education`, `#publications`, etc.) with browser history integration (`history.replaceState`) and page metadata/SEO updates.
@@ -42,7 +42,11 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   |-- css/
 |   |   `-- styles.css      # CSS variables, layouts, and animations
 |   |-- js/
-|   |   `-- script.js       # JSON fetching, tab routing, modals, and theme toggles
+|   |   |-- script.js           # JSON fetching, tab routing, modals, and theme toggles
+|   |   |-- research-viewer.js  # 3D viewer of the research interests (ES module, loaded on demand)
+|   |   `-- research-scenes.js  # The nine simulations the viewer plays
+|   |-- vendor/
+|   |   `-- three.module.min.js # Three.js r170 (MIT), self-hosted
 |   |-- images/
 |   |   |-- certificates/   # Certificate and award image scans
 |   |   |-- covers/         # Former section cover backgrounds (no longer used by the page)
@@ -144,7 +148,7 @@ On each commit it stamps today's date into the footer `<time>` element, the JSON
 - **Vanilla Stack**: Pure HTML5, CSS3, and ES6 JavaScript. No framework overhead.
 - **Hash-based Routing**: A client-side router matches the URL hash (e.g., `#publications`) to render the correct view, enabling link sharing for specific sections.
 - **Centralized Metadata Engine**: Synchronized page titles and meta description updates on tab switch to boost SEO rankings across different content sections.
-- **Restrained Motion**: One load sequence (the research model assembling, once per session) and a short fade between tabs; everything else responds to the visitor. `prefers-reduced-motion` is respected.
+- **Restrained Motion**: The research simulations loop only while they are on screen, and a short fade joins tabs; everything else responds to the visitor. `prefers-reduced-motion` is respected: each simulation is then shown as a single still frame.
 - **Accessibility**: Skip link, one `<h1>`, focus moved to the tab heading on navigation, dialogs that trap and return focus, and text colours that meet WCAG AA in both themes.
 - **Performance Tweaks**: One self-hosted, preloaded webfont; no cover images or background canvas; lazy-loaded images; DNS prefetching of the remaining third-party domains (Leaflet, FontAwesome).
 - **Responsive Layout**: Designed with CSS Flexbox & Grid using container-fluid breakpoints for mobile (320px+), tablet (768px+), laptop (1024px+), and large desktop.

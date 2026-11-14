@@ -200,7 +200,7 @@
               "width": 1200,
               "height": 630
             },
-            "dateModified": "2026-11-12"
+            "dateModified": "2026-11-15"
           },
           {
             "@type": "Person",
@@ -636,70 +636,70 @@
           <h2 class="section-title" id="interests-title">Research Interests</h2>
           <!-- Left: the interests, each opening the publications filtered to its
                topic (Robotics opens Projects); the one in focus shows its
-               details. Right: the research model, an isometric modular
-               building with one module per interest, drawn by
-               initializeResearchModel() in script.js from these links.
+               details. Right: a 3D simulation of that interest, named by
+               data-scene and drawn by assets/js/research-viewer.js (Three.js),
+               which initializeResearchModel() in script.js loads on demand.
                Pictures live in assets/images/Keywords/. -->
           <div class="interests-layout">
             <ul class="research-interests-grid" id="research-interests">
               <li>
-                <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="Building Information|Modeling (BIM)" data-image="assets/images/Keywords/bim.webp" style="--accent: var(--collab-c0)">
+                <a class="research-card" data-scene="bim" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="Building Information|Modeling (BIM)" data-image="assets/images/Keywords/bim.webp" style="--accent: var(--collab-c0)">
                   <span class="research-name">Building Information Modeling (BIM)</span>
                   <span class="research-desc">Semantic model data and open standards such as IFC</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="" data-label="Construction|Informatics" data-image="assets/images/Keywords/informatics.webp" style="--accent: var(--collab-c2)">
+                <a class="research-card" data-scene="informatics" href="#publications" data-research-topic="" data-label="Construction|Informatics" data-image="assets/images/Keywords/informatics.webp" style="--accent: var(--collab-c2)">
                   <span class="research-name">Construction Informatics</span>
                   <span class="research-desc">Data-driven methods supporting decisions across the project lifecycle</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="XR &amp; Game Engines" data-label="Extended Reality|(XR)" data-image="assets/images/Keywords/xr.webp" style="--accent: var(--collab-c3)">
+                <a class="research-card" data-scene="xr" href="#publications" data-research-topic="XR &amp; Game Engines" data-label="Extended Reality|(XR)" data-image="assets/images/Keywords/xr.webp" style="--accent: var(--collab-c3)">
                   <span class="research-name">Extended Reality (XR)</span>
                   <span class="research-desc">Immersive VR and mixed reality for design review and site inspection</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#projects" data-tab="projects" data-label="Construction|Robotics" data-image="assets/images/Keywords/robotics.webp" style="--accent: var(--collab-c1)">
+                <a class="research-card" data-scene="robotics" href="#projects" data-tab="projects" data-label="Construction|Robotics" data-image="assets/images/Keywords/robotics.webp" style="--accent: var(--collab-c1)">
                   <span class="research-name">Construction Robotics</span>
                   <span class="research-desc">Building models linked to robotic fabrication and on-site operations</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="Modular &amp; DfMA" data-label="Design for Manufacturing|and Assembly (DfMA)" data-image="assets/images/Keywords/dfma.webp" style="--accent: var(--collab-c7)">
+                <a class="research-card" data-scene="dfma" href="#publications" data-research-topic="Modular &amp; DfMA" data-label="Design for Manufacturing|and Assembly (DfMA)" data-image="assets/images/Keywords/dfma.webp" style="--accent: var(--collab-c7)">
                   <span class="research-name">Design for Manufacturing and Assembly (DfMA)</span>
                   <span class="research-desc">Modular, off-site production workflows for building delivery</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="AI &amp; NLP" data-label="AI for|Construction" data-image="assets/images/Keywords/ai.webp" style="--accent: var(--collab-c6)">
+                <a class="research-card" data-scene="ai" href="#publications" data-research-topic="AI &amp; NLP" data-label="AI for|Construction" data-image="assets/images/Keywords/ai.webp" style="--accent: var(--collab-c6)">
                   <span class="research-name">AI for Construction</span>
                   <span class="research-desc">Language and multimodal interfaces for querying building data</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="4D Simulation &amp; Digital Twins" data-label="Digital|Twin" data-image="assets/images/Keywords/twin.webp" style="--accent: var(--collab-c5)">
+                <a class="research-card" data-scene="twin" href="#publications" data-research-topic="4D Simulation &amp; Digital Twins" data-label="Digital|Twin" data-image="assets/images/Keywords/twin.webp" style="--accent: var(--collab-c5)">
                   <span class="research-name">Digital Twin</span>
                   <span class="research-desc">Schedule and sensor streams linked to live building models</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="BIM Data|Interoperability" data-image="assets/images/Keywords/interop.webp" style="--accent: var(--collab-c4)">
+                <a class="research-card" data-scene="interop" href="#publications" data-research-topic="BIM &amp; Interoperability" data-label="BIM Data|Interoperability" data-image="assets/images/Keywords/interop.webp" style="--accent: var(--collab-c4)">
                   <span class="research-name">BIM Data Interoperability</span>
                   <span class="research-desc">Semantic mappings that preserve meaning between platforms</span>
                   <span class="research-count"></span>
                 </a>
               </li>
               <li>
-                <a class="research-card" href="#projects" data-tab="projects" data-label="Robotic Navigation|&amp; Simulation" data-image="assets/images/Keywords/navigation.webp" style="--accent: var(--collab-c8)">
+                <a class="research-card" data-scene="navigation" href="#projects" data-tab="projects" data-label="Robotic Navigation|&amp; Simulation" data-image="assets/images/Keywords/navigation.webp" style="--accent: var(--collab-c8)">
                   <span class="research-name">Robotic Navigation &amp; Simulation</span>
                   <span class="research-desc">BIM-driven indoor navigation and path planning tested in Unity and ROS simulations</span>
                   <span class="research-count"></span>
@@ -707,7 +707,7 @@
               </li>
             </ul>
             <div class="research-model" id="research-model">
-              <div class="model-stage" id="model-stage" aria-hidden="true"></div>
+              <div class="model-stage" id="model-stage" role="img" aria-label="3D simulation of the selected research interest"></div>
             </div>
           </div>
         </section>
