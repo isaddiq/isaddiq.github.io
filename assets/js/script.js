@@ -190,15 +190,6 @@ function handleDelegatedActionClick(event) {
         return;
     }
 
-    // Research-interest cards open Publications filtered to one topic (an
-    // empty topic shows everything, with any earlier filters cleared).
-    const researchTopic = event.target.closest('[data-research-topic]');
-    if (researchTopic) {
-        event.preventDefault();
-        openPublicationsForTopic(researchTopic.dataset.researchTopic);
-        return;
-    }
-
     const tabTrigger = event.target.closest('[data-tab]');
     if (tabTrigger) {
         event.preventDefault();
@@ -1717,24 +1708,6 @@ function initPublicationFilters() {
 }
 
 /**
- * Switch to Publications showing every type, filtered to a single topic.
- * @param {string} topic - a publications.json topic, or '' for no filter
- */
-function openPublicationsForTopic(topic) {
-    pubFilters.role = 'all';
-    pubFilters.year = 'all';
-    pubFilters.query = '';
-    pubFilters.topics.clear();
-    if (topic) pubFilters.topics.add(topic);
-    const search = document.getElementById('pub-search');
-    if (search) search.value = '';
-
-    showTab('publications');
-    loadPublicationsContent();
-    showPublications('all');
-}
-
-/**
  * Show one publication type, or every type ('all') in sections.
  * @param {string} pubType - 'all' or a PUB_TYPES tab id
  */
@@ -2766,9 +2739,10 @@ function countPublicationsForTopic(topic) {
  * Research interests (Home): the list of interests and, beside it, a viewer
  * that plays a small 3D simulation of the interest in focus.
  *
- * The links in #research-interests stay the route to the publications (or
- * projects) of each interest; the one in focus opens to show its details.
- * Each link names its simulation in data-scene. The viewer (Three.js, in
+ * Each interest in #research-interests is a button that only chooses the
+ * simulation: hovering, focusing or clicking it brings it into focus, where
+ * it opens to show its details, and it navigates nowhere. Each names its
+ * simulation in data-scene. The viewer (Three.js, in
  * research-viewer.js with the scenes in research-scenes.js) is an ES module
  * loaded only when the section nears the viewport. Without WebGL the stage
  * shows the picture of the interest instead.
@@ -2780,8 +2754,8 @@ function initializeResearchModel() {
     stage.dataset.ready = 'true';
 
     links.forEach(link => {
-        const isProjects = link.dataset.tab === 'projects';
-        const count = isProjects ? projectsData.length : countPublicationsForTopic(link.dataset.researchTopic || '');
+        const isProjects = link.dataset.count === 'projects';
+        const count = isProjects ? projectsData.length : countPublicationsForTopic(link.dataset.topic || '');
         const noun = isProjects ? 'project' : 'publication';
         const countEl = link.querySelector('.research-count');
         if (countEl) countEl.textContent = `${count} ${noun}${count === 1 ? '' : 's'}`;
@@ -2795,12 +2769,6 @@ function initializeResearchModel() {
             thumb.width = 724;
             thumb.height = 543;
             link.appendChild(thumb);
-        }
-        if (!link.querySelector('.research-go')) {
-            const go = document.createElement('span');
-            go.className = 'research-go';
-            go.textContent = isProjects ? 'Show projects' : 'Show publications';
-            link.appendChild(go);
         }
     });
 
@@ -2819,21 +2787,8 @@ function initializeResearchModel() {
     links.forEach((link, i) => {
         link.addEventListener('mouseenter', () => select(i));
         link.addEventListener('focus', () => select(i));
-        // With a mouse the interest is already selected by hover when it is
-        // pressed, so a click opens it. On touch the first tap selects (and
-        // plays its simulation) and the second opens.
-        let byTouch = false;
-        let wasActive = true;
-        link.addEventListener('pointerdown', event => {
-            byTouch = event.pointerType !== 'mouse';
-            wasActive = i === active;
-        });
-        link.addEventListener('click', event => {
-            if (!byTouch || wasActive) return;
-            event.preventDefault();
-            event.stopPropagation();
-            select(i, true);
-        });
+        // A click or tap only selects (on touch there is no hover to do it)
+        link.addEventListener('click', () => select(i, true));
     });
 
     select(0);
