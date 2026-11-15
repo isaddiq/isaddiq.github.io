@@ -11,6 +11,8 @@
  * - A scene is built when its interest is selected and disposed of when the
  *   next one replaces it; the outgoing frame is cross-faded from a snapshot.
  * - Daylight in the light theme, moonlight and lit windows in the dark one.
+ * - Dragging with the left mouse button (or sideways with a finger) turns the
+ *   stage like a turntable and tilts the view; a double click puts it back.
  * - The loop stops when the stage is off screen or the tab is hidden, and
  *   under prefers-reduced-motion a single still frame is drawn instead.
  */
@@ -24,6 +26,10 @@ const TARGET = new THREE.Vector3(0, 4.3, 0);
 const CAMERA_DISTANCE = 60;
 const FADE = 450;                                // cross-fade between scenes, ms
 const HOVER_DELAY = 110;                         // dwell before a hovered interest loads, ms
+const ORBIT_TURN = Math.PI;                      // a drag across the stage turns it this far
+const ORBIT_TILT = 1.1;                          // and a drag down it tilts the view this far
+const ELEVATION_MIN = 0.4, ELEVATION_MAX = 1.05; // limits of the tilt, radians
+const SUN_AT = [-9, 20, 16], FILL_AT = [14, 6, 3];
 
 const LIGHT = {
     day: { sky: '#ffffff', ground: '#d6d0c4', hemi: 1.25, sun: '#fff1dc', sunI: 2.3, fill: '#dbe6ff', fillI: 0.55, shadow: 0.2, grid: 0.9 },
@@ -99,7 +105,7 @@ function barsGeometry(segments, thickness) {
 /**
  * @param {HTMLElement} stage - element the viewer fills
  * @param {{key: string, link: HTMLElement}[]} topics - one per interest; key names a scene
- * @returns {{select: Function, seek: Function, destroy: Function}|null} null without WebGL
+ * @returns {{select: Function, seek: Function, orbit: Function, destroy: Function}|null} null without WebGL
  */
 export function createResearchViewer(stage, topics) {
     const canvas = document.createElement('canvas');
@@ -129,14 +135,14 @@ export function createResearchViewer(stage, topics) {
 
     const hemi = new THREE.HemisphereLight();
     const sun = new THREE.DirectionalLight();
-    sun.position.set(-9, 20, 16);
+    sun.position.fromArray(SUN_AT);
     sun.castShadow = true;
     sun.shadow.mapSize.setScalar(coarse ? 1024 : 2048);
     Object.assign(sun.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 70 });
     sun.shadow.bias = -0.0004;
     sun.shadow.normalBias = 0.03;
     const fill = new THREE.DirectionalLight();
-    fill.position.set(14, 6, 3);
+    fill.position.fromArray(FILL_AT);
     scene.add(hemi, sun, fill);
 
     // ---- Shared geometry ---------------------------------------------------
@@ -506,6 +512,9 @@ export function createResearchViewer(stage, topics) {
             labels: [], owned: [], themed: [], themeListeners: [], update: null
         };
         current = state;
+        // Each simulation opens in the view it is composed for
+        orbit.yaw = orbit.toYaw = orbit.pitch = orbit.toPitch = 0;
+        if (orbit.drag) Object.assign(orbit.drag, { yaw: 0, pitch: 0, x: orbit.drag.lastX, y: orbit.drag.lastY });
         readTheme();
         Object.values(library).forEach(paint);
         state.update = def.build(createKit(state));
@@ -538,11 +547,15 @@ export function createResearchViewer(stage, topics) {
         else pending = window.setTimeout(() => swap(index), HOVER_DELAY);
     }
 
-    // ---- Camera: isometric, with a little parallax from the pointer --------
+    // ---- Camera: isometric, with a little parallax from the pointer, and
+    // turned about the middle of the stage by dragging ------------------------
     const pointer = { x: 0, y: 0, tx: 0, ty: 0 };
+    const orbit = { yaw: 0, pitch: 0, toYaw: 0, toPitch: 0, drag: null };
+    const turned = (from, cos, sin, target) => target.set(from[0] * cos + from[2] * sin, from[1], -from[0] * sin + from[2] * cos);
+
     function placeCamera() {
-        const azimuth = ISO_AZIMUTH + pointer.x * 0.12;
-        const elevation = ISO_ELEVATION - pointer.y * 0.05;
+        const azimuth = ISO_AZIMUTH + orbit.yaw + pointer.x * 0.12;
+        const elevation = Math.max(ELEVATION_MIN, Math.min(ELEVATION_MAX, ISO_ELEVATION + orbit.pitch)) - pointer.y * 0.05;
         camera.position.set(
             TARGET.x + CAMERA_DISTANCE * Math.sin(azimuth) * Math.cos(elevation),
             TARGET.y + CAMERA_DISTANCE * Math.sin(elevation),
@@ -550,11 +563,68 @@ export function createResearchViewer(stage, topics) {
         );
         camera.lookAt(TARGET);
         camera.updateMatrixWorld();
+        // The lights turn with the view, as over a model on a turntable: the
+        // faces in view are always the lit ones
+        const cos = Math.cos(orbit.yaw), sin = Math.sin(orbit.yaw);
+        turned(SUN_AT, cos, sin, sun.position);
+        turned(FILL_AT, cos, sin, fill.position);
+        // A scene that stands off the middle of the stage swings away from
+        // the camera as it turns: def.reach widens the view to keep it in
+        const reach = (current && current.def.reach) || 0;
+        const zoom = 1 / (1 + (reach * (1 - cos)) / 2);
+        if (Math.abs(zoom - camera.zoom) > 1e-5) {
+            camera.zoom = zoom;
+            camera.updateProjectionMatrix();
+        }
     }
+
+    function onDragStart(event) {
+        if (orbit.drag || (event.pointerType === 'mouse' && event.button !== 0)) return;
+        orbit.drag = {
+            id: event.pointerId, x: event.clientX, y: event.clientY, lastX: event.clientX, lastY: event.clientY,
+            yaw: orbit.toYaw, pitch: orbit.toPitch, touch: event.pointerType === 'touch'
+        };
+        stage.style.cursor = 'grabbing';
+        // A finger may still scroll the page (touch-action: pan-y); a mouse must not select text
+        if (!orbit.drag.touch) {
+            event.preventDefault();
+            stage.setPointerCapture(event.pointerId);
+        }
+    }
+    function onDragMove(event) {
+        const drag = orbit.drag;
+        if (!drag || event.pointerId !== drag.id) return;
+        drag.lastX = event.clientX;
+        drag.lastY = event.clientY;
+        orbit.toYaw = drag.yaw - ((event.clientX - drag.x) / (width || 1)) * ORBIT_TURN;
+        if (!drag.touch) {
+            const tilt = drag.pitch + ((event.clientY - drag.y) / (height || 1)) * ORBIT_TILT;
+            orbit.toPitch = Math.max(ELEVATION_MIN - ISO_ELEVATION, Math.min(ELEVATION_MAX - ISO_ELEVATION, tilt));
+        }
+        wake();
+    }
+    function onDragEnd(event) {
+        if (!orbit.drag || event.pointerId !== orbit.drag.id) return;
+        orbit.drag = null;
+        stage.style.cursor = 'grab';
+    }
+    function onDragReset() {
+        // Back the short way round
+        orbit.yaw = Math.atan2(Math.sin(orbit.yaw), Math.cos(orbit.yaw));
+        orbit.toYaw = orbit.toPitch = 0;
+        wake();
+    }
+    stage.style.cursor = 'grab';
+    stage.style.touchAction = 'pan-y';
+    stage.addEventListener('pointerdown', onDragStart);
+    stage.addEventListener('pointermove', onDragMove);
+    stage.addEventListener('pointerup', onDragEnd);
+    stage.addEventListener('pointercancel', onDragEnd);
+    stage.addEventListener('dblclick', onDragReset);
 
     const host = stage.closest('.interests-layout') || stage;
     function onPointerMove(event) {
-        if (event.pointerType !== 'mouse' || reduced.matches) return;
+        if (event.pointerType !== 'mouse' || reduced.matches || orbit.drag) return;
         const box = stage.getBoundingClientRect();
         pointer.tx = Math.max(-1, Math.min(1, (event.clientX - (box.left + box.width / 2)) / box.width));
         pointer.ty = Math.max(-1, Math.min(1, (event.clientY - (box.top + box.height / 2)) / box.height));
@@ -639,8 +709,12 @@ export function createResearchViewer(stage, topics) {
         const ease = 1 - Math.exp(-dt * 5);
         pointer.x += (pointer.tx - pointer.x) * ease;
         pointer.y += (pointer.ty - pointer.y) * ease;
+        const follow = 1 - Math.exp(-dt * 16);
+        orbit.yaw += (orbit.toYaw - orbit.yaw) * follow;
+        orbit.pitch += (orbit.toPitch - orbit.pitch) * follow;
         draw();
-        const settling = Math.abs(pointer.tx - pointer.x) + Math.abs(pointer.ty - pointer.y) > 0.002;
+        const settling = !!orbit.drag || Math.abs(pointer.tx - pointer.x) + Math.abs(pointer.ty - pointer.y) > 0.002
+            || Math.abs(orbit.toYaw - orbit.yaw) + Math.abs(orbit.toPitch - orbit.pitch) > 0.0005;
         // A still frame needs no loop once the camera has come to rest
         if (!still || settling) raf = requestAnimationFrame(frame);
     }
@@ -694,6 +768,13 @@ export function createResearchViewer(stage, topics) {
             draw();
             wake();
         },
+        /** Turn the stage and tilt the view, in degrees from the view a scene opens in. */
+        orbit(yaw = 0, pitch = 0) {
+            orbit.yaw = orbit.toYaw = (yaw * Math.PI) / 180;
+            orbit.pitch = orbit.toPitch = Math.max(ELEVATION_MIN - ISO_ELEVATION, Math.min(ELEVATION_MAX - ISO_ELEVATION, (pitch * Math.PI) / 180));
+            draw();
+            wake();
+        },
         destroy() {
             destroyed = true;
             cancelAnimationFrame(raf);
@@ -705,6 +786,12 @@ export function createResearchViewer(stage, topics) {
             reduced.removeEventListener('change', onMotionChange);
             host.removeEventListener('pointermove', onPointerMove);
             host.removeEventListener('pointerleave', onPointerLeave);
+            stage.removeEventListener('pointerdown', onDragStart);
+            stage.removeEventListener('pointermove', onDragMove);
+            stage.removeEventListener('pointerup', onDragEnd);
+            stage.removeEventListener('pointercancel', onDragEnd);
+            stage.removeEventListener('dblclick', onDragReset);
+            stage.style.cursor = stage.style.touchAction = '';
             if (current) disposeScene(current);
             Object.values(GEO).forEach(g => g.dispose());
             Object.values(library).forEach(m => m.dispose());
