@@ -1059,6 +1059,21 @@ body {
   content: none;
 }
 
+/* The name of the beat a simulation is playing, at the foot of the stage */
+.scene-tag--caption {
+  top: auto;
+  bottom: 4.5%;
+  left: 50%;
+  transform: none !important;
+  translate: -50% 0;
+  padding: 1px 6px 2px;
+}
+
+.scene-tag--caption::before,
+.scene-tag--caption::after {
+  content: none;
+}
+
 /* A question put to the model, and its answer */
 .scene-tag--query {
   translate: calc(-50% + var(--shift, 0px)) -100%;
