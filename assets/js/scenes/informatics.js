@@ -1,5 +1,5 @@
 import * as THREE from '../../vendor/three.module.min.js';
-import { clamp01, lerp, seg, smooth, easeOut, easeInOut, pulse, track, person, polyline } from './props.js';
+import { clamp01, lerp, seg, smooth, easeOut, pulse, track, person, polyline } from './props.js';
 import { captions, ribbon, dots, ring, random } from './overlays.js';
 
 // The programme: five storeys, each of nine columns and a slab cast in four bays, ten days a storey

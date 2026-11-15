@@ -6,7 +6,7 @@
  * the only ground is a grid that fades out towards its edges, and a plane
  * that catches shadows. Every simulation shares the same isometric camera,
  * lights, grid and materials (the kit below); the simulations themselves are
- * in research-scenes.js.
+ * in scenes/, listed by research-scenes.js.
  *
  * - A scene is built when its interest is selected and disposed of when the
  *   next one replaces it; the outgoing frame is cross-faded from a snapshot.
@@ -407,7 +407,8 @@ export function createResearchViewer(stage, topics) {
             },
             /**
              * A tag pinned to a point of the scene. kind: '' (chip with a
-             * leader), 'mini' or 'query'.
+             * leader), 'mini', 'query', or 'caption' (which the stylesheet
+             * holds at the foot of the stage, wherever its point is).
              */
             label(title = '', text = '', kind = '') {
                 const el = document.createElement('div');

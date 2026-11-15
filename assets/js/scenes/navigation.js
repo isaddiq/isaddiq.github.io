@@ -1,5 +1,5 @@
 import * as THREE from '../../vendor/three.module.min.js';
-import { clamp01, lerp, seg, smooth, easeOut, pulse, track, person, desk, route } from './props.js';
+import { lerp, seg, smooth, pulse, track, person, desk, route } from './props.js';
 import { captions, ribbon, sampled, dots, frame, fader, random, shaderColor, whole } from './overlays.js';
 
 // The map: square cells over the plan, with a wall's centre line on a line of cell centres

@@ -44,7 +44,8 @@ A modern, responsive academic portfolio website showcasing the research, publica
 |   |-- js/
 |   |   |-- script.js           # JSON fetching, tab routing, modals, and theme toggles
 |   |   |-- research-viewer.js  # 3D viewer of the research interests (ES module, loaded on demand)
-|   |   `-- research-scenes.js  # The nine simulations the viewer plays
+|   |   |-- research-scenes.js  # The list of the nine simulations the viewer plays
+|   |   `-- scenes/             # One file per simulation, plus what they share (props.js, overlays.js)
 |   |-- vendor/
 |   |   `-- three.module.min.js # Three.js r170 (MIT), self-hosted
 |   |-- images/

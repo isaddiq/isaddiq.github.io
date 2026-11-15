@@ -1,5 +1,5 @@
 import * as THREE from '../../vendor/three.module.min.js';
-import { clamp01, lerp, seg, smooth, easeOut, pulse, v0, building, tree, person, desk, boxEdges, route } from './props.js';
+import { lerp, seg, smooth, easeOut, pulse, v0, building, tree, person, desk, boxEdges, route } from './props.js';
 import { captions, ribbon, sampled, frame, tablet } from './overlays.js';
 
 const RULE = 900;                    // least clear width of a door on an escape route, mm
