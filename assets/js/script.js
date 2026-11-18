@@ -3074,6 +3074,12 @@ function initializeFlagCounterPopup() {
         if (isOpen) positionPopup();
     });
 
+    // The image's height depends on how many countries are listed, so place
+    // the popup again if it finishes loading while open
+    if (img) img.addEventListener("load", () => {
+        if (isOpen) positionPopup();
+    });
+
     // The popup can change size when the counter image arrives, so re-place it to stay on screen
     if ("ResizeObserver" in window) {
         new ResizeObserver(() => {

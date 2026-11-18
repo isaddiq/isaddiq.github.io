@@ -3385,6 +3385,10 @@ a.pub-badge.cited-by:hover {
   position: fixed;
   z-index: 1500;
   max-width: calc(100vw - 24px);
+  /* With every country listed the image gets tall, so it scrolls inside the popup */
+  max-height: calc(100vh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 8px;
   background: #fff;
   border: 1px solid var(--border-strong);
