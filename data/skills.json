@@ -5,10 +5,10 @@
     "skills": [
       {
         "name": "Python",
-        "level": "Intermediate",
-        "percentage": 70,
+        "level": "Advanced",
+        "percentage": 85,
         "years": 4,
-        "description": "Extensive experience in data analysis, machine learning, and automation",
+        "description": "Research tooling, data analysis, machine learning and automation, including the IfcUSD package and CLI",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
       },
       {
@@ -21,10 +21,10 @@
       },
       {
         "name": "JavaScript",
-        "level": "Basic",
-        "percentage": 30,
-        "years": 2,
-        "description": "Web development and interactive frontend applications",
+        "level": "Intermediate",
+        "percentage": 65,
+        "years": 3,
+        "description": "Browser-based BIM and 3D web apps such as BIM2Bot Lab, Parametra and IFCExplorer",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg"
       },
       {
@@ -107,6 +107,115 @@
       }
     ]
   },
+  "openbim": {
+    "title": "openBIM & BIM Development",
+    "icon": "fas fa-building",
+    "skills": [
+      {
+        "name": "IFC / openBIM",
+        "level": "Advanced",
+        "percentage": 85,
+        "years": 4,
+        "description": "IFC2x3, IFC4, IFC4.3 and IFC5 data models for interoperability, conversion and analysis",
+        "icon": "fas fa-sitemap",
+        "iconColor": "#1e88e5"
+      },
+      {
+        "name": "IfcOpenShell",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 2,
+        "description": "Reading, tessellating, writing and validating IFC models in Python (IfcUSD)",
+        "icon": "fas fa-code-branch",
+        "iconColor": "#43a047"
+      },
+      {
+        "name": "web-ifc",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 1,
+        "description": "Parsing IFC in the browser with WebAssembly (BIM2Bot Lab)",
+        "icon": "fas fa-globe",
+        "iconColor": "#7e57c2"
+      },
+      {
+        "name": "Revit API (C#)",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 3,
+        "description": "Revit plugin development: ReUniXchange, RoboAccess BIM and AI design tools",
+        "icon": "assets/icons/skills/autodesk-revit-logo.png"
+      },
+      {
+        "name": "ArchiCAD Python API",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 2,
+        "description": "Automated BIM data extraction and exchange (ArchUniXchange, cost estimation)",
+        "icon": "assets/icons/skills/graphisoft-archicad-logo.png"
+      },
+      {
+        "name": "Rule-Based Model Checking",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 1,
+        "description": "Automated building code compliance checking on open BIM models",
+        "icon": "fas fa-clipboard-check",
+        "iconColor": "#26a69a"
+      },
+      {
+        "name": "4D / 5D BIM",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 4,
+        "description": "Schedule-linked 4D simulation and BIM-based cost estimation for modular construction",
+        "icon": "fas fa-calendar-alt",
+        "iconColor": "#fb8c00"
+      }
+    ]
+  },
+  "computational_design": {
+    "title": "Computational & Parametric Design",
+    "icon": "fas fa-drafting-compass",
+    "skills": [
+      {
+        "name": "Grasshopper",
+        "level": "Intermediate",
+        "percentage": 70,
+        "years": 2,
+        "description": "Parametric modelling, form-finding and bending-active structures in Rhino",
+        "icon": "fas fa-project-diagram",
+        "iconColor": "#6ba539"
+      },
+      {
+        "name": "Ladybug Tools",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 1,
+        "description": "Daylight, direct sun-hour and solar exposure analysis for form optimisation",
+        "icon": "fas fa-sun",
+        "iconColor": "#f9a825"
+      },
+      {
+        "name": "Generative Design",
+        "level": "Intermediate",
+        "percentage": 70,
+        "years": 2,
+        "description": "Rule-based layout generation and multi-criteria scoring (Parametra)",
+        "icon": "fas fa-shapes",
+        "iconColor": "#ec407a"
+      },
+      {
+        "name": "Digital Fabrication",
+        "level": "Basic",
+        "percentage": 40,
+        "years": 1,
+        "description": "Fabrication drawings and physical prototyping of bending-active structures",
+        "icon": "fas fa-tools",
+        "iconColor": "#a1887f"
+      }
+    ]
+  },
   "game_engines": {
     "title": "Game Engines & 3D",
     "icon": "fas fa-gamepad",
@@ -150,6 +259,93 @@
         "years": 1,
         "description": "Architectural visualization, modeling, and Simulation",
         "icon": "https://img.logokit.com/twinmotion.com"
+      },
+      {
+        "name": "Meta Quest 3 / VR & MR",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 3,
+        "description": "Immersive BIM, 4D simulation and mixed reality applications for construction",
+        "icon": "fas fa-vr-cardboard",
+        "iconColor": "#0081fb"
+      },
+      {
+        "name": "WebXR",
+        "level": "Basic",
+        "percentage": 35,
+        "years": 1,
+        "description": "Browser-based VR for viewing BIM models",
+        "icon": "fas fa-glasses",
+        "iconColor": "#e040fb"
+      }
+    ]
+  },
+  "robotics_simulation": {
+    "title": "Robotics, Simulation & Digital Twins",
+    "icon": "fas fa-robot",
+    "skills": [
+      {
+        "name": "OpenUSD",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 1,
+        "description": "IFC to OpenUSD conversion with typed BIM data (IfcUSD)",
+        "icon": "fas fa-layer-group",
+        "iconColor": "#f5a623"
+      },
+      {
+        "name": "Robot Path Planning",
+        "level": "Intermediate",
+        "percentage": 55,
+        "years": 1,
+        "description": "Occupancy grids, room graphs and multi-level A* routes derived from BIM",
+        "icon": "fas fa-route",
+        "iconColor": "#29b6f6"
+      },
+      {
+        "name": "Digital Twins",
+        "level": "Intermediate",
+        "percentage": 55,
+        "years": 2,
+        "description": "Linking BIM and building data to robotic and operational workflows",
+        "icon": "fas fa-clone",
+        "iconColor": "#5c6bc0"
+      },
+      {
+        "name": "NVIDIA Omniverse",
+        "level": "Basic",
+        "percentage": 30,
+        "years": 1,
+        "description": "Loading BIM-derived OpenUSD stages for visualisation and simulation",
+        "icon": "fas fa-cubes",
+        "iconColor": "#76b900"
+      },
+      {
+        "name": "NVIDIA Isaac Sim",
+        "level": "Basic",
+        "percentage": 25,
+        "years": 1,
+        "description": "Robot simulation in BIM-based environments",
+        "icon": "fas fa-robot",
+        "iconColor": "#76b900"
+      },
+      {
+        "name": "ROS",
+        "level": "Basic",
+        "percentage": 25,
+        "years": 1,
+        "description": "Robot software integration with BIM-driven simulations",
+        "icon": "fas fa-robot",
+        "iconColor": "#2a9fd6"
+      },
+      {
+        "name": "Multi-Robot Fleet Simulation",
+        "level": "Basic",
+        "percentage": 35,
+        "years": 1,
+        "description": "Lift scheduling, congestion and human-robot interaction in buildings",
+        "icon": "fas fa-users-cog",
+        "iconColor": "#ef5350"
       }
     ]
   },
@@ -182,11 +378,11 @@
         "icon": "assets/icons/skills/numpy-logo.png"
       },
       {
-        "name": "transformers",
-        "level": "basic",
-        "percentage": 30,
-        "years": 1,
-        "description": "for LLM training and usage",
+        "name": "Hugging Face Transformers (BERT)",
+        "level": "Intermediate",
+        "percentage": 65,
+        "years": 2,
+        "description": "Fine-tuning BERT and transformer models to map client requirements to BIM",
         "icon": "assets/icons/skills/hugging-face-transformers-logo.png"
       },
       {
@@ -196,6 +392,71 @@
         "years": 2,
         "description": "Matplotable for data analysis using Python",
         "icon": "assets/icons/skills/matplotlib-logo.png"
+      },
+      {
+        "name": "LLM Application Development",
+        "level": "Intermediate",
+        "percentage": 60,
+        "years": 1,
+        "description": "LLM-powered chatbots and assistants for BIM and construction data",
+        "icon": "fas fa-comments",
+        "iconColor": "#d97757"
+      },
+      {
+        "name": "Knowledge Graphs & Network Analysis",
+        "level": "Intermediate",
+        "percentage": 65,
+        "years": 2,
+        "description": "Semantic BIM knowledge graphs and network analytics of IFC models",
+        "icon": "fas fa-project-diagram",
+        "iconColor": "#7e57c2"
+      }
+    ]
+  },
+  "languages": {
+    "title": "Programming Frameworks",
+    "icon": "fas fa-layer-group",
+    "skills": [
+      {
+        "name": "vue.js",
+        "level": "Basic",
+        "percentage": 30,
+        "years": 1,
+        "description": "Frontend web development and component-based architecture",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg"
+      },
+      {
+        "name": "node.js",
+        "level": "Basic",
+        "percentage": 30,
+        "years": 1,
+        "description": "scalable web servers and RESTful API",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg"
+      },
+      {
+        "name": "Flask",
+        "level": "Basic",
+        "percentage": 40,
+        "years": 1,
+        "description": "Python web framework for API development",
+        "icon": "assets/icons/skills/flask-logo.png"
+      },
+      {
+        "name": "Three.js",
+        "level": "Intermediate",
+        "percentage": 65,
+        "years": 2,
+        "description": "WebGL 3D viewers for IFC models, robot simulation and generative house design",
+        "icon": "fas fa-cube",
+        "iconColor": "#049ef4"
+      },
+      {
+        "name": "React",
+        "level": "Intermediate",
+        "percentage": 55,
+        "years": 1,
+        "description": "Component-based front ends for browser BIM tools such as BIM2Bot Lab",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg"
       }
     ]
   },
@@ -234,36 +495,14 @@
         "years": 4,
         "description": "Data analysis and research documentation",
         "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original.svg"
-      }
-    ]
-  },
-  "languages": {
-    "title": "Programming Frameworks",
-    "icon": "fas fa-layer-group",
-    "skills": [
-      {
-        "name": "vue.js",
-        "level": "Basic",
-        "percentage": 30,
-        "years": 1,
-        "description": "Frontend web development and component-based architecture",
-        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vuejs/vuejs-original.svg"
       },
       {
-        "name": "node.js",
-        "level": "Basic",
-        "percentage": 30,
-        "years": 1,
-        "description": "scalable web servers and RESTful API",
-        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg"
-      },
-      {
-        "name": "Flask",
+        "name": "MongoDB",
         "level": "Basic",
         "percentage": 40,
         "years": 1,
-        "description": "Python web framework for API development",
-        "icon": "assets/icons/skills/flask-logo.png"
+        "description": "Document storage for AI-based automated architectural design data",
+        "icon": "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg"
       }
     ]
   },
@@ -310,6 +549,39 @@
         "years": 1,
         "description": "AI-powered agentic coding tool for autonomous code generation and project workflows",
         "icon": "https://upload.wikimedia.org/wikipedia/commons/5/50/Google_Antigravity_Logo.svg"
+      }
+    ]
+  },
+  "research": {
+    "title": "Research & Domain Expertise",
+    "icon": "fas fa-microscope",
+    "skills": [
+      {
+        "name": "Modular Construction / DfMA / DfX",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 4,
+        "description": "Design for manufacture and assembly in modular high-rise and detached housing",
+        "icon": "fas fa-cubes",
+        "iconColor": "#ff7043"
+      },
+      {
+        "name": "Systematic Literature Review",
+        "level": "Advanced",
+        "percentage": 80,
+        "years": 3,
+        "description": "Structured reviews of BIM and game engine integration research",
+        "icon": "fas fa-book-open",
+        "iconColor": "#8e24aa"
+      },
+      {
+        "name": "Academic Writing & Peer Review",
+        "level": "Advanced",
+        "percentage": 85,
+        "years": 4,
+        "description": "Journal publications and reviewing for international journals",
+        "icon": "fas fa-pen-nib",
+        "iconColor": "#00acc1"
       }
     ]
   }

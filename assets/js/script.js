@@ -638,7 +638,9 @@ function renderSkillIcon(skill) {
         return `<img src="${skill.icon}" alt="${skill.name} logo" class="skill-logo" loading="lazy" data-fallback-icon="fas fa-tools">`;
     }
 
-    return `<i class="${skill.icon} skill-logo-icon" aria-hidden="true"></i>`;
+    // Optional per-skill tint for Font Awesome icons (e.g. "#76b900").
+    const color = /^#[0-9a-f]{3,8}$/i.test(skill.iconColor || '') ? ` style="color: ${skill.iconColor}"` : '';
+    return `<i class="${skill.icon} skill-logo-icon" aria-hidden="true"${color}></i>`;
 }
 
 // Data containers - will be populated from JSON files
