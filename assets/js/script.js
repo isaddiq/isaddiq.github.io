@@ -1098,7 +1098,7 @@ const PAGE_METADATA = {
     },
     tools: {
         title: 'Tools - Saddiq Ur Rehman',
-        description: 'BIM, robotics, and XR tools, web apps, and frameworks by Saddiq Ur Rehman, including BIM2Bot Lab, RoboAccess BIM, ReUniXchange, BIMUniXchange, IFCExplorer, Ifc2Unity, BIM network graphs, and Unity BIM workflows.'
+        description: 'BIM, robotics, and XR tools, web apps, and frameworks by Saddiq Ur Rehman, including Parametra, BIM2Bot Lab, RoboAccess BIM, ReUniXchange, BIMUniXchange, IFCExplorer, Ifc2Unity, BIM network graphs, and Unity BIM workflows.'
     },
     certifications: {
         title: 'Certifications and Awards - Saddiq Ur Rehman',

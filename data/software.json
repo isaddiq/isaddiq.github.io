@@ -1,6 +1,220 @@
 {
   "tools": [
     {
+      "id": "parametra",
+      "navLabel": "Parametra",
+      "navIcon": "fas fa-drafting-compass",
+      "title": "Parametra",
+      "description": "House designs shaped around how you live. Describe a plot, a household and a style, and Parametra lays out dozens of complete house designs, scores each one against your priorities, and lets you explore the best four as dimensioned floor plans and as a furnished 3D model, with IFC4 BIM export.",
+      "previewImage": "assets/images/software/parametra-design-studio.png",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Generative Design",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "IFC4 Export",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "JavaScript (ES modules)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "No Build Step",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Try it Now",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/parametra/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/parametra"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "From Brief to Buildable Concept",
+          "paragraphs": [
+            "Parametra turns a short brief into complete house designs. Describe your plot, your household and the style you like, and it lays out dozens of designs, scores each one against your priorities, and lets you explore the best four as dimensioned floor plans and as a furnished 3D model with landscaping. It is free to use in the browser, with no account and nothing to install.",
+            "Each brief explores 36–108 layout variants. The brief becomes a room program (suites, kitchen with pantry, laundry with store), rooms are assigned to floors, and every storey is laid out in a street band, a 1.2 m circulation spine and a garden band with a stair aligned on every level. Walls, doors, windows and furniture are then derived, and each design is scored on nine criteria weighted by your priority sliders: efficiency, proportions, daylight, solar orientation, functional flow, privacy, area match, site fit and build economy.",
+            "It is a fully static site written in plain HTML, CSS and ES modules, with no build step and no backend. Three.js is vendored, so the only external request is Google Fonts. Designs are concept-stage studies for briefing an architect, not construction documents, and costs are indicative."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Key Features",
+          "items": [
+            {
+              "icon": "fas fa-list-ol",
+              "html": "<strong>Guided brief:</strong> six steps (plot, size, rooms, kitchen and outdoors, style, priorities) with a live preview of the best layout"
+            },
+            {
+              "icon": "fas fa-th-large",
+              "html": "<strong>Design studio:</strong> four recommended designs as tabs, with Overview, Rooms, Scores and Materials details and an estimated build cost"
+            },
+            {
+              "icon": "fas fa-cube",
+              "html": "<strong>3D viewer:</strong> orbit the house, cut away each level with a section plane, or walk through it in first person"
+            },
+            {
+              "icon": "fas fa-sun",
+              "html": "Sun-position slider tied to the plot's orientation and hemisphere, camera presets and layer toggles"
+            },
+            {
+              "icon": "fas fa-ruler-combined",
+              "html": "Dimensioned SVG floor plans for every level, in plan view or side by side with the 3D model"
+            },
+            {
+              "icon": "fas fa-palette",
+              "html": "Seven architectural styles, each with its own glazing, materials, tree species and boundary walls or fences"
+            },
+            {
+              "icon": "fas fa-tree",
+              "html": "Procedural landscaping: shader lawn with 3D grass, branching trees with dappled shadows, shrubs and planted beds"
+            },
+            {
+              "icon": "fas fa-file-export",
+              "html": "<strong>Exports:</strong> IFC4 BIM model (passes IfcOpenShell validation), GLB scene, SVG plans, PNG render and JSON design data"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-clipboard-list",
+              "title": "Brief",
+              "subtitle": "Six guided steps",
+              "duration": "Plot, size, rooms, kitchen and outdoors, style, priorities",
+              "capabilities": [
+                {
+                  "icon": "fas fa-map",
+                  "label": "Plot size and orientation"
+                },
+                {
+                  "icon": "fas fa-bed",
+                  "label": "Bedrooms, bathrooms and suites"
+                },
+                {
+                  "icon": "fas fa-palette",
+                  "label": "Seven styles"
+                },
+                {
+                  "icon": "fas fa-sliders-h",
+                  "label": "Priority sliders"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-cogs",
+              "title": "Design Engine",
+              "subtitle": "Layout generator, scoring and recommender",
+              "duration": "36–108 variants per brief; the four best distinct designs are shown",
+              "capabilities": [
+                {
+                  "icon": "fas fa-layer-group",
+                  "label": "Banded storey layouts"
+                },
+                {
+                  "icon": "fas fa-door-open",
+                  "label": "Walls, doors and windows derived"
+                },
+                {
+                  "icon": "fas fa-couch",
+                  "label": "Furniture with collision checks"
+                },
+                {
+                  "icon": "fas fa-star-half-alt",
+                  "label": "Nine weighted criteria"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-drafting-compass",
+              "title": "Studio & Export",
+              "subtitle": "3D, floor plan and side by side",
+              "duration": "Explore, compare and export each recommended design",
+              "capabilities": [
+                {
+                  "icon": "fas fa-walking",
+                  "label": "Outside, cut-away and walk modes"
+                },
+                {
+                  "icon": "fas fa-building",
+                  "label": "IFC4 BIM model"
+                },
+                {
+                  "icon": "fas fa-cube",
+                  "label": "GLB 3D scene"
+                },
+                {
+                  "icon": "fas fa-file-image",
+                  "label": "SVG plans and PNG renders"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/parametra/\" target=\"_blank\" rel=\"noopener\">live app</a>, or run it locally. ES modules must be served over HTTP, so opening <code>index.html</code> straight from disk won't work. On Windows, double-click <code>start.bat</code>; on any OS, serve the folder and open <code>http://localhost:8080</code>:"
+          ],
+          "code": "git clone https://github.com/isaddiq/parametra.git\ncd parametra\npython -m http.server 8080"
+        },
+        {
+          "type": "media",
+          "title": "Design Studio",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/parametra-design-studio.png",
+          "alt": "Parametra design studio showing four recommended house designs, a dimensioned ground-floor plan beside the furnished 3D model, and the design's score and estimated build cost",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Landing Page",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/parametra-landing.png",
+          "alt": "Parametra landing page with a live 3D turntable of a Scandinavian-style sample house design",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
       "id": "bim2bot-lab",
       "navLabel": "BIM2Bot Lab",
       "navIcon": "fas fa-route",
@@ -374,7 +588,7 @@
       "navIcon": "fas fa-robot",
       "title": "BIM Network Graph Maker",
       "description": "Professional data visualization solutions for Building Information Modeling workflows. Transform your architectural and engineering data into interactive network diagrams.",
-      "previewImage": "assets/images/software/bim-graph-visualization-preview.jpg",
+      "previewImage": "assets/images/software/bim-knowledge-graph-studio-preview.png",
       "badges": [
         {
           "label": "BIM",
@@ -473,8 +687,8 @@
           "type": "media",
           "title": "Network Graph Visualization",
           "media": "image",
-          "src": "assets/images/software/bim-graph-visualization-preview.jpg",
-          "alt": "BIM Network Graph Visualization",
+          "src": "assets/images/software/bim-knowledge-graph-studio-preview.png",
+          "alt": "BIM Knowledge Graph Studio: interactive knowledge graph of an IFC model with discipline legend, network metrics and model overview",
           "imageClass": "media-image-full"
         }
       ]
@@ -1159,15 +1373,15 @@
       "navLabel": "IfcUSD",
       "navIcon": "fas fa-shapes",
       "title": "IfcUSD",
-      "description": "A Python converter that turns IFC building models into OpenUSD files, preserving IFC identity, hierarchy, materials, properties, quantities, and relationship metadata for BIM-to-USD interchange.",
-      "previewImage": "assets/images/software/ifcusd-converter-preview.png",
+      "description": "A Python package, command-line tool and browser app that converts IFC building models to OpenUSD without losing the BIM (geometry, spatial structure, attributes, properties, quantities, types, materials, classifications and relationships), and writes robot and simulation data recorded in USD back to IFC.",
+      "previewImage": "assets/images/software/ifcusd-round-trip-workflow.png",
       "badges": [
         {
-          "label": "IFC",
+          "label": "IFC2X3 · IFC4 · IFC4X3 · IFC5",
           "variant": "impact-factor"
         },
         {
-          "label": "OpenUSD",
+          "label": "OpenUSD 24.8+",
           "variant": "impact-factor"
         },
         {
@@ -1175,11 +1389,15 @@
           "variant": "corresponding"
         },
         {
-          "label": "Python 3.10+",
+          "label": "Python 3.10 – 3.14",
           "variant": "corresponding"
         },
         {
-          "label": "CLI",
+          "label": "Omniverse · Isaac Sim · Unity 6",
+          "variant": "corresponding"
+        },
+        {
+          "label": "CLI + Studio UI",
           "variant": "editor-choice"
         },
         {
@@ -1192,6 +1410,11 @@
           "label": "View on GitHub",
           "icon": "fab fa-github",
           "href": "https://github.com/isaddiq/ifcusd"
+        },
+        {
+          "label": "Documentation",
+          "icon": "fas fa-book",
+          "href": "https://isaddiq.github.io/ifcusd/"
         },
         {
           "label": "Indexed on XERJ Hub",
@@ -1214,43 +1437,44 @@
       "sections": [
         {
           "type": "info",
-          "title": "IFC to OpenUSD Converter",
+          "title": "IFC ↔ OpenUSD, Without Losing the BIM",
           "paragraphs": [
-            "IfcUSD bridges BIM and USD-based DCC pipelines by converting IFC building models into Pixar's OpenUSD format. It uses IfcOpenShell to read and tessellate IFC geometry, then writes <code>.usd</code>, <code>.usda</code>, or <code>.usdc</code> files through the OpenUSD Python bindings. The converter writes tessellated meshes as <code>UsdGeom.Mesh</code> prims while preserving the full IFC spatial hierarchy as USD <code>Xform</code> prims under <code>/IFC</code>.",
-            "The workflow is geometry-first but metadata-rich: IFC identity (STEP id, GlobalId, class, name, tag, predefined type), property sets, quantity takeoffs, USD Preview Surface materials with diffuse/specular/opacity, face subsets, external texture references, unit assignments, and relationship metadata (spatial containers, aggregate parents, types, groups, layers, openings, and references) are all carried into the USD stage so downstream tools retain the full BIM context."
+            "IfcUSD is a Python package and command-line tool for researchers and practitioners who need building models in NVIDIA Omniverse, Isaac Sim, Unity or any OpenUSD pipeline, <em>with</em> their building information. It reads every IFC version through IfcOpenShell, writes OpenUSD through Pixar's <code>usd-core</code>, and proves that nothing was lost: a coverage report accounts for every <code>IfcRoot</code> instance (<code>missing: 0</code>).",
+            "Geometry, spatial structure, every attribute, property and quantity, types, materials, classifications, groups and relationships are written as typed, documented USD data using a versioned, codeless USD schema (<code>IfcEntityAPI</code>, <code>IfcPropertySetAPI</code>, <code>IfcQuantitySetAPI</code>, …). Output goes to <code>.usd</code>, <code>.usda</code>, <code>.usdc</code> or <code>.usdz</code>, together with <code>report.json</code> and <code>metadata.json</code>.",
+            "It also works in the other direction. <code>ifcusd to-ifc</code> writes USD back to IFC, either into the original file (only what changed) or as a model rebuilt from USD. Robots, sensors and obstacles become IFC elements, and physics, trajectories, sensor time series and semantic labels become property sets, time series and classifications, declared as property set templates inside the file."
           ]
         },
         {
           "type": "features",
-          "title": "What Gets Written",
+          "title": "Highlights",
           "items": [
             {
-              "icon": "fas fa-shapes",
-              "html": "Tessellated IFC products as <code>UsdGeom.Mesh</code> prims"
+              "icon": "fas fa-check-double",
+              "html": "<strong>Complete:</strong> all attributes, every property kind, quantities with units, types, material sets, classifications, documents, groups, systems, zones and all <code>IfcRel*</code> relationships"
             },
             {
-              "icon": "fas fa-sitemap",
-              "html": "IFC spatial hierarchy as USD <code>Xform</code> prims under <code>/IFC</code>"
+              "icon": "fas fa-exchange-alt",
+              "html": "<strong>Typed and reversible:</strong> values keep their IFC types, defined types and units; original names kept in <code>displayName</code>"
             },
             {
-              "icon": "fas fa-paint-brush",
-              "html": "USD Preview Surface materials, colors, opacity, and face subsets"
-            },
-            {
-              "icon": "fas fa-image",
-              "html": "External texture references from IFC surface-style data"
-            },
-            {
-              "icon": "fas fa-database",
-              "html": "IFC property sets and quantity takeoffs as USD attributes"
-            },
-            {
-              "icon": "fas fa-project-diagram",
-              "html": "Spatial containers, aggregates, types, groups, layers, openings"
+              "icon": "fas fa-layer-group",
+              "html": "<strong>Any IFC version:</strong> IFC2X3, IFC4 and IFC4X3 natively, IFC5 (<code>.ifcx</code>) with layer composition, and <code>.ifczip</code>"
             },
             {
               "icon": "fas fa-ruler-combined",
-              "html": "USD stage unit metadata from the IFC unit assignment"
+              "html": "<strong>Accurate geometry:</strong> local meshes under double-precision transforms, instancing, per-face materials, axes and alignments as curves; verified against IfcOpenShell to 5 × 10⁻⁵ m"
+            },
+            {
+              "icon": "fas fa-fingerprint",
+              "html": "<strong>Reproducible:</strong> byte-identical output for any thread count, with provenance (source SHA-256, versions, options) in every file"
+            },
+            {
+              "icon": "fas fa-bullseye",
+              "html": "<strong>Target profiles:</strong> NVIDIA Omniverse (OmniPBR, Replicator semantic labels), Unity 6 (Y-up, metadata sidecar plus editor script) and generic OpenUSD"
+            },
+            {
+              "icon": "fas fa-robot",
+              "html": "<strong>Both directions:</strong> <code>ifcusd to-ifc</code> returns robot and simulation results to IFC using only standard IFC mechanisms"
             }
           ]
         },
@@ -1258,26 +1482,74 @@
           "type": "featureGrid",
           "cards": [
             {
-              "icon": "fas fa-shapes",
-              "title": "Command Line Usage",
-              "subtitle": "ifcusd convert INPUT.ifc OUTPUT.usd [options]",
-              "duration": "Supports .usd, .usda (ASCII), and .usdc (binary crate)",
+              "icon": "fas fa-terminal",
+              "title": "Command Line & Python API",
+              "subtitle": "ifcusd convert model.ifc model.usdc --profile omniverse",
+              "duration": "Convert, validate and report from the terminal or from Python",
               "capabilities": [
                 {
-                  "icon": "fas fa-filter",
-                  "label": "Include / Exclude by IFC class"
+                  "icon": "fas fa-bullseye",
+                  "label": "Omniverse, Unity and generic profiles"
+                },
+                {
+                  "icon": "fas fa-clipboard-check",
+                  "label": "--validate and JSON coverage reports"
                 },
                 {
                   "icon": "fas fa-microchip",
-                  "label": "Multi-threaded tessellation"
+                  "label": "Multi-threaded, deterministic output"
                 },
                 {
-                  "icon": "fas fa-compass",
-                  "label": "Y-up or Z-up stages"
+                  "icon": "fas fa-code",
+                  "label": "convert() and validate_usd() in Python"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-desktop",
+              "title": "IfcUSD Studio",
+              "subtitle": "ifcusd ui",
+              "duration": "Browser UI that runs locally; your files stay on your computer",
+              "capabilities": [
+                {
+                  "icon": "fas fa-file-import",
+                  "label": "Drop in IFC, get an OpenUSD stage"
                 },
                 {
-                  "icon": "fas fa-cogs",
-                  "label": "Auto dependency install"
+                  "icon": "fas fa-undo-alt",
+                  "label": "Swap direction: USD back to IFC"
+                },
+                {
+                  "icon": "fas fa-search",
+                  "label": "Inspect tab for IFC and USD files"
+                },
+                {
+                  "icon": "fas fa-sitemap",
+                  "label": "Schema tab: how IFC maps to USD"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-robot",
+              "title": "Back to IFC, with Robot Data",
+              "subtitle": "ifcusd to-ifc model.usdc model.trained.ifc --source model.ifc",
+              "duration": "Record robot runs in a USD layer, then write them into the IFC model",
+              "capabilities": [
+                {
+                  "icon": "fas fa-atom",
+                  "label": "UsdPhysics: mass, rigid bodies, colliders"
+                },
+                {
+                  "icon": "fas fa-chart-line",
+                  "label": "Trajectories and sensor time series"
+                },
+                {
+                  "icon": "fas fa-tags",
+                  "label": "Semantic labels as classifications"
+                },
+                {
+                  "icon": "fas fa-clipboard-list",
+                  "label": "Property set templates in the file"
                 }
               ]
             }
@@ -1285,19 +1557,19 @@
         },
         {
           "type": "code",
-          "title": "Quick Install",
+          "title": "Install & Quick Start",
           "paragraphs": [
-            "Install directly from GitHub with pip:"
+            "Python 3.10 – 3.14 on Windows, macOS or Linux. The dependencies (<code>ifcopenshell</code>, <code>usd-core</code>, <code>numpy</code>) install automatically as binary wheels. See the <a href=\"https://isaddiq.github.io/ifcusd/\" target=\"_blank\" rel=\"noopener\">documentation</a> for the tutorial, IFC ↔ USD mapping and API reference."
           ],
-          "code": "python -m pip install \"git+https://github.com/isaddiq/ifcusd.git\"\nifcusd convert ./model.ifc ./model.usd --threads 4 --verbose"
+          "code": "python -m pip install \"git+https://github.com/isaddiq/ifcusd.git\"\n\nifcusd convert model.ifc model.usdc                          # any OpenUSD tool\nifcusd convert model.ifc model.usdc --profile omniverse      # NVIDIA Omniverse\nifcusd convert model.ifc model.usdz --profile unity --metadata-json model.ifcusd.json\nifcusd convert model.ifc model.usdc --validate --report report.json\nifcusd to-ifc model.usdc model.trained.ifc --source model.ifc --layer robot_run.usda --validate\nifcusd ui                                                    # IfcUSD Studio in the browser"
         },
         {
           "type": "media",
-          "title": "IfcUSD Preview",
+          "title": "IFC ↔ OpenUSD Round-Trip Workflow",
           "media": "image",
           "autoWrap": true,
-          "src": "assets/images/software/ifcusd-converter-preview.png",
-          "alt": "IfcUSD IFC to OpenUSD converter preview",
+          "src": "assets/images/software/ifcusd-round-trip-workflow.png",
+          "alt": "IfcUSD round trip: IFC converted to OpenUSD without losing BIM information, enriched with robot and simulation data, and written back to IFC",
           "imageClass": "media-image-contain"
         }
       ]
