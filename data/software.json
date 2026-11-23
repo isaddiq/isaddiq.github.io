@@ -224,7 +224,7 @@
         "dark": "assets/logos/software/bim2bot-wordmark-dark.svg",
         "alt": "BIM2Bot Lab logo"
       },
-      "description": "From IFC model to robot route, entirely in the browser. A free construction informatics lab that explores IFC models, turns them into maps a robot can plan on, and simulates robot fleets moving through the building.",
+      "description": "From IFC model to robot route, entirely in the browser. A free construction informatics lab that explores IFC models, turns them into maps a robot can plan on, compares routes, exports ROS 2 (Nav2) maps, and simulates robot fleets with simulated LiDAR, lifts, door schedules and people moving through the building.",
       "previewImage": "assets/images/software/bim2bot-lab-hero.webp",
       "badges": [
         {
@@ -241,6 +241,10 @@
         },
         {
           "label": "web-ifc (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "ROS 2 · Nav2 Maps",
           "variant": "corresponding"
         },
         {
@@ -290,7 +294,8 @@
           "title": "IFC to Robot Route in the Browser",
           "paragraphs": [
             "BIM2Bot Lab is a free construction informatics lab that runs in the browser. Open an IFC model to explore its geometry and semantics, turn it into maps a robot can plan on, and simulate robot fleets moving through the building. Every navigation result can be traced back to the IFC elements and processing steps that produced it.",
-            "Nothing is uploaded: IFC2x3, IFC4 and IFC4.3 files are parsed on your device with <strong>web-ifc</strong> (WebAssembly). A <strong>room graph</strong> (S1–S5) links storeys, rooms, doors, stairs, ramps and lifts, while <strong>occupancy grids</strong> (G1–G6) rasterise floors and obstacles, carve doors, inflate for the robot's size, and run multi-level A* path search. Each map cell and graph edge records the IFC element that produced it."
+            "Nothing is uploaded: IFC2x3, IFC4 and IFC4.3 files are parsed on your device with <strong>web-ifc</strong> (WebAssembly). A <strong>room graph</strong> (S1–S5) links storeys, rooms, doors, stairs, ramps and lifts, while <strong>occupancy grids</strong> (G1–G6) rasterise floors and obstacles, carve doors, apply safety zones, inflate for the robot's size, and run multi-level A* path search. Each map cell and graph edge records the IFC element that produced it.",
+            "Routes can be compared by distance, time and energy, and exported as <strong>ROS 2 Nav2</strong> maps (PGM + YAML per level) with <code>FollowWaypoints</code> goals. In the simulation, every robot has its own 3D model and a <strong>simulated 2D LiDAR</strong>; doors can close and reopen on a schedule, and batch experiments sweep parameters across seeds."
           ]
         },
         {
@@ -311,19 +316,31 @@
             },
             {
               "icon": "fas fa-ban",
-              "html": "What-if analysis with user-placed obstacles, blocked doors, and lifts added to stair cores"
+              "html": "What-if analysis with user-placed obstacles, blocked doors, lifts added to stair cores, and no-go or slow safety zones"
             },
             {
               "icon": "fas fa-search-location",
               "html": "Cell-level traceability: see which IFC element and pipeline step made a cell free, blocked, or too narrow"
             },
             {
+              "icon": "fas fa-balance-scale",
+              "html": "Route comparison by distance, estimated time and energy (fewest level changes, no lifts, no stairs)"
+            },
+            {
+              "icon": "fas fa-file-export",
+              "html": "<strong>ROS 2 export:</strong> Nav2 <code>map_server</code> maps (PGM + YAML) per level, plus route waypoints and <code>FollowWaypoints</code> goals"
+            },
+            {
               "icon": "fas fa-users",
-              "html": "<strong>Simulate:</strong> deterministic, seeded fleets with lift scheduling, congestion handling, and human–robot interaction"
+              "html": "<strong>Simulate:</strong> deterministic, seeded fleets with lift scheduling, congestion handling, door schedules with re-planning, and human–robot interaction"
+            },
+            {
+              "icon": "fas fa-satellite-dish",
+              "html": "3D robot models per profile (wheeled, compact, quadruped, hospital cart), each with a simulated 2D LiDAR exported as LaserScan JSON"
             },
             {
               "icon": "fas fa-chart-bar",
-              "html": "Results with makespan, throughput, congestion heatmaps, lift waits, and JSON export"
+              "html": "Results with makespan, throughput, congestion heatmaps, lift waits, batch experiments across seeds, and JSON/CSV export"
             },
             {
               "icon": "fas fa-user-shield",
@@ -336,7 +353,7 @@
           "cards": [
             {
               "icon": "fas fa-compass",
-              "title": "Explore (Version 1)",
+              "title": "Explore",
               "subtitle": "IFC viewer and semantic inspection",
               "duration": "3D, 3D + 2D, and 2D floor-plan layouts",
               "capabilities": [
@@ -368,7 +385,7 @@
             },
             {
               "icon": "fas fa-route",
-              "title": "Navigate (Version 2)",
+              "title": "Navigate",
               "subtitle": "Room graph and occupancy-grid planning",
               "duration": "Plan on the room graph or the occupancy grid",
               "capabilities": [
@@ -385,14 +402,26 @@
                   "label": "Blocked doors and obstacles"
                 },
                 {
+                  "icon": "fas fa-exclamation-triangle",
+                  "label": "Safety zones (no-go, slow)"
+                },
+                {
+                  "icon": "fas fa-balance-scale",
+                  "label": "Route comparison: time and energy"
+                },
+                {
                   "icon": "fas fa-search-location",
                   "label": "Cell traceability"
+                },
+                {
+                  "icon": "fas fa-file-export",
+                  "label": "ROS 2 Nav2 map export"
                 }
               ]
             },
             {
               "icon": "fas fa-robot",
-              "title": "Simulate (Version 3)",
+              "title": "Simulate",
               "subtitle": "Multi-robot fleet simulation",
               "duration": "Deterministic and seeded, with a fixed time step",
               "capabilities": [
@@ -413,8 +442,20 @@
                   "label": "Human–robot interaction"
                 },
                 {
+                  "icon": "fas fa-satellite-dish",
+                  "label": "Simulated 2D LiDAR"
+                },
+                {
+                  "icon": "fas fa-door-open",
+                  "label": "Door schedules with re-planning"
+                },
+                {
+                  "icon": "fas fa-flask",
+                  "label": "Batch experiments across seeds"
+                },
+                {
                   "icon": "fas fa-file-export",
-                  "label": "Metrics and JSON export"
+                  "label": "Metrics, JSON and CSV export"
                 }
               ]
             }
@@ -435,6 +476,241 @@
           "autoWrap": true,
           "src": "assets/images/software/bim2bot-lab-hero.webp",
           "alt": "BIM2Bot Lab simulating a robot mission on an office model, with the 3D view, the 2D floor plan and the IFC inspector side by side",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
+      "id": "bim2bem",
+      "navLabel": "BIM2BEM",
+      "navIcon": "fas fa-thermometer-half",
+      "title": "BIM2BEM",
+      "description": "From IFC model to building energy model, entirely in the browser. BIM2BEM converts an IFC model into an EnergyPlus model, runs EnergyPlus (WebAssembly) in the page with weather for the building's real location, and evaluates energy demand and indoor environmental quality. Every input says where it came from.",
+      "previewImage": "assets/images/software/bim2bem-analytical-surfaces.webp",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Building Energy Modeling",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "EnergyPlus 26.2 (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "IFC 2x3 · 4 · 4.3",
+          "variant": "corresponding"
+        },
+        {
+          "label": "web-ifc (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "React 18",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "MIT License",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Open the App",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/BIM2BEM/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/BIM2BEM"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "IFC to EnergyPlus in the Browser",
+          "paragraphs": [
+            "BIM2BEM converts an IFC building model into an EnergyPlus model, runs <strong>EnergyPlus 26.2 compiled to WebAssembly</strong> in the page with weather data for the building's real location, and evaluates energy demand and indoor environmental quality. It is a static site: no server, no account, no upload. IFC files are parsed and simulated on your machine.",
+            "Every number shown says where it came from: the IFC file, IFC geometry (calculated), your entries, an open dataset, a documented reference library, or a reconstruction by the conversion algorithm. Where an analysis cannot be calculated from the available inputs, the app says so instead of showing a value.",
+            "BIM2BEM grew out of <strong>BIM2Bot Lab</strong>: the IFC loading, 3D viewer, model tree, property inspection and 2D floor plans are kept, while the robot navigation and simulation features are replaced by an energy-modelling workflow."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Key Features",
+          "items": [
+            {
+              "icon": "fas fa-map-marker-alt",
+              "html": "<strong>Location:</strong> reads <code>IfcSite</code> coordinates and true north for you to confirm, or search an address, pick on the map or type coordinates"
+            },
+            {
+              "icon": "fas fa-cloud-sun",
+              "html": "<strong>Weather fetched automatically:</strong> a nearby TMY3 file, otherwise the latest complete year from Open-Meteo (ERA5) or NASA POWER; or upload your own validated EPW"
+            },
+            {
+              "icon": "fas fa-cubes",
+              "html": "<strong>IFC → BEM conversion:</strong> IfcSpace to thermal zones and surfaces from second-level space boundaries where complete, otherwise reconstructed from space bodies"
+            },
+            {
+              "icon": "fas fa-layer-group",
+              "html": "Constructions from IFC material layers and thermal properties, declared U-values, or documented reference constructions; never inferred from a material's name"
+            },
+            {
+              "icon": "fas fa-play-circle",
+              "html": "<strong>Energy simulation:</strong> IDF validated against the engine schema, EnergyPlus run in a Web Worker, with scenarios for insulation, glazing, ventilation and setpoints"
+            },
+            {
+              "icon": "fas fa-user-check",
+              "html": "<strong>IEQ analysis:</strong> PMV/PPD (ISO 7730), adaptive comfort (EN 16798-1, ASHRAE 55), CO₂, outdoor-air rates and daylight per zone"
+            },
+            {
+              "icon": "fas fa-wind",
+              "html": "Environment: wind rose, sun path, monthly radiation and incident solar radiation on exterior surfaces"
+            },
+            {
+              "icon": "fas fa-search-location",
+              "html": "<strong>Traceability:</strong> every IFC element lists the zones, surfaces and openings it produced, exported as JSON and CSV with GlobalIds"
+            },
+            {
+              "icon": "fas fa-file-export",
+              "html": "Exports: IDF, epJSON, IFC→BEM mapping, zone and hourly results, assumptions, a reproducibility manifest and a printable report"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-cubes",
+              "title": "Model & Location",
+              "subtitle": "IFC model, site and weather",
+              "duration": "Open an IFC file, confirm the location, get weather automatically",
+              "capabilities": [
+                {
+                  "icon": "fas fa-cube",
+                  "label": "3D view and 2D floor plans"
+                },
+                {
+                  "icon": "fas fa-globe-asia",
+                  "label": "IfcSite georeferencing"
+                },
+                {
+                  "icon": "fas fa-cloud-sun",
+                  "label": "TMY3, ERA5 or NASA POWER weather"
+                },
+                {
+                  "icon": "fas fa-check-circle",
+                  "label": "EPW validation"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-bolt",
+              "title": "Conversion & Simulation",
+              "subtitle": "IFC → thermal model → EnergyPlus",
+              "duration": "EnergyPlus 26.2 runs in the browser as WebAssembly",
+              "capabilities": [
+                {
+                  "icon": "fas fa-th",
+                  "label": "Thermal zones and analytical surfaces"
+                },
+                {
+                  "icon": "fas fa-exchange-alt",
+                  "label": "Interzone, ground and outdoor boundaries"
+                },
+                {
+                  "icon": "fas fa-sliders-h",
+                  "label": "Retrofit and setpoint scenarios"
+                },
+                {
+                  "icon": "fas fa-chart-line",
+                  "label": "Annual, monthly, hourly and peak demand"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-user-check",
+              "title": "IEQ & Reports",
+              "subtitle": "Comfort, air quality, daylight and environment",
+              "duration": "Results coloured on the 3D model, with an hour slider",
+              "capabilities": [
+                {
+                  "icon": "fas fa-thermometer-half",
+                  "label": "PMV/PPD and adaptive comfort"
+                },
+                {
+                  "icon": "fas fa-smog",
+                  "label": "CO₂ and outdoor-air rates"
+                },
+                {
+                  "icon": "fas fa-sun",
+                  "label": "Daylight and solar exposure"
+                },
+                {
+                  "icon": "fas fa-file-alt",
+                  "label": "Printable report and data exports"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/BIM2BEM/\" target=\"_blank\" rel=\"noopener\">live app</a>, or build and serve it locally. The EnergyPlus binary (~37 MB) is downloaded only when the first simulation runs:"
+          ],
+          "code": "git clone https://github.com/isaddiq/BIM2BEM.git\ncd BIM2BEM\nnpm install\nnpm run build          # compile assets/js/**/*.jsx\nnpm run serve          # open http://localhost:3000"
+        },
+        {
+          "type": "media",
+          "title": "IFC to BEM Conversion",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2bem-analytical-surfaces.webp",
+          "alt": "BIM2BEM: the analytical surfaces of the BEM demo office coloured by boundary condition, with the conversion panel",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Energy Simulation Results",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2bem-heating-demand.webp",
+          "alt": "BIM2BEM: zone heating demand on the 3D model, with results and monthly charts",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "IEQ Analysis",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2bem-ieq-analysis.webp",
+          "alt": "BIM2BEM IEQ analysis: thermal comfort, CO₂ and daylight tables, the 3D model coloured by PMV at the selected hour, and the PMV chart for a zone",
           "imageClass": "media-image-contain"
         }
       ]
@@ -1570,6 +1846,191 @@
           "autoWrap": true,
           "src": "assets/images/software/ifcusd-round-trip-workflow.png",
           "alt": "IfcUSD round trip: IFC converted to OpenUSD without losing BIM information, enriched with robot and simulation data, and written back to IFC",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
+      "id": "khu-global-campus",
+      "navLabel": "KHU Campus Twin",
+      "navIcon": "fas fa-university",
+      "title": "Kyung Hee University Global Campus: 3D Digital Twin",
+      "description": "An interactive, geographically referenced 3D reconstruction of Kyung Hee University Global Campus in Yongin, built on CesiumJS. Real terrain at 1:1 scale, 41 campus buildings on their OpenStreetMap footprints, first-person walking and GLB export, with every estimated or stylised value labelled.",
+      "previewImage": "assets/images/software/khu-global-campus-digital-twin.png",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Campus Digital Twin",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "CesiumJS",
+          "variant": "corresponding"
+        },
+        {
+          "label": "OpenStreetMap",
+          "variant": "corresponding"
+        },
+        {
+          "label": "FABDEM Terrain",
+          "variant": "corresponding"
+        },
+        {
+          "label": "WGS84 · EPSG:5186",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "Education & Research",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Open the App",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/KyungHeeUniversity_GlobalCampus/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/KyungHeeUniversity_GlobalCampus"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "Geospatial 3D Digital Twin of the Campus",
+          "paragraphs": [
+            "An interactive, geographically referenced 3D reconstruction of <strong>Kyung Hee University Global Campus</strong> (경희대학교 국제캠퍼스, 1732 Deogyeong-daero, Giheung-gu, Yongin-si). It is a static website built on <strong>CesiumJS</strong>: no server, build step or API key is needed.",
+            "Its priorities are geographic correctness first, completeness second and visual realism third. Every geometric value in the scene comes from a real dataset (FABDEM bare-earth terrain, Copernicus DEM, OpenStreetMap and the official KHU campus map), and every value that is estimated or stylised is labelled as such in the interface and in a machine-readable accuracy report.",
+            "It is made for <strong>education and research</strong>, as an open, reproducible starting point for a campus digital twin: teaching geospatial methods, adding indoor plans and sensor feeds, or studying sunlight, routes, stormwater and evacuation on the real slopes. Use is non-commercial, and it is an independent reconstruction, not an official Kyung Hee University product."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Key Features",
+          "items": [
+            {
+              "icon": "fas fa-mountain",
+              "html": "<strong>Real terrain at 1:1 scale:</strong> FABDEM V1-2 bare-earth DTM, EGM2008 geoid applied, in realistic, elevation, slope, contour and wireframe modes"
+            },
+            {
+              "icon": "fas fa-building",
+              "html": "<strong>41 campus buildings</strong> on their real OSM footprints (1,104 with the ~600 m context ring); 24/24 official campus-map entries matched"
+            },
+            {
+              "icon": "fas fa-landmark",
+              "html": "Special models for the main gate (정문), the 평화노천극장 amphitheatre with 41 terraces cut from the DTM, and the 천문대 observatory"
+            },
+            {
+              "icon": "fas fa-road",
+              "html": "Roads, footways, steps, parking, landcover and POIs draped on the terrain, with vegetation from OSM woods and a canopy-height model"
+            },
+            {
+              "icon": "fas fa-walking",
+              "html": "<strong>Navigation:</strong> orbit, fly-through, top-down and first-person walk at 1.7 m eye height, with building collisions and a touch movement pad"
+            },
+            {
+              "icon": "fas fa-info-circle",
+              "html": "Building information: Korean/English names, campus-map number, OSM id, WGS84 and EPSG:5186 coordinates, height with its documented/derived/estimated status"
+            },
+            {
+              "icon": "fas fa-sun",
+              "html": "Sun position and time of day with shadows, and a <strong>Data &amp; accuracy</strong> dialog"
+            },
+            {
+              "icon": "fas fa-file-export",
+              "html": "<strong>Export GLB:</strong> the whole campus as one glTF file with every building, surface and tree as its own named node"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-map-marked-alt",
+              "title": "Campus at a Glance",
+              "subtitle": "OSM relation 11246784",
+              "duration": "72.0 ha · 4.68 km perimeter · 55.5–112.9 m relief",
+              "capabilities": [
+                {
+                  "icon": "fas fa-mountain",
+                  "label": "FABDEM 1″ terrain, no exaggeration"
+                },
+                {
+                  "icon": "fas fa-building",
+                  "label": "41 campus buildings"
+                },
+                {
+                  "icon": "fas fa-globe-asia",
+                  "label": "WGS84 and EPSG:5186 readouts"
+                },
+                {
+                  "icon": "fas fa-clipboard-check",
+                  "label": "Per-feature accuracy report"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-cogs",
+              "title": "Reproducible Pipeline",
+              "subtitle": "Python scripts + pre-baked geometry",
+              "duration": "Download, build and validate all data from source",
+              "capabilities": [
+                {
+                  "icon": "fas fa-download",
+                  "label": "OSM and DEM acquisition"
+                },
+                {
+                  "icon": "fas fa-layer-group",
+                  "label": "Terrain grid, slope and hillshade"
+                },
+                {
+                  "icon": "fas fa-cube",
+                  "label": "Baked building models"
+                },
+                {
+                  "icon": "fas fa-check-double",
+                  "label": "Validation and provenance"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/KyungHeeUniversity_GlobalCampus/\" target=\"_blank\" rel=\"noopener\">live app</a>, or serve the <code>web/</code> folder locally. To rebuild the data from source, run the Python pipeline:"
+          ],
+          "code": "git clone https://github.com/isaddiq/KyungHeeUniversity_GlobalCampus.git\ncd KyungHeeUniversity_GlobalCampus\npython -m http.server 8000 --directory web   # open http://localhost:8000/\n\npip install -r requirements.txt\npython scripts/run_all.py                    # rebuild web/data from source"
+        },
+        {
+          "type": "media",
+          "title": "Campus Digital Twin",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/khu-global-campus-digital-twin.png",
+          "alt": "Kyung Hee University Global Campus 3D digital twin: the campus diorama on real terrain with buildings, roads and trees, beside the campus information panel",
           "imageClass": "media-image-contain"
         }
       ]
