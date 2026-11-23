@@ -735,6 +735,32 @@ dd,
   }
 }
 
+/* Brand colours: each icon in its own colour, filled with it on hover */
+.social-floating .social-icon {
+  color: var(--brand, var(--text-secondary));
+}
+
+.social-floating .social-icon:hover,
+.social-floating .social-icon[aria-expanded="true"] {
+  background: var(--brand, var(--text-primary));
+  color: var(--brand-ink, #ffffff);
+}
+
+.social-icon.linkedin { --brand: #0a66c2; }
+.social-icon.github { --brand: #181717; }
+.social-icon.scholar { --brand: #4285f4; }
+.social-icon.orcid { --brand: #a6ce39; --brand-ink: #101b2b; }
+.social-icon.researchgate { --brand: #00ccbb; --brand-ink: #101b2b; }
+.social-icon.scopus { --brand: #e9711c; }
+.social-icon.youtube { --brand: #ff0000; }
+.social-icon.flag-counter-icon { --brand: var(--success-color); }
+
+[data-theme="dark"] .social-icon.linkedin { --brand: #4a9be8; --brand-ink: #0d1830; }
+[data-theme="dark"] .social-icon.github { --brand: #e6edf3; --brand-ink: #0d1830; }
+[data-theme="dark"] .social-icon.scholar { --brand: #6ea1f7; --brand-ink: #0d1830; }
+[data-theme="dark"] .social-icon.youtube { --brand: #ff4d4d; --brand-ink: #0d1830; }
+[data-theme="dark"] .social-icon.flag-counter-icon { --brand-ink: #0d1830; }
+
 /* Page column; the footer stays at the foot of the window on short tabs */
 body {
   display: flex;
