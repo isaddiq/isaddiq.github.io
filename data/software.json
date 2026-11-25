@@ -1,6 +1,232 @@
 {
   "tools": [
     {
+      "id": "bim2ar",
+      "navLabel": "BIM2AR",
+      "navIcon": "fas fa-street-view",
+      "title": "BIM2AR",
+      "description": "IFC models in 3D and augmented reality, with IFC-linked site inspection, entirely in the browser. Open a building model on a phone, tablet or computer, inspect it in 3D, place it on a table or at full scale in AR, and record what you find on site, with every record tied to the IFC element's GlobalId.",
+      "previewImage": "assets/images/software/bim2ar-ar-verify-inspection.jpg",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Augmented Reality",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Site Inspection",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "WebXR",
+          "variant": "corresponding"
+        },
+        {
+          "label": "web-ifc (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "React",
+          "variant": "corresponding"
+        },
+        {
+          "label": "IFC2x3 / IFC4",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "Nothing Uploaded",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Try it Now",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/BIM2AR/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/BIM2AR"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "From IFC Model to Site Verification",
+          "paragraphs": [
+            "BIM2AR opens an IFC building model (IFC2x3 or IFC4) on a phone, tablet or computer. You inspect it in 3D, place it on a table or at full scale in augmented reality, and record what you find on site. Every inspection record, note and photo is tied to the IFC element's GlobalId, so records survive a re-exported model and can be traced back to the element they describe.",
+            "Four modes share one model, one set of element identifiers, the same BIM layers and the same inspection data: <strong>3D Viewer</strong> for exploring the model, <strong>AR Viewer</strong> for seeing it in the room, <strong>AR Pro</strong> for sections, measurements, annotations and captures, and <strong>AR Verify</strong> for checking the building against the model with reference-point site calibration and per-element verification status. Switching mode never reloads the file.",
+            "Nothing is uploaded. IFC files, notes, inspection records and photos stay on the device unless you export them, and there is no server, account or database. IFC parsing runs in a Web Worker with web-ifc (WASM), AR uses WebXR on ARCore-capable Android devices, and iPhone and iPad users get an AR Quick Look (USDZ) fallback."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Key Features",
+          "items": [
+            {
+              "icon": "fas fa-cube",
+              "html": "<strong>3D viewer:</strong> spatial tree, IFC classes and schema browser, element search by name, class, GlobalId or <code>Property:value</code>, properties, storey filter and saved views"
+            },
+            {
+              "icon": "fas fa-layer-group",
+              "html": "<strong>BIM layers:</strong> Architecture, Structure, Mechanical, Electrical, Plumbing, Spaces, Envelope and Furniture, classified from IfcSystem membership, property sets and IFC class, with the reason shown for each element"
+            },
+            {
+              "icon": "fas fa-street-view",
+              "html": "<strong>WebXR AR:</strong> tabletop (1:200 to 1:20), full-scale 1:1 or component placement, with hit-test surface placement, spatial anchors and world locking"
+            },
+            {
+              "icon": "fas fa-cut",
+              "html": "<strong>AR Pro:</strong> horizontal and vertical section planes and a section box, rendering modes, model and AR measurements, categorised annotations and image markup"
+            },
+            {
+              "icon": "fas fa-crosshairs",
+              "html": "<strong>Site calibration:</strong> reference-point alignment with RMS and maximum residuals, leave-one-out error and a plan-scale check"
+            },
+            {
+              "icon": "fas fa-clipboard-check",
+              "html": "<strong>AR Verify:</strong> per-element status (verified, discrepancy, missing, obstructed, follow up), discrepancy types, observed positions and evidence photos"
+            },
+            {
+              "icon": "fas fa-file-export",
+              "html": "<strong>Reports and packages:</strong> inspection reports as PDF, HTML, JSON or CSV, and portable <code>.bim2ar.zip</code> project packages"
+            },
+            {
+              "icon": "fas fa-mobile-alt",
+              "html": "<strong>Mobile first:</strong> layouts for phone, tablet and desktop in portrait or landscape, left or right-handed controls, and autosave on the device"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-cube",
+              "title": "3D Viewer",
+              "subtitle": "Explore the IFC model",
+              "duration": "IFC2x3 and IFC4, parsed on the device in a Web Worker",
+              "capabilities": [
+                {
+                  "icon": "fas fa-sitemap",
+                  "label": "Spatial tree and IFC classes"
+                },
+                {
+                  "icon": "fas fa-search",
+                  "label": "Search by GlobalId or property"
+                },
+                {
+                  "icon": "fas fa-layer-group",
+                  "label": "BIM layers and storeys"
+                },
+                {
+                  "icon": "fas fa-eye",
+                  "label": "Transparency and saved views"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-street-view",
+              "title": "AR Viewer & AR Pro",
+              "subtitle": "The model in the room",
+              "duration": "WebXR on Android, AR Quick Look (USDZ) on iPhone and iPad",
+              "capabilities": [
+                {
+                  "icon": "fas fa-chess-board",
+                  "label": "Tabletop, full scale or component"
+                },
+                {
+                  "icon": "fas fa-anchor",
+                  "label": "Anchors and world locking"
+                },
+                {
+                  "icon": "fas fa-cut",
+                  "label": "Section planes and section box"
+                },
+                {
+                  "icon": "fas fa-ruler",
+                  "label": "Measurements and annotations"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-clipboard-check",
+              "title": "AR Verify",
+              "subtitle": "Check the building against the model",
+              "duration": "IFC-linked inspection records with on-device reports",
+              "capabilities": [
+                {
+                  "icon": "fas fa-crosshairs",
+                  "label": "Reference-point calibration"
+                },
+                {
+                  "icon": "fas fa-tasks",
+                  "label": "Per-element verification status"
+                },
+                {
+                  "icon": "fas fa-camera",
+                  "label": "Evidence photos"
+                },
+                {
+                  "icon": "fas fa-file-pdf",
+                  "label": "PDF, HTML, JSON and CSV reports"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/BIM2AR/\" target=\"_blank\" rel=\"noopener\">live app</a>, or run it locally with Node.js 18+. WASM and workers need HTTP, so serve the folder rather than opening <code>index.html</code> from disk. WebXR needs a secure context: <code>localhost</code> works, and to try AR from a phone use the deployed site or serve over HTTPS."
+          ],
+          "code": "git clone https://github.com/isaddiq/BIM2AR.git\ncd BIM2AR\nnpm run build\nnpm run serve"
+        },
+        {
+          "type": "media",
+          "title": "AR Verify Mode",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2ar-ar-verify-inspection.jpg",
+          "alt": "BIM2AR in AR Verify mode: the research centre sample model in the 3D viewer with the inspection panel open, showing element status counts and recorded-element filters",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Landing Page",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2ar-landing.png",
+          "alt": "BIM2AR landing page with options to open an IFC file, try a sample model or import a project, sample model cards and the four modes: 3D Viewer, AR Viewer, AR Pro and AR Verify",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
       "id": "parametra",
       "navLabel": "Parametra",
       "navIcon": "fas fa-drafting-compass",
