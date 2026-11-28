@@ -942,6 +942,331 @@
       ]
     },
     {
+      "id": "bim2reuse",
+      "navLabel": "BIM2REUSE",
+      "navIcon": "fas fa-recycle",
+      "title": "BIM2REUSE",
+      "logo": {
+        "light": "assets/logos/software/bim2reuse-wordmark-light.svg",
+        "dark": "assets/logos/software/bim2reuse-wordmark-dark.svg",
+        "alt": "BIM2REUSE: From BIM to Circular Construction"
+      },
+      "description": "From BIM to circular construction, entirely in the browser. BIM2REUSE turns a building, with or without a BIM model, into traceable material reuse decisions: what it is made of, which components could be reused, how they come out, where they could go in a new building, and what that saves in carbon and cost.",
+      "previewImage": "assets/images/software/bim2reuse-overview.webp",
+      "badges": [
+        {
+          "label": "Web App",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Circular Construction",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "Material Passports",
+          "variant": "impact-factor"
+        },
+        {
+          "label": "IFC 2x3 · 4 · 4.3",
+          "variant": "corresponding"
+        },
+        {
+          "label": "web-ifc (WASM)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "HiGHS Optimiser",
+          "variant": "corresponding"
+        },
+        {
+          "label": "React 18",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
+          "variant": "editor-choice"
+        },
+        {
+          "label": "MIT License",
+          "variant": "editor-choice"
+        }
+      ],
+      "actions": [
+        {
+          "label": "Open the App",
+          "icon": "fas fa-external-link-alt",
+          "href": "https://isaddiq.github.io/BIM2REUSE/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/BIM2REUSE"
+        },
+        {
+          "label": "Sponsor",
+          "icon": "fas fa-heart",
+          "href": "https://github.com/sponsors/isaddiq",
+          "variant": "sponsor-link"
+        },
+        {
+          "label": "Buy Me a Coffee",
+          "icon": "fas fa-mug-hot",
+          "href": "https://buymeacoffee.com/saddiqr97z",
+          "variant": "coffee-link"
+        }
+      ],
+      "sections": [
+        {
+          "type": "info",
+          "title": "Circular Construction in the Browser",
+          "paragraphs": [
+            "BIM2REUSE is a free, open-source web application for circular construction. Open the IFC model of an existing building, or survey a building that has no model, and it builds the information that reuse decisions need, from the material inventory and material passports to a deconstruction plan, a material bank, an optimal reuse allocation and a carbon and cost comparison.",
+            "Every record stays linked to the component it describes: the IFC GlobalId of a model element, or the persistent component ID of a surveyed one. Every value records where it came from (IFC, geometry, drawings, an imported file, a manual entry, an estimate or a verified inspection), and missing values stay missing instead of being guessed.",
+            "<strong>Private by design:</strong> there is no server. IFC files are read on your device with web-ifc (WebAssembly), and projects, documents and photographs are saved in your browser. Nothing you open or enter is uploaded."
+          ]
+        },
+        {
+          "type": "features",
+          "title": "Workflow",
+          "items": [
+            {
+              "icon": "fas fa-cube",
+              "html": "<strong>Explore:</strong> open an IFC2x3, IFC4 or IFC4.3 model in the <strong>IFC Viewer</strong>, or record a building without BIM in <strong>Building Survey</strong>"
+            },
+            {
+              "icon": "fas fa-layer-group",
+              "html": "<strong>Inventory:</strong> materials, volumes and masses of every element, with the source of each value"
+            },
+            {
+              "icon": "fas fa-id-card",
+              "html": "<strong>Document:</strong> a material passport for each component, pre-filled from the model"
+            },
+            {
+              "icon": "fas fa-clipboard-check",
+              "html": "<strong>Assess:</strong> mandatory checks plus a weighted screening index for each component's reuse pathway"
+            },
+            {
+              "icon": "fas fa-project-diagram",
+              "html": "<strong>Plan:</strong> deconstruction stages from a dependency graph of removal tasks"
+            },
+            {
+              "icon": "fas fa-warehouse",
+              "html": "<strong>Bank:</strong> a catalogue of recoverable components from one or more buildings"
+            },
+            {
+              "icon": "fas fa-puzzle-piece",
+              "html": "<strong>Match:</strong> an optimal allocation of banked components to a new building, with cutting plans (HiGHS mixed-integer solver)"
+            },
+            {
+              "icon": "fas fa-leaf",
+              "html": "<strong>Compare:</strong> carbon and cost of building new versus building with reused components"
+            },
+            {
+              "icon": "fas fa-file-alt",
+              "html": "<strong>Report:</strong> one technical report, printable to PDF, and a portable project package"
+            }
+          ]
+        },
+        {
+          "type": "featureGrid",
+          "cards": [
+            {
+              "icon": "fas fa-building",
+              "title": "Model or Survey",
+              "subtitle": "Buildings with and without BIM",
+              "duration": "Start from an IFC file or from site visits, drawings and photographs",
+              "capabilities": [
+                {
+                  "icon": "fas fa-cube",
+                  "label": "3D view and floor plans"
+                },
+                {
+                  "icon": "fas fa-drafting-compass",
+                  "label": "Trace calibrated floor plans"
+                },
+                {
+                  "icon": "fas fa-file-csv",
+                  "label": "Import CSV or JSON inventories"
+                },
+                {
+                  "icon": "fas fa-link",
+                  "label": "Link surveyed components to IFC later"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-recycle",
+              "title": "Reuse Decisions",
+              "subtitle": "Passports, assessment and deconstruction",
+              "duration": "Suggestions count only after a person confirms them",
+              "capabilities": [
+                {
+                  "icon": "fas fa-id-card",
+                  "label": "Material passports with evidence"
+                },
+                {
+                  "icon": "fas fa-clipboard-check",
+                  "label": "Reuse screening and approval"
+                },
+                {
+                  "icon": "fas fa-sitemap",
+                  "label": "Removal stages and critical path"
+                },
+                {
+                  "icon": "fas fa-file-export",
+                  "label": "CSV, JSON and Graphviz exports"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-balance-scale",
+              "title": "Bank, Match & Compare",
+              "subtitle": "From recovered stock to a new building",
+              "duration": "Missing data is never treated as compatible",
+              "capabilities": [
+                {
+                  "icon": "fas fa-warehouse",
+                  "label": "Multi-building material bank"
+                },
+                {
+                  "icon": "fas fa-cut",
+                  "label": "Cutting plans with saw kerf"
+                },
+                {
+                  "icon": "fas fa-leaf",
+                  "label": "A1–A4 carbon and cost scenarios"
+                },
+                {
+                  "icon": "fas fa-print",
+                  "label": "Technical report to PDF"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/BIM2REUSE/\" target=\"_blank\" rel=\"noopener\">live app</a>, or serve your own copy. BIM2REUSE is a static site; serve it over HTTP, since <code>file://</code> URLs block WebAssembly and workers:"
+          ],
+          "code": "git clone https://github.com/isaddiq/BIM2REUSE.git\ncd BIM2REUSE\nnpx serve ."
+        },
+        {
+          "type": "media",
+          "title": "Overview",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-overview.webp",
+          "alt": "BIM2REUSE Overview: model counts and a status card for every circular construction module",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Building Survey (Without BIM)",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-survey.webp",
+          "alt": "Building Survey: building information, the simplified 3D model coloured by survey information, the component editor and the list of surveyed components",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "IFC Viewer",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-viewer.webp",
+          "alt": "IFC Viewer with the model coloured by element category, the model tree, the category legend and the inspector",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Material Inventory",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-materials.webp",
+          "alt": "Material inventory table with the provenance of each quantity and the model coloured by material category",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Material Passports",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-passport.webp",
+          "alt": "Passport editor beside the isolated component in 3D",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Reuse Assessment",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-assessment.webp",
+          "alt": "Reuse assessment with criterion weights, outcomes and the reasoning for one component",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Deconstruction Planner",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-deconstruction.webp",
+          "alt": "Deconstruction planner with suggested dependencies, removal stages in 3D, the stage timeline and one task with its predecessors",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Reuse Matching",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-matching.webp",
+          "alt": "Reuse matching with last-run figures, parameters, cutting diagrams and the explanation for one stock piece",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Material Bank",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-bank.webp",
+          "alt": "Material bank catalogue with availability states and an editable record",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Carbon & Cost",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-carbon.webp",
+          "alt": "Carbon and cost comparison of building new and building with reused components",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Reports",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-reports.webp",
+          "alt": "Reports page with the section choice and the combined report preview",
+          "imageClass": "media-image-contain"
+        },
+        {
+          "type": "media",
+          "title": "Demo Survey",
+          "media": "image",
+          "autoWrap": true,
+          "src": "assets/images/software/bim2reuse-demo-survey.webp",
+          "alt": "The demo survey of a former post office: 52 surveyed components on two floors with the calibrated floor plan under them",
+          "imageClass": "media-image-contain"
+        }
+      ]
+    },
+    {
       "id": "reunixchange",
       "navLabel": "ReUnixchange",
       "navIcon": "fas fa-exchange-alt",
@@ -1085,47 +1410,65 @@
       ]
     },
     {
-      "id": "ai-chatbot",
-      "navLabel": "BIM Network Graph Maker",
-      "navIcon": "fas fa-robot",
-      "title": "BIM Network Graph Maker",
-      "description": "Professional data visualization solutions for Building Information Modeling workflows. Transform your architectural and engineering data into interactive network diagrams.",
+      "id": "bim2knowledgegraph",
+      "navLabel": "BIM2KnowledgeGraph",
+      "navIcon": "fas fa-project-diagram",
+      "title": "BIM2KnowledgeGraph",
+      "logo": {
+        "light": "assets/logos/software/bim2kg-wordmark-light.svg",
+        "dark": "assets/logos/software/bim2kg-wordmark-dark.svg",
+        "alt": "BIM2KnowledgeGraph logo"
+      },
+      "description": "From IFC model to a traceable knowledge graph, entirely in your browser. BIM2KnowledgeGraph (BIM2KG) reads an IFC model and builds a semantic knowledge graph you can trace back to the file, query with SPARQL or plain-language questions, validate with SHACL, explore next to the 3D model, and export as RDF or as a property graph.",
       "previewImage": "assets/images/software/bim-knowledge-graph-studio-preview.png",
       "badges": [
         {
-          "label": "BIM",
+          "label": "Web App",
           "variant": "impact-factor"
         },
         {
-          "label": "IFC",
+          "label": "Knowledge Graph",
           "variant": "impact-factor"
         },
         {
-          "label": "Network Graph",
+          "label": "IFC 2x3 · 4 · 4x3",
           "variant": "corresponding"
         },
         {
-          "label": "ArchiCAD",
+          "label": "SPARQL (Oxigraph)",
+          "variant": "corresponding"
+        },
+        {
+          "label": "SHACL",
+          "variant": "corresponding"
+        },
+        {
+          "label": "RDF · BOT · ifcOWL",
+          "variant": "corresponding"
+        },
+        {
+          "label": "web-ifc + Three.js",
+          "variant": "corresponding"
+        },
+        {
+          "label": "Runs in Browser",
           "variant": "editor-choice"
         },
         {
-          "label": "Revit",
-          "variant": "editor-choice"
-        },
-        {
-          "label": "CSV",
-          "variant": "editor-choice"
-        },
-        {
-          "label": "Semantic relationships",
+          "label": "MIT License",
           "variant": "editor-choice"
         }
       ],
       "actions": [
         {
-          "label": "Try it Now",
+          "label": "Open the App",
           "icon": "fas fa-external-link-alt",
-          "href": "https://isaddiq.github.io/BIMUniXchange/"
+          "href": "https://isaddiq.github.io/BIM2KnowledgeGraph/"
+        },
+        {
+          "label": "View on GitHub",
+          "icon": "fab fa-github",
+          "href": "https://github.com/isaddiq/BIM2KnowledgeGraph"
         },
         {
           "label": "Sponsor",
@@ -1143,34 +1486,52 @@
       "sections": [
         {
           "type": "info",
-          "title": "Automatic Network Graph Generation",
+          "title": "IFC to Traceable Knowledge Graphs",
           "paragraphs": [
-            "This specialized application is designed for AEC professionals who need to visualize complex relationships within their BIM models. Each tool processes CSV/IFC data exports (by ReUniXchange for Autodesk Revit and ArchUniXchange for ArchiCAD, and IFC export as typical IFC from either BIM authoring tool) to create interactive network diagrams that reveal connections, dependencies, and hierarchies in your building information models."
+            "BIM2KnowledgeGraph reads an IFC model (IFC2x3, IFC4 or IFC4x3, as <code>.ifc</code> or <code>.ifczip</code>) and builds a knowledge graph you can trace back to the file. Every node keeps its GlobalId and STEP id, and every relationship names the IFC relationship it came from.",
+            "Everything the tool derives (hosting, MEP flow, space adjacency, access, geometric contact, robot accessibility) records its rule, parameters and verification state, separately from what the file states. IFC files are processed in the browser and never uploaded.",
+            "Using Revit or ArchiCAD? Export an IFC file from the authoring tool and open it in the app."
           ]
         },
         {
           "type": "features",
-          "title": "Core Features",
+          "title": "Key Features",
           "items": [
             {
+              "icon": "fas fa-fingerprint",
+              "html": "<strong>Parsing & identity:</strong> streaming ISO 10303-21 parser, SHA-256 fingerprint of the source and GlobalId-based IRIs scoped to the file"
+            },
+            {
+              "icon": "fas fa-sitemap",
+              "html": "<strong>Semantic model:</strong> every <code>IfcRel*</code> as a typed edge, with property and quantity sets, units, materials, classifications, ports, systems, zones and tasks"
+            },
+            {
+              "icon": "fas fa-magic",
+              "html": "<strong>Enrichment rules</strong> with provenance: hosting, MEP flow, space adjacency, door / stair / lift access, geometric contact and robot-navigation accessibility"
+            },
+            {
+              "icon": "fas fa-layer-group",
+              "html": "<strong>Graph profiles</strong> from full fidelity to simplified, spatial, MEP, material, construction-process, digital-twin and robot-navigation views"
+            },
+            {
               "icon": "fas fa-book",
-              "html": "Create Network Diagram for IFC, and CSV"
+              "html": "<strong>Ontologies:</strong> BOT, ifcOWL class alignment, LBD PROPS, QUDT and PROV-O, plus optional BEO, Brick, SOSA/SSN, GeoSPARQL and SAREF4BLDG"
             },
             {
-              "icon": "fas fa-tools",
-              "html": "Create Hierachy based on different metadata"
+              "icon": "fas fa-search",
+              "html": "<strong>Query:</strong> SPARQL editor with templates, and rule-based plain-language questions (no external AI service)"
             },
             {
-              "icon": "fas fa-hammer",
-              "html": "Automatic Calculation of elements and its types"
+              "icon": "fas fa-check-double",
+              "html": "<strong>Validation:</strong> up to 26 IFC information-quality checks, SHACL shapes and RDF round-trip of every format"
             },
             {
-              "icon": "fas fa-leaf",
-              "html": "IFC semantic Verification"
+              "icon": "fas fa-cube",
+              "html": "<strong>Synchronised 3D viewer:</strong> selecting a node highlights its products, and picking a product selects its node"
             },
             {
-              "icon": "fas fa-laptop-code",
-              "html": "ArchiCAD and Autodesk Revit IFC and CSV support"
+              "icon": "fas fa-file-export",
+              "html": "<strong>Export:</strong> Turtle, JSON-LD, TriG, N-Quads, RDF/XML, GraphML, GEXF, CSV, Neo4j Cypher, ML datasets and SVG / PNG figures"
             }
           ]
         },
@@ -1178,19 +1539,69 @@
           "type": "featureGrid",
           "cards": [
             {
-              "icon": "fas fa-robot",
-              "title": "Data Visualization",
-              "subtitle": "BIM Network Graph Generation",
-              "duration": "Interactive Relationship Mapping"
+              "icon": "fas fa-project-diagram",
+              "title": "Explore & Analyse",
+              "subtitle": "Lenses on the same graph",
+              "duration": "Knowledge graph, spatial, MEP, materials, space adjacency, robot navigation and more",
+              "capabilities": [
+                {
+                  "icon": "fas fa-filter",
+                  "label": "Lenses, filters and inspector"
+                },
+                {
+                  "icon": "fas fa-network-wired",
+                  "label": "Network analytics"
+                },
+                {
+                  "icon": "fas fa-door-open",
+                  "label": "Space syntax and adjacency"
+                },
+                {
+                  "icon": "fas fa-exchange-alt",
+                  "label": "Version comparison"
+                }
+              ]
+            },
+            {
+              "icon": "fas fa-database",
+              "title": "Query & Validate",
+              "subtitle": "Linked data in the browser",
+              "duration": "Oxigraph SPARQL engine and SHACL Core evaluator",
+              "capabilities": [
+                {
+                  "icon": "fas fa-code",
+                  "label": "SPARQL templates"
+                },
+                {
+                  "icon": "fas fa-comments",
+                  "label": "Plain-language questions"
+                },
+                {
+                  "icon": "fas fa-shield-alt",
+                  "label": "SHACL shapes"
+                },
+                {
+                  "icon": "fas fa-heartbeat",
+                  "label": "Model health report"
+                }
+              ]
             }
           ]
         },
         {
+          "type": "code",
+          "title": "Run Locally",
+          "paragraphs": [
+            "Use the <a href=\"https://isaddiq.github.io/BIM2KnowledgeGraph/\" target=\"_blank\" rel=\"noopener\">live app</a>, or serve your own copy. There is no build step; the samples need HTTP:"
+          ],
+          "code": "git clone https://github.com/isaddiq/BIM2KnowledgeGraph.git\ncd BIM2KnowledgeGraph\npython -m http.server   # open http://localhost:8000/"
+        },
+        {
           "type": "media",
-          "title": "Network Graph Visualization",
+          "title": "Knowledge Graph Studio",
           "media": "image",
           "src": "assets/images/software/bim-knowledge-graph-studio-preview.png",
-          "alt": "BIM Knowledge Graph Studio: interactive knowledge graph of an IFC model with discipline legend, network metrics and model overview",
+          "alt": "BIM2KnowledgeGraph studio: interactive knowledge graph of an IFC model with lenses, discipline legend, network metrics and model overview",
           "imageClass": "media-image-full"
         }
       ]

@@ -72,7 +72,7 @@ A modern, responsive academic portfolio website showcasing the research, publica
 4. **📚 Publications**: Organized display of research papers with dynamic IF, quartile, and category badges
 5. **🚀 Projects**: Technical research projects with details modal
 6. **🛠️ Skills**: Categorized skills with interactive progress loading animations
-7. **🧰 Tools**: Software, web apps, frameworks, and systems for AEC (Parametra, BIM2AR, BIM2Bot Lab, BIM2BEM, ReUniXchange, IfcUSD, KHU Campus Twin, ...)
+7. **🧰 Tools**: Software, web apps, frameworks, and systems for AEC (Parametra, BIM2AR, BIM2Bot Lab, BIM2BEM, BIM2REUSE, BIM2KnowledgeGraph, ReUniXchange, IfcUSD, KHU Campus Twin, ...)
 8. **🏆 Awards**: Academic awards and certs with zoom viewer
 9. **👥 Activities**: Professional memberships, editorial/reviewer roles, and academic collaborations
 10. **📞 Contact**: Interactive EmailJS form and live Leaflet location map
